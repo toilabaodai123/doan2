@@ -88,9 +88,10 @@
 							<div class="col-lg-12">
 									<label>Size</label>
 									<select wire:model="Size" >
-										<option >abc</option>
-										<option value="1">A</option>
-										<option value="2">B</option>
+										<option value="0">Chọn size</option>
+										@foreach($Sizes as $s)
+											<option value="{{$s->sizeID}}">{{$s->Size->sizeName}}</option>
+										@endforeach
 									</select>
 							</div>
                             <div class="product__details__cart__option">

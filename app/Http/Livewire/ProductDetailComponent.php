@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 
 use App\Models\Product;
+use App\Models\ProductModel;
 
 class ProductDetailComponent extends Component
 {
@@ -12,6 +13,8 @@ class ProductDetailComponent extends Component
 	public $Product;
 	public $Size;
 	public $id2;
+	
+	public $Sizes;
 	
 	
 	public function mount($id){
@@ -21,6 +24,8 @@ class ProductDetailComponent extends Component
 	
     public function render()
     {
+		$this->Sizes = ProductModel::with('Size')->where('productID',$this->id2)->get();
+			
 		$this->Product = Product::find($this->id2);
         return view('livewire.product-detail-component')
 					->layout('layouts.template2');

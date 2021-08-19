@@ -17,6 +17,6 @@ class ProductModel extends Model
 	}
 	
 	public function Size(){
-		return $this->hasOne(ProductSize::class,'sizeID','id');
+		return $this->hasOne(ProductSize::class,'id','sizeID');
 	}
 }

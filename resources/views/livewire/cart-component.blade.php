@@ -28,12 +28,19 @@
                                             <h6>{{$v['name']}}</h6>
                                         </div>
                                     </td>
-									<td>Size</td>
+									<td>
+										<select wire:model="selectedSize.{{$k}}" wire:change="updateSize({{$k}})">
+											<option value="0">Chọn size</option>											
+											@foreach($Sizes[$k] as $s)
+											<option value="{{$s->sizeID}}">{{$s->Size->sizeName}}</option>
+											@endforeach
+										</select>
+									</td>
                                     <td class="cart__price">$ {{$v['price']}}</td>
 									<td class="quantity__item">
                                         <div class="quantity">
                                             <div class="pro-qty-2">
-                                                <input type="text" style="border-style:solid" wire:change="updateQuantity({{$k}})" wire:model="quantity.{{$k}}" defaultValue="1" name="discount" value="1" ">
+                                                <input type="text" style="border-style:solid" wire:change="updateQuantity({{$k}})" wire:model="quantity.{{$k}}" defaultValue="1" name="discount" value="1" >
                                             </div>
                                         </div>
                                     </td>
@@ -79,6 +86,10 @@
 						@if(session()->has('message'))
 							<p>{{session('message')}}</p>
 						@endif
+						
+						@if(session()->has('success'))
+							<p>{{session('success')}}</p>
+						@endif						
                     </div>
                 </div>
             </div>

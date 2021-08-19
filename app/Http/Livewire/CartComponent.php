@@ -5,6 +5,9 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 
 use App\Models\Product;
+use App\Models\ProductModel;
+use App\Models\Order;
+use App\Models\OrderDetail;
 
 class CartComponent extends Component
 {
@@ -16,7 +19,16 @@ class CartComponent extends Component
 	
 	public $carts = array();
 	
+	public $selectedSize;
+	
+	public $Sizes;
+	
 	public $i=0;
+	
+	protected $rules=[
+		'quantity' => 'required',
+		'size' => 'required'
+	];
 
 	
     public function render()
@@ -30,10 +42,19 @@ class CartComponent extends Component
 		if(session()->get('cart')){
 			$sum=0;
 			foreach($this->carts as $k=>$v){
+				$this->selectedSize[$k] = $this->carts[$k]['size'];
 				$sum+=$v['total'];
+				
+				
+				$this->Sizes[$k] = ProductModel::with('Size')->where('productID',$v['id'])->get();
+				
 			}
 			$this->OrderTotal = $sum;
+			
+			
+			
 		}
+		//dd($this->Sizes[3]);
 		//dd(session()->get('cart'));
         return view('livewire.cart-component')
 					->layout('layouts.template2');
@@ -46,17 +67,37 @@ class CartComponent extends Component
 		session(['cart' => $this->carts]);
 	}
 	
+	public function updateSize($k){
+		$this->carts[$k]['size'] = $this->selectedSize[$k];
+		session()->forget('cart');
+		session(['cart' => $this->carts]);
+	}	
+	
 	public function dd(){
 		dd(session()->all());
 	}
 	
 	public function checkOut(){
+
 		if($this->carts == null)
 			session()->flash('message','Giỏ hàng rỗng!');
 		else{
-			foreach($this->carts as $k=>$v){
-				
-			}
+			$Order = new Order();
+			$Order->save();
+			$OrderID = Order::all()->last()->id;
+
+				foreach ($this->carts as $k=>$v){
+					$OrderDetail = new OrderDetail();
+					
+					$ProductModel_id = ProductModel::where('productID',$this->carts[$k]['id'])->where('sizeID',$this->carts[$k]['size'])->get()->last();
+					$OrderDetail->productModel_id = $ProductModel_id->id;
+					$OrderDetail->order_id = $OrderID;
+					$OrderDetail->quantity = $this->carts[$k]['quantity'];
+					$OrderDetail->save();
+				}
+			
+			
+			session()->flash('success','Đặt hàng thành công!');
 			
 		}
 			
