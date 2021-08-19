@@ -10,6 +10,7 @@ use App\Http\Livewire\AdminProductCategoryComponent;
 use App\Http\Livewire\AdminSupplierComponent;
 use App\Http\Livewire\AdminProductImportComponent;
 use App\Http\Livewire\AdminProductCategoryLv2Component;
+use App\Http\Livewire\CheckoutComponent;
 
 
 /*
@@ -41,3 +42,4 @@ Route::get('/admin-product-category', AdminProductCategoryComponent::class);
 Route::get('admin/suppliers', AdminSupplierComponent::class);
 Route::get('admin/product-import', AdminProductImportComponent::class);
 Route::get('admin/product-category/lv2',AdminProductCategoryLv2Component::class);
+Route::get('thanh-toan',CheckoutComponent::class);

@@ -44,15 +44,12 @@ class CartComponent extends Component
 			foreach($this->carts as $k=>$v){
 				$this->selectedSize[$k] = $this->carts[$k]['size'];
 				$sum+=$v['total'];
-				
-				
-				$this->Sizes[$k] = ProductModel::with('Size')->where('productID',$v['id'])->get();
+				$this->Sizes[$k] = ProductModel::with('Size')
+												->where('productID',$v['id'])
+												->get();
 				
 			}
 			$this->OrderTotal = $sum;
-			
-			
-			
 		}
 		//dd($this->Sizes[3]);
 		//dd(session()->get('cart'));
@@ -78,27 +75,10 @@ class CartComponent extends Component
 	}
 	
 	public function checkOut(){
-
 		if($this->carts == null)
 			session()->flash('message','Giỏ hàng rỗng!');
 		else{
-			$Order = new Order();
-			$Order->save();
-			$OrderID = Order::all()->last()->id;
-
-				foreach ($this->carts as $k=>$v){
-					$OrderDetail = new OrderDetail();
-					
-					$ProductModel_id = ProductModel::where('productID',$this->carts[$k]['id'])->where('sizeID',$this->carts[$k]['size'])->get()->last();
-					$OrderDetail->productModel_id = $ProductModel_id->id;
-					$OrderDetail->order_id = $OrderID;
-					$OrderDetail->quantity = $this->carts[$k]['quantity'];
-					$OrderDetail->save();
-				}
-			
-			
-			session()->flash('success','Đặt hàng thành công!');
-			
+			return redirect()->to('/thanh-toan');
 		}
 			
 	}
