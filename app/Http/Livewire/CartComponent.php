@@ -36,7 +36,8 @@ class CartComponent extends Component
 		
 		if($this->i==0)
 		{
-			$this->carts = session()->get('cart');	
+			if(session()->get('cart'))
+				$this->carts = session()->get('cart');	
 			$this->i++;
 		}
 		if(session()->get('cart')){

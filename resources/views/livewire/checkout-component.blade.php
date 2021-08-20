@@ -10,20 +10,33 @@
 									<div class="form-group">
 										<form wire:submit.prevent="submit">
 											<div class="form-group">
+												
 												<div class="col-lg-6">
+													<label>Họ tên</label>
 													<input class="form-control" type="text" placeholder="Họ tên" wire:model="Name"> 
 												</div>
+												
 												<div class="col-lg-6">
+													<label>Số điện thoại</label>
 													<input class="form-control"type="text" placeholder="Số điện thoại" wire:model="Phone"> 
 												</div>
+												
 												<div class="col-lg-6">
+													<label>Email</label>
 													<input class="form-control"type="text" placeholder="Email" wire:model="Email"> 
 												</div>
+												
 												<div class="col-lg-6">
-													<input class="form-control"type="text" placeholder="Ghi chú" wire:model="Note"> 
+													<label>Địa chỉ</label>
+													<input class="form-control"type="text" placeholder="Địa chỉ" wire:model="Address"> 
+												</div>		
+												
+												<div class="col-lg-6">
+													<label>Ghi chú</label>
+													<textarea class="form-control"type="text" placeholder="Ghi chú" wire:model="Note"></textarea>
 												</div>
 												<div class="col-lg-6">
-													<button wire:click="checkOut" class="btn btn-success">Đặt hàng</button>
+													<button type="submit" class="btn btn-success">Hoàn tất</button>
 												</div>
 											</div>
 											
@@ -49,7 +62,7 @@
                             </thead>
                             <tbody>
 								
-								@foreach($carts as $k=>$v)
+								@forelse($carts as $k=>$v)
                                 <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
@@ -70,7 +83,9 @@
                                     </td>
 									<td><label wire:model="total">{{$v['total']}}</label></td>
                                 </tr>
-								@endforeach
+								@empty
+									<p>Chưa có sản phẩm nào!</p>
+								@endforelse
                             </tbody>
                         </table>
                     </div>

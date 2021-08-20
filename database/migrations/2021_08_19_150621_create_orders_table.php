@@ -19,8 +19,9 @@ class CreateOrdersTable extends Migration
 			$table->biginteger('user_id')->nullable();
 			$table->biginteger('orderStatus_id')->default(1);
 			$table->string('fullName');
+			$table->integer('phone');
+			$table->string('address');
 			$table->string('email')->nullable();
-			$table->string('phone');
 			$table->string('userNote')->nullable();
 			$table->string('adminNote')->nullable();
 			$table->integer('status')->default(1);
