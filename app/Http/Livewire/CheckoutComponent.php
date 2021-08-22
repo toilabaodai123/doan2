@@ -46,12 +46,15 @@ class CheckoutComponent extends Component
 				$Order->email = $this->Email;	
 			if($this->Note != null)
 				$Order->userNote = $this->Note;
-			if(Order::all()->last()->id)
+			if(Order::all()->last())
 				$LastOrderID = Order::all()->last()->id;
 			else
-				$LastOrderID = 10000;
+				$LastOrderID = 9999;
 			$LastOrderID++;
 			$Order->orderCode = 'DH'.$LastOrderID;
+			
+			date_default_timezone_set('Asia/Ho_Chi_Minh');
+			$Order->orderDate = now();
 			$Order->save();
 			
 			

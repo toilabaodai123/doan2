@@ -99,14 +99,24 @@
 								<div class="col-lg-9">
 									<label>Tên nhà cung cấp</label>
 									<input class="form-control" wire:model="supplierName" placeholder="Nhập tên nhà cung cấp">
+								@error('supplierName')
+									<p class="text-danger">{{$message}}</p>
+								@enderror									
 								</div>
+
 								<div class="col-lg-9">
 									<label>Email </label>
 									<input class="form-control" wire:model="supplierMail" placeholder="Nhập email nhà cung cấp">
+								@error('supplierMail')
+									<p class="text-danger">{{$message}}</p>
+								@enderror								
 								</div>
 								<div class="col-lg-9">
 									<label>Số điện thoại</label>
 									<input class="form-control" wire:model="supplierPhone" placeholder="Nhập số điện thoại nhà cung cấp">
+								@error('supplierPhone')
+									<p class="text-danger">{{$message}}</p>
+								@enderror								
 								</div>	
 								<div class="col-lg-9" style="margin-top:20px">
 									<button type="button" wire:click="submit" wire:loading.attr="disabled" class="btn btn-default">Lưu</button>

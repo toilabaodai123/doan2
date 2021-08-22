@@ -87,8 +87,8 @@
                             <p>  </p>
 							<div class="col-lg-12">
 									<label>Size</label>
-									<select wire:model="Size" >
-										<option value="0">Chọn size</option>
+									<select wire:model="Size" class="form-control" >
+										<option>Chọn size</option>
 										@foreach($Sizes as $s)
 											<option value="{{$s->sizeID}}">{{$s->Size->sizeName}}</option>
 										@endforeach

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Level2ProductCategory;
+use App\Models\Product;
 
 class ProductCategory extends Model
 {
@@ -12,5 +13,9 @@ class ProductCategory extends Model
 	
 	public function categorylv1(){
 		return $this->belongsTo(Level2ProductCategory::class,'id','lv1PCategoryID');
+	}
+	
+	public function Categories(){
+		return $this->belongsTo(Product::class,'categoryID','id');
 	}
 }

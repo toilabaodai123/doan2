@@ -12,6 +12,8 @@ use App\Http\Livewire\AdminProductImportComponent;
 use App\Http\Livewire\AdminProductCategoryLv2Component;
 use App\Http\Livewire\CheckoutComponent;
 use App\Http\Livewire\OrderCompleteComponent;
+use App\Http\Livewire\AdminOrderComponent;
+use App\Http\Livewire\UserInfoComponent;
 
 
 /*
@@ -38,10 +40,13 @@ Route::get('san-pham/{id}',ProductDetailComponent::class);
 Route::get('gio-hang',CartComponent::class);
 
 Route::get('/admin-post', AdminPostComponent::class);
-Route::get('/admin-product', AdminProductComponent::class);
-Route::get('/admin-product-category', AdminProductCategoryComponent::class);
+Route::get('/admin/products', AdminProductComponent::class);
+Route::get('/admin/product-category/lv1', AdminProductCategoryComponent::class);
 Route::get('admin/suppliers', AdminSupplierComponent::class);
 Route::get('admin/product-import', AdminProductImportComponent::class);
 Route::get('admin/product-category/lv2',AdminProductCategoryLv2Component::class);
 Route::get('thanh-toan',CheckoutComponent::class);
-Route::get('hoan-tat',OrderCompleteComponent::class);
+Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');
+Route::get('admin/orders',AdminOrderComponent::class);
+
+Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('checkType_User');

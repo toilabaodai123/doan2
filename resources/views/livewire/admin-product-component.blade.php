@@ -8,7 +8,8 @@
                                                         <th>ID</th>
                                                         <th>Tên sản phẩm</th>
                                                         <th>Giá sản phẩm</th>
-														<th>Loại sản phẩm</th>
+														<th>Loại sản phẩm 1</th>
+														<th>Loại sản phẩm 2</th>
 														<th>Nhà cung cấp</th>
 														<th>Trạng thái</th>
 														<th>Tùy chọn</th>
@@ -20,8 +21,9 @@
                                                         <td>{{$p->id}}</td>
                                                         <td>{{$p->productName}}</td>
                                                         <td>{{$p->productPrice}}</td>
-                                                        <td>{{$p->CategoryID}}</td>
-														<td>{{$p->supplierID}}</td>
+                                                        <td>{{$p->Category1->categoryName}}</td>
+														<td>{{$p->Category2->category_name}}</td>
+														<td>{{$p->Supplier->supplierName}}</td>
 														<td>
 															@if ( $p->status == 1 )
 																<label style="color:green">Trực tuyến</label>
@@ -30,7 +32,7 @@
 															@endif
 														</td>
 														<td>
-															<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal{{$p->id}}">Xem</button>
+															<button type="button" wire:click="show({{$p->id}})"class="btn btn-success"  data-toggle="modal" data-target="#myModal{{$p->id}}">Xem</button>
 															<div class="modal fade" id="myModal{{$p->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
@@ -41,10 +43,11 @@
 																											<div class="modal-body">
 																												<label>Tên sản phẩm : {{$p->productName}}</label><br>
 																												<label>Giá sản phẩm : {{$p->productPrice}}</label><br>
-																												<label>Loại sản phẩm : {{$p->CategoryID}}</label><br>
+																												<label>Loại sản phẩm 1 : {{$p->Category1->categoryName}}</label><br>
+																												<label>Loại sản phẩm 2 : {{$p->Category2->category_name}}</label><br>
 																												<label>Mô tả ngắn : {{$p->shortDesc}}</label><br>
 																												<label>Mô tả dài : {{$p->longDesc}}</label><br>
-																												
+
 																												<label>Trạng thái : </label>
 																												@if( $p->status == 1)
 																													<label style="color:green">Trực tuyến</label>
@@ -132,7 +135,11 @@
 															@foreach($Suppliers as $s)
 																<option value="{{$s->id}}">{{$s->supplierName}}</option>
 															@endforeach
+															
 														</select>
+															@error('supplierID')
+																<p class="text-danger">{{$message}}</p>
+															@enderror														
 													</div>												
 													<div class="col-lg-4">
 														
@@ -163,6 +170,9 @@
 															@endforeach
 														@endif
 														</select>
+														@error('CategoryID2')
+															<p class="text-danger">{{$message}}</p>
+														@enderror														
 
 
 
@@ -177,14 +187,14 @@
 													<div class="col-lg-9">
 														<label>Mô tả dài</label>
 														<textarea class="form-control" rows="3" wire:model="longDesc" placeholder="Nhập mô tả dài của sản phẩm"></textarea>
-														@error('shortDesc')
+														@error('longDesc')
 															<p class="text-danger">{{$message}}</p>
 														@enderror
 													</div>		
 													<div class="col-lg-9">
 														<label>Giá sản phẩm</label>
 														<input class="form-control" wire:model="productPrice" placeholder="Nhập giá của sản phẩm">
-														@error('shortDesc')
+														@error('productPrice')
 															<p class="text-danger">{{$message}}</p>
 														@enderror
 													</div>													

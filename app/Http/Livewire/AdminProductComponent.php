@@ -31,20 +31,51 @@ class AdminProductComponent extends Component
 	public $longDesc;
 	public $shortDesc;
 	public $supplierID;
+	public $ProductModels=array();
 	
 	public $productImport;
 	public $uploadedImage;
 	
+	public $readyToLoad = false;
+	
 	
 	protected $rules=[
 		'productName' => 'required|min:3',
-		'CategoryID' => 'required'
+		'supplierID' => 'required',
+		'CategoryID' => 'required',		
+		'CategoryID2' => 'required',
+		'shortDesc' => 'required',
+		'longDesc' => 'required',
+		'productPrice' => 'required|numeric',
+	];
+	
+	protected $messages = [
+		'productName.required' => 'Hãy nhập tên sản phẩm !',
+		'productName.min' => 'Tên sản phẩm quá ngắn',
+
+		'supplierID.required' => 'Hãy chọn nhà cung cấp !',
+		
+		'CategoryID.required' => 'Hãy chọn loại sản phẩm cấp 1!',
+		
+		'CategoryID2.required' => 'Hãy chọn loại sản phẩm cấp 2!',
+		
+		'shortDesc.required' => 'Hãy nhập mô tả ngắn !',
+		
+		'longDesc.required' => 'Hãy nhập mô tả dài!',
+		
+		'productPrice.required' => 'Hãy nhập giá sản phẩm !',
+		'productPrice.numeric' => 'Giá sản phẩm chỉ được nhập số !',
+
 	];
 	
     public function render()
     {
 		
-		$this->Products=Product::where('status',1)->get();
+		$this->Products=Product::with('Category1')
+								->with('Supplier')
+								->with('Category2')
+								->where('status',1)
+								->get();
 		$this->ProductCategories = ProductCategory::all();
 		$this->Suppliers = Supplier::all();
         return view('livewire.admin-product-component')
@@ -54,8 +85,6 @@ class AdminProductComponent extends Component
 	public function submit(){
 		//dd($ProductID);
 		if($this->productID == null){
-
-
 
 			$validatedData = $this->validate();
 			$Product = new Product();
@@ -69,8 +98,7 @@ class AdminProductComponent extends Component
 			//$this->productImage->storePublicly('images', $name2);
 
 			$Product->save();
-			
-			
+		
 			$ProductID = Product::all()->last()->id;
 			$ProductSizes = ProductSize::all();
 			foreach($ProductSizes as $size){
@@ -151,6 +179,8 @@ class AdminProductComponent extends Component
 
 		$this->productName = $editProduct->productName;
 		$this->CategoryID = $editProduct->CategoryID;
+		if($this->CategoryID)
+			$this->ProductCategories2 = Level2ProductCategory::where('lv1PCategoryID',$this->CategoryID)->get();
 		$this->CategoryID2 = $editProduct->CategoryID2;
 		$this->shortDesc = $editProduct->shortDesc;
 		$this->longDesc = $editProduct->longDesc;
@@ -177,5 +207,10 @@ class AdminProductComponent extends Component
 	
 	public function lv1CategoryChange(){
 		$this->ProductCategories2 = Level2ProductCategory::where('lv1PCategoryID',$this->CategoryID)->get();
+	}
+	
+	public function show($id){
+		sleep(2);
+		$this->ProductModels = ProductModel::where('productID',$id)->get();
 	}
 }

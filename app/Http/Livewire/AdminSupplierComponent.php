@@ -14,6 +14,24 @@ class AdminSupplierComponent extends Component
 	public $supplierPhone;
 	
 	
+	protected $rules = [
+		'supplierName' => 'required',
+		'supplierPhone' => 'required | numeric ',
+		'supplierMail' => 'email',
+		
+	];
+	
+	protected $messages = [
+		'supplierName.required' => 'Hãy nhập tên nhà cung cấp !',
+		
+		'supplierPhone.required' => 'Hãy nhập số điện thoại nhà cung cấp !',
+		'supplierPhone.numeric' => 'Số điện thoại chỉ được nhập số !',
+		'supplierPhone.min' => 'Số điện thoại phải có ít nhập 9 số',
+		'supplierPhone.max' => 'Số điện thoại không được quá 12 số',
+		
+		'supplierMail.email' => 'Không đúng dịnh dạng email ! (@abc.com)'
+	];
+	
     public function render()
     {
 		$this->Suppliers = Supplier::all();
@@ -22,6 +40,7 @@ class AdminSupplierComponent extends Component
     }
 	
 	public function submit(){
+		$this->validate();
 		$Supplier = new Supplier();
 		$Supplier->supplierName = $this->supplierName;
 		$Supplier->supplierMail = $this->supplierMail;
