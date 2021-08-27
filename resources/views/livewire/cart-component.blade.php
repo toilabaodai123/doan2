@@ -22,7 +22,7 @@
                                 <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
-                                            <img src="img/shopping-cart/cart-4.jpg" alt="">
+                                            <img src="{{asset('storage/images/'.$v['image'])}}" alt="" style="width:75px;height:75px">
                                         </div>
                                         <div class="product__cart__item__text">
                                             <h6>{{$v['name']}}</h6>

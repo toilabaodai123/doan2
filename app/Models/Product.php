@@ -6,6 +6,7 @@ use App\Models\ProductModel;
 use App\Models\ProductSize;
 use App\Models\ProductCategory;
 use App\Models\Supplier;
+use App\Models\Image;
 use App\Models\Level2ProductCategory;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,4 +35,9 @@ class Product extends Model
 	public function Supplier(){
 		return $this->hasOne(Supplier::class,'id','supplierID');
 	}	
+	
+	public function Pri_Image(){
+		return $this->hasOne(Image::class,'productID','id');
+	}
+
 }

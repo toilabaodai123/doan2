@@ -69,7 +69,11 @@
 				@forelse($Products as $p)
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-5.jpg">
+							@if($p->Pri_Image != null)
+								<div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/'.$p->Pri_Image->imageName)}}">
+							@else
+								<div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
+							@endif
                             <ul class="product__hover">
                                 <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
                                 <li><a href="san-pham/{{$p->id}}"><img src="img/icon/search.png" alt=""></a></li>

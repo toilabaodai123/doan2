@@ -6,6 +6,7 @@ use Livewire\Component;
 
 use App\Models\Product;
 use App\Models\ProductModel;
+use App\Models\Image;
 
 class ProductDetailComponent extends Component
 {
@@ -14,6 +15,7 @@ class ProductDetailComponent extends Component
 	public $Size;
 	public $id2;
 	
+	public $Image;
 	public $Sizes;
 	
 	
@@ -25,7 +27,7 @@ class ProductDetailComponent extends Component
     public function render()
     {
 		$this->Sizes = ProductModel::with('Size')->where('productID',$this->id2)->get();
-			
+		$this->Image = Image::where('productID',$this->id2)->get()->last();
 		$this->Product = Product::find($this->id2);
         return view('livewire.product-detail-component')
 					->layout('layouts.template2');
@@ -35,6 +37,7 @@ class ProductDetailComponent extends Component
 			$newCart = [
 				'id' => $this->id2,
 				'size' => $this->Size,
+				'image' => $this->Image->imageName,
 				'name' => $this->Product->productName,
 				'price' => $this->Product->productPrice,
 				'quantity' => 1,

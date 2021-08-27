@@ -148,10 +148,10 @@
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý hóa đơn<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
                             <li>
-                                <a href="{{url('/admin/orders')}}">Danh sách hóa đơn mới</a>
+                                <a href="{{url('/admin/orders/new')}}">Danh sách hóa đơn mới</a>
                             </li>
                             <li>
-                                <a href="{{url('/admin/products')}}">Danh sách hóa đơn đã chấp nhận</a>
+                                <a href="{{url('/admin/orders/accepted')}}">Danh sách hóa đơn đã chấp nhận</a>
                             </li>
                             <li>
                                 <a href="{{url('/admin/products')}}">Danh sách hóa đơn đang vận chuyển</a>
@@ -163,7 +163,18 @@
                                 <a href="{{url('/admin/products')}}">Danh sách hóa đơn bị hủy bỏ</a>
                             </li>							
                         </ul>
-                    </li>					
+                    </li>
+					<li class="active">
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý vận chuyển<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+                            <li>
+                                <a href="{{url('/admin/shippers')}}">Nhà vận chuyển</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/admin/shippers/create-bill')}}">Tạo hóa đơn vận chuyển</a>
+                            </li>							
+                        </ul>
+                    </li>						
                     <li>
                         <a href="{{url('admin-product-category')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý người dùng</a>
                     </li>
@@ -194,6 +205,9 @@
                     <li>
                         <a href="{{url('admin-product-category')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý thông tin website</a>
                     </li>
+                    <li>
+                        <a href="{{url('admin/demo/ship')}}"><i class="fa fa-sitemap fa-fw"></i>DEMO vận chuyển</a>
+                    </li>					
 					
                 </ul>
 

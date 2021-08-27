@@ -14,6 +14,11 @@ use App\Http\Livewire\CheckoutComponent;
 use App\Http\Livewire\OrderCompleteComponent;
 use App\Http\Livewire\AdminOrderComponent;
 use App\Http\Livewire\UserInfoComponent;
+use App\Http\Livewire\AdminAcceptedOderComponent;
+use App\Http\Livewire\AdminNewOrderComponent;
+use App\Http\Livewire\AdminShippingUnitComponent;
+use App\Http\Livewire\AdminShippingOrderComponent;
+use App\Http\Livewire\DemoShipComponent;
 
 
 /*
@@ -48,5 +53,11 @@ Route::get('admin/product-category/lv2',AdminProductCategoryLv2Component::class)
 Route::get('thanh-toan',CheckoutComponent::class);
 Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');
 Route::get('admin/orders',AdminOrderComponent::class);
+Route::get('admin/orders/accepted',AdminAcceptedOderComponent::class);
+Route::get('admin/orders/new',AdminNewOrderComponent::class);
+Route::get('admin/demo/ship',DemoShipComponent::class);
+
+Route::get('admin/shippers',AdminShippingUnitComponent::class);
+Route::get('admin/shippers/create-bill',AdminShippingOrderComponent::class);
 
 Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('checkType_User');
