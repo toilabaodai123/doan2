@@ -73,6 +73,8 @@ class AdminProductImportComponent extends Component
 			
 			$stock = ProductModel::find($v);
 			$stock->stock += $this->amounts[$v];
+			$stock->stockTemp += $this->amounts[$v];
+			$stock->productModelStatus = 1;
 			$stock->save();
 			
 			$Bill2 = ProductImportBill::find($BillID);
@@ -89,7 +91,12 @@ class AdminProductImportComponent extends Component
 	
 	public function addProduct($id){
 		array_push($this->selectedProducts2,$id);
-	}	
+	}
+
+	public function addNewProduct(){
+		
+		array_push($this->selectedProducts2,'A'.(count($this->selectedProducts2)+1));
+	}
 
 	
 	public function editBill($id){
