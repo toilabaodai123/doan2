@@ -214,6 +214,38 @@
 																			</tr>
 																		@endforeach
 																	@endif
+																	@if($newProducts)
+																	@foreach($newProducts as $p)
+																			<tr>
+																				<td></td>
+																				<td><input  class="form-control" wire:model="name.{{$p}}"placeholder="Nhập thông tin sản phẩm cần tìm" ></td>
+																				<td>
+																					<select class="form-control" wire:model="size.{{$p}}">
+																						<option>Chọn size</option>
+																						@foreach($Sizes as $s)
+																							<option value="{{$s->id}}">{{$s->sizeName}}</option>	
+																						@endforeach
+																					</select>
+																				</td>
+																				<td></td>
+																				<td>
+																						<input  class="form-control" wire:model="amounts.{{$p}}"placeholder="Nhập thông tin sản phẩm cần tìm" >
+																						@error('amounts')
+																							<p class="text-danger">{{$message}}</p>
+																						@enderror	
+																				</td>
+																				<td>
+																						<input class="form-control" wire:change="onChangePrice" wire:model="prices.{{$p}}"placeholder="Nhập thông tin sản phẩm cần tìm" >
+																						@error('prices')
+																							<p class="text-danger">{{$message}}</p>
+																						@enderror																				
+																				</td>
+																				<td>
+																					<button wire:click="deleteRow({{$p}})"type="button" class="btn btn-danger" >Xóa</button>
+																				</td>
+																			</tr>																	
+																	@endforeach
+																	@endif
 																	<tr>
 																		<td></td>
 																		<td></td>

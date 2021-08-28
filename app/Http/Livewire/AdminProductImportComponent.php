@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Supplier;
 use App\Models\Product;
+use App\Models\ProductSize;
 use App\Models\ProductModel;
 use App\Models\ProductImportBill;
 use App\Models\ProductImportBillDetail;
@@ -20,8 +21,14 @@ class AdminProductImportComponent extends Component
 	public $ProductModels;
 	public $selectedProductID;
 	public $searchInputProduct;
+	public $newProducts=[];
+	public $Sizes;
 	
 	public $sizes;
+	
+	public $size;
+	public $name;
+	
 	public $amounts;
 	public $prices;
 	public $billTotal = 0;
@@ -37,6 +44,7 @@ class AdminProductImportComponent extends Component
 	
     public function render()
     {
+		$this->Sizes = ProductSize::all();
 		$this->ProductImportBills = ProductImportBill::all();
 		$this->Suppliers = Supplier::all();
 		$this->selectedProducts = ProductModel::with('Product')->whereIn('id',$this->selectedProducts2)->get();		
@@ -77,11 +85,37 @@ class AdminProductImportComponent extends Component
 			$stock->productModelStatus = 1;
 			$stock->save();
 			
-			$Bill2 = ProductImportBill::find($BillID);
-			$Bill2->importBillTotal = $this->billTotal;
-			$Bill2->save();
+			//$Bill2 = ProductImportBill::find($BillID);
+			//$Bill2->importBillTotal = $this->billTotal;
+			//$Bill2->save();
 		}
+		
 		$this->selectedProducts2 = [];
+
+		
+		if($this->newProducts != null){
+			foreach($this->newProducts as $k){
+				$Product = new Product();
+				$Product->productName = $this->name[$k];
+				$Product->supplierID = $this->supplierID;
+				$Product->save();
+				
+				$ProductSizes = ProductSize::all();
+				foreach($ProductSizes as $s){
+					$ProductModel = new ProductModel();
+					$ProductModel->productID = $Product->id;
+					$ProductModel->sizeID = $s->id;
+					$ProductModel->stock= 0;//$this->amounts[$k];
+					$ProductModel->stockTemp= 0;//$this->amounts[$k];
+					//$ProductModel->productModelStatus = 1;
+					$ProductModel->save();
+				}
+				$ProductModel = ProductModel::where('sizeID',$this->size[$k])->get()->last();
+				$ProductModel->stock = $this->amounts[$k];
+				$ProductModel->stockTemp = $this->amounts[$k];
+				$ProductModel->save();
+			}
+		}
 		session()->flash('success','Tạo hóa đơn nhập hàng thành công');
 		$this->reset();
 		
@@ -94,8 +128,7 @@ class AdminProductImportComponent extends Component
 	}
 
 	public function addNewProduct(){
-		
-		array_push($this->selectedProducts2,'A'.(count($this->selectedProducts2)+1));
+		array_push($this->newProducts,'A'.(count($this->newProducts)+1));
 	}
 
 	
