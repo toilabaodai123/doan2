@@ -50,6 +50,9 @@ class AdminShippingOrderComponent extends Component
 		$ShipOrder = new ShipOrder();
 		$ShipOrder->order_id = $this->orderID;
 		$ShipOrder->shipUnit_id = $this->ShipUnit_id;
+		
+		$ShipPrice = ShippingUnit::find($this->ShipUnit_id);
+		$ShipOrder->shipOrderTotal = $ShipPrice->shipUnit_price;
 		$ShipOrder->save();
 		
 		$Order = Order::find($this->orderID);

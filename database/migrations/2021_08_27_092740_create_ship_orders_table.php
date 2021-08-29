@@ -17,6 +17,7 @@ class CreateShipOrdersTable extends Migration
             $table->id();
 			$table->biginteger('order_id');
 			$table->biginteger('shipUnit_id');
+			$table->integer('shipOrderTotal');
 			$table->date('createdDate')->nullable();
             $table->timestamps();
         });

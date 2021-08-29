@@ -18,8 +18,11 @@ use App\Http\Livewire\AdminAcceptedOderComponent;
 use App\Http\Livewire\AdminNewOrderComponent;
 use App\Http\Livewire\AdminShippingUnitComponent;
 use App\Http\Livewire\AdminShippingOrderComponent;
+use App\Http\Livewire\AdminCompletedOrderComponent;
+use App\Http\Livewire\AdminDeclinedOrderComponent;
 use App\Http\Livewire\DemoShipComponent;
 use App\Http\Livewire\CheckOrderComponent;
+use App\Http\Livewire\AdminDashboardComponent;
 
 
 /*
@@ -45,6 +48,7 @@ Route::get('trang-chu',IndexComponent::class);
 Route::get('san-pham/{id}',ProductDetailComponent::class);
 Route::get('gio-hang',CartComponent::class);
 
+Route::get('/admin/dashboard', AdminDashboardComponent::class);
 Route::get('/admin-post', AdminPostComponent::class);
 Route::get('/admin/products', AdminProductComponent::class);
 Route::get('/admin/product-category/lv1', AdminProductCategoryComponent::class);
@@ -53,9 +57,15 @@ Route::get('admin/product-import', AdminProductImportComponent::class);
 Route::get('admin/product-category/lv2',AdminProductCategoryLv2Component::class);
 Route::get('thanh-toan',CheckoutComponent::class);
 Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');
+
+
 Route::get('admin/orders',AdminOrderComponent::class);
 Route::get('admin/orders/accepted',AdminAcceptedOderComponent::class);
 Route::get('admin/orders/new',AdminNewOrderComponent::class);
+Route::get('admin/orders/completed',AdminCompletedOrderComponent::class);
+Route::get('admin/orders/declined',AdminDeclinedOrderComponent::class);
+
+
 Route::get('admin/demo/ship',DemoShipComponent::class);
 Route::get('tra-cuu-don-hang',CheckOrderComponent::class);
 

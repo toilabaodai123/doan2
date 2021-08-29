@@ -57,10 +57,11 @@ class CheckoutComponent extends Component
 			
 			date_default_timezone_set('Asia/Ho_Chi_Minh');
 			$Order->orderDate = now();
+			$Order->orderTotal = 0;
 			$Order->save();
 			
-			
 			$OrderID = Order::all()->last()->id;
+			$total=0;
 			foreach ($this->carts as $k=>$v){
 				$OrderDetail = new OrderDetail();
 				$ProductModel_id = ProductModel::where('productID',$this->carts[$k]['id'])
@@ -71,7 +72,11 @@ class CheckoutComponent extends Component
 				$OrderDetail->order_id = $Order->id;
 				$OrderDetail->quantity = $this->carts[$k]['quantity'];
 				$OrderDetail->save();
+				$total = $total + ($this->carts[$k]['quantity'] * $this->carts[$k]['price']);
 			}
+			
+			$Order->orderTotal = $total;
+			$Order->save();
 			
 			$OrderLog = new OrderLog();
 			$OrderLog->order_id = $Order->id;

@@ -27,4 +27,5 @@
 	
 	@empty
 	@endforelse
+		
 </div>

@@ -54,7 +54,7 @@
 
         <!-- Top Navigation: Left Menu -->
         <ul class="nav navbar-nav navbar-left navbar-top-links">
-            <li><a href="#"><i class="fa fa-home fa-fw"></i> Website</a></li>
+            <li><a href="{{url('trang-chu')}}"><i class="fa fa-home fa-fw"></i> Website</a></li>
         </ul>
 
         <!-- Top Navigation: Right Menu -->
@@ -102,18 +102,8 @@
             <div class="sidebar-nav navbar-collapse">
 
                 <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                        </div>
-                    </li>
                     <li>
-                        <a href="{{url('admin-dashboard')}} class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="{{url('/admin/dashboard')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
 
 					<li class="active">
@@ -141,9 +131,6 @@
                     <li>
                         <a href="{{url('admin/product-import')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhập hàng</a>
                     </li>
-                    <li>
-                        <a href="{{url('admin/orders')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý hóa đơn</a>
-                    </li>
 					<li class="active">
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý hóa đơn<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
@@ -157,10 +144,10 @@
                                 <a href="{{url('/admin/products')}}">Danh sách hóa đơn đang vận chuyển</a>
                             </li>							
                             <li>
-                                <a href="{{url('/admin/products')}}">Danh sách hóa đơn hoàn tất</a>
+                                <a href="{{url('/admin/orders/completed')}}">Danh sách hóa đơn hoàn tất</a>
                             </li>
                             <li>
-                                <a href="{{url('/admin/products')}}">Danh sách hóa đơn bị hủy bỏ</a>
+                                <a href="{{url('/admin/orders/declined')}}">Danh sách hóa đơn bị hủy bỏ</a>
                             </li>							
                         </ul>
                     </li>
@@ -175,32 +162,6 @@
                             </li>							
                         </ul>
                     </li>						
-                    <li>
-                        <a href="{{url('admin-product-category')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý người dùng</a>
-                    </li>
-                    <li>
-                        <a href="{{url('admin-product-category')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý hình ảnh</a>
-                    </li>
-                    <li>
-                        <a href="{{url('admin-product-category')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý kho</a>
-                    </li>
-                    <li>
-                        <a href="{{url('admin-product-category')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý flash sale</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> *Quản lý bài viết<span class="fa arrow"></span></a>
-			            <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">Nhập hàng</a>
-                            </li>
-                            <li>
-                                <a href="#">Nhập hàng bằng file</a>
-                            </li>							
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="{{url('admin-product-category')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý bình luận</a>
-                    </li>
 				
                     <li>
                         <a href="{{url('admin-product-category')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý thông tin website</a>

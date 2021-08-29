@@ -85,9 +85,7 @@ class AdminProductImportComponent extends Component
 			$stock->productModelStatus = 1;
 			$stock->save();
 			
-			//$Bill2 = ProductImportBill::find($BillID);
-			//$Bill2->importBillTotal = $this->billTotal;
-			//$Bill2->save();
+
 		}
 		
 		$this->selectedProducts2 = [];
@@ -116,6 +114,10 @@ class AdminProductImportComponent extends Component
 				$ProductModel->save();
 			}
 		}
+
+
+		$Bill->importBillTotal = $this->billTotal;
+		$Bill->save();		
 		session()->flash('success','Tạo hóa đơn nhập hàng thành công');
 		$this->reset();
 		

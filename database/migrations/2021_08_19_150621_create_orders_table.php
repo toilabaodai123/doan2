@@ -25,6 +25,7 @@ class CreateOrdersTable extends Migration
 			$table->string('userNote')->nullable();
 			$table->string('adminNote')->nullable();
 			$table->dateTime('orderDate');
+			$table->integer('orderTotal');
 			$table->integer('status')->default(1);
             $table->timestamps();
         });

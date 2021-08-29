@@ -18,9 +18,9 @@
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="product__details__pic__item">
 									@if($Image)
-										<img src="{{asset('storage/images/'.$Image->imageName)}}" alt="">
+										<img src="{{asset('storage/images/'.$Image->imageName)}}" style="width:200px;height:200px;" alt="">
 									@else
-										<img src="{{asset('storage/images/notfound.jpg')}}" alt="">
+										<img src="{{asset('storage/images/notfound.jpg')}}" style="width:200px;height:200px;" alt="">
 									@endif
                                 </div>
                             </div>
