@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Order;
+use App\Models\OrderLog;
 
 class AdminNewOrderComponent extends Component
 {
@@ -20,5 +21,12 @@ class AdminNewOrderComponent extends Component
 		$Order = Order::find($id);
 		$Order->orderStatus_id = 2;
 		$Order->save();
+		
+		$OrderLog = new OrderLog();
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+		$OrderLog->messageDate = now();
+		$OrderLog->message = 'Đơn hàng được chấp nhận';
+		$OrderLog->order_id = $Order->id;
+		$OrderLog->save();
 	}	
 }

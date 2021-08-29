@@ -66,7 +66,7 @@
                                 <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
-                                            <img src="img/shopping-cart/cart-4.jpg" alt="">
+                                            <img src="{{asset('storage/images/'.$v['image'])}}" style="width:75px;height:75px;" alt="">
                                         </div>
                                         <div class="product__cart__item__text">
                                             <h6>{{$v['name']}}</h6>
@@ -92,12 +92,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
-                                <a href="#">Continue Shopping</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                                <a href="{{url('trang-chu')}}">Tiếp tục mua hàng</a>
                             </div>
                         </div>
                     </div>

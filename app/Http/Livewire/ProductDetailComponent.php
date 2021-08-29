@@ -33,7 +33,7 @@ class ProductDetailComponent extends Component
 					->layout('layouts.template2');
     }
 	
-	public function test(){
+	public function addCart(){
 			$newCart = [
 				'id' => $this->id2,
 				'size' => $this->Size,
@@ -51,12 +51,12 @@ class ProductDetailComponent extends Component
 		}
 	}
 	
-	public function test2(){
-		dd(session()->all());
+	public function checkOut(){
+		return redirect()->to('gio-hang');
 	}
 	
-	public function test3(){
-		session()->forget('cart');
+	public function favoriteProduct(){
+		dd('a');
 	}
 	
 

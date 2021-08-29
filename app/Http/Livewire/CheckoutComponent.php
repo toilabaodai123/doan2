@@ -7,6 +7,7 @@ use App\Models\ProductModel;
 use App\Models\ProductSize;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\OrderLog;
 
 
 class CheckoutComponent extends Component
@@ -24,6 +25,7 @@ class CheckoutComponent extends Component
 	
     public function render()
     {
+		
 		if(session()->get('cart'))
 			$this->carts = session()->get('cart');
 		if($this->carts){
@@ -70,6 +72,13 @@ class CheckoutComponent extends Component
 				$OrderDetail->quantity = $this->carts[$k]['quantity'];
 				$OrderDetail->save();
 			}
+			
+			$OrderLog = new OrderLog();
+			$OrderLog->order_id = $Order->id;
+			$OrderLog->messageDate = now();
+			$OrderLog->message = 'Tạo đơn hàng';
+			$OrderLog->save();	
+			
 			
 			session()->flash('OrderCode',$Order->orderCode);
 			session()->forget('cart');

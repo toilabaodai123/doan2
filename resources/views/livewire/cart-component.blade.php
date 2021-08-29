@@ -58,29 +58,22 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
-                                <a href="#">Continue Shopping</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                                <a href="{{url('trang-chu')}}">Tiếp tục mua hàng</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="cart__discount">
-                        <h6>Discount codes</h6>
+                        <h6>Mã giảm giá</h6>
                         <form action="#">
                             <input type="text" placeholder="Coupon code">
-                            <button type="submit">Apply</button>
                         </form>
                     </div>
                     <div class="cart__total">
-                        <h6>Cart total</h6>
+                        <h6>Tổng giỏ hàng</h6>
                         <ul>
-                            <li>Subtotal <span>$ 169.50</span></li>
-                            <li>Total <span wire:model="OrderTotal">{{$OrderTotal}}</span></li>
+                            <li>Tổng tiền  <span wire:model="OrderTotal">{{$OrderTotal}}</span></li>
                         </ul>
                         <button class="btn btn-success" wire:click="checkOut">Thanh toán</button>
 						@if(session()->has('message'))

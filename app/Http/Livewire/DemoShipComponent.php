@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\ProductModel;
+use App\Models\OrderLog;
 
 class DemoShipComponent extends Component
 {
@@ -29,6 +30,13 @@ class DemoShipComponent extends Component
 			$ProductModel->stock -= $o->quantity;
 			$ProductModel->save();
 		}
+		
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+		$OrderLog = new OrderLog();
+		$OrderLog->messageDate = now();
+		$OrderLog->message = 'Đơn hàng đã giao thành công';
+		$OrderLog->order_id = $Order->id;
+		$OrderLog->save();		
 	}
 	
 	public function returned($id){
@@ -41,6 +49,13 @@ class DemoShipComponent extends Component
 			$ProductModel = ProductModel::find($o->productModel_id);
 			$ProductModel->stockTemp += $o->quantity;
 			$ProductModel->save();
-		}		
+		}
+		
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+		$OrderLog = new OrderLog();
+		$OrderLog->messageDate = now();
+		$OrderLog->message = 'Giao đơn hàng thất bại';
+		$OrderLog->order_id = $Order->id;
+		$OrderLog->save();		
 	}
 }

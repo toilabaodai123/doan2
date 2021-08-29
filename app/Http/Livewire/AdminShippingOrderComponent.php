@@ -8,6 +8,7 @@ use App\Models\ShippingUnit;
 use App\Models\ShipOrder;
 use App\Models\OrderDetail;
 use App\Models\ProductModel;
+use App\Models\OrderLog;
 
 class AdminShippingOrderComponent extends Component
 {
@@ -61,6 +62,13 @@ class AdminShippingOrderComponent extends Component
 			$ProductModel->stockTemp-=$o->quantity;
 			$ProductModel->save();
 		}
+		
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+		$OrderLog = new OrderLog();
+		$OrderLog->messageDate = now();
+		$OrderLog->message = 'Đơn hàng đã được giao cho shipper';
+		$OrderLog->order_id = $Order->id;
+		$OrderLog->save();		
 		
 		session()->flash('success','Tạo đơn vận chuyển thành công!');
 	}

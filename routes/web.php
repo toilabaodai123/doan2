@@ -19,6 +19,7 @@ use App\Http\Livewire\AdminNewOrderComponent;
 use App\Http\Livewire\AdminShippingUnitComponent;
 use App\Http\Livewire\AdminShippingOrderComponent;
 use App\Http\Livewire\DemoShipComponent;
+use App\Http\Livewire\CheckOrderComponent;
 
 
 /*
@@ -56,6 +57,7 @@ Route::get('admin/orders',AdminOrderComponent::class);
 Route::get('admin/orders/accepted',AdminAcceptedOderComponent::class);
 Route::get('admin/orders/new',AdminNewOrderComponent::class);
 Route::get('admin/demo/ship',DemoShipComponent::class);
+Route::get('tra-cuu-don-hang',CheckOrderComponent::class);
 
 Route::get('admin/shippers',AdminShippingUnitComponent::class);
 Route::get('admin/shippers/create-bill',AdminShippingOrderComponent::class);

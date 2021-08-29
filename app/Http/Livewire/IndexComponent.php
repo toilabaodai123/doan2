@@ -17,4 +17,8 @@ class IndexComponent extends Component
         return view('livewire.index-component')
 					->layout('layouts.template2');
     }
+	
+	public function test(){
+		session()->flash('success','Đã thêm vào giỏ hàng');
+	}
 }

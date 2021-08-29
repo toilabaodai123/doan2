@@ -71,11 +71,11 @@ class AdminProductComponent extends Component
     public function render()
     {
 		
-		$this->Products=Product::with('Category1')
+		$this->Products = Product::with('Category1')
 								->with('Supplier')
 								->with('Category2')
 								->where('status',1)
-								->get();
+								->get();//->dd();
 		$this->ProductCategories = ProductCategory::all();
 		$this->Suppliers = Supplier::all();
         return view('livewire.admin-product-component')
