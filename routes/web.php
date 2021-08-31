@@ -23,6 +23,8 @@ use App\Http\Livewire\AdminDeclinedOrderComponent;
 use App\Http\Livewire\DemoShipComponent;
 use App\Http\Livewire\CheckOrderComponent;
 use App\Http\Livewire\AdminDashboardComponent;
+use App\Http\Livewire\AdminStaffComponent;
+
 
 
 /*
@@ -73,3 +75,5 @@ Route::get('admin/shippers',AdminShippingUnitComponent::class);
 Route::get('admin/shippers/create-bill',AdminShippingOrderComponent::class);
 
 Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('checkType_User');
+
+Route::get('admin/users/staff',AdminStaffComponent::class);

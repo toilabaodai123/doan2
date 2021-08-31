@@ -13,7 +13,7 @@ class IndexComponent extends Component
 	
     public function render()
     {	
-		$this->Products = Product::with('Pri_Image')->get();
+		$this->Products = Product::with('Pri_Image')->where('status',1)->get();
         return view('livewire.index-component')
 					->layout('layouts.template2');
     }
