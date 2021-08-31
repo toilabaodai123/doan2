@@ -34,13 +34,13 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($Users as $u)
+								@foreach($Users2 as $u)
 								<tr>	
 										<td>{{$u->id}}</td>
 										<td>{{$u->name}}</td>
 										<td>{{$u->Type->type_name}}</td>
 										<td>{{$u->email}}</td>
-										<td>123</td>
+										<td>{{$u->phone}}</td>
 										
 										<td>
 											<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal{{$u->id}}">Xem</button>
@@ -85,6 +85,8 @@
 										</td>
 								</tr>
 								@endforeach
+								{{$Users2->links()}}
+								
 							</tbody>
 						</table>
 					</div>

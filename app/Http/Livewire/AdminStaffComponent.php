@@ -7,10 +7,11 @@ use App\Models\User;
 use App\Models\UserType;
 use App\Models\Salary;
 use Illuminate\Support\Facades\Hash;
+use Livewire\WithPagination;
 
 class AdminStaffComponent extends Component
 {
-	
+	use WithPagination;
 	public $Users =[];
 	public $UserTypes = [];
 	
@@ -42,7 +43,8 @@ class AdminStaffComponent extends Component
 	
     public function render()
     {
-        return view('livewire.admin-staff-component')
+		$Users2 = User::paginate(2); 
+        return view('livewire.admin-staff-component',['Users2' => $Users2])
 					->layout('layouts.template');
     }
 	
@@ -67,6 +69,13 @@ class AdminStaffComponent extends Component
 	}
 	
 	public function filter(){
-		$this->Users = User::with('Type')->where('user_type_id',3)->get();	
+		//$this->Users = User::with('Type')->where($this->searchSelect,'LIKE','%'.$this->searchInput.'%')->get()->dd();
+		if($this->searchSelect != null && $this->searchSelect != 'Chọn'){
+			if($this->searchInput != null)
+				$this->Users = User::with('Type')->where($this->searchSelect,'LIKE','%'.$this->searchInput.'%')
+												 ->get();
+			else
+				$this->Users = User::with('Type')->get();
+		}	
 	}
 }
