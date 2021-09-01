@@ -23,8 +23,7 @@ class CreateUsersTable extends Migration
             $table->foreignId('current_team_id')->nullable();
 			$table->integer('phone')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
-			$table->unsignedBigInteger('user_type_id')->default('1');
-			$table->foreign('user_type_id')->references('id')->on('user_types');
+			$table->string('user_type')->default('Người dùng');
             $table->timestamps();
         });
     }

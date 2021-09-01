@@ -15,10 +15,13 @@ class CreateProductImportDetailsTable extends Migration
     {
         Schema::create('product_import_details', function (Blueprint $table) {
             $table->id();
-			$table->biginteger('ImportBillID');
-			$table->biginteger('productModelID');
+			$table->unsignedBiginteger('import_bill_id');
+			$table->foreign('import_bill_id')->references('id')->on('product_import_bills');
+			$table->unsignedBiginteger('product_model_id');
+			$table->foreign('product_model_id')->references('id')->on('product_models');
+
 			$table->integer('amount');
-			$table->integer('price');
+			$table->biginteger('price');
             $table->timestamps();
         });
     }

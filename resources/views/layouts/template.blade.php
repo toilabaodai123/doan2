@@ -83,7 +83,7 @@
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> secondtruth <b class="caret"></b>
+                    <i class="fa fa-user fa-fw"></i> {{auth()->user()->name}} <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
@@ -100,12 +100,15 @@
         <!-- Sidebar -->
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
-
                 <ul class="nav" id="side-menu">
+					@if(auth()->user()->user_type == 'Quản lý' || 
+						auth()->user()->user_type == 'Admin')				
                     <li>
                         <a href="{{url('/admin/dashboard')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
-
+					@endif
+					@if(auth()->user()->user_type == 'Quản lý' || 
+						auth()->user()->user_type == 'Admin')					
 					<li class="active">
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
@@ -125,12 +128,21 @@
                             </li>
                         </ul>
                     </li>
+					@endif
+					@if(auth()->user()->user_type == 'Quản lý' || 
+						auth()->user()->user_type == 'Admin')					
                     <li>
                         <a href="{{url('admin/suppliers')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhà cung cấp</a>
-                    </li>					
+                    </li>
+					@endif
+					@if(auth()->user()->user_type == 'Nhân viên nhập hàng' || 
+						auth()->user()->user_type == 'Admin')
                     <li>
                         <a href="{{url('admin/product-import')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhập hàng</a>
                     </li>
+					@endif 
+					@if(auth()->user()->user_type == 'Quản lý' || 
+						auth()->user()->user_type == 'Admin')					
 					<li class="active">
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý hóa đơn<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
@@ -151,6 +163,9 @@
                             </li>							
                         </ul>
                     </li>
+					@endif
+					@if(auth()->user()->user_type == 'Quản lý' || 
+						auth()->user()->user_type == 'Admin')					
 					<li class="active">
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý vận chuyển<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
@@ -162,16 +177,21 @@
                             </li>							
                         </ul>
                     </li>						
-				
+					@endif
+					@if(auth()->user()->user_type == 'Quản lý' || 
+						auth()->user()->user_type == 'Admin')					
                     <li>
                         <a href="{{url('admin-product-category')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý thông tin website</a>
                     </li>
+					@endif
+					@if(auth()->user()->user_type == 'Quản lý' || 
+						auth()->user()->user_type == 'Admin')					
                     <li>
                         <a href="{{url('admin/demo/ship')}}"><i class="fa fa-sitemap fa-fw"></i>DEMO vận chuyển</a>
-                    </li>					
+                    </li>	
+					@endif
 					
                 </ul>
-
             </div>
         </div>
     </nav>

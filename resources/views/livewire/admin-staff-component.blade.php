@@ -15,7 +15,6 @@
 				<option value="phone">Theo Số điện thoại</option>
 			</select>
 		</div>	
-		<button wire:click="filter" class="btn btn-primary" style="margin-top:24px">Lọc</button>
 	</div>
     <div class="row">
 		<div class="col-lg-12">
@@ -38,7 +37,7 @@
 								<tr>	
 										<td>{{$u->id}}</td>
 										<td>{{$u->name}}</td>
-										<td>{{$u->Type->type_name}}</td>
+										<td>{{$u->user_type}}</td>
 										<td>{{$u->email}}</td>
 										<td>{{$u->phone}}</td>
 										
@@ -63,7 +62,7 @@
 													</div>
 												</div>
 											</div>
-											<button wire:click="editSupplier({{$u->id}})"type="button" class="btn btn-info">Sửa</button>
+											<button wire:click="edit({{$u->id}})"type="button" class="btn btn-info">Sửa</button>
 											<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDelete{{$u->id}}">Xóa</button>
 											<div class="modal fade" id="myModalDelete{{$u->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 												<div class="modal-dialog" role="document">
@@ -114,13 +113,12 @@
 								</div>
 								<div class="col-lg-9">
 									<label>Loại nhân viên </label>
-									<select class="form-control" wire:model="user_type_id">
-										<option>Chọn loại nhân viên</option>
-										@forelse($UserTypes as $u)
-											<option value="{{$u->id}}">{{$u->type_name}}</option>
-										@empty
-											
-										@endforelse
+									<select class="form-control" wire:model="user_type">
+										<option value="null">Chọn loại nhân viên</option>
+										<option value="Admin">Admin</option>
+										<option value="Quản lý">Quản lý</option>
+										<option value="Nhân viên nhập hàng">Nhân viên nhập hàng</option>
+										<option value="Nhân viên giao hàng">Nhân viên giao hàng</option>
 									</select>
 									@error('user_type_id')
 										<p class="text-danger">{{$message}}</p>
