@@ -24,6 +24,8 @@ use App\Http\Livewire\DemoShipComponent;
 use App\Http\Livewire\CheckOrderComponent;
 use App\Http\Livewire\AdminDashboardComponent;
 use App\Http\Livewire\AdminStaffComponent;
+use App\Http\Livewire\AdminProductImportManagerComponent;
+use App\Http\Livewire\AdminProductImportBillListComponent;
 
 
 
@@ -55,7 +57,7 @@ Route::get('/admin-post', AdminPostComponent::class);
 Route::get('/admin/products', AdminProductComponent::class);
 Route::get('/admin/product-category/lv1', AdminProductCategoryComponent::class);
 Route::get('admin/suppliers', AdminSupplierComponent::class);
-Route::get('admin/product-import', AdminProductImportComponent::class);
+
 Route::get('admin/product-category/lv2',AdminProductCategoryLv2Component::class);
 Route::get('thanh-toan',CheckoutComponent::class);
 Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');
@@ -77,3 +79,7 @@ Route::get('admin/shippers/create-bill',AdminShippingOrderComponent::class);
 Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('checkType_User');
 
 Route::get('admin/users/staff',AdminStaffComponent::class);
+
+Route::get('admin/product-import/list', AdminProductImportBillListComponent::class);
+Route::get('admin/product-import/new', AdminProductImportComponent::class);
+Route::get('admin/product-import/manager',AdminProductImportManagerComponent::class);

@@ -101,6 +101,9 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="{{url('/admin/dashboard')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Thông tin tài khoản</a>
+                    </li>				
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')				
                     <li>
@@ -136,10 +139,28 @@
                     </li>
 					@endif
 					@if(auth()->user()->user_type == 'Nhân viên nhập hàng' || 
-						auth()->user()->user_type == 'Admin')
-                    <li>
-                        <a href="{{url('admin/product-import')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhập hàng</a>
-                    </li>
+						auth()->user()->user_type == 'Admin' || 
+						auth()->user()->user_type == 'Quản lý' ) 
+					<li class="active">
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý nhập hàng<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+							@if(auth()->user()->user_type == 'Nhân viên nhập hàng' ||  auth()->user()->user_type == 'Admin')
+                            <li>
+                                <a href="{{url('/admin/product-import/list')}}">Danh sách hóa đơn nhập hàng</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/admin/product-import/new')}}">Tạo hóa đơn nhập hàng</a>
+                            </li>							
+							@endif
+
+							@if(auth()->user()->user_type == 'Quản lý' || auth()->user()->user_type == 'Admin')
+                            <li>
+                                <a href="{{url('admin/product-import/manager')}}">Kiểm duyệt hóa đơn nhập hàng</a>
+                            </li>
+							@endif
+  							
+                        </ul>
+                    </li>						
 					@endif 
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')					

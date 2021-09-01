@@ -17,8 +17,16 @@ class CreateProductImportBillsTable extends Migration
             $table->id();
 			$table->unsignedBiginteger('user_id');
 			$table->foreign('user_id')->references('id')->on('users');
-			$table->datetime('date_created');
-			$table->integer('total')->nullable();
+			$table->datetime('bill_date');
+			$table->string('bill_code')->nullable();
+			$table->integer('VAT');
+			$table->integer('status');
+			$table->unsignedbiginteger('approved_id')->nullable();
+			$table->foreign('approved_id')->references('id')->on('users');
+			$table->datetime('approved_date')->nullable();
+			$table->string('note')->nullable();
+			$table->string('note_admin')->nullable();
+			$table->biginteger('total')->nullable();
             $table->timestamps();
         });
     }

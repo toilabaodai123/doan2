@@ -19,22 +19,31 @@ class AdminProductImportComponent extends Component
 	
 	public $arrayy =[];
 	public $supplierID;
-	public $selectedProducts = [];
+	public $selectedProducts =[];
+	
+	public $searchSelect;
+	public $searchInput;
 	
 	public $amount;
 	public $price;
+	public $vat;
+	public $date;
+	public $bill_code;
+	public $bill_total=0;
 	
-	public function mount(){
-		
-	}
+
     public function render()
     {
 		$this->Suppliers = Supplier::all();
-		$Products = Product::with('Models')->paginate(9);
-		if($this->supplierID != null)
-			$Products = Product::with('Models')->where('supplierID',$this->supplierID)->paginate(9);
+		if($this->supplierID == null) 
+			$Products = [];
+		else if ( $this->searchInput != null && $this->searchSelect != null && $this->searchSelect != 'null')
+			$Products = Product::with('Models')->where('supplierID',$this->supplierID)
+											   ->where($this->searchSelect,'like','%'.$this->searchInput.'%')
+											   ->paginate(9);
+						
 		else
-			$Products = Product::with('Models')->paginate(9);
+			$Products = Product::with('Models')->where('supplierID',$this->supplierID)->paginate(9);
 		
 		return view('livewire.admin-product-import-component',['Products' => $Products])
 					->layout('layouts.template');
@@ -44,19 +53,24 @@ class AdminProductImportComponent extends Component
 		
 		$Bill = new ProductImportBill();
 		$Bill->user_id = auth()->user()->id;
-		$Bill->date_created = now();
+		$Bill->bill_date = now();
+		$Bill->status=1;
+		$Bill->bill_code = $this->bill_code;
+		$Bill->VAT = $this->vat;
 		$Bill->save();
 		
 
 		foreach($this->selectedProducts as $k=>$v){
 			$Detail = new ProductImportBillDetail();
-			$Detail->import_bill_id = $Bill->save();
+			$Detail->import_bill_id = $Bill->id;
 			$Detail->product_model_id = $v['id'];
 			$Detail->amount = $this->amount[$v['id']];
 			$Detail->price = $this->price[$v['id']];
 			$Detail->save();
+			
 		}
-		
+		$Bill->total = $this->bill_total;
+		$Bill->save();
 		session()->flash('success','Thành công');
 		$this->reset();
 
@@ -69,10 +83,19 @@ class AdminProductImportComponent extends Component
 	}
 	
 	public function test(){
-		dd($this);
+		$total = 0;
+		foreach($this->selectedProducts as $k=>$v){
+			if($this->amount[$k+1] != null && $this->price[$k+1] != null && $this->amount != null && $this->price != null)
+				$total += $this->amount[$k+1] * $this->price[$k+1];
+		}
+		$this->bill_total = $total;
 	}
 	
 	public function resetBtn(){
 		$this->reset();
+	}
+	
+	public function onChangeAmount(){
+
 	}
 }
