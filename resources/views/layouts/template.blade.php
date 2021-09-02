@@ -211,6 +211,14 @@
                         <a href="{{url('admin/demo/ship')}}"><i class="fa fa-sitemap fa-fw"></i>DEMO vận chuyển</a>
                     </li>	
 					@endif
+					<li class="active">
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý kho<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+                            <li>
+                                <a href="{{url('/admin/import/request')}}">Yêu cầu nhập kho</a>
+                            </li>							
+                        </ul>
+                    </li>						
 					
                 </ul>
             </div>

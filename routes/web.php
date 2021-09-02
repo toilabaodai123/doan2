@@ -26,6 +26,7 @@ use App\Http\Livewire\AdminDashboardComponent;
 use App\Http\Livewire\AdminStaffComponent;
 use App\Http\Livewire\AdminProductImportManagerComponent;
 use App\Http\Livewire\AdminProductImportBillListComponent;
+use App\Http\Livewire\AdminImportRequestComponent;
 
 
 
@@ -83,3 +84,5 @@ Route::get('admin/users/staff',AdminStaffComponent::class);
 Route::get('admin/product-import/list', AdminProductImportBillListComponent::class);
 Route::get('admin/product-import/new', AdminProductImportComponent::class);
 Route::get('admin/product-import/manager',AdminProductImportManagerComponent::class);
+
+Route::get('admin/import/request', AdminImportRequestComponent::class);
