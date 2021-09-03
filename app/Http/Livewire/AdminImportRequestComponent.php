@@ -22,18 +22,11 @@ class AdminImportRequestComponent extends Component
 	public function approve($id){
 		$Bill = ProductImportBill::find($id);
 		$Bill->status = 2;
-		$Bill->approved_id = auth()->user()->id;
+		$Bill->stocker_id = auth()->user()->id;
 		$Bill->save();
 		session()->flash('success',' Duyệt thành công'.$id);
 		
-		$Details = ProductImportBillDetail::where('import_bill_id',$id)->get();
-		foreach($Details as $d){
-			$Model = ProductModel::find($d->product_model_id);
-			$Model->stock += $d->amount;
-			$Model->stockTemp += $d->amount;
-			$Model->productModelStatus = 1;
-			$Model->save();
-		}
+
 	}
 
 	public function decline($id){

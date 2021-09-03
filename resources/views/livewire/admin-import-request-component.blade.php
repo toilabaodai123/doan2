@@ -33,6 +33,7 @@
 																	<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
 															</div>
 															<div class="modal-body">
+																<label>Nhà cung cấp : </label>
 																<table class="table table-bordered table-hover table-striped">
 																	<thead>
 																		<tr>

@@ -17,9 +17,21 @@ class ProductImportBill extends Model
 	public function User(){
 		return $this->hasOne(User::class,'id','user_id');
 	}	
+
+	public function Stocker(){
+		return $this->hasOne(User::class,'id','stocker_id');
+	}		
+
+	public function Accountant(){
+		return $this->hasOne(User::class,'id','accountant_id');
+	}	
 	
 	public function Details(){
 		return $this->hasMany(ProductImportBillDetail::class,'import_bill_id','id');
 	}
+	
+	public function Supplier(){
+		return $this->hasOne(Supplier::class,'id','supplier_id');
+	}	
 	
 }

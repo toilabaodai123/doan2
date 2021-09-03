@@ -57,6 +57,7 @@ class AdminProductImportComponent extends Component
 		$Bill->status=1;
 		$Bill->bill_code = $this->bill_code;
 		$Bill->VAT = $this->vat;
+		$Bill->supplier_id = $this->supplierID;
 		$Bill->save();
 		
 
