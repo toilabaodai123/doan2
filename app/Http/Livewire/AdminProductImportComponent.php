@@ -8,6 +8,11 @@ use App\Models\ProductSize;
 use App\Models\ProductModel;
 use App\Models\ProductImportBill;
 use App\Models\ProductImportBillDetail;
+use App\Models\ProductCategory;
+use App\Models\Level2ProductCategory;
+
+
+
 use Livewire\WithPagination;
 use Livewire\Component;
 
@@ -20,6 +25,8 @@ class AdminProductImportComponent extends Component
 	public $arrayy =[];
 	public $supplierID;
 	public $selectedProducts =[];
+	public $Categories1;
+	public $Categories2=[];
 	
 	public $searchSelect;
 	public $searchInput;
@@ -31,9 +38,19 @@ class AdminProductImportComponent extends Component
 	public $bill_code;
 	public $bill_total=0;
 	
+	public $add_product_name;
+	public $add_product_supplier_id;
+	public $add_product_category_1;
+	public $add_product_category_2;
+	public $add_product_shortDesc;
+	public $add_product_longDesc;
+	
 
     public function render()
     {
+		$this->Categories1 = ProductCategory::all();
+
+		
 		$this->Suppliers = Supplier::all();
 		if($this->supplierID == null) 
 			$Products = [];
@@ -44,6 +61,9 @@ class AdminProductImportComponent extends Component
 						
 		else
 			$Products = Product::with('Models')->where('supplierID',$this->supplierID)->paginate(9);
+		
+
+			
 		
 		return view('livewire.admin-product-import-component',['Products' => $Products])
 					->layout('layouts.template');
@@ -78,9 +98,24 @@ class AdminProductImportComponent extends Component
 	}
 	
 	public function selectProduct($id){
-		array_push($this->arrayy , $id);
+		if($this->arrayy != null){
+			$flag = 0;
+			foreach($this->arrayy as $k=>$v){
+				if($v == $id){
+					$flag++;
+					break;
+				}
+			}
+			if($flag==0){
+				array_push($this->arrayy , $id);
+			}
+		}
+		else
+			array_push($this->arrayy , $id);
 		
 		$this->selectedProducts = ProductModel::with('Product')->with('Size')->whereIn('id',$this->arrayy)->get();
+		
+		
 	}
 	
 	public function test(){
@@ -96,7 +131,58 @@ class AdminProductImportComponent extends Component
 		$this->reset();
 	}
 	
-	public function onChangeAmount(){
+	public function removeBtn($id){
+		foreach($this->arrayy as $k=>$v){
+			if($v == $id){
+				unset($this->arrayy[$k]);
+				break;
+			}
+		}	
+		$this->selectedProducts = ProductModel::with('Product')->with('Size')->whereIn('id',$this->arrayy)->get();		
+	}
+	
+	public function addNewProduct(){
+		
+	}
+	
+	public function submitProduct(){
+		//dd($this);
+		$Product = new Product();
+		$Product->productName = $this->add_product_name;
+		$Product->CategoryID = $this->add_product_category_1;
+		$Product->CategoryID2 = $this->add_product_category_2;
+		$Product->supplierID = $this->add_product_supplier_id;
+		$Product->productPrice = 0;
+		$Product->shortDesc = $this->add_product_shortDesc;
+		$Product->longDesc = $this->add_product_longDesc;
+		$Product->status = 2 ;
+		if($Product->save()){
+			$Sizes = ProductSize::all();
+			foreach($Sizes as $s){
+				$Model = new ProductModel();
+				$Model->productID = $Product->id;
+				$Model->sizeID = $s->id;
+				$Model->stock = 0 ;
+				$Model->stockTemp = 0;
+				$Model->productModelStatus = 0 ;
+				$Model->save();
+			}
+			
+			
+			
+			session()->flash('successModal','Thành công');
+			$this->add_product_name = null;
+			$this->add_product_category_1 = null;
+			$this->add_product_category_2 = null;
+			$this->add_product_supplier_id = null;
+			$this->add_product_shortDesc = null;
+			$this->add_product_longDesc = null;
+		}
+		else
+			session()->flash('success','Lỗi');
+	}
 
+	public function onchangeCategory(){
+		$this->Categories2 = Level2ProductCategory::where('lv1PCategoryID',$this->add_product_category_1)->get();
 	}
 }

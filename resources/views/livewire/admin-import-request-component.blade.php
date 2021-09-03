@@ -33,6 +33,7 @@
 									<th>Nhà cung cấp</th>
 									<th>Thời gian lập</th>
 									<th>Tổng tiền</th>
+									<th>Trạng thái</th>
 									<th>Tùy chọn</th>
 								</tr>
 							</thead>
@@ -44,6 +45,13 @@
 										<td>{{$b->Supplier->supplierName}}</td>
 										<td>{{$b->bill_date}}</td>
 										<td>{{$b->total	}}</td>
+										<td>
+											@if($b->status == 1)
+												Đang chờ
+											@else
+												Đã duyệt
+											@endif
+										</td>
 										<td>
 											<button type="button"  class="btn btn-info"  data-toggle="modal" data-target="#myModal{{$b->id}}">Xem</button>
 												<div wire:ignore.self class="modal fade" id="myModal{{$b->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
