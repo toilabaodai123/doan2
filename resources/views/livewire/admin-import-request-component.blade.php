@@ -4,6 +4,23 @@
 			{{session('success')}}
         </div>
 	@endif
+	<div class="row" style="margin-bottom:20px;">
+		<div class="col-lg-2">
+			<input class="form-control" placeholder="Nhập thông tin cần tìm">
+		</div>
+		<div class="col-lg-2">
+			<select class="form-control">
+				<option>Theo tên</option>
+				<option>Theo nhà cung cấp</option>
+			</select>
+		</div>
+		<div class="col-lg-2">
+			<select class="form-control">
+				<option>Theo người tạo</option>
+				<option>Theo nhà cung cấp</option>
+			</select>
+		</div>		
+	</div>
     <div class="row">
 		<div class="col-lg-12">
 				<div class="row">
@@ -13,6 +30,8 @@
 								<tr>
 									<th>ID</th>
 									<th>Người tạo</th>
+									<th>Nhà cung cấp</th>
+									<th>Thời gian lập</th>
 									<th>Tổng tiền</th>
 									<th>Tùy chọn</th>
 								</tr>
@@ -22,6 +41,8 @@
 								<tr>	
 										<td>{{$b->id}}</td>
 										<td>{{$b->User->name}}</td>
+										<td>{{$b->Supplier->supplierName}}</td>
+										<td>{{$b->bill_date}}</td>
 										<td>{{$b->total	}}</td>
 										<td>
 											<button type="button"  class="btn btn-info"  data-toggle="modal" data-target="#myModal{{$b->id}}">Xem</button>
@@ -71,6 +92,7 @@
 								@endforelse
 							</tbody>
 						</table>
+						{{$Bills->links()}}
 					</div>
 				</div>
 		</div>

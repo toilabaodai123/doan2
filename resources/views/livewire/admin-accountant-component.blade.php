@@ -4,6 +4,18 @@
 			{{session('success')}}
         </div>
 	@endif
+	<div class="row" style="margin-bottom:20px;">
+		<div class="col-lg-2">
+			<input class="form-control" placeholder="Nhập thông tin cần tìm">
+		</div>
+		<div class="col-lg-2">
+			<select class="form-control">
+				<option>Theo nhà cung cấp</option>
+				<option>Theo thủ kho</option>
+				<option>Theo kế toán</option>
+			</select>
+		</div>	
+	</div>	
     <div class="row">
 		<div class="col-lg-12">
 				<div class="row">
@@ -85,6 +97,9 @@
 								@endforelse
 							</tbody>
 						</table>
+						@if($Bills)
+							{{$Bills->links()}}
+						@endif
 					</div>
 				</div>
 		</div>
@@ -102,12 +117,12 @@
 							<form role="form" wire:submit.prevent="submit">							
 								<div class="col-lg-9">
 									<label>Tên người giao hàng</label>
-									<input class="form-control" wire:model="transporter_name" placeholder="ID phiếu nhập kho">
+									<input class="form-control" wire:model.defer="transporter_name" placeholder="ID phiếu nhập kho">
 								</div>							
 
 								<div class="col-lg-9">
 									<label>Mã phiếu nhập kho </label>
-									<input class="form-control" wire:model="Bill_code" placeholder="Mã phiếu nhập kho">
+									<input class="form-control" wire:model.defer="Bill_code" placeholder="Mã phiếu nhập kho">
 								@error('supplierMail')
 									<p class="text-danger">{{$message}}</p>
 								@enderror								

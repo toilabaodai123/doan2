@@ -6,16 +6,17 @@ use Livewire\Component;
 use App\Models\ProductImportBill;
 use App\Models\ProductImportBillDetail;
 use App\Models\ProductModel;
+use Livewire\WithPagination;
 
 class AdminImportRequestComponent extends Component
 {
-	public $Bills;
+	use WithPagination;
 	public $declineNote;
 	
     public function render()
     {
-		$this->Bills = ProductImportBill::with('Details')->get();
-        return view('livewire.admin-import-request-component')
+		$Bills = ProductImportBill::with('Details')->paginate(1);
+        return view('livewire.admin-import-request-component',compact('Bills'))
 					->layout('layouts.template');
     }
 
