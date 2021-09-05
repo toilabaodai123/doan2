@@ -142,12 +142,7 @@
 										</div>
 									</div>
 								</div>
-								<form role="form" wire:submit.prevent="submit">
-								@if(session()->has('success'))
-								<div class="alert alert-success">
-									{{session('success')}}
-                                </div>
-								@endif
+
 																			
 									<div class="col-lg-8">
 										<div class="panel panel-default">
@@ -194,12 +189,161 @@
 									</div>	
 
 									<div class="col-lg-4" >
+										<form role="form" wire:submit.prevent="submit">
+										@if(session()->has('success'))
+										<div class="alert alert-success">
+											{{session('success')}}
+										</div>
+										@endif									
 										<div class="panel panel-default">
 											<div class="panel-heading">
 												Thông tin hóa đơn
 											</div>
 
 											<div class="panel-body">
+												<div class="form-group">
+													<div class="col-lg-10">
+														<label>Thủ kho duyệt</label>
+														<input wire:model.defer="stocker_id" disabled class="form-control" >
+													</div>
+													<div class="col-lg-2">
+														<button type="button" class="btn btn-default" style="margin-top:23px;" data-toggle="modal" data-target="#myModalStocker">Chọn</button>
+														<div class="modal fade" wire:ignore.self id="myModalStocker" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<div class="modal-dialog" role="document">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		Danh sách thủ kho
+																	</div>
+																	<div class="modal-body">
+																		<div class="row" style="margin-bottom:20px;">
+																			<div class="col-lg-6">
+																				<input class="form-control" placeholder="Nhập thông tin cần tìm">
+																			</div>
+																			<div class="col-lg-6">
+																				<select class="form-control">
+																					<option>Theo nhà cung cấp</option>
+																					<option>Theo thủ kho</option>
+																					<option>Theo kế toán</option>
+																				</select>
+																			</div>	
+																		</div>
+																		<div class="row">
+																			<div class="col-lg-12">
+																					<div class="row">
+																						<div class="table-responsive">
+																							<table class="table table-bordered table-hover table-striped">
+																								<thead>
+																									<tr>
+																										<th>Họ tên</th>
+																										<th>Số điện thoại</th>
+																										<th>Email</th>
+																										<th>Tùy chọn</th>
+																									</tr>
+																								</thead>
+																								<tbody>
+																									@forelse($Stockers as $s)
+																									<tr>	
+																											<td>{{$s->name}}</td>
+																											<td>123</td>
+																											<td>{{$s->email}}</td>
+																											<td>
+																												<button type="button" wire:click="pickStocker({{$s->id}})" data-dismiss="modal" class="btn btn-info">Chọn</button>
+																											</td>
+																									</tr>
+																									@empty
+																										<label>Rỗng!</label>
+																									@endforelse
+																								</tbody>
+																							</table>
+																						</div>
+																					</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" data-dismiss="modal" class="btn btn-info">Ẩn</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-lg-10">
+														<label>Kế toán duyệt duyệt</label>
+														<input wire:model.defer="accountant_id" disabled class="form-control" >
+													</div>
+													<div class="col-lg-2">
+														<button type="button" class="btn btn-default" style="margin-top:23px;" data-toggle="modal" data-target="#myModalAccountant">Chọn</button>
+														<div class="modal fade" wire:ignore.self id="myModalAccountant" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<div class="modal-dialog" role="document">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		Danh sách kế toán
+																	</div>
+																	<div class="modal-body">
+																		<div class="row" style="margin-bottom:20px;">
+																			<div class="col-lg-6">
+																				<input class="form-control" placeholder="Nhập thông tin cần tìm">
+																			</div>
+																			<div class="col-lg-6">
+																				<select class="form-control">
+																					<option>Theo nhà cung cấp</option>
+																					<option>Theo thủ kho</option>
+																					<option>Theo kế toán</option>
+																				</select>
+																			</div>	
+																		</div>
+																		<div class="row">
+																			<div class="col-lg-12">
+																					<div class="row">
+																						<div class="table-responsive">
+																							<table class="table table-bordered table-hover table-striped">
+																								<thead>
+																									<tr>
+																										<th>Họ tên</th>
+																										<th>Số điện thoại</th>
+																										<th>Email</th>
+																										<th>Tùy chọn</th>
+																									</tr>
+																								</thead>
+																								<tbody>
+																									@forelse($Accountants as $a)
+																									<tr>	
+																											<td>{{$a->name}}</td>
+																											<td>123</td>
+																											<td>{{$a->email}}</td>
+																											<td>
+																												<button type="button" wire:click="pickAccoutant({{$a->id}})" data-dismiss="modal" class="btn btn-info">Chọn</button>
+																											</td>
+																									</tr>
+																									@empty
+																										<label>Rỗng!</label>
+																									@endforelse
+																								</tbody>
+																							</table>
+																						</div>
+																					</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" data-dismiss="modal" class="btn btn-info">Ẩn</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>												
+												<div class="col-lg-12">
+													<label>Tên người vận chuyển</label>
+													<input wire:model.defer="transporter_name" class="form-control" >
+												</div>												
+												<div class="col-lg-12">
+													<label>Mã hóa đơn</label>
+													<input class="form-control" wire:model="bill_code">
+												</div>													
+												<div class="col-lg-12">
 												<div class="form-group">
 													<label>Chiết khấu</label>
 													<input class="form-control" >
@@ -211,18 +355,15 @@
 												<div class="form-group">
 													<label>Ngày tạo</label>
 													<input class="form-control" >
+												</div>
+												<div class="form-group">
+													<label>Số chứng từ gốc kèm theo</label>
+													<input class="form-control" wire:model.defer="bill_od" >
 												</div>												
 												<div class="form-group">
 													<label>Biên lai</label>
 													<input class="form-control" >
-												</div>
-												<div class="form-group">
-													<label>Mã hóa đơn</label>
-													<input class="form-control" wire:model="bill_code">
-												</div>		
-												<div class="form-group">
-													<label>Tổng tiền : {{$bill_total}}</label>
-												</div>												
+												</div>											
 												<div class="form-group" style="margin-top:20px">
 													<button type="submit" wire:loading.attr="disabled" class="btn btn-default">Lưu</button>
 													<button type="button" wire:click="resetBtn" wire:loading.attr="disabled" class="btn btn-default">Reset</button>
@@ -232,7 +373,7 @@
 										</div>
 									</div>									
 								
-							</form>
+									</form>
 						</div>
 					</div>
 </div>

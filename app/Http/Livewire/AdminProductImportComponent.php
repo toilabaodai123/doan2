@@ -10,7 +10,7 @@ use App\Models\ProductImportBill;
 use App\Models\ProductImportBillDetail;
 use App\Models\ProductCategory;
 use App\Models\Level2ProductCategory;
-
+use App\Models\User;
 
 
 use Livewire\WithPagination;
@@ -45,11 +45,21 @@ class AdminProductImportComponent extends Component
 	public $add_product_shortDesc;
 	public $add_product_longDesc;
 	
+	
+	
+	public $Stockers ;
+	public $Accountants;
+	public $stocker_id;
+	public $accountant_id;
+	
+	public $bill_od;
+	public $transporter_name;
 
     public function render()
     {
 		$this->Categories1 = ProductCategory::all();
-
+		$this->Stockers = User::where('user_type','LIKE','%Nhân viên thủ kho%')->get();
+		$this->Accountants = User::where('user_type','LIKE','%Nhân viên kế toán%')->get();
 		
 		$this->Suppliers = Supplier::all();
 		if($this->supplierID == null) 
@@ -78,6 +88,8 @@ class AdminProductImportComponent extends Component
 		$Bill->bill_code = $this->bill_code;
 		$Bill->VAT = $this->vat;
 		$Bill->supplier_id = $this->supplierID;
+		$Bill->bill_od = $this->bill_od;
+		$Bill->transporter_name = $this->transporter_name;
 		$Bill->save();
 		
 
@@ -88,8 +100,18 @@ class AdminProductImportComponent extends Component
 			$Detail->amount = $this->amount[$v['id']];
 			$Detail->price = $this->price[$v['id']];
 			$Detail->save();
-			
+			$this->bill_total += ($this->amount[$v['id']] * $this->price[$v['id']]);
 		}
+		
+		foreach($this->selectedProducts as $k=>$v){
+			$Model = ProductModel::find($v['id']);
+			$Model->stock = $this->amount[$v['id']];
+			$Model->stockTemp = $this->amount[$v['id']];
+			$Model->productModelStatus = 1;
+			$Model->save();
+		}
+		
+		$this->bill_total += ( $this->bill_total * ( $this->vat ) / 100 );
 		$Bill->total = $this->bill_total;
 		$Bill->save();
 		session()->flash('success','Thành công');
@@ -184,5 +206,16 @@ class AdminProductImportComponent extends Component
 
 	public function onchangeCategory(){
 		$this->Categories2 = Level2ProductCategory::where('lv1PCategoryID',$this->add_product_category_1)->get();
+	}
+	
+	public function pickStocker($id){
+		$User = User::find($id);
+		$this->stocker_id = $User->name;
+	}
+	
+	public function pickAccoutant($id){
+		//dd($id);
+		$User = User::find($id);
+		$this->accountant_id = $User->name;
 	}
 }

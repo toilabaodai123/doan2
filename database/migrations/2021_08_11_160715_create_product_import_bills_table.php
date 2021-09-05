@@ -21,6 +21,8 @@ class CreateProductImportBillsTable extends Migration
 			$table->string('bill_code')->nullable();
 			$table->integer('VAT');
 			$table->integer('status');
+			$table->string('bill_od')->nullable();
+			$table->string('transporter_name');
 			$table->unsignedbiginteger('stocker_id')->nullable();
 			$table->unsignedbiginteger('accountant_id')->nullable();
 			$table->unsignedbiginteger('supplier_id');
