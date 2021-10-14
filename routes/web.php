@@ -50,6 +50,15 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+// Frontend
+Route::get('index', App\Http\Livewire\Frontend\Index::class);
+
+Route::get('slider', App\Http\Livewire\Pages\Slider::class);
+
+
+// end Frontend
+
+
 Route::get('trang-chu',IndexComponent::class);
 Route::get('san-pham/{id}',ProductDetailComponent::class);
 Route::get('gio-hang',CartComponent::class);
