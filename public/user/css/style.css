@@ -1917,6 +1917,23 @@ ol {
 	margin-bottom: 0;
 }
 
+.show_commemt {
+	margin-top: 15px;
+    align-items: center;
+}
+.show_commemt .user {
+	display: flex;
+	align-items: center;
+}
+.show_commemt img {
+	width: 50px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 20px 10px 0;	
+}
+.show_commemt p {
+	text-align: justify;	
+}
 /*---------------------
   Related
 -----------------------*/
