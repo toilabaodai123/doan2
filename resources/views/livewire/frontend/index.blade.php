@@ -1,7 +1,7 @@
 <div>
 <section class="hero">
         <div class="hero__slider owl-carousel">
-            @foreach($slide as $slide)
+            @forelse($slide as $slide)
             <div class="hero__items set-bg" data-setbg="{{asset('storage/images/'. $slide->hinh)}}">
                 <div class="container">
                     <div class="row">
@@ -22,7 +22,9 @@
                     </div>
                 </div>
             </div>
-            @endforeach
+            @empty
+            
+            @endforelse
         </div>
     </section>
 
@@ -32,7 +34,7 @@
                 <div class="col-lg-12">
                             <h2 class="title">Category</h2>
                 </div>
-                @foreach($category as $key => $cate)
+                @forelse($category as $key => $cate)
                 <div class="col-md-3">
                     <div class="banner__item">
                         <div class="banner__item__pic">
@@ -44,7 +46,9 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                Không có danh mục nào tồn tại
+                @endforelse
             </div>
         </div>
     </section>
@@ -61,7 +65,7 @@
             </div>
             <div class="row product__filter">
               
-                @foreach($product as $product)
+                @forelse($product as $product)
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
                         <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/'. $product->pri_Image->imageName)}}">
@@ -124,7 +128,9 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                Không có san phẩm
+                @endforelse
             </div>
         </div>
     </section>
@@ -170,6 +176,63 @@
                         <a href="#" class="primary-btn">Shop now</a>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+        <!-- Instagram Section Begin -->
+        <section class="instagram spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="instagram__pic">
+                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-1.jpg"></div></a>
+                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-2.jpg"></div></a>
+                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-3.jpg"></div></a>
+                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-4.jpg"></div></a>
+                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-5.jpg"></div></a>
+                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-6.jpg"></div></a>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="instagram__text">
+                        <h2>Instagram</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua.</p>
+                        <h3>#Male_Fashion</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Instagram Section End -->
+
+    <!-- Latest Blog Section Begin -->
+    <section class="latest spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <span>Latest News</span>
+                        <h2>Fashion New Trends</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @forelse($blog as $blog)
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic set-bg" data-setbg="{{asset('public/images/post/'.$blog->avata_image)}}"></div>
+                        <div class="blog__item__text">
+                            <span><img src="img/icon/calendar.png" alt=""> 16 February 2020</span>
+                            <h5>{{$blog->head_title}}</h5>
+                            <a href="{{URL::to('blog-detail/'.$blog->id)}}">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                 <p>Không có bài viết</p>
+                @endforelse
             </div>
         </div>
     </section>

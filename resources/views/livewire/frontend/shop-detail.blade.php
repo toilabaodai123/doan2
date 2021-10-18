@@ -1,5 +1,6 @@
 <div>
 <section class="shop-details">
+    @forelse($product as $pro)
         <div class="product__details__pic">
             <div class="container">
                 <div class="row">
@@ -16,7 +17,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="product__details__pic__item">
-                                    <img src="img/shop-details/product-big-2.png" alt="">
+                                    <img src="{{asset('storage/images/'. $pro->pri_Image->imageName)}}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -29,13 +30,11 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-8">
                         <div class="product__details__text">
-                            <h4>Hooded thermal anorak</h4>
-                            <h3>$270.00 <span>70.00</span></h3>
-                            <p>Coat with quilted lining and an adjustable hood. Featuring long sleeves with adjustable
-                                cuff tabs, adjustable asymmetric hem with elastic side tabs and a front zip fastening
-                            with placket.</p>
+                            <h4>{{$pro->productName}}</h4>
+                            <h3>{{$pro->productPrice}} VND<span>70.00</span></h3>
+                            <p>{{$pro->shortDesc}}</p>
                             <div class="product__details__option">
-                                <style>
+                                <!-- <style>
                                     .product__details__option__size {
                                             display: inline-block;
                                             margin-right: 50px;
@@ -44,7 +43,7 @@
                                         .product__details__last__option ul {
                                             padding-top: 0px;
                                         }
-                                </style>
+                                </style> -->
                                 <div class="product__details__option__size">
                                     <span>Size:</span>
                                     <label for="xxl">xxl
@@ -67,10 +66,10 @@
                                         <input type="text" value="1">
                                     </div>
                                 </div>
-                                <a href="#" class="primary-btn">add to cart</a>
+                                <a href="javascript:void(0)" wire:click="addCart({{ $pro->id }})" class="primary-btn">add to cart</a>
                             </div>
                             <div class="product__details__btns__option">
-                                <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
+                                <a href="#"  ><i class="fa fa-heart"></i> add to wishlist</a>
                             </div>
                             <div class="product__details__last__option">
                                 <ul>
@@ -138,7 +137,7 @@
                                                 <h4>Leave A Comment</h4>
                                                 <form action="#">
                                                     <div class="row">
-                                                        <div class="col-lg-12 text-center"  style="">
+                                                        <div class="col-lg-12 text-center"  >
                                                           <textarea placeholder="Comment"></textarea>
                                                             <button type="submit" class="site-btn">Post Comment</button>
                                                         </div>
@@ -146,7 +145,7 @@
                                                 </form>
                                             </div>
                                             <div class="show_commemt">
-                                            <div class="user">
+                                                <div class="user">
                                                     <img src="{{asset('img/icon_user.jpg')}}" alt="">
                                                     <b>Ngọc Thính</b>
                                                 </div>
@@ -171,6 +170,9 @@
                 </div>
             </div>
         </div>
+        @empty
+
+        @endforelse
     </section>
     <!-- Shop Details Section End -->
 
@@ -183,9 +185,10 @@
                 </div>
             </div>
             <div class="row">
+                @forelse($relatedPro as $pro )
                 <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+                        <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/'. $pro->pri_Image->imageName)}}">
                             <span class="label">New</span>
                             <ul class="product__hover">
                                 <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
@@ -218,109 +221,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Piqué Biker Jacket</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$67.24</h5>
-                            <div class="product__color__select">
-                                <label for="pc-4">
-                                    <input type="radio" id="pc-4">
-                                </label>
-                                <label class="active black" for="pc-5">
-                                    <input type="radio" id="pc-5">
-                                </label>
-                                <label class="grey" for="pc-6">
-                                    <input type="radio" id="pc-6">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item sale">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
-                            <span class="label">Sale</span>
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Multi-pocket Chest Bag</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$43.48</h5>
-                            <div class="product__color__select">
-                                <label for="pc-7">
-                                    <input type="radio" id="pc-7">
-                                </label>
-                                <label class="active black" for="pc-8">
-                                    <input type="radio" id="pc-8">
-                                </label>
-                                <label class="grey" for="pc-9">
-                                    <input type="radio" id="pc-9">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-4.jpg">
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Diagonal Textured Cap</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$60.9</h5>
-                            <div class="product__color__select">
-                                <label for="pc-10">
-                                    <input type="radio" id="pc-10">
-                                </label>
-                                <label class="active black" for="pc-11">
-                                    <input type="radio" id="pc-11">
-                                </label>
-                                <label class="grey" for="pc-12">
-                                    <input type="radio" id="pc-12">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @empty
+                @endforelse
             </div>
         </div>
     </section>
