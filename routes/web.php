@@ -68,6 +68,7 @@ Route::get('users',App\Http\Livewire\Frontend\Users::class);
 Route::get('slider', App\Http\Livewire\Pages\Slider::class);
 Route::get('sale', App\Http\Livewire\Pages\Sale::class);
 Route::get('instagram', App\Http\Livewire\Pages\Instagrams::class);
+Route::get('coupon', App\Http\Livewire\Pages\AdminCoupon::class);
 
 
 // Blog

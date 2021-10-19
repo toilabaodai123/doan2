@@ -70,7 +70,7 @@ class Index extends Component
     public function addCart($id)
     {
         $this->cart = Product::with('Pri_Image')->where('id', $id)->first();
-        Cart::add(['id' =>$id, 'name' =>$this->cart->productName,
+        Cart::instance('cart')->add(['id' =>$id, 'name' =>$this->cart->productName,
          'qty' => 1,  
          'price' => $this->cart->productPrice, 
        

@@ -32,13 +32,13 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                            @if(Cart::count() > 0)
+                            @if(Cart::instance('cart')->count() > 0)
                             <tbody>
-                                @foreach(Cart::content() as $cart)
+                                @foreach(Cart::instance('cart')->content() as $cart)
                                 <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
-                                            <img src="{{asset('storage/images/')}}/{{$cart->options->image}}" style="width:75px;height:75px" alt="">
+                                            <img src="{{asset('storage/images/')}}/{{$cart->options->image}}" style="width:75px;height:75px;object-fit: cover;" alt="">
                                         </div>
                                         <div class="product__cart__item__text">
                                             <h6>{{$cart->name}}</h6>
@@ -79,18 +79,32 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="cart__discount">
+                        
                         <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Coupon code">
+                        <form wire:submit.prevent="ApplyCouponCode">
+                            <input type="text" placeholder="Coupon code" wire:model="CouponCode">
                             <button type="submit">Apply</button>
                         </form>
+                        @if (Session::has('message'))
+                            <div class="alert alert-danger">{{session('message')}}</div>
+                        @endif
                     </div>
                     <div class="cart__total">
                         <h6>Cart total</h6>
                         <ul>
-                            <li>Subtotal <span> $ {{Cart::subtotal()}}</span></li>
-                            <li>Tax <span>$ {{Cart::tax()}}</span></li>
-                            <li>Total <span>$ {{Cart::total()}}</span></li>
+                            @if(Session::has('coupon'))
+                                <li>Subtotal <span> $ {{Cart::subtotal()}}</span></li>
+
+                                <li>Disscount ({{Session::get('coupon')['code']}}) <a href="#" wire:click.prevent="removeCoupon()"><i class="fa fa-close"></i></a><span> $ {{$discount}}</span></li>
+                                <li>Subtol with Discout <span>$ {{$subtotalAfterDiscount}}</span></li>
+                                <li>Tax {{config('cart.tax')}}%<span>$ {{number_format($taxlAfterDiscount)}}</span></li>
+                                <li>Total  {{Cart::total()}}<span>${{$totallAfterDiscount}}</span></li>
+                           
+                            @else
+                                <li>Subtotal <span> $ {{Cart::subtotal()}}</span></li>
+                                <li>Tax <span>$ {{Cart::tax()}}</span></li>
+                                <li>Total <span>$ {{Cart::total()}}</span></li>
+                            @endif
                         </ul>
                         <a href="#" class="primary-btn">Proceed to checkout</a>
                     </div>
