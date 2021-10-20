@@ -7,6 +7,7 @@ use App\Models\ProductSize;
 use App\Models\ProductCategory;
 use App\Models\Supplier;
 use App\Models\Image;
+use App\Models\Wishlist;
 use App\Models\Level2ProductCategory;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,5 +40,12 @@ class Product extends Model
 	public function Pri_Image(){
 		return $this->hasOne(Image::class,'productID','id');
 	}
+	public function Pri_Wish(){
+		return $this->hasOne(Wishlist::class,'productID','id');
+	}
+	public function wishlist(){
+		return $this->hasMany(Wishlist::class,'productID','id');
+	}
+
 
 }

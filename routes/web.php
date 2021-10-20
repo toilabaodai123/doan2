@@ -51,6 +51,35 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+// Frontend
+
+Route::get('index', App\Http\Livewire\Frontend\Index::class);
+Route::get('shop', App\Http\Livewire\Frontend\Shop::class);
+Route::get('shop-detail/{id}', App\Http\Livewire\Frontend\ShopDetail::class);
+Route::get('cart', App\Http\Livewire\Frontend\carts::class);
+Route::get('product/category/{id}',App\Http\Livewire\Frontend\CategoryComponent::class);
+Route::get('blog',App\Http\Livewire\Frontend\Blog::class);
+Route::get('blog-detail/{id}',App\Http\Livewire\Frontend\BlogDetail::class);
+Route::get('checkout',App\Http\Livewire\Frontend\Checkout::class);
+
+
+Route::get('users',App\Http\Livewire\Frontend\Users::class);
+
+Route::get('slider', App\Http\Livewire\Pages\Slider::class);
+Route::get('sale', App\Http\Livewire\Pages\Sale::class);
+Route::get('instagram', App\Http\Livewire\Pages\Instagrams::class);
+Route::get('coupon', App\Http\Livewire\Pages\AdminCoupon::class);
+
+// Blog
+Route::get('post',[App\Http\Controllers\Controller::class, 'index']);
+Route::post('addpost',[App\Http\Controllers\Controller::class, 'addpost']);
+Route::get('edit-blog/{id}',[App\Http\Controllers\Controller::class, 'show_edit_blog']);
+Route::post('update-blog/{id}',[App\Http\Controllers\Controller::class, 'update_post']);
+
+
+// end Frontend
+
+
 Route::get('trang-chu',IndexComponent::class);
 Route::get('san-pham/{id}',ProductDetailComponent::class);
 Route::get('gio-hang',CartComponent::class);
