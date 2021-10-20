@@ -19,6 +19,7 @@ class AdminNewOrderComponent extends Component
 	
 	public function acceptOrder($id){
 		$Order = Order::find($id);
+		$Order->admin_id = auth()->user()->id;
 		$Order->orderStatus_id = 2;
 		$Order->save();
 		

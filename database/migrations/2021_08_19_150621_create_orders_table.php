@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id()->from(10000);
 			$table->string('orderCode')->nullable();
 			$table->biginteger('user_id')->nullable();
+			$table->biginteger('admin_id')->nullable();
 			$table->biginteger('orderStatus_id')->default(1);
 			$table->string('fullName');
 			$table->integer('phone');
