@@ -185,6 +185,17 @@
                         </ul>
                     </li>
 					@endif
+					<li class="active">
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý tài khoản<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+                            <li>
+                                <a href="{{url('/admin/shippers')}}">Quản lý người dùng</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/admin/users/staff')}}">Quản lý nhân viên</a>
+                            </li>							
+                        </ul>
+                    </li>					
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')					
 					<li class="active">
@@ -195,38 +206,22 @@
                             </li>
                             <li>
                                 <a href="{{url('/admin/shippers/create-bill')}}">Tạo hóa đơn vận chuyển</a>
-                            </li>							
+                            </li>
+                            <li>
+                                <a href="{{url('/admin/shippers/bill-list')}}">Danh sách hóa đơn vận chuyển</a>
+                            </li>								
                         </ul>
                     </li>						
 					@endif
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')					
-                    <li>
-                        <a href="{{url('admin-product-category')}}"><i class="fa fa-sitemap fa-fw"></i>*Quản lý thông tin website</a>
-                    </li>
 					@endif
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')					
                     <li>
                         <a href="{{url('admin/demo/ship')}}"><i class="fa fa-sitemap fa-fw"></i>DEMO vận chuyển</a>
                     </li>	
-					@endif
-					<li class="active">
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý kho<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
-                            <li>
-                                <a href="{{url('/admin/import/request')}}">Yêu cầu nhập kho</a>
-                            </li>							
-                        </ul>
-                    </li>
-					<li class="active">
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý kế toán<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
-                            <li>
-                                <a href="{{url('/admin/accountant/list')}}">Yêu cầu nhập kho</a>
-                            </li>							
-                        </ul>
-                    </li>					
+					@endif				
 					
                 </ul>
             </div>

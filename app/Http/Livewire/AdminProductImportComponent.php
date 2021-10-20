@@ -51,6 +51,8 @@ class AdminProductImportComponent extends Component
 	public $Accountants;
 	public $stocker_id;
 	public $accountant_id;
+	public $stocker_id_submit;
+	public $accountant_id_submit;
 	
 	public $bill_od;
 	public $transporter_name;
@@ -81,6 +83,7 @@ class AdminProductImportComponent extends Component
 	
 	public function submit(){
 		
+		//Thêm hóa đơn
 		$Bill = new ProductImportBill();
 		$Bill->user_id = auth()->user()->id;
 		$Bill->bill_date = now();
@@ -90,9 +93,11 @@ class AdminProductImportComponent extends Component
 		$Bill->supplier_id = $this->supplierID;
 		$Bill->bill_od = $this->bill_od;
 		$Bill->transporter_name = $this->transporter_name;
+		$Bill->stocker_id = $this->stocker_id_submit;
+		$Bill->accountant_id = $this->accountant_id_submit;
 		$Bill->save();
 		
-
+		//Thêm chi tiết hóa đơn theo từng sản phẩm được chọn
 		foreach($this->selectedProducts as $k=>$v){
 			$Detail = new ProductImportBillDetail();
 			$Detail->import_bill_id = $Bill->id;
@@ -103,6 +108,7 @@ class AdminProductImportComponent extends Component
 			$this->bill_total += ($this->amount[$v['id']] * $this->price[$v['id']]);
 		}
 		
+		//Nhập tồn kho theo từng sản phẩm được chọn
 		foreach($this->selectedProducts as $k=>$v){
 			$Model = ProductModel::find($v['id']);
 			$Model->stock = $this->amount[$v['id']];
@@ -118,6 +124,7 @@ class AdminProductImportComponent extends Component
 		$this->reset();
 
 	}
+	
 	
 	public function selectProduct($id){
 		if($this->arrayy != null){
@@ -211,11 +218,13 @@ class AdminProductImportComponent extends Component
 	public function pickStocker($id){
 		$User = User::find($id);
 		$this->stocker_id = $User->name;
+		$this->stocker_id_submit = $User->id;
 	}
 	
 	public function pickAccoutant($id){
 		//dd($id);
 		$User = User::find($id);
 		$this->accountant_id = $User->name;
+		$this->accountant_id_submit = $User->id;
 	}
 }
