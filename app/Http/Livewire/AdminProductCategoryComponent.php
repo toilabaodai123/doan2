@@ -26,7 +26,6 @@ class AdminProductCategoryComponent extends Component
 	
 	public function submit(){
 		$validatedData = $this->validate();
-		$this->reset(); 
 		$Category = new ProductCategory();
 		$Category->categoryName = $this->categoryName;
 		$Category->save();

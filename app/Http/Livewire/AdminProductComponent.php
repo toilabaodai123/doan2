@@ -11,10 +11,12 @@ use App\Models\Supplier;
 use App\Models\Image;
 use App\Models\Level2ProductCategory;
 use Livewire\WithFileUploads;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class AdminProductComponent extends Component
 {
 	use WithFileUploads;
+
 	
 	public $Suppliers;
 	public $Products;
@@ -85,7 +87,7 @@ class AdminProductComponent extends Component
 					->layout('layouts.template');
     }
 	
-	public function submit(){
+	public function submit(){	
 		if($this->productID == null){
 			$Product = new Product();
 			$Product->productName = $this->productName;
@@ -94,7 +96,9 @@ class AdminProductComponent extends Component
 			$Product->CategoryID2 = $this->CategoryID2;
 			$Product->shortDesc = $this->shortDesc;
 			$Product->longDesc = $this->longDesc;
+
 			if($Product->save()){
+				
 				//Hình ảnh
 				if($this->productImage2!= null){
 					$name=$this->productImage2->getClientOriginalName();
@@ -107,9 +111,17 @@ class AdminProductComponent extends Component
 					$PrimaryImage->productID = $Product->id;
 					$PrimaryImage->save();
 				}
+				
+				/*
+				//Thêm mã sp vào slug
+				$Product->productSlug = $Product->productSlug.'-SP'.$Product->id;
+				$Product->save();
+				*/
 				session()->flash('success','Thêm sản phẩm thành công');
 				$this->reset();
 			}
+			
+			
 		}
 		else{
 			$Product = Product::find($this->productID);
@@ -119,7 +131,11 @@ class AdminProductComponent extends Component
 			$Product->CategoryID2 = $this->CategoryID2;
 			$Product->shortDesc = $this->shortDesc;
 			$Product->longDesc = $this->longDesc;
+			$slug = SlugService::createSlug(Product::class, 'productSlug', $Product->productName);
+			$Product->productSlug = $slug.'-SP'.$Product->id;
 			if($Product->save()){
+				
+				
 				//Hình ảnh
 				if($this->productImage2 != null && $this->productImage2 != $this->tempImageUrl){
 					$name=$this->productImage2->getClientOriginalName();
@@ -132,6 +148,7 @@ class AdminProductComponent extends Component
 					$PrimaryImage->productID = $Product->id;
 					$PrimaryImage->save();
 				}
+
 				session()->flash('success','Sửa sản phẩm thành công');
 				$this->reset();
 			}
