@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\OrderDetail;
 use Cart;
+use Carbon\Carbon;
 
 class Carts extends Component
 {
@@ -26,11 +27,10 @@ class Carts extends Component
 
 
     public function ApplyCouponCode(){
-//         $x = "23465.768";
-// $int_cast = (int)$x;
-// dd( $int_cast);
-        $coupon = Coupon::where('code', $this->CouponCode)->where('cart_value', '<' , Cart::instance('cart')->subtotal())->first();
-        //  dd($coupon);
+        $coupon = Coupon::where('code', $this->CouponCode)->where('expiry_date', '>=' , Carbon::today())
+        ->where('cart_value', '<' , Cart::instance('cart')->subtotal())->first();
+        // dd($coupon);
+      
         if(!$coupon)
         {
             session()->flash('message', 'Coupon is not invalid');
@@ -45,7 +45,6 @@ class Carts extends Component
         
     }
     public function calculateDiscounts(){
-        // dd( is_string(Cart::instance('cart')->subtotal()));
         if(session()->has('coupon')){
             if(session()->get('coupon')['type'] == 'fixed')
             {

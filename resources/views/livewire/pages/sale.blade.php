@@ -29,7 +29,7 @@
                                     <option value="1">Active</option>
                                 </select>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" wire:ignore>
                                 <label>Sale Date</label>
                                 <input type="text"  wire:model="sale_date" id="sale-date" placeholder="YYY/MM/DD H:M:S" class="form-control">
                             </div>	          												

@@ -18,6 +18,7 @@ class AdminCoupon extends Component
     public $value;
     public $cart_value;
     public $hiddenId;
+    public $expiry_date;
 
     public function render()
     {
@@ -25,12 +26,12 @@ class AdminCoupon extends Component
         return view('livewire.pages.admin-coupon')->layout('layouts.template1');
     }
     public function submit(){
-        // dd('jhdbsa');
         $this->validate([
             'code' => 'required|unique:coupons',
             'type' => 'required',
             'value' => 'required|numeric',
             'cart_value' => 'required|numeric',
+            'expiry_date' => 'required',
         ]);
         $data = new Coupon();
         $upsdateId = $this->hiddenId;
@@ -41,6 +42,7 @@ class AdminCoupon extends Component
                  'type' => $this->type,
                  'value' => $this->value,
                  'cart_value' => $this->cart_value,
+                 'expiry_date' => $this->expiry_date,
              );
                DB::table('coupons')->where('id',$upsdateId)
                 ->update($update);
@@ -51,6 +53,7 @@ class AdminCoupon extends Component
                 $data->type = $this->type;
                 $data->value = $this->value;
                 $data->cart_value = $this->cart_value;
+                $data->expiry_date = $this->expiry_date;
     
                 $data->save();
                 $this->reset();
@@ -63,6 +66,7 @@ class AdminCoupon extends Component
         $this->type = $data->type;
         $this->value = $data->value;
         $this->cart_value = $data->cart_value;
+        $this->expiry_date = $data->expiry_date;
 
         $this->hiddenId = $id;
     }
