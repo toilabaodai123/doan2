@@ -25,7 +25,8 @@ class AdminProductComponent extends Component
 	public $productID;
 	public $productName;
 	public $productPrice;
-	public $productImage;	
+	public $productImage;
+	public $productImage2;		
 	public $CategoryID;
 	public $CategoryID2;
 	public $longDesc;
@@ -37,6 +38,7 @@ class AdminProductComponent extends Component
 	public $uploadedImage;
 	
 	public $readyToLoad = false;
+	public $tempImageUrl;
 	
 	
 	protected $rules=[
@@ -47,6 +49,7 @@ class AdminProductComponent extends Component
 		'shortDesc' => 'required',
 		'longDesc' => 'required',
 		'productPrice' => 'required|numeric',
+
 	];
 	
 	protected $messages = [
@@ -83,78 +86,62 @@ class AdminProductComponent extends Component
     }
 	
 	public function submit(){
-		//dd($ProductID);
 		if($this->productID == null){
-
-			$validatedData = $this->validate();
 			$Product = new Product();
 			$Product->productName = $this->productName;
-			$Product->productPrice = $this->productPrice ;
-			$Product->shortDesc = $this->shortDesc;
-			$Product->longDesc = $this->longDesc;
+			$Product->supplierID = $this->supplierID;
 			$Product->CategoryID = $this->CategoryID;
 			$Product->CategoryID2 = $this->CategoryID2;
-			$Product->supplierID = $this->supplierID;
-			//$this->productImage->storePublicly('images', $name2);
-
-			$Product->save();
-		
-			$ProductID = Product::all()->last()->id;
-			$ProductSizes = ProductSize::all();
-			foreach($ProductSizes as $size){
-				$ProductModel = new ProductModel();
-				$ProductModel->productID = $ProductID;
-				$ProductModel->sizeID = $size->id;
-				$ProductModel->save();
+			$Product->shortDesc = $this->shortDesc;
+			$Product->longDesc = $this->longDesc;
+			if($Product->save()){
+				//Hình ảnh
+				if($this->productImage2!= null){
+					$name=$this->productImage2->getClientOriginalName();
+					$name2 = date("Y-m-d-H-i-s").'-'.$name;
+					$this->productImage2->storeAs('/images/product/',$name2,'public');
+						
+					$PrimaryImage = new Image();
+					$PrimaryImage->imageName = $name2;
+					$PrimaryImage->imageType = 1; //1 = Hình ảnh chính
+					$PrimaryImage->productID = $Product->id;
+					$PrimaryImage->save();
+				}
+				session()->flash('success','Thêm sản phẩm thành công');
+				$this->reset();
 			}
-			
-			if($this->productImage){
-				$name=$this->productImage->getClientOriginalName();
-				$name2 = date("Y-m-d-H-i-s").'-'.$name;
-				$this->productImage->storeAs('images',$name2,'public');
-				
-				$PrimaryImage = new Image();
-				$PrimaryImage->imageName = $name2;
-				$PrimaryImage->imageType = 1; //1 = Hình ảnh chính
-				$PrimaryImage->productID = $ProductID;
-				$PrimaryImage->save();
-			}
-
-
-			
-			$this->reset();
-			session()->flash('success','Thêm thành công!');
 		}
 		else{
-			$edit = Product::find($this->productID);
-			$edit->productName = $this->productName;
-			$edit->CategoryID = $this->CategoryID;
-			$edit->CategoryID2 = $this->CategoryID2;
-			$edit->productPrice = $this->productPrice;
-			$edit->shortDesc = $this->shortDesc;
-			$edit->longDesc = $this->longDesc;
-			$edit->supplierID = $this->supplierID;
-			$edit->save();
-			
-			if($this->productImage && $this->productImage->getClientOriginalName()!=null ){
-				$name=$this->productImage->getClientOriginalName();
-				$name2 = date("Y-m-d-H-i-s").'-'.$name;
-				$this->productImage->storeAs('images',$name2,'public');
-				
-				$PrimaryImage = new Image();
-				$PrimaryImage->imageName = $name2;
-				$PrimaryImage->imageType = 1; //1 = Hình ảnh chính
-				$PrimaryImage->productID = $this->productID;
-				$PrimaryImage->save();
+			$Product = Product::find($this->productID);
+			$Product->productName = $this->productName;
+			$Product->supplierID = $this->supplierID;
+			$Product->CategoryID = $this->CategoryID;
+			$Product->CategoryID2 = $this->CategoryID2;
+			$Product->shortDesc = $this->shortDesc;
+			$Product->longDesc = $this->longDesc;
+			if($Product->save()){
+				//Hình ảnh
+				if($this->productImage2 != null && $this->productImage2 != $this->tempImageUrl){
+					$name=$this->productImage2->getClientOriginalName();
+					$name2 = date("Y-m-d-H-i-s").'-'.$name;
+					$this->productImage2->storeAs('/images/product/',$name2,'public');
+						
+					$PrimaryImage = new Image();
+					$PrimaryImage->imageName = $name2;
+					$PrimaryImage->imageType = 1; //1 = Hình ảnh chính
+					$PrimaryImage->productID = $Product->id;
+					$PrimaryImage->save();
+				}
+				session()->flash('success','Sửa sản phẩm thành công');
+				$this->reset();
 			}
-			
-			$this->reset();
-			session()->flash('success','Sửa thành công!');
 		}
 	}
 	
 	
 	public function btnReset(){
+		//$this->productImage2 ="A";
+		dd($this);
 		$this->reset();
 	}
 	
@@ -187,11 +174,13 @@ class AdminProductComponent extends Component
 		$this->productPrice = $editProduct->productPrice;
 		$this->supplierID = $editProduct->supplierID;
 		$imgEProduct = Image::where('productID',$id)->get()->last();
-		if($imgEProduct = Image::where('productID',$id)->get()->last()){
-			$this->productImage = $imgEProduct->imageName;
+		//dd($imgEProduct == null);
+		if($imgEProduct != null){
+			$this->productImage2 = $imgEProduct->imageName;
+			$this->tempImageUrl = $imgEProduct->imageName;
 		}
 		else{
-			$this->productImage=null;
+			$this->productImage2=null;
 		}
 		//dd($this->productImage->get('imageName'));
 		

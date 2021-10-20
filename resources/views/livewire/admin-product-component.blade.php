@@ -190,14 +190,7 @@
 														@error('longDesc')
 															<p class="text-danger">{{$message}}</p>
 														@enderror
-													</div>		
-													<div class="col-lg-9">
-														<label>Giá sản phẩm</label>
-														<input class="form-control" wire:model="productPrice" placeholder="Nhập giá của sản phẩm">
-														@error('productPrice')
-															<p class="text-danger">{{$message}}</p>
-														@enderror
-													</div>													
+													</div>														
 												</div>
 												<div class="col-lg-3">
 												<div class="panel panel-default">
@@ -205,21 +198,21 @@
 														Hình ảnh chính sản phẩm
 													</div>
 													<div class="panel-body">
-														@if ($productImage == null)
-															<img src="{{asset('storage/images/null.jpg')}}" style="width:100%;height:200px"> </img>
+														@if ($productImage2 == null)
+															<img src="{{asset('storage/images/notfound.jpg')}}" style="width:100%;height:200px"> </img>
 														@else
-															<img src="{{asset('storage/images/'.$productImage)}}" style="width:100%;height:200px"> </img>
+															<img src="{{asset('storage/images/product/'.$productImage2)}}" style="width:100%;height:200px"> </img>
 														@endif
 													</div>
 													<!-- /.panel-body -->
 												</div>
 												<!-- /.panel -->
 												<div>
-                                                    <input id="file-upload" style="display:none" type="file" wire:model="productImage" >
+                                                    <input id="file-upload" style="display:none" type="file" wire:model="productImage2" >
 													<label for="file-upload" class="custom-file-upload" style="border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;">
 														Chọn hình ảnh
 													</label>
-													<label wire:loading wire:target="productImage">Đang tải...</label>
+													<label wire:loading wire:target="productImage2">Đang tải...</label>
 																				
 													
                                                 </div>
