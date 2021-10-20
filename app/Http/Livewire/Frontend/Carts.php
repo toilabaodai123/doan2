@@ -27,9 +27,13 @@ class Carts extends Component
 
 
     public function ApplyCouponCode(){
-        $coupon = Coupon::where('code', $this->CouponCode)->where('expiry_date', '>=' , Carbon::today())
-        ->where('cart_value', '<' , Cart::instance('cart')->subtotal())->first();
-        // dd($coupon);
+        $coupon = Coupon::where('code', $this->CouponCode)->where('cart_value', '<' , Cart::instance('cart')->subtotal())->first();
+         //dd($coupon); để xem sao chứ em chạy dcd cái này thì chưa cắt vào nhưng nó có bên trong Anh xóa rồi hả nó ak
+		 //file của m , t để vậy , sao hỏi t :)) thì đó file ckeditor đâu
+		 // m lại hỏi t :)))
+		 //trong github còn k có thì sao m hỏi t :))) xius load 
+		 // là sao
+		 
       
         if(!$coupon)
         {
@@ -67,26 +71,21 @@ class Carts extends Component
     }
     public function increaseQty(string $id)
     {
-        try{
+	
             $product = Cart::instance('cart')->get($id);
             $qty = $product->qty + 1;
             Cart::instance('cart')->update($id, $qty);
     
-        }catch(error){
-            dd('da xoa');
-        }
        
     }
     public function decreaseQty(string $id)
     {
-        try{
+
             $product = Cart::instance('cart')->get($id);
             $qty = $product->qty - 1;
             Cart::instance('cart')->update($id, $qty);
     
-        }catch(error){
-            dd('da xoa');
-        }
+
 
     }
     public function render()
