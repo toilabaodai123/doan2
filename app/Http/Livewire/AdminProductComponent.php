@@ -10,6 +10,7 @@ use App\Models\ProductModel;
 use App\Models\OrderDetail;
 use App\Models\Supplier;
 use App\Models\Image;
+use App\Models\AdminLog;
 use App\Models\Level2ProductCategory;
 use Livewire\WithFileUploads;
 use Cviebrock\EloquentSluggable\Services\SlugService;
@@ -120,6 +121,12 @@ class AdminProductComponent extends Component
 				session()->flash('success','Thêm sản phẩm thành công');
 				$this->reset();
 			}
+			
+			//Ghi vào admin logs
+			$Log = new AdminLog();
+			$Log->admin_id = auth()->user()->id;
+			$Log->note = "Tạo sản phẩm id:".$Product->id;
+			$Log->save();
 		}
 		else{
 			$Product = Product::find($this->productID);
@@ -154,6 +161,12 @@ class AdminProductComponent extends Component
 				session()->flash('success','Sửa sản phẩm thành công');
 				$this->reset();
 			}
+			
+			//Ghi vào admin logs
+			$Log = new AdminLog();
+			$Log->admin_id = auth()->user()->id;
+			$Log->note = "Sủa sản phẩm id:".$Product->id;
+			$Log->save();
 		}
 	}
 	
@@ -210,6 +223,12 @@ class AdminProductComponent extends Component
 		$deleteProduct->save();
 		
 		session()->flash('success','Xóa sản phẩm '.$deleteProduct->productName.' thành công!');
+		
+		//Ghi vào admin logs
+		$Log = new AdminLog();
+		$Log->admin_id = auth()->user()->id;
+		$Log->note = "Ẩn sản phẩm id:".$Product->id;
+		$Log->save();		
 	}
 	
 	public function lv1CategoryChange(){
