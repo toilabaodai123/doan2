@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
 			$table->integer('productPrice')->nullable();
 			$table->string('shortDesc')->nullable();
 			$table->string('longDesc')->nullable();
-			$table->integer('status')->default(1);
+			$table->integer('status')->default(2);
             $table->timestamps();
         });
     }

@@ -26,13 +26,13 @@
 														<td>{{$p->Supplier->supplierName}}</td>
 														<td>
 															@if ( $p->status == 1 )
-																<label style="color:green">Trực tuyến</label>
+																<label style="color:green">Hiển thị</label>
 															@else
-																<label style="color:gray">Đã xóa</label>
+																<label style="color:gray">Ẩn</label>
 															@endif
 														</td>
 														<td>
-															<button type="button" wire:click="show({{$p->id}})"class="btn btn-success"  data-toggle="modal" data-target="#myModal{{$p->id}}">Xem</button>
+															<button type="button" class="btn btn-success"  data-toggle="modal" data-target="#myModal{{$p->id}}">Xem</button>
 															<div class="modal fade" id="myModal{{$p->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
@@ -41,7 +41,16 @@
 																												<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
 																											</div>
 																											<div class="modal-body">
+																												<div class="panel-body">
+																													@if ($productImage2 == null)
+																														<img src="{{asset('storage/images/notfound.jpg')}}" style="width:100%;height:200px"> </img>
+																													@else
+																														<img src="{{asset('storage/images/product/'.$productImage2)}}" style="width:100%;height:200px"> </img>
+																													@endif
+																												</div>
 																												<label>Tên sản phẩm : {{$p->productName}}</label><br>
+																												<label>Slug : {{$p->productSlug}}</label><br>
+																												<label>Nhà cung cấp : {{$p->Supplier->supplierName}}</label><br>
 																												<label>Giá sản phẩm : {{$p->productPrice}}</label><br>
 																												<label>Loại sản phẩm 1 : {{$p->Category1->categoryName}}</label><br>
 																												<label>Loại sản phẩm 2 : {{$p->Category2->category_name}}</label><br>
@@ -50,18 +59,16 @@
 
 																												<label>Trạng thái : </label>
 																												@if( $p->status == 1)
-																													<label style="color:green">Trực tuyến</label>
+																													<label style="color:green">Hiển thị</label>
 																												@else
-																													<label style="color:gray">Đã xóa</label>
+																													<label style="color:gray">Ẩn</label>
 																												@endif
 																												<br>
-																												<label>Slug : </label><br>
-																												<label>Tồn kho : </label><br>
 																												
 																											</div>
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-																												<button type="button" class="btn btn-primary" >Sửa</button>
+																												<button type="button" wire:click="editProduct({{$p->id}})" data-dismiss="modal"class="btn btn-primary" >Sửa</button>
 																											</div>
 																										</div>
 																										<!-- /.modal-content -->
@@ -190,7 +197,15 @@
 														@error('longDesc')
 															<p class="text-danger">{{$message}}</p>
 														@enderror
-													</div>														
+													</div>
+													<div class="col-lg-9">
+														<div class="checkbox">
+															<label>
+																<input type="checkbox" wire:model="status">Ẩn
+															</label>
+															
+														</div>	
+													</div>
 												</div>
 												<div class="col-lg-3">
 												<div class="panel panel-default">

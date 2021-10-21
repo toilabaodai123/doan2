@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductSize;
 use App\Models\ProductModel;
+use App\Models\OrderDetail;
 use App\Models\Supplier;
 use App\Models\Image;
 use App\Models\Level2ProductCategory;
@@ -38,6 +39,7 @@ class AdminProductComponent extends Component
 	
 	public $productImport;
 	public $uploadedImage;
+	public $status;
 	
 	public $readyToLoad = false;
 	public $tempImageUrl;
@@ -79,7 +81,6 @@ class AdminProductComponent extends Component
 		$this->Products = Product::with('Category1')
 								->with('Supplier')
 								->with('Category2')
-								->where('status',1)
 								->get();//->dd();
 		$this->ProductCategories = ProductCategory::all();
 		$this->Suppliers = Supplier::all();
@@ -96,9 +97,12 @@ class AdminProductComponent extends Component
 			$Product->CategoryID2 = $this->CategoryID2;
 			$Product->shortDesc = $this->shortDesc;
 			$Product->longDesc = $this->longDesc;
+			if($this->status == true)
+				$Product->status = 1;
+			else
+				$Product->status = 2;
 
 			if($Product->save()){
-				
 				//Hình ảnh
 				if($this->productImage2!= null){
 					$name=$this->productImage2->getClientOriginalName();
@@ -111,17 +115,11 @@ class AdminProductComponent extends Component
 					$PrimaryImage->productID = $Product->id;
 					$PrimaryImage->save();
 				}
-				
-				/*
-				//Thêm mã sp vào slug
-				$Product->productSlug = $Product->productSlug.'-SP'.$Product->id;
-				$Product->save();
-				*/
+
+
 				session()->flash('success','Thêm sản phẩm thành công');
 				$this->reset();
 			}
-			
-			
 		}
 		else{
 			$Product = Product::find($this->productID);
@@ -133,6 +131,10 @@ class AdminProductComponent extends Component
 			$Product->longDesc = $this->longDesc;
 			$slug = SlugService::createSlug(Product::class, 'productSlug', $Product->productName);
 			$Product->productSlug = $slug.'-SP'.$Product->id;
+			if($this->status == true)
+				$Product->status = 2;
+			else
+				$Product->status = 1;
 			if($Product->save()){
 				
 				
@@ -176,22 +178,23 @@ class AdminProductComponent extends Component
 	public function editProduct($id){
 		$editProduct = Product::find($id);
 
-		//dd($imgEProduct->imageName);
-		//dd($imgEProduct);
-		
-		$this->productID = $editProduct->id;
 
+		$this->productID = $editProduct->id;
 		$this->productName = $editProduct->productName;
 		$this->CategoryID = $editProduct->CategoryID;
 		if($this->CategoryID)
 			$this->ProductCategories2 = Level2ProductCategory::where('lv1PCategoryID',$this->CategoryID)->get();
+		if($editProduct->status == 2)
+			$this->status = true;
+		else
+			$this->status = null;
+			
 		$this->CategoryID2 = $editProduct->CategoryID2;
 		$this->shortDesc = $editProduct->shortDesc;
 		$this->longDesc = $editProduct->longDesc;
 		$this->productPrice = $editProduct->productPrice;
 		$this->supplierID = $editProduct->supplierID;
 		$imgEProduct = Image::where('productID',$id)->get()->last();
-		//dd($imgEProduct == null);
 		if($imgEProduct != null){
 			$this->productImage2 = $imgEProduct->imageName;
 			$this->tempImageUrl = $imgEProduct->imageName;
@@ -199,8 +202,6 @@ class AdminProductComponent extends Component
 		else{
 			$this->productImage2=null;
 		}
-		//dd($this->productImage->get('imageName'));
-		
 	}
 	
 	public function deleteProduct($id){
