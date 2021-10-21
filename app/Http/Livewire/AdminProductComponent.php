@@ -99,9 +99,9 @@ class AdminProductComponent extends Component
 			$Product->shortDesc = $this->shortDesc;
 			$Product->longDesc = $this->longDesc;
 			if($this->status == true)
-				$Product->status = 1;
-			else
 				$Product->status = 2;
+			else
+				$Product->status = 1;
 
 			if($Product->save()){
 				//Hình ảnh
@@ -126,6 +126,8 @@ class AdminProductComponent extends Component
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
 			$Log->note = "Tạo sản phẩm id:".$Product->id;
+			date_default_timezone_set('Asia/Ho_Chi_Minh');
+			$Log->date = now();				
 			$Log->save();
 		}
 		else{
@@ -165,7 +167,9 @@ class AdminProductComponent extends Component
 			//Ghi vào admin logs
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = "Sủa sản phẩm id:".$Product->id;
+			$Log->note = "Sửa sản phẩm id:".$Product->id;
+			date_default_timezone_set('Asia/Ho_Chi_Minh');
+			$Log->date = now();				
 			$Log->save();
 		}
 	}
@@ -219,7 +223,7 @@ class AdminProductComponent extends Component
 	
 	public function deleteProduct($id){
 		$deleteProduct = Product::find($id);
-		$deleteProduct->status = 0;
+		$deleteProduct->status = 2;
 		$deleteProduct->save();
 		
 		session()->flash('success','Xóa sản phẩm '.$deleteProduct->productName.' thành công!');
@@ -227,7 +231,9 @@ class AdminProductComponent extends Component
 		//Ghi vào admin logs
 		$Log = new AdminLog();
 		$Log->admin_id = auth()->user()->id;
-		$Log->note = "Ẩn sản phẩm id:".$Product->id;
+		$Log->note = "Ẩn sản phẩm id:".$id;
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+		$Log->date = now();		
 		$Log->save();		
 	}
 	
