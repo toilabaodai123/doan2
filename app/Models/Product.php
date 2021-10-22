@@ -12,9 +12,11 @@ use App\Models\Level2ProductCategory;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Product extends Model
 {
+	use Sluggable;
     use HasFactory;
 	
 	public function Models() {
@@ -47,5 +49,9 @@ class Product extends Model
 		return $this->hasMany(Wishlist::class,'productID','id');
 	}
 
-
+	
+	public function sluggable(){
+		return ['productSlug' => ['source' => 'productName'] ];
+	}
+	
 }

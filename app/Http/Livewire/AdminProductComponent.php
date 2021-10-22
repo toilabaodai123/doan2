@@ -7,14 +7,18 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductSize;
 use App\Models\ProductModel;
+use App\Models\OrderDetail;
 use App\Models\Supplier;
 use App\Models\Image;
+use App\Models\AdminLog;
 use App\Models\Level2ProductCategory;
 use Livewire\WithFileUploads;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class AdminProductComponent extends Component
 {
 	use WithFileUploads;
+
 	
 	public $Suppliers;
 	public $Products;
@@ -25,7 +29,8 @@ class AdminProductComponent extends Component
 	public $productID;
 	public $productName;
 	public $productPrice;
-	public $productImage;	
+	public $productImage;
+	public $productImage2;		
 	public $CategoryID;
 	public $CategoryID2;
 	public $longDesc;
@@ -35,8 +40,10 @@ class AdminProductComponent extends Component
 	
 	public $productImport;
 	public $uploadedImage;
+	public $status;
 	
 	public $readyToLoad = false;
+	public $tempImageUrl;
 	
 	
 	protected $rules=[
@@ -47,6 +54,7 @@ class AdminProductComponent extends Component
 		'shortDesc' => 'required',
 		'longDesc' => 'required',
 		'productPrice' => 'required|numeric',
+
 	];
 	
 	protected $messages = [
@@ -74,7 +82,6 @@ class AdminProductComponent extends Component
 		$this->Products = Product::with('Category1')
 								->with('Supplier')
 								->with('Category2')
-								->where('status',1)
 								->get();//->dd();
 		$this->ProductCategories = ProductCategory::all();
 		$this->Suppliers = Supplier::all();
@@ -82,79 +89,95 @@ class AdminProductComponent extends Component
 					->layout('layouts.template');
     }
 	
-	public function submit(){
-		//dd($ProductID);
+	public function submit(){	
 		if($this->productID == null){
-
-			$validatedData = $this->validate();
 			$Product = new Product();
 			$Product->productName = $this->productName;
-			$Product->productPrice = $this->productPrice ;
-			$Product->shortDesc = $this->shortDesc;
-			$Product->longDesc = $this->longDesc;
+			$Product->supplierID = $this->supplierID;
 			$Product->CategoryID = $this->CategoryID;
 			$Product->CategoryID2 = $this->CategoryID2;
-			$Product->supplierID = $this->supplierID;
-			//$this->productImage->storePublicly('images', $name2);
+			$Product->shortDesc = $this->shortDesc;
+			$Product->longDesc = $this->longDesc;
+			if($this->status == true)
+				$Product->status = 2;
+			else
+				$Product->status = 1;
 
-			$Product->save();
-		
-			$ProductID = Product::all()->last()->id;
-			$ProductSizes = ProductSize::all();
-			foreach($ProductSizes as $size){
-				$ProductModel = new ProductModel();
-				$ProductModel->productID = $ProductID;
-				$ProductModel->sizeID = $size->id;
-				$ProductModel->save();
+			if($Product->save()){
+				//Hình ảnh
+				if($this->productImage2!= null){
+					$name=$this->productImage2->getClientOriginalName();
+					$name2 = date("Y-m-d-H-i-s").'-'.$name;
+					$this->productImage2->storeAs('/images/product/',$name2,'public');
+						
+					$PrimaryImage = new Image();
+					$PrimaryImage->imageName = $name2;
+					$PrimaryImage->imageType = 1; //1 = Hình ảnh chính
+					$PrimaryImage->productID = $Product->id;
+					$PrimaryImage->save();
+				}
+
+
+				session()->flash('success','Thêm sản phẩm thành công');
+				$this->reset();
 			}
 			
-			if($this->productImage){
-				$name=$this->productImage->getClientOriginalName();
-				$name2 = date("Y-m-d-H-i-s").'-'.$name;
-				$this->productImage->storeAs('images',$name2,'public');
-				
-				$PrimaryImage = new Image();
-				$PrimaryImage->imageName = $name2;
-				$PrimaryImage->imageType = 1; //1 = Hình ảnh chính
-				$PrimaryImage->productID = $ProductID;
-				$PrimaryImage->save();
-			}
-
-
-			
-			$this->reset();
-			session()->flash('success','Thêm thành công!');
+			//Ghi vào admin logs
+			$Log = new AdminLog();
+			$Log->admin_id = auth()->user()->id;
+			$Log->note = "Tạo sản phẩm id:".$Product->id;
+			date_default_timezone_set('Asia/Ho_Chi_Minh');
+			$Log->date = now();				
+			$Log->save();
 		}
 		else{
-			$edit = Product::find($this->productID);
-			$edit->productName = $this->productName;
-			$edit->CategoryID = $this->CategoryID;
-			$edit->CategoryID2 = $this->CategoryID2;
-			$edit->productPrice = $this->productPrice;
-			$edit->shortDesc = $this->shortDesc;
-			$edit->longDesc = $this->longDesc;
-			$edit->supplierID = $this->supplierID;
-			$edit->save();
-			
-			if($this->productImage && $this->productImage->getClientOriginalName()!=null ){
-				$name=$this->productImage->getClientOriginalName();
-				$name2 = date("Y-m-d-H-i-s").'-'.$name;
-				$this->productImage->storeAs('images',$name2,'public');
+			$Product = Product::find($this->productID);
+			$Product->productName = $this->productName;
+			$Product->supplierID = $this->supplierID;
+			$Product->CategoryID = $this->CategoryID;
+			$Product->CategoryID2 = $this->CategoryID2;
+			$Product->shortDesc = $this->shortDesc;
+			$Product->longDesc = $this->longDesc;
+			$slug = SlugService::createSlug(Product::class, 'productSlug', $Product->productName);
+			$Product->productSlug = $slug.'-SP'.$Product->id;
+			if($this->status == true)
+				$Product->status = 2;
+			else
+				$Product->status = 1;
+			if($Product->save()){
 				
-				$PrimaryImage = new Image();
-				$PrimaryImage->imageName = $name2;
-				$PrimaryImage->imageType = 1; //1 = Hình ảnh chính
-				$PrimaryImage->productID = $this->productID;
-				$PrimaryImage->save();
+				
+				//Hình ảnh
+				if($this->productImage2 != null && $this->productImage2 != $this->tempImageUrl){
+					$name=$this->productImage2->getClientOriginalName();
+					$name2 = date("Y-m-d-H-i-s").'-'.$name;
+					$this->productImage2->storeAs('/images/product/',$name2,'public');
+						
+					$PrimaryImage = new Image();
+					$PrimaryImage->imageName = $name2;
+					$PrimaryImage->imageType = 1; //1 = Hình ảnh chính
+					$PrimaryImage->productID = $Product->id;
+					$PrimaryImage->save();
+				}
+
+				session()->flash('success','Sửa sản phẩm thành công');
+				$this->reset();
 			}
 			
-			$this->reset();
-			session()->flash('success','Sửa thành công!');
+			//Ghi vào admin logs
+			$Log = new AdminLog();
+			$Log->admin_id = auth()->user()->id;
+			$Log->note = "Sửa sản phẩm id:".$Product->id;
+			date_default_timezone_set('Asia/Ho_Chi_Minh');
+			$Log->date = now();				
+			$Log->save();
 		}
 	}
 	
 	
 	public function btnReset(){
+		//$this->productImage2 ="A";
+		dd($this);
 		$this->reset();
 	}
 	
@@ -172,37 +195,46 @@ class AdminProductComponent extends Component
 	public function editProduct($id){
 		$editProduct = Product::find($id);
 
-		//dd($imgEProduct->imageName);
-		//dd($imgEProduct);
-		
-		$this->productID = $editProduct->id;
 
+		$this->productID = $editProduct->id;
 		$this->productName = $editProduct->productName;
 		$this->CategoryID = $editProduct->CategoryID;
 		if($this->CategoryID)
 			$this->ProductCategories2 = Level2ProductCategory::where('lv1PCategoryID',$this->CategoryID)->get();
+		if($editProduct->status == 2)
+			$this->status = true;
+		else
+			$this->status = null;
+			
 		$this->CategoryID2 = $editProduct->CategoryID2;
 		$this->shortDesc = $editProduct->shortDesc;
 		$this->longDesc = $editProduct->longDesc;
 		$this->productPrice = $editProduct->productPrice;
 		$this->supplierID = $editProduct->supplierID;
 		$imgEProduct = Image::where('productID',$id)->get()->last();
-		if($imgEProduct = Image::where('productID',$id)->get()->last()){
-			$this->productImage = $imgEProduct->imageName;
+		if($imgEProduct != null){
+			$this->productImage2 = $imgEProduct->imageName;
+			$this->tempImageUrl = $imgEProduct->imageName;
 		}
 		else{
-			$this->productImage=null;
+			$this->productImage2=null;
 		}
-		//dd($this->productImage->get('imageName'));
-		
 	}
 	
 	public function deleteProduct($id){
 		$deleteProduct = Product::find($id);
-		$deleteProduct->status = 0;
+		$deleteProduct->status = 2;
 		$deleteProduct->save();
 		
 		session()->flash('success','Xóa sản phẩm '.$deleteProduct->productName.' thành công!');
+		
+		//Ghi vào admin logs
+		$Log = new AdminLog();
+		$Log->admin_id = auth()->user()->id;
+		$Log->note = "Ẩn sản phẩm id:".$id;
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+		$Log->date = now();		
+		$Log->save();		
 	}
 	
 	public function lv1CategoryChange(){
