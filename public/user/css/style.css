@@ -97,9 +97,52 @@ a:hover,
 a:focus {
 	text-decoration: none;
 	outline: none;
-	color: #ffffff;
+	/* color: #ffffff; */
 }
+a {
+	text-decoration: none !important;
+}
+button.link {
+    background: none;
+    border: none;
+    padding: 0;
+}
+.cart_size {
+    position: relative;
+}
+.dropdown_menu_cart {
+    position: absolute;
+	width: 250px;
+	z-index: -1;
+    left: 0px;
+    transform: translateX(-50%);
+}
+.cart_size.active .dropdown_menu_cart {
+	z-index: 99;
+}
+.dropdown_menu_cart .product__details__option__size label {
 
+	margin-bottom: 10px;
+}
+.dropdown_menu_cart .product__details__option__size {
+    margin: 0;
+    border-color: rgba(0,0,0,.09);
+    box-shadow: 0 5px 10px 0 rgb(0 0 0 / 9%);
+	padding: 50px;
+    background: #fff;
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
+}
+.cart_size.active > .link + .dropdown_menu_cart .product__details__option__size{
+    opacity: 1;
+} 
+.cart_size.active i{
+    transform: rotate(180deg);
+    transition: all 0.3s ease-in-out;
+}
+.cart_size i{
+    transition: all 0.3s ease-in-out;
+}
 ul,
 ol {
 	padding: 0;
@@ -2329,7 +2372,7 @@ ol {
 }
 
 .shopping__cart__table table tbody tr td.product__cart__item {
-	width: 400px;
+	width: 300px;
 }
 
 .shopping__cart__table table tbody tr td.product__cart__item .product__cart__item__pic {
@@ -2357,17 +2400,28 @@ ol {
 .shopping__cart__table table tbody tr td.quantity__item {
 	width: 175px;
 }
+.shopping__cart__table table tbody tr td.product__cart__size {
+	width: 175px;
+}
+.shopping__cart__table table tbody tr td.product__cart__size button {
+	border: 1px solid #ccc;
+    padding: 0px 15px;
+}
 
 .shopping__cart__table table tbody tr td.quantity__item .quantity .pro-qty-2 {
 	width: 80px;
 }
-
+.btn_a a {
+    padding: 0;
+    margin: 0;
+}
 .shopping__cart__table table tbody tr td.quantity__item .quantity .pro-qty-2 input {
 	width: 50px;
 	border: none;
 	text-align: center;
 	color: #111111;
 	font-size: 16px;
+	border: 1px solid #ccc;
 }
 
 .shopping__cart__table table tbody tr td.quantity__item .quantity .pro-qty-2 .qtybtn {

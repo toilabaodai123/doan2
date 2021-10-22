@@ -69,20 +69,5 @@ class Index extends Component
         $flight->save();
     }
 
-    public function addCart($id)
-    {
-        $this->cart = Product::with('Pri_Image')->where('id', $id)->first();
-        $this->size =  ProductModel::with('Size')->where('productID',$id)->get();
-        // dd($this->size);
-
-        Cart::instance('cart')->add(['id' =>$id, 'name' =>$this->cart->productName,
-         'qty' => 1,  
-         'price' => $this->cart->productPrice, 
-       
-         'options' => ['image' => $this->cart->Pri_Image->imageName,
-        //  'size' => $this->size->id,
-         ]])
-         ->associate('App\Models\Product');
-        session()->flash('success','Item added in cart');
-        }
+   
 }

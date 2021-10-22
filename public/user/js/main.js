@@ -157,46 +157,67 @@
         type: 'iframe'
     });
 
+
+    // document.querySelector('#menu-size').addEventListener('click', () => document.querySelector
+    // ('#size-menu').classList.add('active'))
+    //   document.querySelectorAll('#').addEventListener('click', () => document.querySelector
+    // ('#size-menu').classList.remove('active'))
+
+    document.addEventListener('click', e => {
+        const isDropdownButton = e.target.matches("[data-dropdown-button]")
+        if(!isDropdownButton && e.target.closest("[data-dropdown]") != null) return
+
+        let currentDropdown
+        if (isDropdownButton) {
+            currentDropdown = e.target.closest('[data-dropdown]')
+            currentDropdown.classList.toggle('active')
+        }
+        document.querySelectorAll("[data-dropdown].active").forEach(dropdown =>{
+            if(dropdown === currentDropdown) return
+
+            dropdown.classList.remove('active')
+        })
+    })
     /*-------------------
 		Quantity change
 	--------------------- */
-    var proQty = $('.pro-qty');
-    proQty.prepend('<span class="fa fa-angle-up dec qtybtn"></span>');
-    proQty.append('<span class="fa fa-angle-down inc qtybtn"></span>');
-    proQty.on('click', '.qtybtn', function () {
-        var $button = $(this);
-        var oldValue = $button.parent().find('input').val();
-        if ($button.hasClass('inc')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            // Don't allow decrementing below zero
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 0;
-            }
-        }
-        $button.parent().find('input').val(newVal);
-    });
+    // var proQty = $('.pro-qty');
+    // proQty.prepend('<span class="fa fa-angle-up dec qtybtn"></span>');
+    // proQty.append('<span class="fa fa-angle-down inc qtybtn"></span>');
+    // proQty.on('click', '.qtybtn', function () {
+    //     var $button = $(this);
+    //     var oldValue = $button.parent().find('input').val();
+    //     if ($button.hasClass('inc')) {
+    //         var newVal = parseFloat(oldValue) + 1;
+    //     } else {
+    //         // Don't allow decrementing below zero
+    //         if (oldValue > 0) {
+    //             var newVal = parseFloat(oldValue) - 1;
+    //         } else {
+    //             newVal = 0;
+    //         }
+    //     }
+    //     $button.parent().find('input').val(newVal);
+    // });
 
-    var proQty = $('.pro-qty-2');
-    proQty.prepend('<span class="fa fa-angle-left dec qtybtn"></span>');
-    proQty.append('<span class="fa fa-angle-right inc qtybtn"></span>');
-    proQty.on('click', '.qtybtn', function () {
-        var $button = $(this);
-        var oldValue = $button.parent().find('input').val();
-        if ($button.hasClass('inc')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            // Don't allow decrementing below zero
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 0;
-            }
-        }
-        $button.parent().find('input').val(newVal);
-    });
+    // var proQty = $('.pro-qty-2');
+    // proQty.prepend('<span class="fa fa-angle-left dec qtybtn"></span>');
+    // proQty.append('<span class="fa fa-angle-right inc qtybtn"></span>');
+    // proQty.on('click', '.qtybtn', function () {
+    //     var $button = $(this);
+    //     var oldValue = $button.parent().find('input').val();
+    //     if ($button.hasClass('inc')) {
+    //         var newVal = parseFloat(oldValue) + 1;
+    //     } else {
+    //         // Don't allow decrementing below zero
+    //         if (oldValue > 0) {
+    //             var newVal = parseFloat(oldValue) - 1;
+    //         } else {
+    //             newVal = 0;
+    //         }
+    //     }
+    //     $button.parent().find('input').val(newVal);
+    // });
 
     /*------------------
         Achieve Counter

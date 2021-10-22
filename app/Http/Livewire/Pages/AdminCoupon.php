@@ -77,12 +77,4 @@ class AdminCoupon extends Component
         $flight->delete();
 
     }
-    // public function updated($fields){
-    //     $this->validateOnly($fields,[
-    //         'code' => 'requird|unique:coupons',
-    //         'type' => 'requird',
-    //         'value' => 'requird|numeric',
-    //         'cart_value' => 'requird|numeric',
-    //     ]);
-    // }
 }

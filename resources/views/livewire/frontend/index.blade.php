@@ -105,26 +105,9 @@
                         </div>
                         <div class="product__item__text">
                             <h6>{{ $product->productName }}</h6>
-                            <a href="javascript:void(0)"  id="add-cart" wire:click="addCart({{ $product->id }})"  class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
+                            <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart" wire:click="addCart({{ $product->id }})"  class="add-cart">+ Chi tiết sản phẩm</a>
+                  
                             <h5>${{ $product->productPrice }}</h5>
-                            <div class="product__color__select">
-                                <label for="pc-1">
-                                    <input type="radio" id="pc-1">
-                                </label>
-                                <label class="active black" for="pc-2">
-                                    <input type="radio" id="pc-2">
-                                </label>
-                                <label class="grey" for="pc-3">
-                                    <input type="radio" id="pc-3">
-                                </label>
-                            </div>
                         </div>
                     </div>
                 </div>

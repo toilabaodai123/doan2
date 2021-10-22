@@ -26,7 +26,8 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Product</th>
+                                    <th>Product</th>  
+                                    <th>Size</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
                                     <th></th>
@@ -38,19 +39,38 @@
                                 <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
-                                            <img src="{{asset('storage/images/')}}/{{$cart->options->image}}" style="width:75px;height:75px;object-fit: cover;" alt="">
+                                            <img src="{{asset('storage/images/'.$cart->options->image)}}" style="width:75px;height:75px;object-fit: cover;" alt="">
                                         </div>
                                         <div class="product__cart__item__text">
                                             <h6>{{$cart->name}}</h6>
                                             <h5>${{$cart->price}}</h5>
                                         </div>
                                     </td>
+                                    <td class="product__cart__size">
+                                        <div class="cart_size"  data-dropdown>
+                                            <button class="link" data-dropdown-button>{{$cart->options->size}} <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="dropdown_menu_cart" >
+                                                <div class="product__details__option__size">
+                                                    <span>Size:</span>
+                                                    @foreach($sizess as $sizes)
+                                                    <label for="{{$sizes->sizeName}}" wire:click= "updateSize('{{$cart->rowId}}','{{$sizes->sizeName}}','{{$cart->options->image}}')">{{$sizes->sizeName}}
+                                                        <input type="radio" id="xxl">
+                                                    </label>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </td>
                                     <td class="quantity__item">
                                         <div class="quantity">
                                             <div class="pro-qty-2" style="position: relative;display: flex;justify-content: center;align-items: center;">
-                                                <a href="#" wire:click.prevent="decreaseQty('{{ $cart->rowId }}')" class="btn btn-increase"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
+                                                <div class="btn_a">
+                                                    <a href="#" wire:click.prevent="increaseQty('{{ $cart->rowId }}')" class="btn btn-increase"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                                    <a href="#" wire:click.prevent="decreaseQty('{{ $cart->rowId }}')" class="btn btn-increase"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
+                                                </div>
                                                 <input type="text"  min="1" value="{{$cart->qty}}">
-                                                <a href="#" wire:click.prevent="increaseQty('{{ $cart->rowId }}')" class="btn btn-increase"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                                             </div>
                                         </div>
                                     </td>

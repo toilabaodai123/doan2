@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductModel;
 use App\Models\Order;
 use App\Models\Coupon;
+use App\Models\ProductSize;
 use App\Models\OrderDetail;
 use Cart;
 use Carbon\Carbon;
@@ -15,6 +16,7 @@ use Carbon\Carbon;
 class Carts extends Component
 {
 	public $cart;
+	public $size;
 	public $updateQty;
 
 	public $CouponCode;
@@ -23,18 +25,27 @@ class Carts extends Component
 	public $taxlAfterDiscount;
 	public $totallAfterDiscount;
 
-
-
-
+    public function updateSize(string $id, string $size, string $image){
+        Cart::instance('cart')->update($id, ['options' => ['size' => $size, 'image' => $image ] ]);
+        $this->emitTo('pages.cart-count-component', 'refreshComponent');
+    }
+    public function render()
+    { 
+        $this->sizess = ProductSize::all();
+        if(session()->has('coupon'))
+        {
+            if(Cart::instance('cart')->subtotal() < session()->get('coupon')['cart_value']){
+                session()->forget('coupon');
+            }else{
+                $this->calculateDiscounts();
+            }
+        }
+        return view('livewire.frontend.carts')->layout('layouts.template3');
+    
+    }
     public function ApplyCouponCode(){
         $coupon = Coupon::where('code', $this->CouponCode)->where('cart_value', '<' , Cart::instance('cart')->subtotal())->first();
-         //dd($coupon); để xem sao chứ em chạy dcd cái này thì chưa cắt vào nhưng nó có bên trong Anh xóa rồi hả nó ak
-		 //file của m , t để vậy , sao hỏi t :)) thì đó file ckeditor đâu
-		 // m lại hỏi t :)))
-		 //trong github còn k có thì sao m hỏi t :))) xius load 
-		 // là sao
-		 
-      
+ 
         if(!$coupon)
         {
             session()->flash('message', 'Coupon is not invalid');
@@ -46,7 +57,6 @@ class Carts extends Component
                 'value' => $coupon->value,
                 'cart_value' => $coupon->cart_value,
             ]);
-        
     }
     public function calculateDiscounts(){
         if(session()->has('coupon')){
@@ -71,39 +81,28 @@ class Carts extends Component
     }
     public function increaseQty(string $id)
     {
-	
             $product = Cart::instance('cart')->get($id);
             $qty = $product->qty + 1;
-            Cart::instance('cart')->update($id, $qty);
-    
-       
+            Cart::instance('cart')->update($id, $qty);  
+        $this->emitTo('pages.cart-count-component', 'refreshComponent');
+
     }
     public function decreaseQty(string $id)
     {
-
             $product = Cart::instance('cart')->get($id);
             $qty = $product->qty - 1;
             Cart::instance('cart')->update($id, $qty);
-    
+        $this->emitTo('pages.cart-count-component', 'refreshComponent');
 
-
-    }
-    public function render()
-    { 
-        if(session()->has('coupon'))
-        {
-            if(Cart::instance('cart')->subtotal() < session()->get('coupon')['cart_value']){
-                session()->forget('coupon');
-            }else{
-                $this->calculateDiscounts();
-            }
-        }
-        return view('livewire.frontend.carts')->layout('layouts.template3');
     }
     public function removeCart(string $id){
         Cart::instance('cart')->remove($id);
+        $this->emitTo('pages.cart-count-component', 'refreshComponent');
+
     }
     public function destroyCart(string $id){
-        Cart::instance('cart')->remove($id);
+        Cart::instance('cart')->destroy($id);
+        $this->emitTo('pages.cart-count-component', 'refreshComponent');
+
     }
 }

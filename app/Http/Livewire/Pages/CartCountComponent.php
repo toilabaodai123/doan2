@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Http\Livewire\Pages;
+
+use Livewire\Component;
+
+class CartCountComponent extends Component
+{
+
+
+    public $listeners = [
+        'refreshComponent' => '$refresh'
+
+    ];
+    public function render()
+    {
+        return view('livewire.pages.cart-count-component');
+    }
+}

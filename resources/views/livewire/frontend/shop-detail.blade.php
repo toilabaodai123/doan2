@@ -31,45 +31,36 @@
                     <div class="col-lg-8">
                         <div class="product__details__text">
                             <h4>{{$pro->productName}}</h4>
-                            <h3>{{$pro->productPrice}} VND<span>70.00</span></h3>
+                            <h3>{{ number_format($pro->productPrice) }} VND</h3>
                             <p>{{$pro->shortDesc}}</p>
                             <div class="product__details__option">
-                                <!-- <style>
-                                    .product__details__option__size {
-                                            display: inline-block;
-                                            margin-right: 50px;
-                                            margin: auto;
-                                        }
-                                        .product__details__last__option ul {
-                                            padding-top: 0px;
-                                        }
-                                </style> -->
-                                <div class="product__details__option__size">
+                                <div class="product__details__option__size" wire:ignore>
                                     <span>Size:</span>
-                                    <label for="xxl">xxl
-                                        <input type="radio" id="xxl">
+                                    @forelse($size as $size)
+                                    <label for="{{$size->sizeName}}" value="{{$size->id}}"
+                                         wire:click="size({{$size->id}})">{{$size->sizeName}}
+                                        <input type="radio"  id="xxl" >
                                     </label>
-                                    <label class="active" for="xl">xl
-                                        <input type="radio" id="xl">
-                                    </label>
-                                    <label for="l">l
-                                        <input type="radio" id="l">
-                                    </label>
-                                    <label for="sm">s
-                                        <input type="radio" id="sm">
-                                    </label>
+                                  @empty
+                                  Không có size san phẩm
+                                  @endforelse
+                                  @if (session('message_size'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ session('message_size') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="product__details__cart__option">
                                 <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1">
+                                    <div class="pro-qty" >
+                                        <input type="number" value="{{$cart_qty}}" min="1" wire:model="cart_qty">
                                     </div>
                                 </div>
                                 <a href="javascript:void(0)" wire:click="addCart({{ $pro->id }})" class="primary-btn">add to cart</a>
                             </div>
                             <div class="product__details__btns__option">
-                                <a href="#"  ><i class="fa fa-heart"></i> add to wishlist</a>
+                                <a href="#" wire:click.prevent="addToWishlisht({{ $pro->id }})"><i class="fa fa-heart"></i> add to wishlist</a>
                             </div>
                             <div class="product__details__last__option">
                                 <ul>
