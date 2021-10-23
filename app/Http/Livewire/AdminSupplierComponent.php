@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Supplier;
+use App\Models\AdminLog;
 
 class AdminSupplierComponent extends Component
 {
@@ -41,28 +42,63 @@ class AdminSupplierComponent extends Component
 	
 	public function submit(){
 		$this->validate();
-		$Supplier = new Supplier();
-		$Supplier->supplierName = $this->supplierName;
-		$Supplier->supplierMail = $this->supplierMail;
-		$Supplier->supplierPhone = $this->supplierPhone;
-		$Supplier->save();
-		
+		if($this->supplierID == null){
+			$Supplier = new Supplier();
+			$Supplier->supplierName = $this->supplierName;
+			$Supplier->supplierMail = $this->supplierMail;
+			$Supplier->supplierPhone = $this->supplierPhone;
+			$Supplier->save();
+			
+			$Log = new AdminLog();
+			$Log->admin_id = auth()->user()->id;
+			$Log->note = "Thêm nhà cung cấp id:".$Supplier->id;
+			date_default_timezone_set('Asia/Ho_Chi_Minh');
+			$Log->date = now();				
+			$Log->save();
+			session()->flash('success','Đã thêm thành công nhà cung cấp '.$Supplier->supplierName);
+		}else{
+			$Supplier = Supplier::find($this->supplierID);
+			$Supplier->supplierName = $this->supplierName;
+			$Supplier->supplierMail = $this->supplierMail;
+			$Supplier->supplierPhone = $this->supplierPhone;
+			$Supplier->save();
+			
+			$Log = new AdminLog();
+			$Log->admin_id = auth()->user()->id;
+			$Log->note = "Sửa nhà cung cấp id:".$Supplier->id;
+			date_default_timezone_set('Asia/Ho_Chi_Minh');
+			$Log->date = now();				
+			$Log->save();	
+			session()->flash('success','Đã sửa thành công nhà cung cấp '.$Supplier->supplierName);
+		}
 		$this->reset();
-		session()->flash('success','Đã thêm thành công nhà cung cấp '.$Supplier->supplierName);
+		
 	}
 	
 	public function editSupplier($id){
 		$Supplier = Supplier::find($id);
-		$this->supplierID = $Supplier->id;
-		$this->supplierName = $Supplier->supplierName;
-		$this->supplierPhone = $Supplier->supplierPhone;
-		$this->supplierMail = $Supplier->supplierMail;
+		if($Supplier != null){
+			$this->supplierID = $Supplier->id;
+			$this->supplierName = $Supplier->supplierName;
+			$this->supplierPhone = $Supplier->supplierPhone;
+			$this->supplierMail = $Supplier->supplierMail;
+		}
+		else{
+			session()->flash('success','Lỗi');
+		}
 	}
 	
 	public function deleteSupplier($id){
 		$Supplier = Supplier::find($id);
 		$Supplier->status=0;
 		$Supplier->save();
+		
+		$Log = new AdminLog();
+		$Log->admin_id = auth()->user()->id;
+		$Log->note = "Ẩn nhà cung cấp id:".$id;
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+		$Log->date = now();				
+		$Log->save();		
 	}
 	
 	public function resetBtn(){
