@@ -80,7 +80,7 @@ Route::post('update-blog/{id}',[App\Http\Controllers\Controller::class, 'update_
 // end Frontend
 
 
-Route::get('trang-chu',IndexComponent::class);
+Route::get('trang-chu',IndexComponent::class)->middleware('VisitCounter');
 Route::get('san-pham/{id}',ProductDetailComponent::class);
 Route::get('gio-hang',CartComponent::class);
 
