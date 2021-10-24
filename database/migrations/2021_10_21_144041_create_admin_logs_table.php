@@ -17,7 +17,6 @@ class CreateAdminLogsTable extends Migration
             $table->id();
 			$table->unsignedbiginteger('admin_id');
 			$table->string('note');
-			$table->dateTime('date');
             $table->timestamps();
 			
 			$table->foreign('admin_id')->references('id')->on('users');

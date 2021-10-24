@@ -11,6 +11,7 @@ use App\Models\ProductImportBillDetail;
 use App\Models\ProductCategory;
 use App\Models\Level2ProductCategory;
 use App\Models\User;
+use App\Models\AdminLog;
 
 
 use Livewire\WithPagination;
@@ -120,9 +121,18 @@ class AdminProductImportComponent extends Component
 		$this->bill_total += ( $this->bill_total * ( $this->vat ) / 100 );
 		$Bill->total = $this->bill_total;
 		$Bill->save();
+
+		$Log = new AdminLog();
+		$Log->admin_id = auth()->user()->id;
+		$Log->note = "Đã tạo hóa đơn nhập hàng id:".$Bill->id;
+		//date_default_timezone_set('Asia/Ho_Chi_Minh');
+		$Log->date = now();
+		$Log->save();	
+		
+		
 		session()->flash('success','Thành công');
 		$this->reset();
-
+		
 	}
 	
 	
