@@ -13,6 +13,7 @@ class AdminSupplierComponent extends Component
 	public $supplierName;
 	public $supplierMail;
 	public $supplierPhone;
+	public $status;
 	
 	
 	protected $rules = [
@@ -47,6 +48,10 @@ class AdminSupplierComponent extends Component
 			$Supplier->supplierName = $this->supplierName;
 			$Supplier->supplierMail = $this->supplierMail;
 			$Supplier->supplierPhone = $this->supplierPhone;
+			if($this->status == true)
+				$Supplier->status = 0;
+			else
+				$Supplier->status = 1;
 			$Supplier->save();
 			
 			$Log = new AdminLog();
@@ -61,6 +66,10 @@ class AdminSupplierComponent extends Component
 			$Supplier->supplierName = $this->supplierName;
 			$Supplier->supplierMail = $this->supplierMail;
 			$Supplier->supplierPhone = $this->supplierPhone;
+			if($this->status == true)
+				$Supplier->status = 0;
+			else
+				$Supplier->status = 1;
 			$Supplier->save();
 			
 			$Log = new AdminLog();
@@ -82,6 +91,10 @@ class AdminSupplierComponent extends Component
 			$this->supplierName = $Supplier->supplierName;
 			$this->supplierPhone = $Supplier->supplierPhone;
 			$this->supplierMail = $Supplier->supplierMail;
+			if($Supplier->status != 1)
+				$this->status = 1;
+			else
+				$this->status = 0;
 		}
 		else{
 			session()->flash('success','Lỗi');

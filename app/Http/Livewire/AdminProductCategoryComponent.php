@@ -5,14 +5,21 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\ProductCategory;
 use App\Models\AdminLog;
+use App\Models\Image;
+
+use Livewire\WithFileUploads;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 
 class AdminProductCategoryComponent extends Component
 {
+	use WithFileUploads;
 	public $ProductCategory;
 	
 	public $categoryName;
 	public $category_id;
+	public $categoryImage;
+	public $tempImgUrl=null;
 	
 	protected $rules=[
 		'categoryName' => 'required'
@@ -27,17 +34,29 @@ class AdminProductCategoryComponent extends Component
     }
 	
 	public function submit(){
+		//dd($this);
 		if($this->category_id == null){
 			$validatedData = $this->validate();
 			$Category = new ProductCategory();
 			$Category->categoryName = $this->categoryName;
 			$Category->save();
 			
+			if($this->categoryImage!= null){
+				$name=$this->categoryImage->getClientOriginalName();
+				$name2 = date("Y-m-d-H-i-s").'-'.$name;
+				$this->category->storeAs('/images/category/',$name2,'public');
+						
+				$Image = new Image();
+				$Image->imageName = $name2;
+				$Image->imageType = 3; //3 = Danh mục sản phẩm
+				$Image->category_id = $Category->id;
+				$Image->save();
+			}
+
 			
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = "Tạo loại sản phẩm cấp 1 id:".$Category->id;
-			$Log->date = now();				
+			$Log->note = "Tạo loại sản phẩm cấp 1 id:".$Category->id;			
 			$Log->save();
 			
 			session()->flash('success','Thêm thành công!');
@@ -48,10 +67,21 @@ class AdminProductCategoryComponent extends Component
 			$Category->categoryName = $this->categoryName;
 			$Category->save();
 			
+			if($this->categoryImage!= null && $this->categoryImage != $this->tempImgUrl){
+				$name=$this->categoryImage->getClientOriginalName();
+				$name2 = date("Y-m-d-H-i-s").'-'.$name;
+				$this->categoryImage->storeAs('/images/category/',$name2,'public');
+						
+				$Image = new Image();
+				$Image->imageName = $name2;
+				$Image->imageType = 3; //3 = Danh mục sản phẩm
+				$Image->category_id = $Category->id;
+				$Image->save();
+			}			
+			
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = "Sửa loại sản phẩm cấp 1 id:".$Category->id;
-			$Log->date = now();				
+			$Log->note = "Sửa loại sản phẩm cấp 1 id:".$Category->id;			
 			$Log->save();	
 			session()->flash('success','Sửa thành công!');			
 		}
@@ -65,5 +95,14 @@ class AdminProductCategoryComponent extends Component
 		$Category = ProductCategory::find($id);
 		$this->category_id = $Category->id;
 		$this->categoryName = $Category->categoryName;
+		
+		$Image = Image::where('category_id',$Category->id)->get()->last();
+		if($Image != null){
+			$this->tempImgUrl = $Image->imageName;
+			$this->categoryImage = $Image->imageName;
+		}else{
+			$this->tempImgUrl = null;
+			$this->categoryImage = null;
+		}
 	}
 }

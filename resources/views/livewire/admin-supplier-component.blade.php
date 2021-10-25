@@ -117,7 +117,15 @@
 								@error('supplierPhone')
 									<p class="text-danger">{{$message}}</p>
 								@enderror								
-								</div>	
+								</div>
+								<div class="col-lg-9">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" wire:model="status">Ẩn
+										</label>
+															
+									</div>	
+								</div>								
 								<div class="col-lg-9" style="margin-top:20px">
 									<button type="button" wire:click="submit" wire:loading.attr="disabled" class="btn btn-default">Lưu</button>
 									<button type="button" wire:click="resetBtn" wire:loading.attr="disabled" class="btn btn-default">Reset</button>

@@ -58,9 +58,35 @@
 													@enderror
 
 	
-												</div>	
+												</div>
+												<div class="col-lg-12">
+													<div class="col-lg-4">
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																Hình ảnh chính sản phẩm
+															</div>
+															<div class="panel-body">
+																@if ($categoryImage == null)
+																	<img src="{{asset('storage/images/notfound.jpg')}}" style="width:100%;height:200px"> </img>
+																@else
+																	<img src="{{asset('storage/images/category/'.$categoryImage)}}" style="width:100%;height:200px"> </img>
+																@endif
+															</div>
+															<!-- /.panel-body -->
+														</div>	
+													</div>
+													<div class="col-lg-12">
+														<input id="file-upload" style="display:none" type="file" wire:model="categoryImage" >
+														<label for="file-upload" class="custom-file-upload" style="border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;">
+															Chọn hình ảnh
+														</label>
+														<label wire:loading wire:target="productImage">Đang tải...</label>	
+													</div>
+												</div>
 												
+											
 												<button type="submit" class="btn btn-default">Lưu</button>
+												
                                             </form>
                                         </div>
 									
