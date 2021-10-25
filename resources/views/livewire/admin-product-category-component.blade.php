@@ -14,8 +14,9 @@
 													@foreach($ProductCategory as $c)
                                                     <tr>
                                                         <td>{{$c->id}}</td>
-                                                        <td>{{$c->categoryName}}</td>													<td>
-															<a href="#">Sửa</a>
+                                                        <td>{{$c->categoryName}}</td>													
+														<td>
+															<button wire:click="editCategory({{$c->id}})" type="button" class="btn btn-info">Sửa</button>
 															<a href="#">Xóa</a>
 														</td>
                                                     </tr>
@@ -41,6 +42,15 @@
                                         <div class="form-group">
                                             <form role="form" wire:submit.prevent="submit">
 												<div class="form-group">
+                                                    <label>ID Danh mục</label>
+                                                    <input class="form-control" disabled wire:model="category_id">
+													@error('categoryName')
+														<p class="text-danger">{{$message}}</p>
+													@enderror
+
+	
+												</div>											
+												<div class="form-group">
                                                     <label>Tên danh mục</label>
                                                     <input class="form-control" wire:model="categoryName">
 													@error('categoryName')
@@ -48,7 +58,8 @@
 													@enderror
 
 	
-												</div>											
+												</div>	
+												
 												<button type="submit" class="btn btn-default">Lưu</button>
                                             </form>
                                         </div>

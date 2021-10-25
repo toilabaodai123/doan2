@@ -17,13 +17,11 @@ class VisitCounter
      */
     public function handle(Request $request, Closure $next)
     {
-		$Check = Visit::where('ip',$request->ip())->where('view_type',1)->first();
-		//dd($Check);
-		if($Check == null || $Check->created_at->format('d') != date('d')){
+		$Check = Visit::where('ip',$request->ip())->where('view_type',1)->get()->last();
+		if($Check == null || date_format($Check->created_at,'D M Y') != date_format(now(),'D M Y')){
 			$Visit = new Visit();
 			$Visit->ip = $request->ip();
 			$Visit->view_type = 1;
-			date_default_timezone_set('Asia/Ho_Chi_Minh');
 			$Visit->save();
 		}
 

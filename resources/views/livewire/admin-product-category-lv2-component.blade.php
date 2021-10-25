@@ -18,7 +18,7 @@
                                                         <td>{{$c->categorylv1->categoryName}}</td>													
 														<td>{{$c->category_name}}</td>
 														<td>
-															<a href="#">Sửa</a>
+															<button wire:click="editCategory({{$c->id}})" type="button" class="btn btn-info">Sửa</button>
 															<a href="#">Xóa</a>
 														</td>
                                                     </tr>
@@ -43,6 +43,11 @@
 									@endif
                                         <div class="form-group">
                                             <form role="form" wire:submit.prevent="submit">
+												<div class="form-group">
+                                                    <label>ID Danh mục</label>
+                                                    <input class="form-control" disabled wire:model="category_id">
+
+												</div>											
 												<div class="form-group">
 													<label>Loại sản phẩm cấp 1</label>
 													<select class="form-control" wire:model="CategoryID1">
