@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Level2ProductCategory;
 use App\Models\Product;
+use App\Models\Image;
 
 class ProductCategory extends Model
 {
@@ -18,4 +19,9 @@ class ProductCategory extends Model
 	public function Categories(){
 		return $this->belongsTo(Product::class,'categoryID','id');
 	}
+	
+	
+	public function Image(){
+		return $this->hasOne(Image::class,'id','category_id');
+	}	
 }

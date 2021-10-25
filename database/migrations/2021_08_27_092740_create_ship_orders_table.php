@@ -15,11 +15,14 @@ class CreateShipOrdersTable extends Migration
     {
         Schema::create('ship_orders', function (Blueprint $table) {
             $table->id();
-			$table->biginteger('order_id');
-			$table->biginteger('shipUnit_id');
+			$table->unsignedbiginteger('order_id');
+			$table->unsignedbiginteger('shipUnit_id');
 			$table->integer('shipOrderTotal');
 			$table->date('createdDate')->nullable();
             $table->timestamps();
+			
+			$table->foreign('order_id')->references('id')->on('orders');
+			$table->foreign('shipUnit_id')->references('id')->on('shipping_units');
         });
     }
 

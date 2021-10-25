@@ -15,10 +15,12 @@ class CreateOrderLogsTable extends Migration
     {
         Schema::create('order_logs', function (Blueprint $table) {
             $table->id();
-			$table->biginteger('order_id');
+			$table->unsignedbiginteger('order_id');
 			$table->datetime('messageDate');
 			$table->string('message');
             $table->timestamps();
+			
+			$table->foreign('order_id')->references('id')->on('orders');
         });
     }
 

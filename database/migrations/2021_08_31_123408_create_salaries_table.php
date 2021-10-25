@@ -15,9 +15,11 @@ class CreateSalariesTable extends Migration
     {
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
-			$table->biginteger('user_id');
+			$table->unsignedbiginteger('user_id');
 			$table->integer('money');
             $table->timestamps();
+			
+			$table->foreign('user_id')->references('id')->on('users');
         });
     }
 

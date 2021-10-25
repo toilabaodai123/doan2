@@ -15,9 +15,11 @@ class CreateLevel2ProductCategoriesTable extends Migration
     {
         Schema::create('level_2_product_categories', function (Blueprint $table) {
             $table->id();
-			$table->biginteger('lv1PCategoryID');
+			$table->unsignedbiginteger('lv1PCategoryID');
 			$table->string('category_name');
             $table->timestamps();
+			
+			$table->foreign('lv1PCategoryID')->references('id')->on('product_categories');
         });
     }
 
