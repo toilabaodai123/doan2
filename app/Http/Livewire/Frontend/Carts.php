@@ -106,3 +106,18 @@ class Carts extends Component
 
     }
 }
+// <ul>
+// @if(Session::has('coupon'))
+//     <li>Subtotal <span> $ {{Cart::subtotal()}}</span></li>
+
+//     <li>Disscount ({{Session::get('coupon')['code']}}) <a href="#" wire:click.prevent="removeCoupon()"><i class="fa fa-close"></i></a><span> $ {{$discount}}</span></li>
+//     <li>Subtol with Discout <span>$ {{$subtotalAfterDiscount}}</span></li>
+//     <li>Tax {{config('cart.tax')}}%<span>$ {{number_format($taxlAfterDiscount)}}</span></li>
+//     <li>Total  {{Cart::total()}}<span>${{$totallAfterDiscount}}</span></li>
+
+// @else
+//     <li>Subtotal <span> $ {{Cart::subtotal()}}</span></li>
+//     <li>Tax <span>$ {{Cart::tax()}}</span></li>
+//     <li>Total <span>$ {{Cart::total()}}</span></li>
+// @endif
+// </ul>

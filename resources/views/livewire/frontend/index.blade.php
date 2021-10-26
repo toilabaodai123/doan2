@@ -68,7 +68,7 @@
                 @forelse($product as $product)
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/'. $product->pri_Image->imageName)}}">
+                        <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}">
                         <img src="{{asset('storage/images/'. $product->pri_Image->imageName)}}" alt="">
                             <span class="label">New</span>
                             <ul class="product__hover">
@@ -105,7 +105,7 @@
                         </div>
                         <div class="product__item__text">
                             <h6>{{ $product->productName }}</h6>
-                            <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart" wire:click="addCart({{ $product->id }})"  class="add-cart">+ Chi tiết sản phẩm</a>
+                            <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
                   
                             <h5>${{ $product->productPrice }}</h5>
                         </div>

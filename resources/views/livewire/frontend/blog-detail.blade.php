@@ -23,7 +23,7 @@
 
     <!-- Blog Details Section Begin -->
     
-    <section class="blog-details spad">
+    <section class="blog-details">
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-12">
@@ -31,80 +31,92 @@
                         <img src="{{asset('public/images/post/'.$blog->full_image)}}" alt="">
                     </div>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="blog__details__content">
-                        <div class="blog__details__share">
-                            <span>share</span>
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#" class="youtube"><i class="fa fa-youtube-play"></i></a></li>
-                                <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
-                            </ul>
-                        </div>
                         <div class="blog__details__text">
                            {!! $blog->des !!}
                         </div>
-
-                        <div class="blog__details__option">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="blog__details__author">
-                                        <div class="blog__details__author__pic">
-                                            <img src="img/blog/details/blog-author.jpg" alt="">
-                                        </div>
-                                        <div class="blog__details__author__text">
-                                            <h5>Aiden Blair</h5>
-                                        </div>
+                        <div class="comment">
+                            <h4>Bình luận  ({{$com->count()}})</h4>
+                        @forelse ($com as $blog1)
+                            <div class="blog__show__comment">
+                                <div class="top">
+                                    <img src="{{asset('img/icon_user.jpg')}}" alt="" >
+                                    <div class="user_info">
+                                            <h5>{{$blog1->name}}</h5>
+                                            <p>{{$blog1->comment}}</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="blog__details__tags">
-                                        <a href="#">#Fashion</a>
-                                        <a href="#">#Trending</a>
-                                        <a href="#">#2020</a>
-                                    </div>
+                                <div class="comment_text">
+                                    <a href="#">xóa bình luận</a>
+                                    <span>{{$blog1->created_at}}</span>
                                 </div>
+                               
                             </div>
+                            @empty
+                            @endforelse
+                            <a href="#" class="load_more" wire:click.prevent="test()">Load more
+                                <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+                            </a>
                         </div>
-                        <div class="blog__details__btns">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="" class="blog__details__btns__item">
-                                        <p><span class="arrow_left"></span> Previous Pod</p>
-                                        <h5>It S Classified How To Utilize Free Classified Ad Sites</h5>
-                                    </a>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="" class="blog__details__btns__item blog__details__btns__item--next">
-                                        <p>Next Pod <span class="arrow_right"></span></p>
-                                        <h5>Tips For Choosing The Perfect Gloss For Your Lips</h5>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                       
                         <div class="blog__details__comment">
-                            <h4>Leave A Comment</h4>
-                            <form action="#">
+                            <h4>Ý kiến</h4>
+                            @if(Auth::user())
+                            <form wire:submit.prevent="submitUser({{$blog->id}})">
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Name">
+                                <div class="col-lg-4 col-md-6">
+                                        <input type="hidden" placeholder="Name" wire:model="name">
                                     </div>
-                                    <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Email">
-                                    </div>
-                                    <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Phone">
+                                    <div class="col-lg-4 col-md-6">
+                                        <input type="hidden" placeholder="Email" wire:model="email">
                                     </div>
                                     <div class="col-lg-12 text-center">
-                                        <textarea placeholder="Comment"></textarea>
+                                        <textarea placeholder="Comment" wire:model="comment"></textarea>
                                         <button type="submit" class="site-btn">Post Comment</button>
                                     </div>
                                 </div>
                             </form>
+                            @else
+                            <form wire:submit.prevent="submitNoneUser({{$blog->id}})">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4">
+                                        <input type="text" placeholder="Name" wire:model="name">
+                                    </div>
+                                    <div class="col-lg-4 col-md-4">
+                                        <input type="text" placeholder="Email" wire:model="email">
+                                    </div>
+                                    <div class="col-lg-12 text-center">
+                                        <textarea placeholder="Comment" wire:model="comment"></textarea>
+                                        <button type="submit" class="site-btn">Post Comment</button>
+                                    </div>
+                                </div>
+                            </form>
+                            @endif
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="blog spa">
+        <div class="container">
+            <h2 class="text-center" >BLOG</h2>
+            <div class="row">
+                @forelse($all_blog as $blog)
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic set-bg" data-setbg="{{asset('public/images/post/'.$blog->avata_image)}}"></div>
+                        <div class="blog__item__text">
+                            <span><img src="{{asset('img/icon/calendar.png')}}" alt=""> {{$blog->created_at}}</span>
+                            <h5>{{$blog->head_title}}</h5>
+                            <a href="#">Read More</a>
                         </div>
                     </div>
                 </div>
+                @empty
+                @endforelse
             </div>
         </div>
     </section>

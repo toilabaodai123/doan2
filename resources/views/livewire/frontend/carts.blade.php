@@ -21,7 +21,7 @@
     <section class="shopping-cart spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="shopping__cart__table">
                         <table>
                             <thead>
@@ -30,7 +30,8 @@
                                     <th>Size</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
-                                    <th></th>
+                                    									<th>Tùy chọn</th>
+
                                 </tr>
                             </thead>
                             @if(Cart::instance('cart')->count() > 0)
@@ -39,7 +40,7 @@
                                 <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
-                                            <img src="{{asset('storage/images/'.$cart->options->image)}}" style="width:75px;height:75px;object-fit: cover;" alt="">
+                                            <img src="{{asset('storage/images/product/'.$cart->options->image)}}" style="width:75px;height:75px;object-fit: cover;" alt="">
                                         </div>
                                         <div class="product__cart__item__text">
                                             <h6>{{$cart->name}}</h6>
@@ -66,11 +67,9 @@
                                     <td class="quantity__item">
                                         <div class="quantity">
                                             <div class="pro-qty-2" style="position: relative;display: flex;justify-content: center;align-items: center;">
-                                                <div class="btn_a">
-                                                    <a href="#" wire:click.prevent="increaseQty('{{ $cart->rowId }}')" class="btn btn-increase"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-                                                    <a href="#" wire:click.prevent="decreaseQty('{{ $cart->rowId }}')" class="btn btn-increase"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
-                                                </div>
+                                                <a href="#" class="left" wire:click.prevent="decreaseQty('{{ $cart->rowId }}')" class="btn btn-increase"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
                                                 <input type="text"  min="1" value="{{$cart->qty}}">
+                                                <a href="#" class="right" wire:click.prevent="increaseQty('{{ $cart->rowId }}')" class="btn btn-increase"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                                             </div>
                                         </div>
                                     </td>
@@ -97,7 +96,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+            </div>
+            <div class="">
                     <div class="cart__discount">
                         
                         <h6>Discount codes</h6>
@@ -117,19 +117,16 @@
 
                                 <li>Disscount ({{Session::get('coupon')['code']}}) <a href="#" wire:click.prevent="removeCoupon()"><i class="fa fa-close"></i></a><span> $ {{$discount}}</span></li>
                                 <li>Subtol with Discout <span>$ {{$subtotalAfterDiscount}}</span></li>
-                                <li>Tax {{config('cart.tax')}}%<span>$ {{number_format($taxlAfterDiscount)}}</span></li>
                                 <li>Total  {{Cart::total()}}<span>${{$totallAfterDiscount}}</span></li>
                            
                             @else
                                 <li>Subtotal <span> $ {{Cart::subtotal()}}</span></li>
-                                <li>Tax <span>$ {{Cart::tax()}}</span></li>
                                 <li>Total <span>$ {{Cart::total()}}</span></li>
                             @endif
                         </ul>
-                        <a href="#" class="primary-btn">Proceed to checkout</a>
+                        <a href="{{URL::to('checkout')}}" class="primary-btn">Proceed to checkout</a>
                     </div>
                 </div>
-            </div>
         </div>
     </section>
     </div>

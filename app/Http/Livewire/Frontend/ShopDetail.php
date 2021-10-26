@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Frontend;
 
 use Livewire\Component;
 use App\Models\Product;
+use App\Models\ProductModel;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProductSize;
@@ -11,7 +12,7 @@ use Cart;
 
 class ShopDetail extends Component
 {
-
+    public $test;
     public $relatedPro;
     public $product;
     public $size;
@@ -22,6 +23,8 @@ class ShopDetail extends Component
         $this->relatedPro = Product::with('Pri_image')->orderBy('id', 'DESC')->get()->take(4);
         $this->product = Product::with('Pri_image')->where('id', $id)->get();
         $this->size = ProductSize::all();
+		$this->Sizes = ProductModel::with('Size')->where('productID',$id)->get();
+
     }
     public function render()
     {
@@ -32,10 +35,19 @@ class ShopDetail extends Component
         $this->sizeId = $id;
     }
     
+    public function test(){
+        session()->flash('message','asdjasidjoaidjaosidjajsdjiasjdiadji');
+    }
     public function addCart($id)
     {
+
+
+
+        // session()->flush();
+
         $this->cart = Product::with('Pri_Image')->where('id', $id)->first();
-        $size = ProductSize::where('id', $this->sizeId)->first();
+        $size = ProductModel::with('Size')->where('id', $this->sizeId)->first();
+        // dd();
         if($size == null){
             session()->flash('message_size', 'chưa chọn size vui lòng chọn lại');
         }else{
@@ -43,7 +55,7 @@ class ShopDetail extends Component
          'qty' => $this->cart_qty,  
          'price' => $this->cart->productPrice, 
          'options' => ['image' => $this->cart->Pri_Image->imageName,
-         'size' => $size->sizeName
+         'size' =>  $size->Size->sizeName
          ]])
          ->associate('App\Models\Product');
         //  dd(Cart::content());

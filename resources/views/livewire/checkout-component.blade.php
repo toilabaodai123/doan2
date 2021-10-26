@@ -11,7 +11,7 @@
 										<form wire:submit.prevent="submit">
 											<div class="form-group">
 												
-												<div class="col-lg-6">
+												<div class="col-lg-">
 													<label>Họ tên</label>
 													<input class="form-control" type="text" placeholder="Họ tên" wire:model="Name"> 
 												</div>

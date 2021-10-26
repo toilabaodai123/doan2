@@ -50,8 +50,10 @@ class Product extends Model
 	}
 
 	
-	public function sluggable(){
+	// public function sluggable(){
+	// 	return ['productSlug' => ['source' => 'productName'] ];
+	// }
+	public function sluggable(): array{
 		return ['productSlug' => ['source' => 'productName'] ];
 	}
-	
 }

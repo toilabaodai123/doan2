@@ -17,7 +17,8 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="product__details__pic__item">
-                                    <img src="{{asset('storage/images/'. $pro->pri_Image->imageName)}}" alt="">
+                                    <img style="width: 400px;"
+src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -36,18 +37,18 @@
                             <div class="product__details__option">
                                 <div class="product__details__option__size" wire:ignore>
                                     <span>Size:</span>
-                                    @forelse($size as $size)
-                                    <label for="{{$size->sizeName}}" value="{{$size->id}}"
-                                         wire:click="size({{$size->id}})">{{$size->sizeName}}
+                                    @forelse($Sizes as $size)
+                                    <label for="{{$size->Size->sizeName}}" value="{{$size->id}}" 
+                                         wire:click="size({{$size->id}})">{{$size->Size->sizeName}}
                                         <input type="radio"  id="xxl" >
                                     </label>
                                   @empty
                                   Không có size san phẩm
                                   @endforelse
-                                  @if (session('message_size'))
-                                        <div class="alert alert-danger" role="alert">
+                                  @if (session()->has('message_size'))
+                                        <p>
                                             {{ session('message_size') }}
-                                        </div>
+                                        </p>
                                     @endif
                                 </div>
                             </div>
@@ -57,16 +58,14 @@
                                         <input type="number" value="{{$cart_qty}}" min="1" wire:model="cart_qty">
                                     </div>
                                 </div>
-                                <a href="javascript:void(0)" wire:click="addCart({{ $pro->id }})" class="primary-btn">add to cart</a>
+                                <a href="#" wire:click.prevent="addCart({{ $pro->id }})" class="primary-btn">add to cart</a>
                             </div>
                             <div class="product__details__btns__option">
                                 <a href="#" wire:click.prevent="addToWishlisht({{ $pro->id }})"><i class="fa fa-heart"></i> add to wishlist</a>
                             </div>
                             <div class="product__details__last__option">
                                 <ul>
-                                    <li><span>SKU:</span> 3812912</li>
-                                    <li><span>Categories:</span> Clothes</li>
-                                    <li><span>Tag:</span> Clothes, Skin, Body</li>
+                                    <li><span>Categories:</span> {{ $pro->id }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -179,7 +178,7 @@
                 @forelse($relatedPro as $pro )
                 <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/'. $pro->pri_Image->imageName)}}">
+                        <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}">
                             <span class="label">New</span>
                             <ul class="product__hover">
                                 <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>

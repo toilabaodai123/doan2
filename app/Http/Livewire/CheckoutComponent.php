@@ -31,7 +31,7 @@ class CheckoutComponent extends Component
 		if($this->carts){
 			foreach($this->carts as $k=>$v){
 				$this->Size[$k] = ProductSize::where('id',$this->carts[$k]['size'])->get()->last();
-				//dd($this->Size[$k]);
+				dd($this->Size[$k]);
 			}
 		}
         return view('livewire.checkout-component')

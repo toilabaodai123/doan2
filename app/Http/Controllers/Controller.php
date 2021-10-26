@@ -37,7 +37,7 @@ class Controller extends BaseController
         $data->category = $req->category;
         $data->short_des = $req->short_des;
         $data->des = $req->des;
-        $data->tag = $req->tag;
+        $data->tag = 0;
         $data->author = Auth::user()->name;
 
         $full_image = $req->file('full_image');
@@ -72,7 +72,7 @@ class Controller extends BaseController
         $data->category = $req->category;
         $data->short_des = $req->short_des;
         $data->des = $req->des;
-        $data->tag = $req->tag;
+        $data->tag = $data->tag;
         $data->author = Auth::user()->name;
 
         $full_image = $req->file('full_image');
