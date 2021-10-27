@@ -14,16 +14,14 @@
         </div>
     </section>
 
-
-
     <div class="section User">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="slidebar">
                         <ul>
-                            <li class="active"><a href="user.html"></a>Tài Khoản Của Tôi</a></li>
-                            <li><a href="buy.html">Đơn Mua</a></li>
+                            <li class="active"><a href="{{URL::to('users')}}"></a>Tài Khoản Của Tôi</a></li>
+                            <li><a href="{{URL::to('don-hang')}}">Đơn Mua</a></li>
                         </ul>
                     </div>
                 </div>

@@ -73,7 +73,6 @@ class Carts extends Component
             $this->taxlAfterDiscount = ($this->subtotalAfterDiscount  * config('cart.tax'))/100;
             $this->totallAfterDiscount = $this->subtotalAfterDiscount + $this->taxlAfterDiscount;
         }
-        // dd( $subtotalAfterDiscount);
 
     }
     public function removeCoupon(){

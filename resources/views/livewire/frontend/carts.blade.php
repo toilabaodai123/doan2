@@ -30,8 +30,7 @@
                                     <th>Size</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
-                                    									<th>Tùy chọn</th>
-
+                                    <th>Tùy chọn</th>
                                 </tr>
                             </thead>
                             @if(Cart::instance('cart')->count() > 0)
@@ -73,7 +72,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="cart__price">${{$cart->subtotal}} </td>
+                                    <td class="cart__price">${{number_format( $cart->subtotal )}} VND</td>
                                     <td class="cart__close"><a href="#" wire:click.prevent="removeCart('{{ $cart->rowId }}')"><i class="fa fa-close"></i></a></td>
                                 </tr>
                                @endforeach
@@ -100,11 +99,11 @@
             <div class="">
                     <div class="cart__discount">
                         
-                        <h6>Discount codes</h6>
+                        <!-- <h6>Discount codes</h6>
                         <form wire:submit.prevent="ApplyCouponCode">
                             <input type="text" placeholder="Coupon code" wire:model="CouponCode">
                             <button type="submit">Apply</button>
-                        </form>
+                        </form> -->
                         @if (Session::has('message'))
                             <div class="alert alert-danger">{{session('message')}}</div>
                         @endif
@@ -113,15 +112,14 @@
                         <h6>Cart total</h6>
                         <ul>
                             @if(Session::has('coupon'))
-                                <li>Subtotal <span> $ {{Cart::subtotal()}}</span></li>
-
-                                <li>Disscount ({{Session::get('coupon')['code']}}) <a href="#" wire:click.prevent="removeCoupon()"><i class="fa fa-close"></i></a><span> $ {{$discount}}</span></li>
-                                <li>Subtol with Discout <span>$ {{$subtotalAfterDiscount}}</span></li>
+                                <li>Subtotal <span> $ {{ number_format( Cart::subtotal() ) }}</span></li>
+                                <li>Disscount ({{Session::get('coupon')['code']}}) <a href="#" wire:click.prevent="removeCoupon()"><i class="fa fa-close"></i></a><span> $ {{ number_format( $discount )}}</span></li>
+                                <li>Subtotal with Discout <span>$ {{ number_format( $subtotalAfterDiscount )}}</span></li>
                                 <li>Total  {{Cart::total()}}<span>${{$totallAfterDiscount}}</span></li>
                            
                             @else
-                                <li>Subtotal <span> $ {{Cart::subtotal()}}</span></li>
-                                <li>Total <span>$ {{Cart::total()}}</span></li>
+                                <li>Subtotal <span> {{ number_format( Cart::subtotal() ) }} VND</span></li>
+                                <li>Total <span>{{ number_format( Cart::total() )}} VND</span></li>
                             @endif
                         </ul>
                         <a href="{{URL::to('checkout')}}" class="primary-btn">Proceed to checkout</a>

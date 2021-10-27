@@ -64,6 +64,7 @@ Route::get('checkout',App\Http\Livewire\Frontend\Checkout::class);
 
 
 Route::get('users',App\Http\Livewire\Frontend\Users::class);
+Route::get('don-hang',App\Http\Livewire\Frontend\Purchase::class);
 
 Route::get('slider', App\Http\Livewire\Pages\Slider::class);
 Route::get('sale', App\Http\Livewire\Pages\Sale::class);

@@ -9,8 +9,10 @@ use App\Models\ProductSize;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderLog;
+use App\Models\User;
 
 use Cart;
+use Illuminate\Support\Facades\Auth;
 
 class Checkout extends Component
 {
@@ -24,98 +26,177 @@ class Checkout extends Component
 	public $Email;
 	public $Note;
 	public $Address;
+
+    public $create_acount;
+    public $pass_acount;
+
+    public $rules = [
+        'Name' => 'required|min:6',
+        'Phone' => 'required',
+        'Email' => 'required|email',
+        'Note' => 'required',
+        'Address' => 'required',
+    ];
     
     public function render()
     {
         
-		if(Cart::instance('cart')){
-        // dd(Cart::instance('cart')->content());
-      
+		if(Cart::instance('cart'))
+        {
             $this->carts =Cart::instance('cart')->content() ;
-           
         }
         return view('livewire.frontend.checkout')->layout('layouts.template3');
     }
-    public function submit(){
+    public function submit()
+    {
+        // dd($this->create_acount);
+        if(Auth::User()){
 
-        // dd($ProductModel_id);
-        $Order = new Order();
-        $Order->fullName = $this->Name;
-        $Order->phone = $this->Phone;
-        $Order->address = $this->Address;
-        // dd(Order::all()->last());
-        if($this->Email != null)
-            $Order->email = $this->Email;	
-        if($this->Note != null)
-            $Order->userNote = $this->Note;
-           
-        if(Order::all()->last())
-            $LastOrderID = Order::all()->last()->id;
-        else
-            $LastOrderID = 9999;
-        $LastOrderID++;
-        $Order->orderCode = 'DH'.$LastOrderID;
-        
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $Order->orderDate = now();
-        $Order->orderTotal = 0;
-        $Order->save();
+            $validatedData = $this->validate();
+            $Order = new Order();
+            $Order->user_id = Auth::User()->id;
+            $Order->fullName = $this->Name;
+            $Order->phone = $this->Phone;
+            $Order->address = $this->Address;
+            if($this->Email != null)
+                $Order->email = $this->Email;	
+            if($this->Note != null)
+                $Order->userNote = $this->Note;
+            
+            if(Order::all()->last())
+                $LastOrderID = Order::all()->last()->id;
+            else
+                $LastOrderID = 9999;
+            $LastOrderID++;
+            $Order->orderCode = 'DH'.$LastOrderID;
+            
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $Order->orderDate = now();
+            $Order->orderTotal = 0;
+            $Order->save();
 
 
-        // ////////////////////////////////////////////////////////////////
+            // ////////////////////////////////////////////////////////////////
 
 
-        $OrderID = Order::all()->last()->id;
-        $total=0;
-        $total =0;
-        if(Cart::instance('cart')){
-            $this->carts =Cart::instance('cart')->content() ;
-            if($this->carts){
-                foreach ($this->carts as $cart){
-                    $OrderDetail = new OrderDetail();
-                    $size_id= ProductSize::where('sizeName', $cart->options->size)->first();
-                    $ProductModel_id = ProductModel::where('productID',$cart->id)
-                    ->where('sizeID',$size_id->id)
-                                                    ->get()
-                                                    ->last();
-                                                    $OrderDetail->productModel_id = $ProductModel_id->id;
-                                                    $OrderDetail->order_id = $Order->id;
-                                                    $OrderDetail->quantity = $cart->qty;
-                                                    $OrderDetail->save();
-                                                    $total = $total + ($cart->qty * $cart->price);
-                }
+            $OrderID = Order::all()->last()->id;
+            $total=0;
+            $total =0;
+            if(Cart::instance('cart')){
+                $this->carts =Cart::instance('cart')->content() ;
+                if($this->carts){
+                    foreach ($this->carts as $cart){
+                        $OrderDetail = new OrderDetail();
+                        $size_id= ProductSize::where('sizeName', $cart->options->size)->first();
+                        $ProductModel_id = ProductModel::where('productID',$cart->id)
+                        ->where('sizeID',$size_id->id)
+                        ->get()
+                        ->last();
+                        $OrderDetail->productModel_id = $ProductModel_id->id;
+                        $OrderDetail->order_id = $Order->id;
+                        $OrderDetail->quantity = $cart->qty;
+                        $OrderDetail->save();
+                        $total = $total + ($cart->qty * $cart->price);
+                    }
+                };
             };
-        };
-
-        // foreach ($this->carts as $k=>$v){
-        //     $OrderDetail = new OrderDetail();
-        //     $ProductModel_id = ProductModel::where('productID',$this->carts[$k]['id'])
-        //                                     ->where('sizeID',$this->carts[$k]['size'])
-        //                                     ->get()
-        //                                     ->last();
-        //     $OrderDetail->productModel_id = $ProductModel_id->id;
-        //     $OrderDetail->order_id = $Order->id;
-        //     $OrderDetail->quantity = $this->carts[$k]['quantity'];
-        //     $OrderDetail->save();
-        //     $total = $total + ($this->carts[$k]['quantity'] * $this->carts[$k]['price']);
-        // }
-        
-        $Order->orderTotal = $total;
-        $Order->save();
-        
+            
+            $Order->orderTotal = $total;
+            $Order->save();
+            
 
 
-        // ////////////////////////////////////////////////////////////////
+            // ////////////////////////////////////////////////////////////////
 
-        $OrderLog = new OrderLog();
-        $OrderLog->order_id = $Order->id;
-        $OrderLog->messageDate = now();
-        $OrderLog->message = 'Tạo đơn hàng';
-        $OrderLog->save();	
-        
-        
-        session()->flash('OrderCode',$Order->orderCode);
-        session()->forget('cart');
-        return redirect()->to('/hoan-tat');
-}
+            $OrderLog = new OrderLog();
+            $OrderLog->order_id = $Order->id;
+            $OrderLog->messageDate = now();
+            $OrderLog->message = 'Tạo đơn hàng';
+            $OrderLog->save();	
+            
+            
+            session()->flash('OrderCode',$Order->orderCode);
+            session()->forget('cart');
+            return redirect()->to('/hoan-tat');
+        }else {
+            
+            if($this->create_acount == 1) {
+                $validatedData = $this->validate();
+                $data = new User();
+
+                $data->name = $this->Name;
+                $data->email = $this->Email;
+                $data->password = bcrypt($this->pass_acount);
+
+                $data->save();
+                $Order = new Order();
+            $Order->fullName = $this->Name;
+            $Order->phone = $this->Phone;
+            $Order->address = $this->Address;
+            if($this->Email != null)
+                $Order->email = $this->Email;	
+            if($this->Note != null)
+                $Order->userNote = $this->Note;
+            
+            if(Order::all()->last())
+                $LastOrderID = Order::all()->last()->id;
+            else
+                $LastOrderID = 9999;
+            $LastOrderID++;
+            $Order->orderCode = 'DH'.$LastOrderID;
+            
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+            $Order->orderDate = now();
+            $Order->orderTotal = 0;
+            $Order->save();
+
+
+            // ////////////////////////////////////////////////////////////////
+
+
+            $OrderID = Order::all()->last()->id;
+            $total=0;
+            $total =0;
+            if(Cart::instance('cart')){
+                $this->carts =Cart::instance('cart')->content() ;
+                if($this->carts){
+                    foreach ($this->carts as $cart){
+                        $OrderDetail = new OrderDetail();
+                        $size_id= ProductSize::where('sizeName', $cart->options->size)->first();
+                        $ProductModel_id = ProductModel::where('productID',$cart->id)
+                        ->where('sizeID',$size_id->id)
+                        ->get()
+                        ->last();
+                        $OrderDetail->productModel_id = $ProductModel_id->id;
+                        $OrderDetail->order_id = $Order->id;
+                        $OrderDetail->quantity = $cart->qty;
+                        $OrderDetail->save();
+                        $total = $total + ($cart->qty * $cart->price);
+                    }
+                };
+            };
+            
+            $Order->orderTotal = $total;
+            $Order->save();
+            
+
+
+            // ////////////////////////////////////////////////////////////////
+
+            $OrderLog = new OrderLog();
+            $OrderLog->order_id = $Order->id;
+            $OrderLog->messageDate = now();
+            $OrderLog->message = 'Tạo đơn hàng';
+            $OrderLog->save();	
+            
+            
+            session()->flash('OrderCode',$Order->orderCode);
+            session()->forget('cart');
+            return redirect()->to('/hoan-tat');
+            }else{
+
+                return redirect()->to('/login');
+            }
+        }
+    }
 }

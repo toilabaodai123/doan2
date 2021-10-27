@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'tax' => 21,
+    'tax' => 0,
 
     'database' =>[
         'connection' => null,

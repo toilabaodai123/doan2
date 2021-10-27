@@ -3579,6 +3579,22 @@ a.load_more {
 }
 
 /* end blog detail */
+/* users */
+.section.User .shopping__cart__table {
+	width: 100%;
+}
+/* end users */
+/* checkout */
+.checkout__input textarea {
+	height: 100px;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    font-size: 14px;
+    color: #b7b7b7;
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+/* end checkout */
 
 /*--------------------------------- end custom  -----------------------------*/
 
@@ -3708,6 +3724,10 @@ a.load_more {
 /* Wide Mobile = 480px */
 
 @media only screen and (max-width: 767px) {
+	.shopping__cart__table table tbody tr td.product__cart__size button {
+		border: 1px solid #ccc;
+		padding: 1px 3px;
+	}	
 	.shopping-cart table {
 		text-align: center;
 	}

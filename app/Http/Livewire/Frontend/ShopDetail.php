@@ -40,14 +40,10 @@ class ShopDetail extends Component
     }
     public function addCart($id)
     {
-
-
-
         // session()->flush();
 
         $this->cart = Product::with('Pri_Image')->where('id', $id)->first();
         $size = ProductModel::with('Size')->where('id', $this->sizeId)->first();
-        // dd();
         if($size == null){
             session()->flash('message_size', 'chưa chọn size vui lòng chọn lại');
         }else{
