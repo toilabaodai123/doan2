@@ -6,8 +6,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="product__details__breadcrumb">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
+                            <a href="{{URL::to('index')}}">Home</a>
+                            <a href="{{URL::to('shop')}}">Shop</a>
                             <span>Product Details</span>
                         </div>
                     </div>
@@ -65,7 +65,7 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                             </div>
                             <div class="product__details__last__option">
                                 <ul>
-                                    <li><span>Categories:</span> {{ $pro->id }}</li>
+                                    <li><span>Thể loại:</span> {{ $pro->Category1->categoryName }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -77,21 +77,21 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#tabs-5"
-                                    role="tab">Description</a>
+                                    role="tab">Mô tả sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Customer
-                                    Previews(5)</a>
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-6" 
+                                    role="tab">Đánh giá của khách hàng</a>
                                 </li>
-                              
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tabs-5" role="tabpanel">
                                     <div class="product__details__tab__content">
-                                        <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
-                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
-                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
-                                        pharetras loremos.</p>
+                                       <p>{!! $pro-> longDesc!!}</p>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-6" role="tabpanel">
+                                    <div class="product__details__tab__content">
                                         <div class="product__details__tab__content__item">
                                             <h5>Products Infomation</h5>
                                             <p>A Pocket PC is a handheld computer, which features many of the same
@@ -120,40 +120,6 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="tabs-6" role="tabpanel">
-                                    <div class="product__details__tab__content">
-                                        <div class="product__details__tab__content__item">
-                                            <div class="blog__details__comment">
-                                                <h4>Leave A Comment</h4>
-                                                <form action="#">
-                                                    <div class="row">
-                                                        <div class="col-lg-12 text-center"  >
-                                                          <textarea placeholder="Comment"></textarea>
-                                                            <button type="submit" class="site-btn">Post Comment</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="show_commemt">
-                                                <div class="user">
-                                                    <img src="{{asset('img/icon_user.jpg')}}" alt="">
-                                                    <b>Ngọc Thính</b>
-                                                </div>
-                                                <p>jhabshdbksjnj Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed dolorum corporis natus! Ullam adipisci saepe nam amet, vel iusto eaque nemo quisquam, atque enim doloremque hic, porro recusandae est veritatis! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsa corrupti quisquam repellat laudantium delectus accusantium sunt architecto voluptatum iure, officia doloremque voluptatibus ipsam eaque et commodi ullam sit aperiam magni?</p>
-                                            </div>
-                                            <hr>
-                                            <div class="show_commemt">
-                                                <div class="user">
-                                                    <img src="{{asset('img/icon_user.jpg')}}" alt="">
-                                                    <b>Ngọc Thính</b>
-                                                </div>
-                                                <p>jhabshdbksjnj Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam temporibus delectus voluptate sit asperiores veniam quas quia iure qui, quis deserunt fuga nihil ab, consectetur tenetur odio amet ad itaque!</p>
-                                            </div>
-                                            <hr>
-                                        </div>
-                                    </div>
-                                </div>
-                              
                             </div>
                         </div>
                     </div>
@@ -171,7 +137,7 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="related-title">Related Product</h3>
+                    <h3 class="related-title">Sản phẩm liên quan</h3>
                 </div>
             </div>
             <div class="row">
@@ -187,27 +153,11 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                             </ul>
                         </div>
                         <div class="product__item__text">
-                            <h6>Piqué Biker Jacket</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$67.24</h5>
-                            <div class="product__color__select">
-                                <label for="pc-1">
-                                    <input type="radio" id="pc-1">
-                                </label>
-                                <label class="active black" for="pc-2">
-                                    <input type="radio" id="pc-2">
-                                </label>
-                                <label class="grey" for="pc-3">
-                                    <input type="radio" id="pc-3">
-                                </label>
-                            </div>
+                            <h6>{{$pro->productName}}</h6>
+                            <a href="{{URL::to('shop-detail/'.$pro->id)}}" class="add-cart">+ Chi tiết sản phẩm</a>
+                          
+                            <h5>{{number_format($pro->productPrice)}} VND</h5>
+                           
                         </div>
                     </div>
                 </div>

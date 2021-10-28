@@ -11,12 +11,7 @@
                                 <h2>{{$slide->sub_title}}</h2>
                                 <p>{{$slide->short_des}}</p>
                                 <a href="{{$slide->link}}" class="primary-btn">Shop now <span class="arrow_right"></span></a>
-                                <div class="hero__social">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -37,9 +32,7 @@
                 @forelse($category as $key => $cate)
                 <div class="col-md-3">
                     <div class="banner__item">
-                        <div class="banner__item__pic">
                             <img src="img/banner/banner-1.jpg" alt="">
-                        </div>
                         <div class="banner__item__text">
                             <h2>{{$cate->categoryName}}</h2>
                             <a href="{{URL::to('product/category/'.$cate->id)}}">Shop now</a>
@@ -72,22 +65,6 @@
                         <img src="{{asset('storage/images/'. $product->pri_Image->imageName)}}" alt="">
                             <span class="label">New</span>
                             <ul class="product__hover">
-                                <style> 
-                                    .wishlist .fa {
-                                        color: #fff;
-                                        font-size: 25px;
-                                    }
-                                    .wishlist .fa:hover {
-                                        color: red;
-                                    }
-                                    .fill-heart {
-                                        color: red !important;
-                                    }
-                                </style>
-
-
-                                
-
                                 @if ($witem)
                                     @if($witem->id === $product->id)
                                     <li><a href="#" wire:click.prevent="removeWishlish({{$witem->id}})" class="wishlist" ><i class="fa fa-heart fill-heart"></i>bang</a></li>
@@ -107,7 +84,7 @@
                             <h6>{{ $product->productName }}</h6>
                             <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
                   
-                            <h5>${{ $product->productPrice }}</h5>
+                            <h5>{{ number_format($product->productPrice) }} VND</h5>
                         </div>
                     </div>
                 </div>
@@ -168,13 +145,10 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="instagram__pic">
-                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-1.jpg"></div></a>
-                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-2.jpg"></div></a>
-                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-3.jpg"></div></a>
-                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-4.jpg"></div></a>
-                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-5.jpg"></div></a>
-                        <a href="#"><div class="instagram__pic__item set-bg" data-setbg="img/instagram/instagram-6.jpg"></div></a>
-                        
+                        @foreach($insta as $in)
+                        <a href="{{$in->link}}"><div class="instagram__pic__item set-bg" data-setbg="{{asset('storage/images/'.$in->image)}}"></div></a>
+                       
+                       @endforeach
                     </div>
                 </div>
                 <div class="col-lg-4">

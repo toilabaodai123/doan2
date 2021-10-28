@@ -52,7 +52,7 @@
         <div class="offcanvas__nav__option">
             <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
             <a href="#"><img src="img/icon/heart.png" alt=""></a>
-            <a href="{{url('gio-hang')}}"><img src="{{asset('img/icon/cart.png')}}" alt=""> <span>@if(session()->get('cart')){{count(session()->get('cart'))}}@endif</span></a>
+            <a href="{{url('cart')}}"><img src="{{asset('img/icon/cart.png')}}" alt=""> <span>@if(session()->get('cart')){{count(session()->get('cart'))}}@endif</span></a>
             <div class="price">$0.00</div>
         </div>
         <div id="mobile-menu-wrap"></div>
@@ -69,7 +69,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-7">
                         <div class="header__top__left">
-                            <p>Slogan</p>
+                            <p>Free shipping, 30-day return or refund guarantee.</p>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-5">
@@ -77,7 +77,7 @@
                             <div class="header__top__links">
 
 								@auth
-                                <a href="{{url('thong-tin-nguoi-dung')}}">{{auth()->user()->name}}</a>
+                                <a href="{{url('users')}}">{{auth()->user()->name}}</a>
 								<a href="{{route('logout')}}" onclick="event.preventDefault();document.getElementById('form-logout').submit();">Đăng xuất</a>
 								<form method="POST" action="{{route('logout')}}" id="form-logout">
 									@csrf
@@ -103,25 +103,24 @@
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <div class="header__logo">
-                        <a href="{{url('index')}}"><img src="img/logo.png" alt=""></a>
+                        <a href="{{url('index')}}"><img src="{{asset('img/logo.png')}}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class="active"><a href="{{url('index')}}">Home</a></li>
-                            <li><a href="./shop.html">Shop</a></li>
+                            <li class="active"><a href="{{URL::to('index')}}">Home</a></li>
+                            <li><a href="{{URL::to('/shop')}}">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
                                     <li><a href="./about.html">About Us</a></li>
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
+                                    <li><a href="{{URL::to('/shop')}}">Shop</a></li>
+                                    <li><a href="{{URL::to('/cart')}}">Shopping Cart</a></li>
+                                    <li><a href="{{URL::to('/checkout')}}">Check Out</a></li>
+                                    <li><a href="{{URL::to('/blog')}}">Blog </a></li>
                                 </ul>
                             </li>
-                            <li><a href="./contact.html">Contacts</a></li>
-                            <li><a href="{{url('tra-cuu-don-hang')}}">Tra cứu đơn hàng</a></li>
+                            <li><a href="{{URL::to('/contact')}}">Contacts</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -142,8 +141,9 @@
                         <div class="footer__logo">
                             <a href="#"><img src="img/footer-logo.png" alt=""></a>
                         </div>
-                        <p>The customer is at the heart of our unique business model, which includes design.</p>
-                        <a href="#"><img src="img/payment.png" alt=""></a>
+                        <p>Khách hàng là trọng tâm của mô hình kinh doanh độc đáo của chúng tôi.</p>
+                        
+                        <p><b>Địa chỉ :</b> 931-937, Trần Hưng Đạo, Phường 1, Quận 5 , TPHCM</p>
                     </div>
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
@@ -170,9 +170,9 @@
                 </div>
                 <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
                     <div class="footer__widget">
-                        <h6>NewLetter</h6>
+                        <h6>Liên hệ</h6>
                         <div class="footer__newslatter">
-                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <p>Hãy là người đầu tiên biết về sản phẩm mới của chúng tôi!</p>
                             <form action="#">
                                 <input type="text" placeholder="Your email">
                                 <button type="submit"><span class="icon_mail_alt"></span></button>

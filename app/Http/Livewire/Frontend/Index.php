@@ -7,6 +7,7 @@ use App\Models\slide;
 use App\Models\ProductCategory;
 use App\Models\ProductModel;
 use App\Models\Product;
+use App\Models\Instagram;
 use App\Models\Wishlist;
 // use App\Models\Sales;
 // use App\Models\Wish;
@@ -26,6 +27,7 @@ class Index extends Component
     public $sale;
     public $blog;
     public $witem;
+    public $insta;
 
     // ADD CART
     public $cart;
@@ -41,6 +43,7 @@ class Index extends Component
     {
         // $this->sale = Sales::find(1); 
         $this->witem = Wishlist::where('status', 1)->first();
+        $this->insta = Instagram::orderBy('id', 'desc')->take(6)->get();
         $this->blog = Blog_detail::orderBy('id','desc')->take(3)->get();
         $this->category = ProductCategory::all(); 
         $this->slide = slide::orderBy('id','desc')->take(3)->get();

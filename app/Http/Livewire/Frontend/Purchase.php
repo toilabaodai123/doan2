@@ -19,12 +19,15 @@ class Purchase extends Component
     public $data;
     public function render()
     {
-        if(Auth::User()){
+    //     if(Auth::User()){
         
-        $order= Order::where('user_id', 10 )->first();
-    }
-        $this->data = OrderDetail::where('order_id', $order->id)->get();
-        dd($this->data);
+    //     $order= Order::where('user_id', 10 )->first();
+    // }
+    
+    // $aa = OrderDetail::where('order_id', 1)->get();
+
+    // $model= ProductModel::where('id', $aa->productModel_id )->get();
+    //     dd($aa);
         return view('livewire.frontend.purchase')->layout('layouts.template3');
     }
 }

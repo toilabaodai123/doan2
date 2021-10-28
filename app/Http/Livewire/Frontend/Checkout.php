@@ -104,8 +104,6 @@ class Checkout extends Component
             $Order->orderTotal = $total;
             $Order->save();
             
-
-
             // ////////////////////////////////////////////////////////////////
 
             $OrderLog = new OrderLog();
@@ -119,84 +117,8 @@ class Checkout extends Component
             session()->forget('cart');
             return redirect()->to('/hoan-tat');
         }else {
-            
-            if($this->create_acount == 1) {
-                $validatedData = $this->validate();
-                $data = new User();
 
-                $data->name = $this->Name;
-                $data->email = $this->Email;
-                $data->password = bcrypt($this->pass_acount);
-
-                $data->save();
-                $Order = new Order();
-            $Order->fullName = $this->Name;
-            $Order->phone = $this->Phone;
-            $Order->address = $this->Address;
-            if($this->Email != null)
-                $Order->email = $this->Email;	
-            if($this->Note != null)
-                $Order->userNote = $this->Note;
-            
-            if(Order::all()->last())
-                $LastOrderID = Order::all()->last()->id;
-            else
-                $LastOrderID = 9999;
-            $LastOrderID++;
-            $Order->orderCode = 'DH'.$LastOrderID;
-            
-            date_default_timezone_set('Asia/Ho_Chi_Minh');
-            $Order->orderDate = now();
-            $Order->orderTotal = 0;
-            $Order->save();
-
-
-            // ////////////////////////////////////////////////////////////////
-
-
-            $OrderID = Order::all()->last()->id;
-            $total=0;
-            $total =0;
-            if(Cart::instance('cart')){
-                $this->carts =Cart::instance('cart')->content() ;
-                if($this->carts){
-                    foreach ($this->carts as $cart){
-                        $OrderDetail = new OrderDetail();
-                        $size_id= ProductSize::where('sizeName', $cart->options->size)->first();
-                        $ProductModel_id = ProductModel::where('productID',$cart->id)
-                        ->where('sizeID',$size_id->id)
-                        ->get()
-                        ->last();
-                        $OrderDetail->productModel_id = $ProductModel_id->id;
-                        $OrderDetail->order_id = $Order->id;
-                        $OrderDetail->quantity = $cart->qty;
-                        $OrderDetail->save();
-                        $total = $total + ($cart->qty * $cart->price);
-                    }
-                };
-            };
-            
-            $Order->orderTotal = $total;
-            $Order->save();
-            
-
-
-            // ////////////////////////////////////////////////////////////////
-
-            $OrderLog = new OrderLog();
-            $OrderLog->order_id = $Order->id;
-            $OrderLog->messageDate = now();
-            $OrderLog->message = 'Tạo đơn hàng';
-            $OrderLog->save();	
-            
-            
-            session()->flash('OrderCode',$Order->orderCode);
-            session()->forget('cart');
-            return redirect()->to('/hoan-tat');
-            }else{
-
-                return redirect()->to('/login');
-            }
+                return redirect()->to('/register');
         }
     }
 }

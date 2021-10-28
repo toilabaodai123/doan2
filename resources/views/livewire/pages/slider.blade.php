@@ -45,12 +45,12 @@
     <!-- /.table-responsive -->
 </div>
 <div class="panel-body">
-                                <div class="row">
-                                @if(session()->has('success'))
-                                <div class="alert alert-success">
-                                    {{session('success')}}
-                                </div>
-                                @endif
+    <div class="row">
+    @if(session()->has('success'))
+    <div class="alert alert-success">
+        {{session('success')}}
+    </div>
+    @endif
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">

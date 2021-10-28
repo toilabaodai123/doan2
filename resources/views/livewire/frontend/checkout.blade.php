@@ -61,7 +61,7 @@
                                 <textarea type="text" placeholder="Ghi chú" wire:model="Note"></textarea>
                                 @error('Note')<p style="color: red">{{ $message }}</p> @enderror
                             </div>
-                            <div class="checkout__input__checkbox">
+                            <!-- <div class="checkout__input__checkbox">
                                 <label for="acc">
                                     Create an account?
                                     <input type="checkbox" id="acc" value="1" wire:model="create_acount">
@@ -75,7 +75,7 @@
                                 <p>Account Password<span>*</span></p>
                                 <input type="text" wire:model="pass_acount">
                                 @endif
-                            </div>
+                            </div> -->
                            
                         </div>
                         <div class="col-lg-4 col-md-6">
