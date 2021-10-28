@@ -147,6 +147,13 @@ class AdminProductComponent extends Component
 					$PrimaryImage->productID = $Product->id;
 					$PrimaryImage->save();
 				}
+			$Sizes = ProductSize::all();
+			foreach($Sizes as $s){
+				$Model = new ProductModel();
+				$Model->productID = $Product->id;
+				$Model->sizeID = $s->id;
+				$Model->save();
+			}
 
 
 				session()->flash('success','Thêm sản phẩm thành công');
