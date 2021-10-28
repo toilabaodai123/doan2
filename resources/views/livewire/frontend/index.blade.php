@@ -32,7 +32,11 @@
                 @forelse($category as $key => $cate)
                 <div class="col-md-3">
                     <div class="banner__item">
-                            <img src="img/banner/banner-1.jpg" alt="">
+                            @if($cate->Image != null)
+                                <img src="{{asset('storage/images/category/'.$cate->Image->imageName)}}" alt="">
+                            @else
+                                <img src="img/banner/banner-1.jpg" alt="">
+                            @endif
                         <div class="banner__item__text">
                             <h2>{{$cate->categoryName}}</h2>
                             <a href="{{URL::to('product/category/'.$cate->id)}}">Shop now</a>

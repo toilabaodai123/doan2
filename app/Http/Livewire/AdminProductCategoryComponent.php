@@ -39,12 +39,13 @@ class AdminProductCategoryComponent extends Component
 			$validatedData = $this->validate();
 			$Category = new ProductCategory();
 			$Category->categoryName = $this->categoryName;
+			$Category->slug='a';
 			$Category->save();
 			
 			if($this->categoryImage!= null){
 				$name=$this->categoryImage->getClientOriginalName();
 				$name2 = date("Y-m-d-H-i-s").'-'.$name;
-				$this->category->storeAs('/images/category/',$name2,'public');
+				$this->categoryImage->storeAs('/images/category/',$name2,'public');
 						
 				$Image = new Image();
 				$Image->imageName = $name2;
@@ -60,6 +61,7 @@ class AdminProductCategoryComponent extends Component
 			$Log->save();
 			
 			session()->flash('success','Thêm thành công!');
+	
 			
 		}
 		else{
