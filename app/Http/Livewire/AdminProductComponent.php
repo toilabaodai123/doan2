@@ -12,12 +12,16 @@ use App\Models\Supplier;
 use App\Models\Image;
 use App\Models\AdminLog;
 use App\Models\Level2ProductCategory;
+
+
 use Livewire\WithFileUploads;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Livewire\WithPagination;
 
 class AdminProductComponent extends Component
 {
 	use WithFileUploads;
+	use WithPagination;
 
 	
 	public $Suppliers;
@@ -41,6 +45,9 @@ class AdminProductComponent extends Component
 	public $productImport;
 	public $uploadedImage;
 	public $status;
+	
+	public $searchInput='';
+	
 	
 	public $readyToLoad = false;
 	public $tempImageUrl;
@@ -76,16 +83,40 @@ class AdminProductComponent extends Component
 
 	];
 	
+	public $sortField='id';
+	public $sortDirection='asc';
+	
+	public function sortBy($field,$direction){
+		$this->sortField = $field;
+		$this->sortDirection = $direction;
+	}
     public function render()
     {
-		
+		if($this->searchInput != null){
+			$Products2 = Product::with('Category1')
+								->with('Supplier')
+								->with('Category2')
+								->orderBy($this->sortField,$this->sortDirection)
+								->where('productName','LIKE','%'.$this->searchInput.'%')
+								->paginate(3);				
+		}
+		else{
+			$Products2 = Product::with('Category1')
+								->with('Supplier')
+								->with('Category2')
+								->orderBy($this->sortField,$this->sortDirection)
+								->paginate(3);	
+		}							
+		//dd($Products2);
+		/*
 		$this->Products = Product::with('Category1')
 								->with('Supplier')
 								->with('Category2')
-								->get();//->dd();
+								->get();*/
+								
 		$this->ProductCategories = ProductCategory::all();
 		$this->Suppliers = Supplier::all();
-        return view('livewire.admin-product-component')
+        return view('livewire.admin-product-component',['Products2' => $Products2])
 					->layout('layouts.template');
     }
 	
@@ -125,9 +156,7 @@ class AdminProductComponent extends Component
 			//Ghi vào admin logs
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = "Tạo sản phẩm id:".$Product->id;
-			date_default_timezone_set('Asia/Ho_Chi_Minh');
-			$Log->date = now();				
+			$Log->note = "Tạo sản phẩm id:".$Product->id;		
 			$Log->save();
 		}
 		else{
@@ -167,9 +196,7 @@ class AdminProductComponent extends Component
 			//Ghi vào admin logs
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = "Sửa sản phẩm id:".$Product->id;
-			date_default_timezone_set('Asia/Ho_Chi_Minh');
-			$Log->date = now();				
+			$Log->note = "Sửa sản phẩm id:".$Product->id;			
 			$Log->save();
 		}
 	}
@@ -231,9 +258,7 @@ class AdminProductComponent extends Component
 		//Ghi vào admin logs
 		$Log = new AdminLog();
 		$Log->admin_id = auth()->user()->id;
-		$Log->note = "Ẩn sản phẩm id:".$id;
-		date_default_timezone_set('Asia/Ho_Chi_Minh');
-		$Log->date = now();		
+		$Log->note = "Ẩn sản phẩm id:".$id;	
 		$Log->save();		
 	}
 	

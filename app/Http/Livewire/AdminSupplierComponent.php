@@ -56,9 +56,7 @@ class AdminSupplierComponent extends Component
 			
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = "Thêm nhà cung cấp id:".$Supplier->id;
-			date_default_timezone_set('Asia/Ho_Chi_Minh');
-			$Log->date = now();				
+			$Log->note = "Thêm nhà cung cấp id:".$Supplier->id;				
 			$Log->save();
 			session()->flash('success','Đã thêm thành công nhà cung cấp '.$Supplier->supplierName);
 		}else{
@@ -74,9 +72,7 @@ class AdminSupplierComponent extends Component
 			
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = "Sửa nhà cung cấp id:".$Supplier->id;
-			date_default_timezone_set('Asia/Ho_Chi_Minh');
-			$Log->date = now();				
+			$Log->note = "Sửa nhà cung cấp id:".$Supplier->id;			
 			$Log->save();	
 			session()->flash('success','Đã sửa thành công nhà cung cấp '.$Supplier->supplierName);
 		}
@@ -108,9 +104,7 @@ class AdminSupplierComponent extends Component
 		
 		$Log = new AdminLog();
 		$Log->admin_id = auth()->user()->id;
-		$Log->note = "Ẩn nhà cung cấp id:".$id;
-		date_default_timezone_set('Asia/Ho_Chi_Minh');
-		$Log->date = now();				
+		$Log->note = "Ẩn nhà cung cấp id:".$id;			
 		$Log->save();		
 	}
 	

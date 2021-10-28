@@ -36,8 +36,7 @@ class AdminProductCategoryLv2Component extends Component
 			
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = "Tạo loại sản phẩm cấp 2 id:".$Category->id;
-			$Log->date = now();				
+			$Log->note = "Tạo loại sản phẩm cấp 2 id:".$Category->id;			
 			$Log->save();			
 			
 			session()->flash('success','Thêm loại sản phẩm thành công');
@@ -49,8 +48,7 @@ class AdminProductCategoryLv2Component extends Component
 			
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = "Sửa loại sản phẩm cấp 2 id:".$Category->id;
-			$Log->date = now();				
+			$Log->note = "Sửa loại sản phẩm cấp 2 id:".$Category->id;			
 			$Log->save();			
 			
 			session()->flash('success','Sửa loại sản phẩm thành công');			

@@ -354,8 +354,10 @@
 												</div>
 												<div class="form-group">
 													<label>Ngày tạo</label>
-													<input class="form-control" >
-												</div>
+													<div>
+														<input class="form-control">
+													</div>
+												</div>										
 												<div class="form-group">
 													<label>Số chứng từ gốc kèm theo</label>
 													<input class="form-control" wire:model.defer="bill_od" >
