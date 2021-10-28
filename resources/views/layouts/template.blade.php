@@ -251,6 +251,8 @@
 <!-- Custom Theme JavaScript -->
 <script src="{{asset('admin/js/startmin.js')}}"></script>
 
+
+
 @livewireScripts
 </body>
 </html>

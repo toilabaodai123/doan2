@@ -1,22 +1,50 @@
 	<div>
-
+	<div class="row">
+		
+		<div class="col-lg-4">
+			<div wire:model="searchInput" class="form-group">
+				<label>Nhập tên </label>
+				<input class="form-control" wire:model="searchInput">
+			</div>
+		</div>
+	</div>
     <div class="col-lg-12">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered table-hover table-striped">
                                                     <thead>
                                                     <tr>
-                                                        <th>ID</th>
-                                                        <th>Tên sản phẩm</th>
-                                                        <th>Giá sản phẩm</th>
+                                                        <th>
+															ID
+															<i class="fa fa-arrow-up" wire:click="sortBy('id','ASC')" style="cursor:pointer"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('id','DESC')" style="cursor:pointer"></i>
+														</th>
+                                                        <th>
+															Tên sản phẩm
+															<i class="fa fa-arrow-up" wire:click="sortBy('productName','ASC')" style="cursor:pointer"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('productName','DESC')" style="cursor:pointer"></i>
+														</th>
+                                                        <th>
+															Giá sản phẩm
+															<i class="fa fa-arrow-up" wire:click="sortBy('productPrice','ASC')" style="cursor:pointer"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('productPrice','DESC')" style="cursor:pointer"></i>	
+														</th>
 														<th>Loại sản phẩm 1</th>
 														<th>Loại sản phẩm 2</th>
-														<th>Nhà cung cấp</th>
-														<th>Trạng thái</th>
+														<th>
+															Nhà cung cấp
+															<i class="fa fa-arrow-up" wire:click="sortBy('supplierID','ASC')" style="cursor:pointer"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('supplierID','DESC')" style="cursor:pointer"></i>															
+														</th>
+														<th>
+															Trạng thái
+															<i class="fa fa-arrow-up" wire:click="sortBy('status','ASC')" style="cursor:pointer"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('status','DESC')" style="cursor:pointer"></i>														
+														</th>
 														<th>Tùy chọn</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-													@foreach($Products as $p)
+													@foreach($Products2 as $p)
                                                     <tr>
                                                         <td>{{$p->id}}</td>
                                                         <td>{{$p->productName}}</td>
@@ -100,6 +128,7 @@
                                                     </tr>
 													@endforeach
                                                     </tbody>
+													{{$Products2->links()}}
                                                 </table>
                                             </div>
                                             <!-- /.table-responsive -->
