@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderLog;
 use App\Models\User;
+use App\Models\Wishlist;
 
 use Cart;
 use Illuminate\Support\Facades\Auth;
@@ -19,15 +20,14 @@ class Purchase extends Component
     public $data;
     public function render()
     {
-    //     if(Auth::User()){
-        
-    //     $order= Order::where('user_id', 10 )->first();
-    // }
-    
+        $order= Order::where('user_id', Auth::user()->id )->get();
+
+        $wishlist = Wishlist::where('id_user', auth()->user()->id)->get();
+  
     // $aa = OrderDetail::where('order_id', 1)->get();
 
     // $model= ProductModel::where('id', $aa->productModel_id )->get();
-    //     dd($aa);
+       dd($wishlist);
         return view('livewire.frontend.purchase')->layout('layouts.template3');
     }
 }

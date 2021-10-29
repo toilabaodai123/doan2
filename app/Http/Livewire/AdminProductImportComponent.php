@@ -46,7 +46,7 @@ class AdminProductImportComponent extends Component
 	public $add_product_shortDesc;
 	public $add_product_longDesc;
 	
-	
+	public $sale_date;
 	
 	public $Stockers ;
 	public $Accountants;

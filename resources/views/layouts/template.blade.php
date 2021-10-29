@@ -252,6 +252,7 @@
 <script src="{{asset('admin/js/startmin.js')}}"></script>
 
 
+@stack('scripts')
 
 @livewireScripts
 </body>

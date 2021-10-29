@@ -46,7 +46,7 @@ class Index extends Component
         $this->witem = Wishlist::where('status', 1)->first();
         $this->insta = Instagram::orderBy('id', 'desc')->take(6)->get();
         $this->blog = Blog_detail::orderBy('id','desc')->take(3)->get();
-        $this->category = ProductCategory::with('Image')->get(); 
+        $this->category = ProductCategory::with('Image')->get()->take(8); 
         //dd($this->category);
         $this->slide = slide::orderBy('id','desc')->take(3)->get();
         $this->product = Product::with('Pri_Image')->with('wishlist')->where('status',1)->orderBy('id','desc')->take(8)->get();
