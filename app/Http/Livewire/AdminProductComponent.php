@@ -149,6 +149,13 @@ class AdminProductComponent extends Component
 					$PrimaryImage->productID = $Product->id;
 					$PrimaryImage->save();
 				}
+			$Sizes = ProductSize::all();
+			foreach($Sizes as $s){
+				$Model = new ProductModel();
+				$Model->productID = $Product->id;
+				$Model->sizeID = $s->id;
+				$Model->save();
+			}
 
 			$slug = SlugService::createSlug(Product::class, 'productSlug', $Product->productName);
 			$Product->productSlug = $slug.'-SP'.$Product->id;

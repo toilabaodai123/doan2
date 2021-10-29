@@ -6,8 +6,8 @@
                     <div class="breadcrumb__text">
                         <h4>Shop</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./index.html">Shop </a>
+                            <a href="{{URL::to('/index')}}">Home</a>
+                            <a href="{{URL::to('/shop')}}">Shop </a>
                             <span>{{$categorylv1_name}}</span>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
                                                     @foreach($categorylv1 as $categorylv1)
-                                                    <li><a href="{{URL::to('product/category/'.$categorylv1->id)}}">{{$categorylv1->categoryName}} (20)</a></li>
+                                                    <li><a href="javascript:void(0)" wire:click="category({{$categorylv1->id}})">{{$categorylv1->categoryName}} (20)</a></li>
                                                     @endforeach
                                                     <li><a href="javascript:void(0)" wire:click="category(null)">bo chon</a></li>
 
@@ -75,12 +75,11 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__price">
                                                 <ul>
-                                                    <li><a href="javascript:void(0)" wire:click="price(1, 50)">$0.00 - $50.00</a></li>
-                                                    <li><a href="javascript:void(0)" wire:click="price(51, 101)">$50.00 - $100.00</a></li>
-                                                    <li><a href="javascript:void(0)" wire:click="price(101, 150)">$100.00 - $150.00</a></li>
-                                                    <li><a href="javascript:void(0)" wire:click="price(250, 100000000000000)">250.00+</a></li>
-                                                    <li><a href="javascript:void(0)" wire:click="price(0,99999999999999999)">bo chon</a></li>
-
+                                                <li><a href="javascript:void(0)" wire:click="price(1, 100000)">0 VND - 100000 VND</a></li>
+                                                    <li><a href="javascript:void(0)" wire:click="price(100000, 250000)">100000 VND - 250000 VND</a></li>
+                                                    <li><a href="javascript:void(0)" wire:click="price(250000, 250000)">250000 VND- 250000 VND</a></li>
+                                                    <li><a href="javascript:void(0)" wire:click="price(250000, 100000000000000)">500000+ VND</a></li>
+                                                    <li><a href="javascript:void(0)" wire:click="price(0,1000000000000)">Tất cả</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -133,8 +132,8 @@
                         @foreach($product as $product)
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/'. $product->pri_image->imageName)}}">
-                                <img src="{{asset('storage/images/'. $product->pri_image->imageName)}}" alt="">
+                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
+                                <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
                                     <ul class="product__hover">
                                         <li><a href="#"><img src="{{asset('img/icon/heart.png')}}" alt=""></a></li>
                                         <li><a href="{{URL::to('shop-detail/'.$product->id)}}"><img src="{{asset('img/icon/compare.png')}}" alt=""> <span>Compare</span></a>
@@ -170,15 +169,8 @@
                         @endforeach
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="product__pagination">
-                                <a class="active" href="#">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <span>...</span>
-                                <a href="#">21</a>
-                            </div>
-                        </div>
+                    {{ $products->links('livewire.pages.aaa') }}
+
                     </div>
                 </div>
             </div>

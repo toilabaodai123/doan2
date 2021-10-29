@@ -22,6 +22,6 @@ class ProductCategory extends Model
 	
 	
 	public function Image(){
-		return $this->hasOne(Image::class,'id','category_id');
+		return $this->hasOne(Image::class,'category_id','id');
 	}	
 }

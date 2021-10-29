@@ -125,8 +125,6 @@ class AdminProductImportComponent extends Component
 		$Log = new AdminLog();
 		$Log->admin_id = auth()->user()->id;
 		$Log->note = "Đã tạo hóa đơn nhập hàng id:".$Bill->id;
-		//date_default_timezone_set('Asia/Ho_Chi_Minh');
-		$Log->date = now();
 		$Log->save();	
 		
 		

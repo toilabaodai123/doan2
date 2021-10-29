@@ -80,7 +80,7 @@
 														<label for="file-upload" class="custom-file-upload" style="border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;">
 															Chọn hình ảnh
 														</label>
-														<label wire:loading wire:target="productImage">Đang tải...</label>	
+														<label wire:loading wire:target="categoryImage">Đang tải...</label>	
 													</div>
 												</div>
 												
