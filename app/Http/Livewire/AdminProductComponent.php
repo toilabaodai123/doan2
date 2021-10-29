@@ -22,6 +22,7 @@ class AdminProductComponent extends Component
 {
 	use WithFileUploads;
 	use WithPagination;
+	//protected $paginationTheme = 'bootstrap';
 
 	
 	public $Suppliers;
@@ -46,7 +47,7 @@ class AdminProductComponent extends Component
 	public $uploadedImage;
 	public $status;
 	
-	public $searchInput='';
+	public $searchInput;
 	
 	
 	public $readyToLoad = false;
@@ -129,6 +130,7 @@ class AdminProductComponent extends Component
 			$Product->CategoryID2 = $this->CategoryID2;
 			$Product->shortDesc = $this->shortDesc;
 			$Product->longDesc = $this->longDesc;
+
 			if($this->status == true)
 				$Product->status = 2;
 			else
@@ -155,6 +157,9 @@ class AdminProductComponent extends Component
 				$Model->save();
 			}
 
+			$slug = SlugService::createSlug(Product::class, 'productSlug', $Product->productName);
+			$Product->productSlug = $slug.'-SP'.$Product->id;
+			$Product->save();
 
 				session()->flash('success','Thêm sản phẩm thành công');
 				$this->reset();
