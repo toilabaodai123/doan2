@@ -5,15 +5,22 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Supplier;
 use App\Models\AdminLog;
+use Livewire\WithPagination;
 
 class AdminSupplierComponent extends Component
 {
+	use WithPagination;
+	
 	public $Suppliers;
 	public $supplierID;
 	public $supplierName;
 	public $supplierMail;
 	public $supplierPhone;
 	public $status;
+	
+	public $searchInput;
+	public $sortField='id';
+	public $sortDirection='ASC';
 	
 	
 	protected $rules = [
@@ -36,10 +43,25 @@ class AdminSupplierComponent extends Component
 	
     public function render()
     {
+		if($this->searchInput == null){
+			$Suppliers2 = Supplier::orderBy($this->sortField,$this->sortDirection)
+								   ->paginate(2);
+		}else{
+			$Suppliers2 = Supplier::orderBy($this->sortField,$this->sortDirection)
+								   ->where('supplierName','LIKE','%'.$this->searchInput.'%')
+								   ->paginate(2);
+		}
+		
 		$this->Suppliers = Supplier::all();
-        return view('livewire.admin-supplier-component')
+        return view('livewire.admin-supplier-component',['Suppliers2'=>$Suppliers2])
 					->layout('layouts.template');
     }
+	
+	public function sortBy($field,$direction){
+		$this->sortField = $field;
+		$this->sortDirection = $direction;
+	}
+	
 	
 	public function submit(){
 		$this->validate();

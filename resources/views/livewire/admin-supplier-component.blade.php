@@ -1,4 +1,13 @@
 <div>
+	<div class="row">
+		<div class="col-lg-4">
+			<div wire:model="searchInput" class="form-group">
+				<label>Nhập tên </label>
+				<input class="form-control" wire:model="searchInput">
+			</div>
+		</div>
+	</div>
+	{{$Suppliers2->links()}}
     <div class="row">
 		<div class="col-lg-12">
 				<div class="row">
@@ -6,16 +15,36 @@
 						<table class="table table-bordered table-hover table-striped">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>Tên nhà cung cấp</th>
-									<th>Email</th>
-									<th>Số điện thoại</th>
-									<th>Trạng thái</th>
+									<th>
+										ID
+										<i class="fa fa-arrow-up" wire:click="sortBy('id','ASC')" style="cursor:pointer;{{$sortField=='id' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+										<i class="fa fa-arrow-down" wire:click="sortBy('id','DESC')" style="cursor:pointer;{{$sortField=='id' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+									</th>
+									<th>
+										Tên nhà cung cấp
+										<i class="fa fa-arrow-up" wire:click="sortBy('supplierName','ASC')" style="cursor:pointer;{{$sortField=='supplierName' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+										<i class="fa fa-arrow-down" wire:click="sortBy('supplierName','DESC')" style="cursor:pointer;{{$sortField=='supplierName' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+									</th>
+									<th>
+										Email
+										<i class="fa fa-arrow-up" wire:click="sortBy('supplierMail','ASC')" style="cursor:pointer;{{$sortField=='supplierMail' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+										<i class="fa fa-arrow-down" wire:click="sortBy('supplierMail','DESC')" style="cursor:pointer;{{$sortField=='supplierMail' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+									</th>
+									<th>
+										Số điện thoại
+										<i class="fa fa-arrow-up" wire:click="sortBy('supplierPhone','ASC')" style="cursor:pointer;{{$sortField=='supplierPhone' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+										<i class="fa fa-arrow-down" wire:click="sortBy('supplierPhone','DESC')" style="cursor:pointer;{{$sortField=='supplierPhone' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+									</th>
+									<th>
+										Trạng thái
+										<i class="fa fa-arrow-up" wire:click="sortBy('status','ASC')" style="cursor:pointer;{{$sortField=='status' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+										<i class="fa fa-arrow-down" wire:click="sortBy('status','DESC')" style="cursor:pointer;{{$sortField=='status' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+									</th>
 									<th>Tùy chọn</th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($Suppliers as $s)
+								@foreach($Suppliers2 as $s)
 								<tr>	
 										<td>{{$s->id}}</td>
 										<td>{{$s->supplierName}}</td>

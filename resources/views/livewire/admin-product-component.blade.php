@@ -164,6 +164,8 @@
 															<p class="text-danger">{{$message}}</p>
 														@enderror
 													</div>
+													
+													
 													<div class="col-lg-9">
 														<label>Nhà cung cấp</label>
 														<select class="form-control" wire:model="supplierID">
