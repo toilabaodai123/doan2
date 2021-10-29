@@ -15,30 +15,30 @@
                                                     <tr>
                                                         <th>
 															ID
-															<i class="fa fa-arrow-up" wire:click="sortBy('id','ASC')" style="cursor:pointer"></i>
-															<i class="fa fa-arrow-down" wire:click="sortBy('id','DESC')" style="cursor:pointer"></i>
+															<i class="fa fa-arrow-up" wire:click="sortBy('id','ASC')" style="cursor:pointer;{{$sortField=='id' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('id','DESC')" style="cursor:pointer;{{$sortField=='id' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
 														</th>
                                                         <th>
 															Tên sản phẩm
-															<i class="fa fa-arrow-up" wire:click="sortBy('productName','ASC')" style="cursor:pointer"></i>
-															<i class="fa fa-arrow-down" wire:click="sortBy('productName','DESC')" style="cursor:pointer"></i>
+															<i class="fa fa-arrow-up" wire:click="sortBy('productName','ASC')" style="cursor:pointer;{{$sortField=='productName' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('productName','DESC')" style="cursor:pointer;{{$sortField=='productName' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
 														</th>
                                                         <th>
 															Giá sản phẩm
-															<i class="fa fa-arrow-up" wire:click="sortBy('productPrice','ASC')" style="cursor:pointer"></i>
-															<i class="fa fa-arrow-down" wire:click="sortBy('productPrice','DESC')" style="cursor:pointer"></i>	
+															<i class="fa fa-arrow-up" wire:click="sortBy('productPrice','ASC')" style="cursor:pointer;{{$sortField=='productPrice' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('productPrice','DESC')" style="cursor:pointer;{{$sortField=='productPrice' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>	
 														</th>
 														<th>Loại sản phẩm 1</th>
 														<th>Loại sản phẩm 2</th>
 														<th>
 															Nhà cung cấp
-															<i class="fa fa-arrow-up" wire:click="sortBy('supplierID','ASC')" style="cursor:pointer"></i>
-															<i class="fa fa-arrow-down" wire:click="sortBy('supplierID','DESC')" style="cursor:pointer"></i>															
+															<i class="fa fa-arrow-up" wire:click="sortBy('supplierID','ASC')" style="cursor:pointer;{{$sortField=='supplierID' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('supplierID','DESC')" style="cursor:pointer;{{$sortField=='supplierID' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>															
 														</th>
 														<th>
 															Trạng thái
-															<i class="fa fa-arrow-up" wire:click="sortBy('status','ASC')" style="cursor:pointer"></i>
-															<i class="fa fa-arrow-down" wire:click="sortBy('status','DESC')" style="cursor:pointer"></i>														
+															<i class="fa fa-arrow-up" wire:click="sortBy('status','ASC')" style="cursor:pointer;{{$sortField=='status' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('status','DESC')" style="cursor:pointer;{{$sortField=='status' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>														
 														</th>
 														<th>Tùy chọn</th>
                                                     </tr>
@@ -104,7 +104,7 @@
 																									<!-- /.modal-dialog -->
 															</div>															
 															<button wire:click="editProduct({{$p->id}})" type="button" class="btn btn-info">Sửa</button>
-															<button  data-toggle="modal"  data-target="#myModalDelete{{$p->id}}" type="button"  class="btn btn-danger">Xóa</button>
+															<button  data-toggle="modal"  data-target="#myModalDelete{{$p->id}}" type="button"  class="btn btn-danger">Ẩn</button>
 															<div class="modal fade" id="myModalDelete{{$p->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
