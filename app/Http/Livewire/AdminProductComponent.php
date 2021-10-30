@@ -97,8 +97,8 @@ class AdminProductComponent extends Component
 			$Products2 = Product::with('Category1')
 								->with('Supplier')
 								->with('Category2')
-								->orderBy($this->sortField,$this->sortDirection)
 								->where('productName','LIKE','%'.$this->searchInput.'%')
+								->orderBy($this->sortField,$this->sortDirection)
 								->paginate(3);				
 		}
 		else{
@@ -149,13 +149,8 @@ class AdminProductComponent extends Component
 					$PrimaryImage->productID = $Product->id;
 					$PrimaryImage->save();
 				}
-			$Sizes = ProductSize::all();
-			foreach($Sizes as $s){
-				$Model = new ProductModel();
-				$Model->productID = $Product->id;
-				$Model->sizeID = $s->id;
-				$Model->save();
-			}
+
+
 
 			$slug = SlugService::createSlug(Product::class, 'productSlug', $Product->productName);
 			$Product->productSlug = $slug.'-SP'.$Product->id;

@@ -22,6 +22,7 @@ class AdminProductImportComponent extends Component
 {
 	use WithPagination;
 	public $Suppliers =[];
+	public $Sizes;
 	
 	public $arrayy =[];
 	public $supplierID;
@@ -32,6 +33,7 @@ class AdminProductImportComponent extends Component
 	public $searchSelect;
 	public $searchInput;
 	
+	public $size = [];
 	public $amount;
 	public $price;
 	public $vat;
@@ -46,7 +48,7 @@ class AdminProductImportComponent extends Component
 	public $add_product_shortDesc;
 	public $add_product_longDesc;
 	
-	public $sale_date;
+	public $bill_date;
 	
 	public $Stockers ;
 	public $Accountants;
@@ -57,9 +59,16 @@ class AdminProductImportComponent extends Component
 	
 	public $bill_od;
 	public $transporter_name;
+	
+	public $sortField='productName';
+	public $sortDirection='ASC';
+	
+	public $selectedProductArray=[];
+	
 
     public function render()
     {
+		$this->Sizes = ProductSize::all();
 		$this->Categories1 = ProductCategory::all();
 		$this->Stockers = User::where('user_type','LIKE','%Nhân viên thủ kho%')->get();
 		$this->Accountants = User::where('user_type','LIKE','%Nhân viên kế toán%')->get();
@@ -67,20 +76,26 @@ class AdminProductImportComponent extends Component
 		$this->Suppliers = Supplier::all();
 		if($this->supplierID == null) 
 			$Products = [];
-		else if ( $this->searchInput != null && $this->searchSelect != null && $this->searchSelect != 'null')
+		else if ( $this->searchInput != null )
 			$Products = Product::with('Models')->where('supplierID',$this->supplierID)
-											   ->where($this->searchSelect,'like','%'.$this->searchInput.'%')
-											   ->paginate(9);
-						
+											   ->where('productName','LIKE','%'.$this->searchInput.'%')
+											   ->paginate(5);
 		else
-			$Products = Product::with('Models')->where('supplierID',$this->supplierID)->paginate(9);
-		
-
-			
-		
+			$Products = Product::with('Models')->where('supplierID',$this->supplierID)
+											   ->paginate(5);
 		return view('livewire.admin-product-import-component',['Products' => $Products])
 					->layout('layouts.template');
     }
+	
+	public function sortBy($field,$direction){
+		$this->sortField = $field;
+		$this->sortDirection = $direction;
+	}
+	
+	public function selectProduct2($id,$name){
+		array_push($this->selectedProductArray,['is_deleted'=>false,'product_id'=>$id,'product_name'=>$name]);
+	}
+	
 	
 	public function submit(){
 		
@@ -98,6 +113,8 @@ class AdminProductImportComponent extends Component
 		$Bill->accountant_id = $this->accountant_id_submit;
 		$Bill->save();
 		
+		
+		/*
 		//Thêm chi tiết hóa đơn theo từng sản phẩm được chọn
 		foreach($this->selectedProducts as $k=>$v){
 			$Detail = new ProductImportBillDetail();
@@ -108,16 +125,37 @@ class AdminProductImportComponent extends Component
 			$Detail->save();
 			$this->bill_total += ($this->amount[$v['id']] * $this->price[$v['id']]);
 		}
+		*/
 		
-		//Nhập tồn kho theo từng sản phẩm được chọn
-		foreach($this->selectedProducts as $k=>$v){
-			$Model = ProductModel::find($v['id']);
-			$Model->stock = $this->amount[$v['id']];
-			$Model->stockTemp = $this->amount[$v['id']];
-			$Model->productModelStatus = 1;
-			$Model->save();
+		foreach($this->selectedProductArray as $k=>$v){
+			$checkModel = ProductModel::where('productID',$v['product_id'])
+										->where('size','LIKE',$this->size[$k])
+										->first();
+			if($checkModel == null){
+				$Model = new ProductModel();
+				$Model->productID = $v['product_id'];
+				$Model->size = $this->size[$k];
+				$Model->stock= $this->amount[$k];
+				$Model->stockTemp= $this->amount[$k];
+				$Model->productModelStatus=1;
+				$Model->save();
+			}else{
+				$checkModel->stock += $this->amount[$k];
+				$checkModel->stockTemp += $this->amount[$k];
+				$checkModel->save();
+			}
+			
+			$Detail = new ProductImportBillDetail();
+			$Detail->import_bill_id = $Bill->id;
+			$Model = ProductModel::where('productID',$v['product_id'])->where('size',$this->size[$k])->first();
+			$Detail->product_model_id = $Model->id;
+			$Detail->amount = $this->amount[$k];
+			$Detail->price = $this->price[$k];
+			$Detail->save();
+			$this->bill_total += ($this->amount[$k] * $this->price[$k]);
+										
 		}
-		
+			
 		$this->bill_total += ( $this->bill_total * ( $this->vat ) / 100 );
 		$Bill->total = $this->bill_total;
 		$Bill->save();
@@ -133,28 +171,6 @@ class AdminProductImportComponent extends Component
 		
 	}
 	
-	
-	public function selectProduct($id){
-		if($this->arrayy != null){
-			$flag = 0;
-			foreach($this->arrayy as $k=>$v){
-				if($v == $id){
-					$flag++;
-					break;
-				}
-			}
-			if($flag==0){
-				array_push($this->arrayy , $id);
-			}
-		}
-		else
-			array_push($this->arrayy , $id);
-		
-		$this->selectedProducts = ProductModel::with('Product')->with('Size')->whereIn('id',$this->arrayy)->get();
-		
-		
-	}
-	
 	public function test(){
 		$total = 0;
 		foreach($this->selectedProducts as $k=>$v){
@@ -165,17 +181,12 @@ class AdminProductImportComponent extends Component
 	}
 	
 	public function resetBtn(){
+		dd($this);
 		$this->reset();
 	}
 	
-	public function removeBtn($id){
-		foreach($this->arrayy as $k=>$v){
-			if($v == $id){
-				unset($this->arrayy[$k]);
-				break;
-			}
-		}	
-		$this->selectedProducts = ProductModel::with('Product')->with('Size')->whereIn('id',$this->arrayy)->get();		
+	public function removeBtn($k){
+		$this->selectedProductArray[$k]['is_deleted']=true;
 	}
 	
 	public function addNewProduct(){
