@@ -1,3 +1,6 @@
+@section('title', 'Trang chi tiết bài viết')
+
+
 <div>
    
   <!-- Blog Details Hero Begin -->

@@ -1,3 +1,6 @@
+@section('title', 'Trang chi tiết sản phẩm')
+
+
 <div>
 <section class="shop-details">
     @forelse($product as $pro)
@@ -38,8 +41,8 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                                 <div class="product__details__option__size" wire:ignore>
                                     <span>Size:</span>
                                     @forelse($Sizes as $size)
-                                    <label for="{{$size->Size->sizeName}}" value="{{$size->id}}" 
-                                         wire:click="size({{$size->id}})">{{$size->Size->sizeName}}
+                                    <label for="{{$size->size}}" value="{{$size->size}}" 
+                                         wire:click="size('{{$size->size}}')">{{$size->size}}
                                         <input type="radio"  id="xxl" >
                                     </label>
                                   @empty

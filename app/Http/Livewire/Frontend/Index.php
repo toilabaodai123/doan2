@@ -41,7 +41,6 @@ class Index extends Component
 
     public function render()
     {
-        
         // $this->sale = Sales::find(1); 
         $this->witem = Wishlist::where('status', 1)->first();
         $this->insta = Instagram::orderBy('id', 'desc')->take(6)->get();
@@ -74,5 +73,20 @@ class Index extends Component
         $flight->save();
     }
 
+    // public function contact(){
+    //     if(Auth::user()){
+    //         $data = new mMessage();
+
+    //         $data->name = Auth::user()->name;
+    //         $data->email = Auth::user()->email;
+    //         $data->des = $this->des;
+    //         $data->save();
+    
+    //         return redirect('contact');
+    //         session()->flash('message', 'gửi tin nhắn thành công');
+    //     }else{
+           
+    //     }
+    // }
    
 }

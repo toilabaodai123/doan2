@@ -61,6 +61,9 @@ Route::get('product/category/{id}',App\Http\Livewire\Frontend\CategoryComponent:
 Route::get('blog',App\Http\Livewire\Frontend\Blog::class);
 Route::get('blog-detail/{id}',App\Http\Livewire\Frontend\BlogDetail::class);
 Route::get('checkout',App\Http\Livewire\Frontend\Checkout::class);
+Route::get('contact',App\Http\Livewire\Frontend\Contact::class);
+Route::get('about',App\Http\Livewire\Frontend\About::class);
+Route::get('wishlist',App\Http\Livewire\Frontend\WhislistComponent::class);
 
 
 Route::get('users',App\Http\Livewire\Frontend\Users::class);
@@ -70,6 +73,8 @@ Route::get('slider', App\Http\Livewire\Pages\Slider::class);
 Route::get('sale', App\Http\Livewire\Pages\Sale::class);
 Route::get('instagram', App\Http\Livewire\Pages\Instagrams::class);
 Route::get('coupon', App\Http\Livewire\Pages\AdminCoupon::class);
+Route::get('/admin-contact', App\Http\Livewire\Pages\Admincontact::class);
+Route::get('/mes', App\Http\Livewire\Pages\AdminMessage::class);
 
 // Blog
 Route::get('post',[App\Http\Controllers\Controller::class, 'index']);

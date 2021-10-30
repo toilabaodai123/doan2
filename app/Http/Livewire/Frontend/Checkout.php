@@ -69,8 +69,7 @@ class Checkout extends Component
                 $LastOrderID = 9999;
             $LastOrderID++;
             $Order->orderCode = 'DH'.$LastOrderID;
-            
-            date_default_timezone_set('Asia/Ho_Chi_Minh');
+
             $Order->orderDate = now();
             $Order->orderTotal = 0;
             $Order->save();
@@ -81,15 +80,13 @@ class Checkout extends Component
 
             $OrderID = Order::all()->last()->id;
             $total=0;
-            $total =0;
             if(Cart::instance('cart')){
                 $this->carts =Cart::instance('cart')->content() ;
                 if($this->carts){
                     foreach ($this->carts as $cart){
                         $OrderDetail = new OrderDetail();
-                        $size_id= ProductSize::where('sizeName', $cart->options->size)->first();
                         $ProductModel_id = ProductModel::where('productID',$cart->id)
-                        ->where('sizeID',$size_id->id)
+                        ->where('size',$cart->options->size)
                         ->get()
                         ->last();
                         $OrderDetail->productModel_id = $ProductModel_id->id;

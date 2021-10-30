@@ -1,3 +1,6 @@
+@section('title', 'Trang giỏ hàng')
+
+
 <div class="aa">
     <section class="breadcrumb-option">
         <div class="container">

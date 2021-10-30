@@ -28,11 +28,12 @@ class ShopDetail extends Component
     }
     public function render()
     {
+        //dd($this);
         return view('livewire.frontend.shop-detail')->layout('layouts.template3');
     }
 
-    public function size(int $id){
-        $this->sizeId = $id;
+    public function size($name){
+        $this->sizeId = $name;
     }
     
     public function test(){
@@ -41,9 +42,9 @@ class ShopDetail extends Component
     public function addCart($id)
     {
         // session()->flush();
-
+        //dd($this);
         $this->cart = Product::with('Pri_Image')->where('id', $id)->first();
-        $size = ProductModel::with('Size')->where('id', $this->sizeId)->first();
+        $size = ProductModel::with('Size')->where('size', $this->sizeId)->first();
         if($size == null){
             session()->flash('message_size', 'chưa chọn size vui lòng chọn lại');
         }else{
@@ -51,11 +52,12 @@ class ShopDetail extends Component
          'qty' => $this->cart_qty,  
          'price' => $this->cart->productPrice, 
          'options' => ['image' => $this->cart->Pri_Image->imageName,
-         'size' =>  $size->Size->sizeName
+         'size' =>  $size->size
          ]])
          ->associate('App\Models\Product');
         //  dd(Cart::content());
-        return redirect('shop-detail/'.$id);
+        
+        //return redirect('shop-detail/'.$id);
         }
     }
 

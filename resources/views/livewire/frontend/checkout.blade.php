@@ -1,3 +1,6 @@
+@section('title', 'Tràn thanh toán')
+
+
 <div>
      <!-- Breadcrumb Section Begin -->
      <section class="breadcrumb-option">

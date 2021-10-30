@@ -1,4 +1,5 @@
-@section('title', 'Trang danh mục')
+<div>
+@section('title', 'Trang yêu thích')
 
 <div class="aa">
 <section class="breadcrumb-option">
@@ -6,11 +7,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Shop</h4>
+                        <h4>Wishlist</h4>
                         <div class="breadcrumb__links">
                             <a href="{{URL::to('/index')}}">Home</a>
-                            <a href="{{URL::to('/shop')}}">Shop </a>
-                            <span>{{$categorylv1_name}}</span>
+                            <a href="{{URL::to('/wishlist')}}">Wishlist </a>
                         </div>
                     </div>
                 </div>
@@ -38,6 +38,7 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
+                                                    
                                                     <li><a href="javascript:void(0)" wire:click="category(null)">Tất cả</a></li>
                                                     @foreach($categorylv1 as $categorylv1)
                                                     <li><a href="javascript:void(0)" wire:click="category({{$categorylv1->id}})">{{$categorylv1->categoryName}} (20)</a></li>
@@ -97,7 +98,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__left">
-                                    <p>Showing 1–12 of 126 results</p>
+                                    <p>Showing  {{$products->count()}} results</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -114,44 +115,50 @@
                         </div>
                     </div>
                     <div class="row">
-                        @foreach($products as $product)
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
-                                <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
-                                    <ul class="product__hover">
-                                        <li><a href="#"><img src="{{asset('img/icon/heart.png')}}" alt=""></a></li>
-                                        <li><a href="{{URL::to('shop-detail/'.$product->id)}}"><img src="{{asset('img/icon/compare.png')}}" alt=""> <span>Compare</span></a>
-                                        </li>
-                                        <li><a href="#"><img src="{{asset('img/icon/search.png')}}" alt=""></a></li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6>{{ $product->productName }}</h6>
-                                    <a href="#" wire:click="addCart({{ $product->id }})" class="add-cart">+ Add To Cart</a>
-                                    <div class="rating">
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
+                            @foreach($Wishlist as $wish)
+                                {{$wish->id}}
+                            @endforeach
+                            @foreach($products as $product)
+                            @if($product->Pri_Wish != null)
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
+                                    <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
+                                        <ul class="product__hover">
+                                            <li><a href="#"><img src="{{asset('img/icon/heart.png')}}" alt=""></a></li>
+                                            <li><a href="{{URL::to('shop-detail/'.$product->id)}}"><img src="{{asset('img/icon/compare.png')}}" alt=""> <span>Compare</span></a>
+                                            </li>
+                                            <li><a href="#"><img src="{{asset('img/icon/search.png')}}" alt=""></a></li>
+                                        </ul>
                                     </div>
-                                    <h5>${{ $product->productPrice }}</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-4">
-                                            <input type="radio" id="pc-4">
-                                        </label>
-                                        <label class="active black" for="pc-5">
-                                            <input type="radio" id="pc-5">
-                                        </label>
-                                        <label class="grey" for="pc-6">
-                                            <input type="radio" id="pc-6">
-                                        </label>
+                                    <div class="product__item__text">
+                                        <h6>{{ $product->productName }}</h6>
+                                        <a href="#" wire:click="addCart({{ $product->id }})" class="add-cart">+ Add To Cart</a>
+                                        <div class="rating">
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                        <h5>${{ $product->productPrice }}</h5>
+                                        <div class="product__color__select">
+                                            <label for="pc-4">
+                                                <input type="radio" id="pc-4">
+                                            </label>
+                                            <label class="active black" for="pc-5">
+                                                <input type="radio" id="pc-5">
+                                            </label>
+                                            <label class="grey" for="pc-6">
+                                                <input type="radio" id="pc-6">
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        @endforeach
+                            @endif
+                            @endforeach
+                       
                     </div>
                     <div class="row">
                     {{ $products->links('livewire.pages.aaa') }}
@@ -161,4 +168,5 @@
             </div>
         </div>
     </section>
+</div>
 </div>

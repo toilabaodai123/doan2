@@ -716,6 +716,7 @@ ol {
 .banner__item {
 	position: relative;
 	overflow: hidden;
+	margin-bottom: 20px;
 }
 
 .banner__item:hover .banner__item__text a:after {

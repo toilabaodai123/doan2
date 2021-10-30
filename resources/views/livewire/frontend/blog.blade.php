@@ -1,3 +1,6 @@
+@section('title', 'Trang bài viết')
+
+
 <div>
 	<div>
        <!-- Breadcrumb Section Begin -->

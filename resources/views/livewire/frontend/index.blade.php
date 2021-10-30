@@ -1,3 +1,5 @@
+@section('title', 'Trang chủ')
+
 <div>
 <section class="hero">
         <div class="hero__slider owl-carousel">
@@ -66,7 +68,11 @@
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
                     <div class="product__item">
                         <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}">
-                        <img src="{{asset('storage/images/'. $product->pri_Image->imageName)}}" alt="">
+                        @if($product->Pri_Image != null)
+							 <img src="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}" alt="">
+                        @else
+                            <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
+                        @endif
                             <span class="label">New</span>
                             <ul class="product__hover">
                                 @if ($witem)

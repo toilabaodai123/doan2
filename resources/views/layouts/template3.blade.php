@@ -8,7 +8,7 @@
     <meta name="keywords" content="Male_Fashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Male-Fashion | Template</title>
+    <title>@yield('title')</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
@@ -37,21 +37,23 @@
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__option">
             <div class="offcanvas__links">
-                <a href="#">Sign in</a>
-                <a href="#">FAQs</a>
+                <!-- <a href="#">Sign in</a> -->
+                @auth
+                <a href="{{url('users')}}">{{auth()->user()->name}}</a>
+                <a href="{{route('logout')}}" onclick="event.preventDefault();document.getElementById('form-logout').submit();">Đăng xuất</a>
+                <form method="POST" action="{{route('logout')}}" id="form-logout">
+                    @csrf
+                </form>
+                @else
+                    <a href="{{route('login')}}">Đăng nhập</a>
+                @endauth
+                
             </div>
-            <div class="offcanvas__top__hover">
-                <span>Usd <i class="arrow_carrot-down"></i></span>
-                <ul>
-                    <li>USD</li>
-                    <li>EUR</li>
-                    <li>USD</li>
-                </ul>
-            </div>
+          
         </div>
         <div class="offcanvas__nav__option">
             <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-            <a href="#"><img src="img/icon/heart.png" alt=""></a>
+            <a href="{{url('wishlist')}}"><img src="img/icon/heart.png" alt=""></a>
             <a href="{{url('cart')}}"><img src="{{asset('img/icon/cart.png')}}" alt=""> <span>@if(session()->get('cart')){{count(session()->get('cart'))}}@endif</span></a>
             <div class="price">$0.00</div>
         </div>
@@ -113,7 +115,7 @@
                             <li><a href="{{URL::to('/shop')}}">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
-                                    <li><a href="./about.html">About Us</a></li>
+                                    <li><a href="{{URL::to('/about')}}">About Us</a></li>
                                     <li><a href="{{URL::to('/shop')}}">Shop</a></li>
                                     <li><a href="{{URL::to('/cart')}}">Shopping Cart</a></li>
                                     <li><a href="{{URL::to('/checkout')}}">Check Out</a></li>
@@ -121,6 +123,8 @@
                                 </ul>
                             </li>
                             <li><a href="{{URL::to('/contact')}}">Contacts</a></li>
+                            <li><a href="{{URL::to('/tra-cuu-don-hang')}}">Tra cứu đơn hàng </a></li>
+
                         </ul>
                     </nav>
                 </div>
@@ -139,7 +143,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="img/footer-logo.png" alt=""></a>
+                            <a href="{{URL::to('index')}}"><img src="{{asset('img/footer-logo.png')}}" alt=""></a>
                         </div>
                         <p>Khách hàng là trọng tâm của mô hình kinh doanh độc đáo của chúng tôi.</p>
                         
@@ -150,21 +154,19 @@
                     <div class="footer__widget">
                         <h6>Shopping</h6>
                         <ul>
-                            <li><a href="#">Clothing Store</a></li>
-                            <li><a href="#">Trending Shoes</a></li>
-                            <li><a href="#">Accessories</a></li>
-                            <li><a href="#">Sale</a></li>
+                            <li><a href="{{URL::to('shop')}}">Danh mục</a></li>
+                            <li><a href="{{URL::to('shop')}}">Sản phẩm</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-6">
                     <div class="footer__widget">
-                        <h6>Shopping</h6>
+                        <h6>Pages</h6>
                         <ul>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Delivary</a></li>
-                            <li><a href="#">Return & Exchanges</a></li>
+                            <li><a href="{{URL::to('contact')}}">Liên hệ</a></li>
+                            <li><a href="{{URL::to('about')}}">Giới thiệu</a></li>
+                            <li><a href="{{URL::to('shop')}}">Sản phẩm</a></li>
+                            <li><a href="{{URL::to('blog')}}">Bài viết</a></li>
                         </ul>
                     </div>
                 </div>
@@ -173,10 +175,11 @@
                         <h6>Liên hệ</h6>
                         <div class="footer__newslatter">
                             <p>Hãy là người đầu tiên biết về sản phẩm mới của chúng tôi!</p>
-                            <form action="#">
+                            <p>Email : caothang@gmail.com</p>
+                            <!-- <form action="#">
                                 <input type="text" placeholder="Your email">
                                 <button type="submit"><span class="icon_mail_alt"></span></button>
-                            </form>
+                            </form> -->
                         </div>
                     </div>
                 </div>
@@ -188,9 +191,8 @@
                         <p>Copyright ©
                             <script>
                                 document.write(new Date().getFullYear());
-                            </script>2020
-                            All rights reserved | This template is made with <i class="fa fa-heart-o"
-                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>. Downloaded from <a href="https://themeslab.org/" target="_blank">Themeslab</a>
+                            </script>2021
+                          
                         </p>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </div>
@@ -201,14 +203,7 @@
     <!-- Footer Section End -->
 
     <!-- Search Begin -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
-    </div>
+    <livewire:pages.search /> 
     <!-- Search End -->
     <!-- Js Plugins -->
     <script src="{{asset('user/js/jquery-3.3.1.min.js')}}"></script>

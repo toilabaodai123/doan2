@@ -1,3 +1,5 @@
+@section('title', 'Đơn hàng của bạn')
+
 <div>
     
 <section class="breadcrumb-option">
