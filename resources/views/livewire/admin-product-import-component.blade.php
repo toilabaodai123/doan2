@@ -75,8 +75,8 @@
 																																<input class="form-control" placeholder="Nhập mô tả dài">
 																															</div>
 																															<div class="col-lg-12">
-																																<input id="file-upload" style="display:none" type="file" wire:model="productImage">
-																																<label for="file-upload" class="custom-file-upload" style="border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;">
+																																<input id="file-upload2" style="display:none" type="file" wire:model="productImage">
+																																<label for="file-upload2" class="custom-file-upload" style="border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;">
 																																	Chọn hình ảnh
 																																</label>
 																															</div>
@@ -372,7 +372,20 @@
 												</div>												
 												<div class="form-group">
 													<label>Biên lai</label>
-													<input class="form-control" >
+													<input id="file-upload" style="display:none" type="file" wire:model="bill_image" >
+													<label for="file-upload" class="custom-file-upload" style="border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;">
+														Chọn hình ảnh
+													</label>
+													<label wire:loading wire:target="bill_image">Đang tải...</label>
+													<label style="color:green">
+														@if($bill_image)
+															@if (is_string($bill_image))
+																<img src="{{asset('storage/images/bill/'.$bill_image)}}">
+															@else
+																<img src="{{$bill_image->temporaryUrl()}}">
+															@endif
+														@endif
+													</label>
 												</div>											
 												<div class="form-group" style="margin-top:20px">
 													<button type="submit" wire:loading.attr="disabled" class="btn btn-default">Lưu</button>

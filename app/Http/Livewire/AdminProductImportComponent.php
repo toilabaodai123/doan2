@@ -12,15 +12,19 @@ use App\Models\ProductCategory;
 use App\Models\Level2ProductCategory;
 use App\Models\User;
 use App\Models\AdminLog;
-
+use App\Models\Image;
 
 use Livewire\WithPagination;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 
 class AdminProductImportComponent extends Component
 {
 	use WithPagination;
+	use WithFileUploads;
+		
+		
 	public $Suppliers =[];
 	public $Sizes;
 	
@@ -40,6 +44,9 @@ class AdminProductImportComponent extends Component
 	public $date;
 	public $bill_code;
 	public $bill_total=0;
+	public $bill_image;
+	
+	public $productImage;
 	
 	public $add_product_name;
 	public $add_product_supplier_id;
@@ -108,6 +115,7 @@ class AdminProductImportComponent extends Component
 		$Bill->VAT = $this->vat;
 		$Bill->supplier_id = $this->supplierID;
 		$Bill->bill_od = $this->bill_od;
+		$Bill->bill_date = $this->bill_date;
 		$Bill->transporter_name = $this->transporter_name;
 		$Bill->stocker_id = $this->stocker_id_submit;
 		$Bill->accountant_id = $this->accountant_id_submit;
@@ -159,6 +167,20 @@ class AdminProductImportComponent extends Component
 		$this->bill_total += ( $this->bill_total * ( $this->vat ) / 100 );
 		$Bill->total = $this->bill_total;
 		$Bill->save();
+		
+		
+		//Hình ảnh
+		if($this->bill_image != null ){//&& $this->bill_image != $this->tempImageUrl){
+			$name=$this->bill_image->getClientOriginalName();
+			$name2 = date("Y-m-d-H-i-s").'-'.$name;
+			$this->bill_image->storeAs('/images/bill/',$name2,'public');
+						
+			$Image = new Image();
+			$Image->imageName = $name2;
+			$Image->imageType = 4; //1 = Hình ảnh sp chính, 2 = phụ , 3 = category , 4 = hóa đơn
+			$Image->import_bill_id = $Bill->id;
+			$Image->save();
+		}
 
 		$Log = new AdminLog();
 		$Log->admin_id = auth()->user()->id;
@@ -181,8 +203,9 @@ class AdminProductImportComponent extends Component
 	}
 	
 	public function resetBtn(){
-		dd($this);
-		$this->reset();
+		//dd($this);
+		$this->bill_image = '2021-10-30-16-03-00-unnamed.png';
+		//$this->reset();
 	}
 	
 	public function removeBtn($k){

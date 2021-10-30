@@ -19,10 +19,12 @@ class CreateImagesTable extends Migration
 			$table->integer('imageType');
 			$table->unsignedbiginteger('productID')->unsigned()->nullable();
 			$table->unsignedbiginteger('category_id')->nullable();
+			$table->unsignedbiginteger('import_bill_id')->nullable();
             $table->timestamps();
 			
 			$table->foreign('productID')->references('id')->on('products');
 			$table->foreign('category_id')->references('id')->on('product_categories');
+			$table->foreign('import_bill_id')->references('id')->on('product_import_bills');
         });
     }
 
