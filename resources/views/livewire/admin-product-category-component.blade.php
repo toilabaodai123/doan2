@@ -7,6 +7,7 @@
                                                     <tr>
                                                         <th>ID</th>
                                                         <th>Tên danh mục</th>
+														<th>Hình ảnh</th>
                                                         <th>Tùy chọn</th>
                                                     </tr>
                                                     </thead>
@@ -14,10 +15,15 @@
 													@foreach($ProductCategory as $c)
                                                     <tr>
                                                         <td>{{$c->id}}</td>
-                                                        <td>{{$c->categoryName}}</td>													
+                                                        <td>{{$c->categoryName}}</td>
+														<td>
+															@if($c->Image)
+																<img style="width:80px;height:80px" src="{{asset('storage/images/category/'.$c->Image->imageName)}}">
+															@endif
+														</td>
 														<td>
 															<button wire:click="editCategory({{$c->id}})" type="button" class="btn btn-info">Sửa</button>
-															<a href="#">Xóa</a>
+															<button wire:click="deleteCategory({{$c->id}})" type="button" class="btn btn-danger">Ẩn</button>
 														</td>
                                                     </tr>
 													@endforeach
@@ -83,6 +89,9 @@
 														<label wire:loading wire:target="categoryImage">Đang tải...</label>	
 													</div>
 												</div>
+												@error('categoryImage')
+													<p class="text-danger">{{$message}}</p>
+												@enderror
 												
 											
 												<button type="submit" class="btn btn-default">Lưu</button>

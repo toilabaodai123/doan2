@@ -153,6 +153,11 @@ class AdminProductImportComponent extends Component
 				$checkModel->save();
 			}
 			
+			$Product = Product::find($v['product_id']);
+			if($Product->productPrice == null && $Product->productPrice == 0)
+				$Product->productPrice = $this->price[$k]*10;
+			$Product->save();
+			
 			$Detail = new ProductImportBillDetail();
 			$Detail->import_bill_id = $Bill->id;
 			$Model = ProductModel::where('productID',$v['product_id'])->where('size',$this->size[$k])->first();
