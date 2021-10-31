@@ -51,18 +51,8 @@
                                     </td>
                                     <td class="product__cart__size">
                                         <div class="cart_size"  data-dropdown>
-                                            <button class="link" data-dropdown-button>{{$cart->options->size}} <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                            </button>
-                                            <div class="dropdown_menu_cart" >
-                                                <div class="product__details__option__size">
-                                                    <span>Size:</span>
-                                                    @foreach($sizess as $sizes)
-                                                    <label for="{{$sizes->sizeName}}" wire:click= "updateSize('{{$cart->rowId}}','{{$sizes->sizeName}}','{{$cart->options->image}}')">{{$sizes->sizeName}}
-                                                        <input type="radio" id="xxl">
-                                                    </label>
-                                                    @endforeach
-                                                </div>
-                                            </div>
+                                            <p>{{$cart->options->size}}</p>
+                                            
                                             
                                         </div>
                                     </td>

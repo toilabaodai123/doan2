@@ -40,7 +40,7 @@ class Checkout extends Component
     
     public function render()
     {
-        dd(Cart::instance('cart')->content() );
+        // dd(Cart::instance('cart')->content() );
 		if(Cart::instance('cart'))
         {
             $this->carts =Cart::instance('cart')->content() ;

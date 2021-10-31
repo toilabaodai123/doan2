@@ -14,6 +14,8 @@ use App\Models\Wishlist;
 // use App\Models\ProductModel;
 // use App\Models\Image;
 use App\Models\Blog_detail;
+use App\Models\Order;
+
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -42,7 +44,6 @@ class Index extends Component
 
     public function render()
     {
-        // $this->sale = Sales::find(1); 
         $this->insta = Instagram::orderBy('id', 'desc')->take(6)->get();
         $this->blog = Blog_detail::orderBy('id','desc')->take(3)->get();
         $this->category = ProductCategory::with('Image')->take(8)->get(); 

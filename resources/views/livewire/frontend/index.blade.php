@@ -33,6 +33,7 @@
                 </div>
                 @forelse($category as $key => $cate)
                 <div class="col-md-3">
+                <a href="{{URL::to('product/category/'.$cate->id)}}">
                     <div class="banner__item">
                             @if($cate->Image != null)
                                 <img src="{{asset('storage/images/category/'.$cate->Image->imageName)}}" alt="">
@@ -44,6 +45,7 @@
                             <a href="{{URL::to('product/category/'.$cate->id)}}">Shop now</a>
                         </div>
                     </div>
+                    </a>
                 </div>
                 @empty
                 Không có danh mục nào tồn tại

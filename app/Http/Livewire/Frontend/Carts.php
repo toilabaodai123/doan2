@@ -26,7 +26,7 @@ class Carts extends Component
     }
     public function render()
     { 
-        $this->sizess = ProductSize::all();
+        // $this->sizess = ProductSize::all();
        
         return view('livewire.frontend.carts')->layout('layouts.template3');
     
