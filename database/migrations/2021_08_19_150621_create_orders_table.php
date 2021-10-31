@@ -18,7 +18,6 @@ class CreateOrdersTable extends Migration
 			$table->string('orderCode')->nullable();
 			$table->unsignedbiginteger('user_id')->nullable();
 			$table->unsignedbiginteger('admin_id')->nullable();
-			$table->integer('orderStatus_id')->default(1);
 			$table->string('fullName');
 			$table->integer('phone');
 			$table->string('address');
@@ -27,7 +26,7 @@ class CreateOrdersTable extends Migration
 			$table->string('adminNote')->nullable();
 			$table->dateTime('orderDate');
 			$table->integer('orderTotal');
-			$table->integer('status')->default(1);
+			$table->integer('status');
             $table->timestamps();
 			
 			$table->foreign('user_id')->references('id')->on('users');

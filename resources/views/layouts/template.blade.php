@@ -171,16 +171,8 @@
                                 <a href="{{url('/admin/orders/new')}}">Danh sách hóa đơn mới</a>
                             </li>
                             <li>
-                                <a href="{{url('/admin/orders/accepted')}}">Danh sách hóa đơn đã chấp nhận</a>
+                                <a href="{{url('/admin/orders/accepted')}}">Danh sách hóa đơn </a>
                             </li>
-                            <li>
-                                <a href="{{url('/admin/products')}}">Danh sách hóa đơn đang vận chuyển</a>
-                            </li>							
-                            <li>
-                                <a href="{{url('/admin/orders/completed')}}">Danh sách hóa đơn hoàn tất</a>
-                            </li>
-                            <li>
-                                <a href="{{url('/admin/orders/declined')}}">Danh sách hóa đơn bị hủy bỏ</a>
                             </li>							
                         </ul>
                     </li>
