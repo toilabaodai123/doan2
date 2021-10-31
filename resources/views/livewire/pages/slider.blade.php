@@ -70,27 +70,27 @@
                         <input type="hidden" wire:modal="hiddenId" value="{{$hiddenId}}">
                             <div class="form-group">
                                 <label>Tên sản phẩm</label>
-                                <input class="form-control" wire:model="title">
+                                <input class="form-control" name="name_slider" wire:model="title">
                                 @error('title')<p class="text-danger">{{$message}}</p>@enderror
                             </div>
                             <div class="form-group">
                                 <label>Sub title</label>
-                                <input class="form-control" wire:model="sub_title">
+                                <input class="form-control" name="sub_slider" wire:model="sub_title">
                                 @error('short_des')<p class="text-danger">{{$message}}</p>@enderror
                             </div>	
                             <div class="form-group">
                                 <label>Mô tả</label>
-                                <input class="form-control" wire:model="short_des">
+                                <input class="form-control" name="des_slider" wire:model="short_des">
                                 @error('des')<p class="text-danger">{{$message}}</p>@enderror
                             </div>	
                             <div class="form-group">
                                 <label>Link</label>
-                                <input class="form-control" wire:model="link">
+                                <input class="form-control"  name="link_slider" wire:model="link">
                                 @error('link')<p class="text-danger">{{$message}}</p>@enderror
                             </div>
                             <div class="form-group">
                                 <label>Hình</label>
-                                <input type="file" class="form-control" wire:model="hinh">
+                                <input type="file" class="form-control"  wire:model="hinh">
                                 @error('hinh')<p class="text-danger">{{$message}}</p>@enderror
                                 @if ($hinh)
                                     Photo Preview:

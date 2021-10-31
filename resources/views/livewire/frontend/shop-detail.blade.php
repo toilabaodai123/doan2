@@ -48,11 +48,9 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                                   @empty
                                   Không có size san phẩm
                                   @endforelse
-                                  @if (session()->has('message_size'))
-                                        <p>
-                                            {{ session('message_size') }}
-                                        </p>
-                                    @endif
+
+
+                                  
                                 </div>
                             </div>
                             <div class="product__details__cart__option">
@@ -62,6 +60,15 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                                     </div>
                                 </div>
                                 <a href="#" wire:click.prevent="addCart({{ $pro->id }})" class="primary-btn">add to cart</a>
+                                @if(session()->has('message_size'))
+                                    <p style=" margin: 20px; color: red">
+                                    {{session('message_size')}}
+                                 @endif 
+                                 
+                                @if(session()->has('message_add'))
+                                <p style=" margin: 20px; color: #3c763d">
+                                    {{session('message_add')}}
+                                @endif
                             </div>
                             <div class="product__details__btns__option">
                                 <a href="#" wire:click.prevent="addToWishlisht({{ $pro->id }})"><i class="fa fa-heart"></i> add to wishlist</a>
@@ -148,7 +155,13 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                 <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                     <div class="product__item">
                         <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}">
-                            <span class="label">New</span>
+                            
+                        @if($pro->Pri_Image != null)
+							 <img src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
+                        @else
+                            <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
+                        @endif
+                        <span class="label">New</span>
                             <ul class="product__hover">
                                 <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
                                 <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>

@@ -16,6 +16,7 @@ use App\Models\Wishlist;
 use App\Models\Blog_detail;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Cart;
 
 
@@ -42,13 +43,12 @@ class Index extends Component
     public function render()
     {
         // $this->sale = Sales::find(1); 
-        $this->witem = Wishlist::where('status', 1)->first();
         $this->insta = Instagram::orderBy('id', 'desc')->take(6)->get();
         $this->blog = Blog_detail::orderBy('id','desc')->take(3)->get();
-        $this->category = ProductCategory::with('Image')->get()->take(8); 
-        //dd($this->category);
+        $this->category = ProductCategory::with('Image')->take(8)->get(); 
         $this->slide = slide::orderBy('id','desc')->take(3)->get();
         $this->product = Product::with('Pri_Image')->with('wishlist')->where('status',1)->orderBy('id','desc')->take(8)->get();
+        
         return view('livewire.frontend.index')->layout('layouts.template3');
     }
 
@@ -64,6 +64,11 @@ class Index extends Component
             $witem->id_user = Auth::user()->id;
             $witem->status = 1;
             $witem->save();
+        }else{
+             DB::table('wishlists')
+            ->where('productID', $id)
+            ->where('id_user', Auth::user()->id)
+            ->update(['status' => 1]);
         }
     }  
     public function removeWishlish($id){
@@ -71,22 +76,5 @@ class Index extends Component
         $flight->status = 0;
 
         $flight->save();
-    }
-
-    // public function contact(){
-    //     if(Auth::user()){
-    //         $data = new mMessage();
-
-    //         $data->name = Auth::user()->name;
-    //         $data->email = Auth::user()->email;
-    //         $data->des = $this->des;
-    //         $data->save();
-    
-    //         return redirect('contact');
-    //         session()->flash('message', 'gửi tin nhắn thành công');
-    //     }else{
-           
-    //     }
-    // }
-   
+    } 
 }

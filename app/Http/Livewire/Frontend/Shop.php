@@ -5,12 +5,16 @@ namespace App\Http\Livewire\Frontend;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Product;
+use App\Models\Wishlist;
 use Cart;
 
 use App\Models\ProductCategory;
 use App\Models\Level2ProductCategory;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -48,21 +52,12 @@ class Shop extends Component
                 $products = Product::with('Pri_Image')->where('CategoryID', $this->categoryId)->
                 orderBy('productPrice', 'ASC')->where('productName','LIKE', $search2)
                 ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)
-                ->paginate(1);
+                ->paginate(12);
 
-            }else if ($this->brandId != null ){
-                $products = Product::with('Pri_Image')->where('CategoryID2', $this->brandId)->
-                orderBy('productPrice', 'ASC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(1);
-
-            }else if ($this->categoryId != null && $this->brandId != null){
-                $products = Product::with('Pri_Image')->where('CategoryID2', $this->brandId)->where('CategoryID', $this->categoryId)->
-                orderBy('productPrice', 'ASC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(1);
             }else{
                 $products = Product::with('Pri_Image')->orderBy('productPrice', 'ASC')
                 ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
-                ->where('productPrice','<=', $this->priceMax)->paginate(1);
+                ->where('productPrice','<=', $this->priceMax)->paginate(12);
             }
         }
         else if($this->priceSort == 'price_desc')
@@ -70,42 +65,24 @@ class Shop extends Component
             if($this->categoryId != null){
                 $products = Product::with('Pri_Image')->where('CategoryID', $this->categoryId)->
                 orderBy('productPrice', 'DESC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(1);
+                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
-            }else if ($this->brandId != null ){
-                $products = Product::with('Pri_Image')->where('CategoryID2', $this->brandId)->
-                orderBy('productPrice', 'DESC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(1);
-
-            }else if ($this->categoryId != null && $this->brandId != null){
-                $products = Product::with('Pri_Image')->where('CategoryID2', $this->brandId)->where('CategoryID', $this->categoryId)->
-                orderBy('productPrice', 'DESC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(1);
             }else{
                 $products = Product::with('Pri_Image')->orderBy('productPrice', 'DESC')
                 ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
-                ->where('productPrice','<=', $this->priceMax)->paginate(1);
+                ->where('productPrice','<=', $this->priceMax)->paginate(12);
             }
         }
         else {
             if($this->categoryId != null  &&  $this->brandId == null){
                 $products = Product::with('Pri_Image')->where('CategoryID', $this->categoryId)
                 ->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(1);
+                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
-            }else if ($this->brandId != null && $this->categoryId == null){
-                $products = Product::with('Pri_Image')->where('CategoryID2', $this->brandId)
-                ->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(1);
-
-            }else if ($this->categoryId != null && $this->brandId != null){
-                $products = Product::with('Pri_Image')->where('CategoryID2', $this->brandId)->where('CategoryID', $this->categoryId)
-                ->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(1);
             }else{
                 $products = Product::with('Pri_Image')
                 ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
-                ->where('productPrice','<=', $this->priceMax)->paginate(1);
+                ->where('productPrice','<=', $this->priceMax)->paginate(12);
             }
         }
 
@@ -136,4 +113,29 @@ class Shop extends Component
          ->associate('App\Models\Product');
         session()->flash('success','Item added in cart');
     }
+    public function addToWishlisht($id)
+    { 
+        $temp = Wishlist::where('productID',$id)
+                        ->where('id_user',auth()->user()->id)
+                        ->get();
+
+        if($temp->count() == 0){
+            $witem = new Wishlist();
+            $witem->productID = $id;
+            $witem->id_user = Auth::user()->id;
+            $witem->status = 1;
+            $witem->save();
+        }else{
+             DB::table('wishlists')
+            ->where('productID', $id)
+            ->where('id_user', Auth::user()->id)
+            ->update(['status' => 1]);
+        }
+    }  
+    public function removeWishlish($id){
+        $flight = Wishlist::find($id);
+        $flight->status = 0;
+
+        $flight->save();
+    } 
 }

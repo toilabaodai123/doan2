@@ -22,29 +22,23 @@ class ShopDetail extends Component
     public function mount($id){
         $this->relatedPro = Product::with('Pri_image')->with('Category1')->orderBy('id', 'DESC')->get()->take(4);
         $this->product = Product::with('Pri_image')->with('Models')->where('id', $id)->get();
-        $this->size = ProductSize::all();
+        // $this->size = ProductSize::all();
 		$this->Sizes = ProductModel::with('Size')->where('productID',$id)->get();
-
     }
     public function render()
     {
-        //dd($this);
         return view('livewire.frontend.shop-detail')->layout('layouts.template3');
     }
 
     public function size($name){
         $this->sizeId = $name;
     }
-    
-    public function test(){
-        session()->flash('message','asdjasidjoaidjaosidjajsdjiasjdiadji');
-    }
+
     public function addCart($id)
     {
-        // session()->flush();
-        //dd($this);
         $this->cart = Product::with('Pri_Image')->where('id', $id)->first();
         $size = ProductModel::with('Size')->where('size', $this->sizeId)->first();
+        // dd($size);
         if($size == null){
             session()->flash('message_size', 'chưa chọn size vui lòng chọn lại');
         }else{
@@ -55,10 +49,13 @@ class ShopDetail extends Component
          'size' =>  $size->size
          ]])
          ->associate('App\Models\Product');
-        //  dd(Cart::content());
-        
-        //return redirect('shop-detail/'.$id);
+         session()->flash('message_add', 'Đã thêm san phẩm thành công');
+
         }
+        
+
+        $this->emitTo('pages.cart-count-component', 'refreshComponent');
+
     }
 
     public function addToWishlisht($id)

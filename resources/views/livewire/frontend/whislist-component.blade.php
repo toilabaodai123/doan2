@@ -20,80 +20,7 @@
     <section class="shop spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="shop__sidebar">
-                        <div class="shop__sidebar__search">
-                            <form action="#">
-                                <input type="text" placeholder="Search..." wire:model="search">
-                                <button type="submit"><span class="icon_search"></span></button>
-                            </form>
-                        </div>
-                        <div class="shop__sidebar__accordion">
-                            <div class="accordion" id="accordionExample">
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
-                                    </div>
-                                    <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__categories">
-                                                <ul class="nice-scroll">
-                                                    
-                                                    <li><a href="javascript:void(0)" wire:click="category(null)">Tất cả</a></li>
-                                                    @foreach($categorylv1 as $categorylv1)
-                                                    <li><a href="javascript:void(0)" wire:click="category({{$categorylv1->id}})">{{$categorylv1->categoryName}} (20)</a></li>
-                                                    @endforeach
-
-                                                    <!-- <li><a href="#">Women (20)</a></li>
-                                                    <li><a href="#">Bags (20)</a></li> -->
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__brand">
-                                                <ul>
-                                                    <li><a href="javascript:void(0)" wire:click="brand(null)">Tất cả</a></li>
-                                                    @foreach($categorylv2 as $categorylv2)
-                                                    <li><a href="javascript:void(0)" wire:click="brand({{$categorylv2->id}})">{{$categorylv2->category_name}}</a></li>
-                                                    @endforeach
-
-                                                    <!-- <li><a wire:click="test">Chanel</a></li> -->
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
-                                    </div>
-                                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__price">
-                                                <ul>
-                                                <li><a href="javascript:void(0)" wire:click="price(1, 100000)">0 VND - 100000 VND</a></li>
-                                                    <li><a href="javascript:void(0)" wire:click="price(100000, 250000)">100000 VND - 250000 VND</a></li>
-                                                    <li><a href="javascript:void(0)" wire:click="price(250000, 250000)">250000 VND- 250000 VND</a></li>
-                                                    <li><a href="javascript:void(0)" wire:click="price(250000, 100000000000000)">500000+ VND</a></li>
-                                                    <li><a href="javascript:void(0)" wire:click="price(0,1000000000000)">Tất cả</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <div class="shop__product__option">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -103,62 +30,35 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__right">
-                                    <p>Sort by Price:</p>
-                                    <select wire:model="priceSort">
-                                        <option value="default">Default sorting</option>
-                                        <option value="price_asc">Low To High</option>
-                                        <option value="price_desc">High To Low</option>
-
-                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                            @foreach($Wishlist as $wish)
-                                {{$wish->id}}
-                            @endforeach
-                            @foreach($products as $product)
-                            @if($product->Pri_Wish != null)
-                            <div class="col-lg-4 col-md-6 col-sm-6">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
-                                    <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
-                                        <ul class="product__hover">
-                                            <li><a href="#"><img src="{{asset('img/icon/heart.png')}}" alt=""></a></li>
-                                            <li><a href="{{URL::to('shop-detail/'.$product->id)}}"><img src="{{asset('img/icon/compare.png')}}" alt=""> <span>Compare</span></a>
-                                            </li>
-                                            <li><a href="#"><img src="{{asset('img/icon/search.png')}}" alt=""></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6>{{ $product->productName }}</h6>
-                                        <a href="#" wire:click="addCart({{ $product->id }})" class="add-cart">+ Add To Cart</a>
-                                        <div class="rating">
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                        </div>
-                                        <h5>${{ $product->productPrice }}</h5>
-                                        <div class="product__color__select">
-                                            <label for="pc-4">
-                                                <input type="radio" id="pc-4">
-                                            </label>
-                                            <label class="active black" for="pc-5">
-                                                <input type="radio" id="pc-5">
-                                            </label>
-                                            <label class="grey" for="pc-6">
-                                                <input type="radio" id="pc-6">
-                                            </label>
-                                        </div>
-                                    </div>
+                           @foreach($products as $product)
+                           <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product__item sale">
+                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}">
+                                    @if($product->Pri_Image != null)
+                                        <img src="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}" alt="">
+                                    @else
+                                        <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
+                                    @endif
+                                    <span class="label">Sale</span>
+                                    <ul class="product__hover">
+                                        @if( $product->status == 1)
+                                        <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
+                                        @endif
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6>{{$product->Product->productName}}</h6>
+                                     <a href="{{URL::to('shop-detail/'. $product->productID )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
+                                    <h5>{{ number_format($product->Product->productPrice) }} VND</h5>
                                 </div>
                             </div>
-                            @endif
-                            @endforeach
-                       
+                        </div>
+                            @endforeach 
                     </div>
                     <div class="row">
                     {{ $products->links('livewire.pages.aaa') }}

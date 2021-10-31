@@ -203,7 +203,8 @@
                                 <a href="{{url('/admin/shippers/bill-list')}}">Danh sách hóa đơn vận chuyển</a>
                             </li>								
                         </ul>
-                    </li>						
+                    </li>		
+                  					
 					@endif
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')					
@@ -213,7 +214,25 @@
                     <li>
                         <a href="{{url('admin/demo/ship')}}"><i class="fa fa-sitemap fa-fw"></i>DEMO vận chuyển</a>
                     </li>	
-					@endif				
+					@endif	
+                    
+                    <li class="active">
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Pages<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+                            <li>
+                                <a href="{{url('/slider')}}">Slider</a>
+                            </li>	
+                            <li>
+                                <a href="{{url('/instagram')}}">Instagram</a>
+                            </li>	
+                            <li>
+                                <a href="{{url('/admin-contact')}}">Contact</a>
+                            </li>	
+                            <li>
+                                <a href="{{url('/tin-nhan')}}">Tin nhắn khách hàng </a>
+                            </li>							
+                        </ul>
+                    </li>	
 					
                 </ul>
             </div>
