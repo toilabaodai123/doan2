@@ -61,7 +61,7 @@ class AdminProductComponent extends Component
 		'CategoryID2' => 'required',
 		'shortDesc' => 'required',
 		'longDesc' => 'required',
-		'productPrice' => 'required|numeric',
+		'productImage2' => 'image'
 
 	];
 	
@@ -78,9 +78,8 @@ class AdminProductComponent extends Component
 		'shortDesc.required' => 'Hãy nhập mô tả ngắn !',
 		
 		'longDesc.required' => 'Hãy nhập mô tả dài!',
-		
-		'productPrice.required' => 'Hãy nhập giá sản phẩm !',
-		'productPrice.numeric' => 'Giá sản phẩm chỉ được nhập số !',
+
+		'productImage2.image' => 'Chỉ được chọn hình'
 
 	];
 	
@@ -121,7 +120,9 @@ class AdminProductComponent extends Component
 					->layout('layouts.template');
     }
 	
-	public function submit(){	
+	public function submit(){
+		
+		$this->validate();
 		if($this->productID == null){
 			$Product = new Product();
 			$Product->productName = $this->productName;

@@ -22,24 +22,34 @@ class AdminProductCategoryComponent extends Component
 	public $tempImgUrl=null;
 	
 	protected $rules=[
-		'categoryName' => 'required'
+		'categoryName' => 'required',
+		'categoryImage' => 'image'
+	];
+	
+	protected $messages=[
+		'categoryName.required' => 'Hãy nhập tên danh mục',
+		'categoryImage.image' => 'Chỉ được chọn hình'
 	];
 	
 
     public function render()
     {
-		$this->ProductCategory = ProductCategory::all();
+		
+		$this->ProductCategory = ProductCategory::with('Image')->get();
+		//dd($this);
         return view('livewire.admin-product-category-component')
 					->layout('layouts.template');
     }
 	
 	public function submit(){
 		//dd($this);
+		$this->validate();
 		if($this->category_id == null){
 			$validatedData = $this->validate();
 			$Category = new ProductCategory();
 			$Category->categoryName = $this->categoryName;
-			$Category->slug='a';
+			$slug = SlugService::createSlug(ProductCategory::class, 'slug', $Category->categoryName);
+			$Category->slug = $slug;
 			$Category->save();
 			
 			if($this->categoryImage!= null){
@@ -67,6 +77,8 @@ class AdminProductCategoryComponent extends Component
 		else{
 			$Category = ProductCategory::find($this->category_id);
 			$Category->categoryName = $this->categoryName;
+			$slug = SlugService::createSlug(ProductCategory::class, 'slug', $Category->categoryName);
+			$Category->slug = $slug;			
 			$Category->save();
 			
 			if($this->categoryImage!= null && $this->categoryImage != $this->tempImgUrl){
@@ -106,5 +118,17 @@ class AdminProductCategoryComponent extends Component
 			$this->tempImgUrl = null;
 			$this->categoryImage = null;
 		}
+	}
+	
+	public function deleteCategory($id){
+		$Category = ProductCategory::find($id);
+		$Category->status = 0;	
+		$Category->save();
+		
+		$Log = new AdminLog();
+		$Log->admin_id = auth()->user()->id;
+		$Log->note = "Ẩn loại sản phẩm cấp 1 id:".$Category->id;			
+		$Log->save();	
+		session()->flash('success','Sửa thành công!');	
 	}
 }

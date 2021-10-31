@@ -263,6 +263,9 @@
 													
                                                 </div>
 												</div>
+												@error('productImage2')
+													<p class="text-danger">{{$message}}</p>
+												@enderror
 
 												</div>											
 											
