@@ -8,6 +8,7 @@
                                                         <th>ID</th>
                                                         <th>Tên danh mục</th>
 														<th>Hình ảnh</th>
+														<th>Trạng thái</th>
                                                         <th>Tùy chọn</th>
                                                     </tr>
                                                     </thead>
@@ -19,6 +20,13 @@
 														<td>
 															@if($c->Image)
 																<img style="width:80px;height:80px" src="{{asset('storage/images/category/'.$c->Image->imageName)}}">
+															@endif
+														</td>
+														<td>
+															@if($c->status == 1)
+																<label style="color:green">Hiện</label>
+															@else
+																<label style="color:grey">Ẩn</label>
 															@endif
 														</td>
 														<td>
@@ -71,8 +79,10 @@
 															<div class="panel-body">
 																@if ($categoryImage == null)
 																	<img src="{{asset('storage/images/notfound.jpg')}}" style="width:100%;height:200px"> </img>
-																@else
+																@elseif (is_string($categoryImage) == true)
 																	<img src="{{asset('storage/images/category/'.$categoryImage)}}" style="width:100%;height:200px"> </img>
+																@else
+																	<img src="{{$categoryImage->temporaryUrl()}}" style="width:100%;height:200px"> </img>
 																@endif
 															</div>
 															<!-- /.panel-body -->
@@ -88,7 +98,14 @@
 												@error('categoryImage')
 													<p class="text-danger">{{$message}}</p>
 												@enderror
-												
+												<div class="col-lg-9">
+														<div class="checkbox">
+															<label>
+																<input type="checkbox" wire:model="status">Ẩn
+															</label>
+															
+														</div>	
+													</div>
 												<div class="col-lg-12">
 												<button type="submit" class="btn btn-default">Lưu</button>
 												</div>

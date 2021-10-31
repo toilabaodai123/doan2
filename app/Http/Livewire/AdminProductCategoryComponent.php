@@ -21,16 +21,17 @@ class AdminProductCategoryComponent extends Component
 	public $categoryName;
 	public $category_id;
 	public $categoryImage;
+	public $status;
 	public $tempImgUrl=null;
 	
 	protected $rules=[
-		'categoryName' => 'required',
-		'categoryImage' => 'image'
+		'categoryName' => 'required'
+		//'categoryImage' => 'image'
 	];
 	
 	protected $messages=[
 		'categoryName.required' => 'Hãy nhập tên danh mục',
-		'categoryImage.image' => 'Chỉ được chọn hình'
+		//'categoryImage.image' => 'Chỉ được chọn hình'
 	];
 	
 
@@ -53,6 +54,10 @@ class AdminProductCategoryComponent extends Component
 			$Category->categoryName = $this->categoryName;
 			$slug = SlugService::createSlug(ProductCategory::class, 'slug', $Category->categoryName);
 			$Category->slug = $slug;
+			if($this->status != true)
+				$Category->status = 1;
+			else
+				$Category->status = 0;
 			$Category->save();
 			
 			if($this->categoryImage!= null){
@@ -81,7 +86,11 @@ class AdminProductCategoryComponent extends Component
 			$Category = ProductCategory::find($this->category_id);
 			$Category->categoryName = $this->categoryName;
 			$slug = SlugService::createSlug(ProductCategory::class, 'slug', $Category->categoryName);
-			$Category->slug = $slug;			
+			$Category->slug = $slug;
+			if($this->status != true)
+				$Category->status = 1;
+			else
+				$Category->status = 0;			
 			$Category->save();
 			
 			if($this->categoryImage!= null && $this->categoryImage != $this->tempImgUrl){
@@ -112,6 +121,10 @@ class AdminProductCategoryComponent extends Component
 		$Category = ProductCategory::find($id);
 		$this->category_id = $Category->id;
 		$this->categoryName = $Category->categoryName;
+		if($Category->status == 1)
+			$this->status = false;
+		else
+			$this->status = true;
 		
 		$Image = Image::where('category_id',$Category->id)->get()->last();
 		if($Image != null){
@@ -121,6 +134,7 @@ class AdminProductCategoryComponent extends Component
 			$this->tempImgUrl = null;
 			$this->categoryImage = null;
 		}
+
 	}
 	
 	public function deleteCategory($id){

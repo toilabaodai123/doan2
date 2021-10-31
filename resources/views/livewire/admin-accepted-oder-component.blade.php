@@ -17,6 +17,7 @@
 													<th>Email</th>
 													<th>Địa chỉ</th>
 													<th>Thời gian đặt</th>
+													<th>Trạng thái</th>
 													<th>Tùy chọn</th>
 												</tr>
 											</thead>
@@ -28,6 +29,7 @@
 														<td>{{$o->email}}</td>
 														<td>{{$o->address}}</td>
 														<td>{{$o->orderDate}}</td>
+														<td></td>
 														<td>
 															<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#myModal{{$o->id}}">Xem</button>
 															<div class="modal fade" id="myModal{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
