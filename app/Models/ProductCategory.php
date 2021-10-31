@@ -24,7 +24,7 @@ class ProductCategory extends Model
 	
 	
 	public function Image(){
-		return $this->hasOne(Image::class,'category_id','id');
+		return $this->hasOne(Image::class,'category_id','id')->latest();
 	}	
 	
 	public function sluggable(): array{

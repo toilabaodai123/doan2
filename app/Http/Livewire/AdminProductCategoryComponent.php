@@ -34,7 +34,9 @@ class AdminProductCategoryComponent extends Component
 
     public function render()
     {
+		
 		$this->ProductCategory = ProductCategory::with('Image')->get();
+		//dd($this);
         return view('livewire.admin-product-category-component')
 					->layout('layouts.template');
     }
