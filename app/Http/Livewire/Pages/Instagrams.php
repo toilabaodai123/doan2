@@ -22,7 +22,7 @@ class Instagrams extends Component
     public function render()
     {
         $insta = Instagram::orderBy('id', 'desc')->paginate(2);
-        return view('livewire.pages.instagrams', compact('insta'))->layout('layouts.template1');
+        return view('livewire.pages.instagrams', compact('insta'))->layout('layouts.template');
     }
     public function submit()
     {

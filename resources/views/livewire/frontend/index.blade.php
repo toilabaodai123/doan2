@@ -75,25 +75,24 @@
                         @endif
                             <span class="label">New</span>
                             <ul class="product__hover">
-                                @if ($witem)
-                                    @if($witem->id === $product->id)
-                                    <li><a href="#" wire:click.prevent="removeWishlish({{$witem->id}})" class="wishlist" ><i class="fa fa-heart fill-heart"></i>bang</a></li>
 
-                                    @else
-                                    <li><a href="#" wire:click.prevent="addToWishlisht({{$product->id}})" class="wishlist" ><i class="fa fa-heart"></i>ko bang</a></li>
-
+                                @if($product->wishlist != null)
+                                    @if(Auth::user()->id == $product->wishlist->id_user)
+                                    
+                                        @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
+                                            <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
+                                        @else
+                                            <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                            
+                                        @endif
                                     @endif
-                                @else
-                                    <li><a href="#" wire:click.prevent="addToWishlisht({{$product->id}})" class="wishlist" ><i class="fa fa-heart"></i>them</a></li>
-                                @endif
-                                <li><a href="{{URL::to('shop-detail/'.$product->id)}}"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
+
+                               @endif
                             </ul>
                         </div>
                         <div class="product__item__text">
                             <h6>{{ $product->productName }}</h6>
                             <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
-                  
                             <h5>{{ number_format($product->productPrice) }} VND</h5>
                         </div>
                     </div>

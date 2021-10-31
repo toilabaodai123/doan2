@@ -29,7 +29,7 @@ class Admincontact extends Component
     public function render()
     {
 
-        return view('livewire.pages.admincontact')->layout('layouts.template1');
+        return view('livewire.pages.admincontact')->layout('layouts.template');
     }
 
 public function submit(){

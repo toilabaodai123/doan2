@@ -13,10 +13,4 @@ class Search extends Component
     {
         return view('livewire.pages.search');
     }
-    public function submit(){
-        $search2 = '%'.$this->search .'%';
-        $data = Product::where('productName','LIKE', $search2 )->get();
-        // dd($data);   
-        return redirect('search', compact('data'));
-    }
 }

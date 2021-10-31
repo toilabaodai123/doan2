@@ -45,77 +45,75 @@ class WhislistComponent extends Component
         $this->categorylv1 = ProductCategory::all();
 
         $this->categorylv2 = Level2ProductCategory::all();
+        
 
-           
-        if($this->priceSort == 'price_asc')
-        {
-            if($this->categoryId != null){
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->where('CategoryID', $this->categoryId)->
-                orderBy('productPrice', 'ASC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
-            }else if ($this->brandId != null ){
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->where('CategoryID2', $this->brandId)->
-                orderBy('productPrice', 'ASC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
-            }else if ($this->categoryId != null && $this->brandId != null){
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->where('CategoryID2', $this->brandId)->where('CategoryID', $this->categoryId)->
-                orderBy('productPrice', 'ASC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
-            }else{
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->orderBy('productPrice', 'ASC')
-                ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
-                ->where('productPrice','<=', $this->priceMax)->paginate(12);
-            }
-        }
-        else if($this->priceSort == 'price_desc')
-        {
-            if($this->categoryId != null){
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->where('CategoryID', $this->categoryId)->
-                orderBy('productPrice', 'DESC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
-            }else if ($this->brandId != null ){
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->where('CategoryID2', $this->brandId)->
-                orderBy('productPrice', 'DESC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
-            }else if ($this->categoryId != null && $this->brandId != null){
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->where('CategoryID2', $this->brandId)->where('CategoryID', $this->categoryId)->
-                orderBy('productPrice', 'DESC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
-            }else{
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->orderBy('productPrice', 'DESC')
-                ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
-                ->where('productPrice','<=', $this->priceMax)->paginate(12);
-            }
-        }
-        else {
-            if($this->categoryId != null  &&  $this->brandId == null){
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->where('CategoryID', $this->categoryId)
-                ->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
-            }else if ($this->brandId != null && $this->categoryId == null){
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->where('CategoryID2', $this->brandId)
-                ->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
-            }else if ($this->categoryId != null && $this->brandId != null){
-                $products = Product::with('Pri_Image')->with('Pri_Wish')->where('CategoryID2', $this->brandId)->where('CategoryID', $this->categoryId)
-                ->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
-            }else{
-                $products = Product::with('Pri_Image')->with('Pri_Wish')
-                ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
-                ->where('productPrice','<=', $this->priceMax)->paginate(12);
-            }
-        }
-
-         //dd($product);
-        $this->Wishlist = Wishlist::where('id_user',auth()->user()->id)->where('status',1)->get();
+        
+        $products = Wishlist::with('Product')->with('Pri_Image')->where('id_user', auth()->user()->id)->where('status',1)->paginate(12);
+      
         return view('livewire.frontend.whislist-component', compact('products'))->layout('layouts.template3');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function addToWishlisht($id)
+    { 
+        $temp = Wishlist::where('productID',$id)
+                        ->where('id_user',auth()->user()->id)
+                        ->get();
+
+        if($temp->count() == 0){
+            $witem = new Wishlist();
+            $witem->productID = $id;
+            $witem->id_user = Auth::user()->id;
+            $witem->status = 1;
+            $witem->save();
+        }else{
+             DB::table('wishlists')
+            ->where('productID', $id)
+            ->where('id_user', Auth::user()->id)
+            ->update(['status' => 1]);
+        }
+    }  
+    public function removeWishlish($id){
+        $flight = Wishlist::find($id);
+        $flight->status = 0;
+
+        $flight->save();
     }
     public function category($id){
         $this->categoryId = $id;
@@ -127,17 +125,5 @@ class WhislistComponent extends Component
         $this->priceMin = $min;
         $this->priceMax = $max;
     }
-    public function addCart($id)
-    {
-        $this->cart = Product::with('Pri_Image')->where('id', $id)->first();
-       Cart::add(['id' =>$id, 'name' =>$this->cart->productName,
-         'qty' => 1,  
-         'price' => $this->cart->productPrice, 
-       
-         'options' => ['image' => $this->cart->Pri_Image->imageName,
-         'zize' => $this->cart->Pri_Image->imageName,
-         ]])
-         ->associate('App\Models\Product');
-        session()->flash('success','Item added in cart');
-    }
+  
 }

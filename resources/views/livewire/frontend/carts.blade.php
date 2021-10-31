@@ -46,7 +46,7 @@
                                         </div>
                                         <div class="product__cart__item__text">
                                             <h6>{{$cart->name}}</h6>
-                                            <h5>${{$cart->price}}</h5>
+                                            <h5>{{$cart->price}} VND</h5>
                                         </div>
                                     </td>
                                     <td class="product__cart__size">

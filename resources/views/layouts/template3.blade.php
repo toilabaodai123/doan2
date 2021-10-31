@@ -52,7 +52,7 @@
           
         </div>
         <div class="offcanvas__nav__option">
-            <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
+            <a href="{{url('tim-kiem')}}" class="search-switch"><img src="img/icon/search.png" alt=""></a>
             <a href="{{url('wishlist')}}"><img src="img/icon/heart.png" alt=""></a>
             <a href="{{url('cart')}}"><img src="{{asset('img/icon/cart.png')}}" alt=""> <span>@if(session()->get('cart')){{count(session()->get('cart'))}}@endif</span></a>
             <div class="price">$0.00</div>
@@ -203,7 +203,7 @@
     <!-- Footer Section End -->
 
     <!-- Search Begin -->
-    <livewire:pages.search /> 
+    <!-- <livewire:pages.search />  -->
     <!-- Search End -->
     <!-- Js Plugins -->
     <script src="{{asset('user/js/jquery-3.3.1.min.js')}}"></script>

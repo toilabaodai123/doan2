@@ -23,7 +23,7 @@ class AdminCoupon extends Component
     public function render()
     {
         $this->coupon = Coupon::all();
-        return view('livewire.pages.admin-coupon')->layout('layouts.template1');
+        return view('livewire.pages.admin-coupon')->layout('layouts.template');
     }
     public function submit(){
         $this->validate([

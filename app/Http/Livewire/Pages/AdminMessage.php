@@ -14,6 +14,6 @@ class AdminMessage extends Component
     public function render()
     {
         $datas = mMessage::orderBy('id', 'desc')->paginate(5);
-        return view('livewire.pages.admin-message', compact('datas'))->layout('layouts.template1');
+        return view('livewire.pages.admin-message', compact('datas'))->layout('layouts.template');
     }
 }

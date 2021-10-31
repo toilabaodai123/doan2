@@ -28,6 +28,6 @@ class Sale extends Component
     }
     public function render()
     {
-        return view('livewire.pages.sale')->layout('layouts.template1');
+        return view('livewire.pages.sale')->layout('layouts.template');
     }
 }

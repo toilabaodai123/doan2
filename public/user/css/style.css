@@ -3534,6 +3534,10 @@ h2.title {
 	border: 1px solid #ccc;
     padding: 1px 15px;
 }
+.shopping__cart__table table tbody tr td.product__cart__size input {
+	border: 1px solid #ccc;
+    padding: 1px 15px;
+}
 /* end cart */
 /* blog detail */
 .blog__show__comment {
@@ -3787,6 +3791,16 @@ a.load_more {
 		border: 1px solid #ccc;
 		padding: 1px 3px;
 	}	
+	.banner__item img {
+		width: 100%;
+	}
+	.product__item__pic img {
+		height: 260px;
+		width: 100%;
+		position: relative;
+		background-position: center center;
+		object-fit: cover;
+	}
 	.shopping-cart table {
 		text-align: center;
 	}

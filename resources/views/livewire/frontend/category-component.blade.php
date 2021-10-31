@@ -42,28 +42,6 @@
                                                     @foreach($categorylv1 as $categorylv1)
                                                     <li><a href="javascript:void(0)" wire:click="category({{$categorylv1->id}})">{{$categorylv1->categoryName}} (20)</a></li>
                                                     @endforeach
-
-                                                    <!-- <li><a href="#">Women (20)</a></li>
-                                                    <li><a href="#">Bags (20)</a></li> -->
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseTwo">Branding</a>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__brand">
-                                                <ul>
-                                                    <li><a href="javascript:void(0)" wire:click="brand(null)">Tất cả</a></li>
-                                                    @foreach($categorylv2 as $categorylv2)
-                                                    <li><a href="javascript:void(0)" wire:click="brand({{$categorylv2->id}})">{{$categorylv2->category_name}}</a></li>
-                                                    @endforeach
-
-                                                    <!-- <li><a wire:click="test">Chanel</a></li> -->
                                                 </ul>
                                             </div>
                                         </div>
@@ -77,11 +55,11 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__price">
                                                 <ul>
-                                                <li><a href="javascript:void(0)" wire:click="price(1, 100000)">0 VND - 100000 VND</a></li>
+                                                    <li><a href="javascript:void(0)" wire:click="price(0,1000000000000)">Tất cả</a></li>
+                                                    <li><a href="javascript:void(0)" wire:click="price(1, 100000)">0 VND - 100000 VND</a></li>
                                                     <li><a href="javascript:void(0)" wire:click="price(100000, 250000)">100000 VND - 250000 VND</a></li>
                                                     <li><a href="javascript:void(0)" wire:click="price(250000, 250000)">250000 VND- 250000 VND</a></li>
                                                     <li><a href="javascript:void(0)" wire:click="price(250000, 100000000000000)">500000+ VND</a></li>
-                                                    <li><a href="javascript:void(0)" wire:click="price(0,1000000000000)">Tất cả</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -120,22 +98,25 @@
                                 <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
                                 <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
                                     <ul class="product__hover">
-                                        <li><a href="#"><img src="{{asset('img/icon/heart.png')}}" alt=""></a></li>
-                                        <li><a href="{{URL::to('shop-detail/'.$product->id)}}"><img src="{{asset('img/icon/compare.png')}}" alt=""> <span>Compare</span></a>
-                                        </li>
-                                        <li><a href="#"><img src="{{asset('img/icon/search.png')}}" alt=""></a></li>
+                                        
+                                @if($product->wishlist != null)
+                                    @if(Auth::user()->id == $product->wishlist->id_user)
+                                    
+                                        @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
+                                            <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
+                                        @else
+                                            <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                            
+                                        @endif
+                                    @endif
+
+                               @endif
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <h6>{{ $product->productName }}</h6>
                                     <a href="#" wire:click="addCart({{ $product->id }})" class="add-cart">+ Add To Cart</a>
-                                    <div class="rating">
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                    </div>
+                                  
                                     <h5>${{ $product->productPrice }}</h5>
                                     <div class="product__color__select">
                                         <label for="pc-4">
