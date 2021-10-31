@@ -1,5 +1,5 @@
 <div>
-
+	{{$Categories2->links()}}
     <div class="col-lg-4">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered table-hover table-striped">
@@ -12,14 +12,14 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-														@foreach($Categories as $c)
+														@foreach($Categories2 as $c)
                                                     <tr>
                                                         <td>{{$c->id}}</td>
                                                         <td>{{$c->categorylv1->categoryName}}</td>													
 														<td>{{$c->category_name}}</td>
 														<td>
 															<button wire:click="editCategory({{$c->id}})" type="button" class="btn btn-info">Sửa</button>
-															<a href="#">Xóa</a>
+															<button wire:click="deleteCategory({{$c->id}})" type="button" class="btn btn-danger">Ẩn</button>
 														</td>
                                                     </tr>
 													@endforeach

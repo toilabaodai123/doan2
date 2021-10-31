@@ -244,10 +244,14 @@
 														Hình ảnh chính sản phẩm
 													</div>
 													<div class="panel-body">
+													
 														@if ($productImage2 == null)
-															<img src="{{asset('storage/images/notfound.jpg')}}" style="width:100%;height:200px"> </img>
-														@else
-															<img src="{{asset('storage/images/product/'.$productImage2)}}" style="width:100%;height:200px"> </img>
+															<img src="{{asset('storage/images/notfound.jpg')}}" style="width:100%;height:200px"> 
+															@elseif(is_string($productImage2) == true)
+																<img src="{{asset('storage/images/product/'.$productImage2)}}" style="width:100%;height:200px"> 
+															@else
+																<img src="{{$productImage2->temporaryUrl()}}" style="width:100%;height:200px">
+															
 														@endif
 													</div>
 													<!-- /.panel-body -->

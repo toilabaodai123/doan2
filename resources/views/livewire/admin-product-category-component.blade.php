@@ -1,5 +1,5 @@
 <div>
-
+	{{$ProductCategory2->links()}}
     <div class="col-lg-4">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered table-hover table-striped">
@@ -12,7 +12,7 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-													@foreach($ProductCategory as $c)
+													@foreach($ProductCategory2 as $c)
                                                     <tr>
                                                         <td>{{$c->id}}</td>
                                                         <td>{{$c->categoryName}}</td>
@@ -47,26 +47,23 @@
 									@endif
                                         <div class="form-group">
                                             <form role="form" wire:submit.prevent="submit">
-												<div class="form-group">
-                                                    <label>ID Danh mục</label>
-                                                    <input class="form-control" disabled wire:model="category_id">
-													@error('categoryName')
-														<p class="text-danger">{{$message}}</p>
-													@enderror
-
-	
-												</div>											
-												<div class="form-group">
-                                                    <label>Tên danh mục</label>
-                                                    <input class="form-control" wire:model="categoryName">
-													@error('categoryName')
-														<p class="text-danger">{{$message}}</p>
-													@enderror
-
-	
+												<div class="col-lg-8">
+													<div class="form-group">
+														<label>ID Danh mục</label>
+														<input class="form-control" disabled wire:model="category_id">
+														@error('categoryName')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
+													</div>											
+													<div class="form-group">
+														<label>Tên danh mục</label>
+														<input class="form-control" wire:model="categoryName">
+														@error('categoryName')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
+													</div>
 												</div>
-												<div class="col-lg-12">
-													<div class="col-lg-4">
+												<div class="col-lg-4">
 														<div class="panel panel-default">
 															<div class="panel-heading">
 																Hình ảnh chính sản phẩm
@@ -80,7 +77,6 @@
 															</div>
 															<!-- /.panel-body -->
 														</div>	
-													</div>
 													<div class="col-lg-12">
 														<input id="file-upload" style="display:none" type="file" wire:model="categoryImage" >
 														<label for="file-upload" class="custom-file-upload" style="border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;">
@@ -93,8 +89,9 @@
 													<p class="text-danger">{{$message}}</p>
 												@enderror
 												
-											
+												<div class="col-lg-12">
 												<button type="submit" class="btn btn-default">Lưu</button>
+												</div>
 												
                                             </form>
                                         </div>

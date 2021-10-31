@@ -9,11 +9,13 @@ use App\Models\Image;
 
 use Livewire\WithFileUploads;
 use Cviebrock\EloquentSluggable\Services\SlugService;
-
+use Livewire\WithPagination;
 
 class AdminProductCategoryComponent extends Component
 {
 	use WithFileUploads;
+	use WithPagination;
+	
 	public $ProductCategory;
 	
 	public $categoryName;
@@ -34,10 +36,11 @@ class AdminProductCategoryComponent extends Component
 
     public function render()
     {
-		
-		$this->ProductCategory = ProductCategory::with('Image')->get();
+		//$this->ProductCategory = ProductCategory::with('Image')->get();
 		//dd($this);
-        return view('livewire.admin-product-category-component')
+		$ProductCategory2 = ProductCategory::with('Image')->paginate(3);
+		
+        return view('livewire.admin-product-category-component',['ProductCategory2' => $ProductCategory2])
 					->layout('layouts.template');
     }
 	
