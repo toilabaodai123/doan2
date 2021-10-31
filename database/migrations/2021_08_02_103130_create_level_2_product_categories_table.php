@@ -17,6 +17,7 @@ class CreateLevel2ProductCategoriesTable extends Migration
             $table->id();
 			$table->unsignedbiginteger('lv1PCategoryID');
 			$table->string('category_name');
+			$table->integer('status');
             $table->timestamps();
 			
 			$table->foreign('lv1PCategoryID')->references('id')->on('product_categories');

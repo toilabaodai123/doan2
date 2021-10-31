@@ -58,6 +58,7 @@ Route::get('shop', App\Http\Livewire\Frontend\Shop::class);
 Route::get('shop-detail/{id}', App\Http\Livewire\Frontend\ShopDetail::class);
 Route::get('product/category/{id}',App\Http\Livewire\Frontend\CategoryComponent::class);
 Route::get('blog',App\Http\Livewire\Frontend\Blog::class);
+Route::get('cart', App\Http\Livewire\Frontend\carts::class);
 Route::get('blog-detail/{id}',App\Http\Livewire\Frontend\BlogDetail::class);
 Route::get('checkout',App\Http\Livewire\Frontend\Checkout::class);
 Route::get('contact',App\Http\Livewire\Frontend\Contact::class);

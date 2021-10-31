@@ -2,8 +2,7 @@
 	<div class="row">
 		<div class="col-lg-4">
 			<div wire:model="searchInput" class="form-group">
-				<label>Nhập tên </label>
-				<input class="form-control" wire:model="searchInput">
+				<input class="form-control" wire:model="searchInput" placeholder="Nhập tên nhà cung cấp">
 			</div>
 		</div>
 	</div>
@@ -52,9 +51,9 @@
 										<td>{{$s->supplierMail}}</td>
 										<td>
 											@if($s->status == 1)
-												<label style="color:green">Trực tuyến</label>
+												<label style="color:green">Tốt</label>
 											@else
-												<label style="color:gray">Đã xóa</label>
+												<label style="color:gray">Đã ẩn</label>
 											@endif
 										</td>
 										<td>
@@ -79,7 +78,9 @@
 												</div>
 											</div>
 											<button wire:click="editSupplier({{$s->id}})"type="button" class="btn btn-info">Sửa</button>
-											<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDelete{{$s->id}}">Xóa</button>
+											@if($s->status == 1)
+												<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDelete{{$s->id}}">Ẩn</button>
+											@endif
 											<div class="modal fade" id="myModalDelete{{$s->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 												<div class="modal-dialog" role="document">
 													<div class="modal-content">
@@ -91,8 +92,8 @@
 														<label>Bạn có muốn xóa nhà cung cấp {{$s->supplierName}} không ? </label>
 													</div>
 													<div class="modal-footer">
-														<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-														<button wire:click="deleteSupplier({{$s->id}})"type="button" class="btn btn-primary" >Xóa</button>
+														<button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
+														<button wire:click="deleteSupplier({{$s->id}})"type="button" class="btn btn-primary" >Ẩn</button>
 													</div>
 													</div>
 												</div>
