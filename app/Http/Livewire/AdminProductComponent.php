@@ -60,8 +60,7 @@ class AdminProductComponent extends Component
 		'CategoryID' => 'required',		
 		'CategoryID2' => 'required',
 		'shortDesc' => 'required',
-		'longDesc' => 'required',
-		'productImage2' => 'image'
+		'longDesc' => 'required'
 
 	];
 	
@@ -77,9 +76,7 @@ class AdminProductComponent extends Component
 		
 		'shortDesc.required' => 'Hãy nhập mô tả ngắn !',
 		
-		'longDesc.required' => 'Hãy nhập mô tả dài!',
-
-		'productImage2.image' => 'Chỉ được chọn hình'
+		'longDesc.required' => 'Hãy nhập mô tả dài!'
 
 	];
 	

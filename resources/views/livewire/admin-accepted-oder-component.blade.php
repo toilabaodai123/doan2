@@ -5,6 +5,11 @@
 					<div class="panel-heading">
 						Danh sách các đơn hàng đã được chấp nhận	
 					</div>
+					@if(session()->has('success'))
+						<div class="alert alert-success">
+							{{session('success')}}
+                        </div>
+					@endif					
 					<div class="panel-body">	
 						<div class="col-lg-12">
 								<div class="row">
@@ -70,7 +75,7 @@
 															<button type="button" wire:click="acceptOrder({{$o->id}})" class="btn btn-success">Chấp nhận</button>	
 															@elseif($o->status == 2)
 																<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalDeliver{{$o->id}}">Giao hàng</button>
-																<div wire:ignore.self class="modal fade" id="myModalDeliver{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																<div class="modal fade" id="myModalDeliver{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																	<div class="modal-dialog" role="document">
 																		<div class="modal-content">
 																			<div class="modal-header">
@@ -85,7 +90,7 @@
 																					@empty
 																					@endforelse
 																				</select>
-																				<input class="form-control" style="display:{{$flag_shipunit==true?'block':'none'}}">
+																				
 																			<div class="modal-footer">
 																				<button type="button" wire:click="setFlagShipunit" class="btn btn-default">Thêm đơn vị vận chuyển</button>
 																				<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
@@ -120,4 +125,47 @@
 				</div>
 			</div>
 	</div>
+	<div class="row" style="display:{{$flag_shipunit==true?'block':'none'}}">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Bảng thêm đơn vị vận chuyển
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<input class="form-control" wire:model.defer="add_shipunit_name" placeholder="Nhập tên đơn vị vận chuyển" >
+							@error('add_shipunit_name')
+								<p class="text-danger">{{$message}}</p>
+							@enderror
+						</div>
+						<div class="form-group">
+							<input class="form-control" wire:model.defer="add_shipunit_address" placeholder="Nhập địa chỉ đơn vị vận chuyển" >
+							@error('add_shipunit_address')
+								<p class="text-danger">{{$message}}</p>
+							@enderror
+						</div>				
+						<div class="form-group">
+							<input class="form-control" wire:model.defer="add_shipunit_email" placeholder="Nhập email đơn vị vận chuyển" >
+							@error('add_shipunit_email')
+								<p class="text-danger">{{$message}}</p>
+							@enderror
+						</div>				
+						<div class="form-group">
+							<input class="form-control" wire:model.defer="add_shipunit_phone" placeholder="Nhập số điện thoại đơn vị vận chuyển" >
+							@error('add_shipunit_phone')
+								<p class="text-danger">{{$message}}</p>
+							@enderror
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="button" class="btn btn-info" wire:click="addNewShipUnit">Lưu</button>
+					<button type="button" class="btn btn-info">Reset</button>
+					<button type="button" class="btn btn-info">Hủy</button>
+				</div>
+			</div>			
+		</div>
+	</div>
+	
 </div>
