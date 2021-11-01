@@ -46,6 +46,7 @@
                 </form>
                 @else
                     <a href="{{route('login')}}">Đăng nhập</a>
+                    <a href="{{route('register')}}">Đăng ký</a>
                 @endauth
                 
             </div>
@@ -86,6 +87,8 @@
 								</form>
 								@else
 									<a href="{{route('login')}}">Đăng nhập</a>
+                                     <a href="{{route('register')}}">Đăng ký</a>
+
 								@endauth
                             </div>
                             <div class="header__top__hover">

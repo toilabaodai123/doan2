@@ -29,11 +29,11 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Product</th>  
+                                    <th>Tên</th>  
                                     <th>Size</th>
-                                    <th>Quantity</th>
+                                    <th>Qty</th>
                                     <th>Total</th>
-                                    <th>Tùy chọn</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             @if(Cart::instance('cart')->count() > 0)
@@ -51,7 +51,7 @@
                                     </td>
                                     <td class="product__cart__size">
                                         <div class="cart_size"  data-dropdown>
-                                            <p>{{$cart->options->size}}</p>
+                                            <h6>{{$cart->options->size}}</h6>
                                             
                                             
                                         </div>
@@ -65,7 +65,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="cart__price">${{number_format( $cart->subtotal )}} VND</td>
+                                    <td class="cart__price">{{number_format( $cart->subtotal )}} VND</td>
                                     <td class="cart__close"><a href="#" wire:click.prevent="removeCart('{{ $cart->rowId }}')"><i class="fa fa-close"></i></a></td>
                                 </tr>
                                @endforeach
@@ -78,14 +78,10 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
-                                <a href="#">Continue Shopping</a>
+                                <a href="#" wire:click.prevent="back()">Continue Shopping</a>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

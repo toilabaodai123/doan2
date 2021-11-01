@@ -55,21 +55,26 @@ class Index extends Component
 
     public function addToWishlisht($id)
     { 
-        $temp = Wishlist::where('productID',$id)
-                        ->where('id_user',auth()->user()->id)
-                        ->get();
+        if(Auth::user()){
+            $temp = Wishlist::where('productID',$id)
+                            ->where('id_user',auth()->user()->id)
+                            ->get();
 
-        if($temp->count() == 0){
-            $witem = new Wishlist();
-            $witem->productID = $id;
-            $witem->id_user = Auth::user()->id;
-            $witem->status = 1;
-            $witem->save();
-        }else{
-             DB::table('wishlists')
-            ->where('productID', $id)
-            ->where('id_user', Auth::user()->id)
-            ->update(['status' => 1]);
+            if($temp->count() == 0){
+                $witem = new Wishlist();
+                $witem->productID = $id;
+                $witem->id_user = Auth::user()->id;
+                $witem->status = 1;
+                $witem->save();
+            }else{
+                DB::table('wishlists')
+                ->where('productID', $id)
+                ->where('id_user', Auth::user()->id)
+                ->update(['status' => 1]);
+            }
+        }
+        else {
+            return redirect('login');
         }
     }  
     public function removeWishlish($id){

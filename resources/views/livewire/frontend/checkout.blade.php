@@ -87,7 +87,7 @@
                                 <div class="checkout__order__products">Product <span>Total</span></div>
                                 <ul class="checkout__total__products">
                                     @forelse($carts as $cart)
-                                    <li>01. {{$cart->name}} <span>$ {{number_format($cart->subtotal)  }}</span></li>
+                                    <li>01. {{$cart->name}} <span>{{number_format($cart->subtotal)  }} VND</span></li>
                                     @empty
                                     Chưa có sản phẩm
                                     @endforelse
@@ -97,20 +97,7 @@
                                     <li>Total <span>{{number_format(Cart::total())}} VND</span></li>
                                 </ul>
                                
-                                <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        Paypal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
+                                
                                 <button type="submit" class="site-btn">PLACE ORDER</button>
                             </div>
                         </div>
