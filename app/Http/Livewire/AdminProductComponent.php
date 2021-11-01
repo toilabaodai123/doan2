@@ -20,9 +20,9 @@ use Livewire\WithPagination;
 
 class AdminProductComponent extends Component
 {
+	
 	use WithFileUploads;
 	use WithPagination;
-	//protected $paginationTheme = 'bootstrap';
 
 	
 	public $Suppliers;
@@ -98,14 +98,14 @@ class AdminProductComponent extends Component
 								->with('Category2')
 								->where('productName','LIKE','%'.$this->searchInput.'%')
 								->orderBy($this->sortField,$this->sortDirection)
-								->paginate(3);				
+								->paginate(2);				
 		}
 		else{
 			$Products2 = Product::with('Category1')
 								->with('Supplier')
 								->with('Category2')
 								->orderBy($this->sortField,$this->sortDirection)
-								->paginate(3);	
+								->paginate(2);	
 		}							
 		//dd($Products2);
 		/*

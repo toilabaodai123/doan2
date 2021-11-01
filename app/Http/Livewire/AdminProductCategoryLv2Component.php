@@ -18,8 +18,19 @@ class AdminProductCategoryLv2Component extends Component
 	public $Categorieslv1;
 	public $CategoryID1;
 	public $category_id;
+	public $category_name;
+	public $status;
 	
-	public $categoryName;
+	protected $rules=[
+		'CategoryID1' => 'required',
+		'category_name' => 'required' 
+	];
+	
+	protected $messages=[
+		'CategoryID1.required' => 'Hãy chọn danh mục sản phẩm cấp 1!',
+		'category_name.required' => 'Hãy nhập tên danh mục!',
+		'category_name.unique' => 'Trùng tên'
+	];
 	
 	
 	
@@ -36,10 +47,11 @@ class AdminProductCategoryLv2Component extends Component
     }
 	
 	public function submit(){
+		$this->validate();
 		if($this->category_id == null){
 			$Category = new Level2ProductCategory();
 			$Category->lv1PCategoryID = $this->CategoryID1;
-			$Category->category_name = $this->categoryName;
+			$Category->category_name = $this->category_name;
 			$Category->status=1;
 			$Category->save();
 			
@@ -52,7 +64,11 @@ class AdminProductCategoryLv2Component extends Component
 		}else{
 			$Category = Level2ProductCategory::find($this->category_id);
 			$Category->lv1PCategoryID = $this->CategoryID1;
-			$Category->category_name = $this->categoryName;
+			$Category->category_name = $this->category_name;
+			if($this->status == true)
+				$Category->status = 0;
+			else
+				$Category->status = 1;
 			$Category->save();
 			
 			$Log = new AdminLog();
@@ -71,7 +87,11 @@ class AdminProductCategoryLv2Component extends Component
 		//dd($Category);
 		$this->category_id = $Category->id;
 		$this->CategoryID1 = $Category->lv1PCategoryID;
-		$this->categoryName = $Category->category_name;
+		$this->category_name = $Category->category_name;
+		if($Category->status == 1)
+			$this->status = false;
+		else
+			$this->status = true;
 	}
 	
 	public function deleteCategory($id){

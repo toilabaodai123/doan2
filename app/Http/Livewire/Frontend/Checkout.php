@@ -39,7 +39,11 @@ class Checkout extends Component
         'Name' => 'required',
         'Phone' => 'required',
         'Email' => 'required|email',
+<<<<<<< HEAD
         'Address' => 'required',
+=======
+        'Address' => 'required'
+>>>>>>> e90ffbac8d5baa9139a0b0f6c4777456123a40eb
     ];
     
     public function render()
@@ -66,9 +70,14 @@ class Checkout extends Component
             $Order->fullName = $this->Name;
             $Order->phone = $this->Phone;
             $Order->address = $this->Address;
+<<<<<<< HEAD
             if($this->Email != null)
                 $Order->email = $this->Email;	
             if($this->Note != null){
+=======
+            $Order->email = $this->Email;	
+            if($this->Note != null)
+>>>>>>> e90ffbac8d5baa9139a0b0f6c4777456123a40eb
                 $Order->userNote = $this->Note;
             }else{
                 $Order->userNote = null;
@@ -121,11 +130,12 @@ class Checkout extends Component
             $OrderLog->save();	
             
 			//Gửi thông tin đơn hàng qua mail khách hàng
+
 			$mail = [
 				'title' => 'Đặt hàng online',
 				'body' => 'Bạn vừa đặt hàng , mã đơn hàng là:'.$Order->orderCode
 			];
-			Mail::to('nhoclovelytimgirlq6@gmail.com')->send(new MailService($this->mail));
+			Mail::to($this->Email)->send(new MailService($this->mail));
             
             session()->flash('OrderCode',$Order->orderCode);
             session()->forget('cart');
