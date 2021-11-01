@@ -131,11 +131,7 @@ class AdminProductComponent extends Component
 			$Product->CategoryID2 = $this->CategoryID2;
 			$Product->shortDesc = $this->shortDesc;
 			$Product->longDesc = $this->longDesc;
-
-			if($this->status == true)
-				$Product->status = 2;
-			else
-				$Product->status = 1;
+			$Product->status = 0;
 
 			if($Product->save()){
 				//Hình ảnh
@@ -178,7 +174,7 @@ class AdminProductComponent extends Component
 			$slug = SlugService::createSlug(Product::class, 'productSlug', $Product->productName);
 			$Product->productSlug = $slug.'-SP'.$Product->id;
 			if($this->status == true)
-				$Product->status = 2;
+				$Product->status = 0;
 			else
 				$Product->status = 1;
 			if($Product->save()){
@@ -236,7 +232,7 @@ class AdminProductComponent extends Component
 		$this->CategoryID = $editProduct->CategoryID;
 		if($this->CategoryID)
 			$this->ProductCategories2 = Level2ProductCategory::where('lv1PCategoryID',$this->CategoryID)->get();
-		if($editProduct->status == 2)
+		if($editProduct->status == 0)
 			$this->status = true;
 		else
 			$this->status = null;
@@ -258,7 +254,7 @@ class AdminProductComponent extends Component
 	
 	public function deleteProduct($id){
 		$deleteProduct = Product::find($id);
-		$deleteProduct->status = 2;
+		$deleteProduct->status = 0;
 		$deleteProduct->save();
 		
 		session()->flash('success','Xóa sản phẩm '.$deleteProduct->productName.' thành công!');

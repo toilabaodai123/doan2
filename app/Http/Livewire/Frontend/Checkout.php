@@ -10,9 +10,11 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderLog;
 use App\Models\User;
+use App\Mail\MailService;	
 
 use Cart;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class Checkout extends Component
 {
@@ -26,6 +28,9 @@ class Checkout extends Component
 	public $Email;
 	public $Note;
 	public $Address;
+	
+	public $string;
+	public $mail;
 
     public $create_acount;
     public $pass_acount;
@@ -76,6 +81,7 @@ class Checkout extends Component
 
             $Order->orderDate = now();
             $Order->orderTotal = 0;
+			$Order->status =1;
             $Order->save();
 
 
@@ -113,6 +119,12 @@ class Checkout extends Component
             $OrderLog->message = 'Tạo đơn hàng';
             $OrderLog->save();	
             
+			//Gửi thông tin đơn hàng qua mail khách hàng
+			$mail = [
+				'title' => 'Đặt hàng online',
+				'body' => 'Bạn vừa đặt hàng , mã đơn hàng là:'.$Order->orderCode
+			];
+			Mail::to('nhoclovelytimgirlq6@gmail.com')->send(new MailService($this->mail));
             
             session()->flash('OrderCode',$Order->orderCode);
             session()->forget('cart');

@@ -166,7 +166,10 @@ class AdminProductImportComponent extends Component
 			$Detail->price = $this->price[$k];
 			$Detail->save();
 			$this->bill_total += ($this->amount[$k] * $this->price[$k]);
-										
+			
+			$Product = Product::find($v['product_id']);
+			$Product->status = 1;
+			$Product->save();
 		}
 			
 		$this->bill_total += ( $this->bill_total * ( $this->vat ) / 100 );
