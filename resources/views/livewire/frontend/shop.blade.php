@@ -101,7 +101,7 @@
                                 <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
                                     <ul class="product__hover">
                                         
-                                        @if($product->wishlist != null)
+                                        @if($product->wishlist != null && Auth::user())
                                             @if(Auth::user()->id == $product->wishlist->id_user)
                                             
                                                 @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
@@ -111,7 +111,9 @@
                                     
                                                 @endif
                                             @endif
-
+                                        @else
+                                            <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                                
                                     @endif
                                     </ul>
                                 </div>

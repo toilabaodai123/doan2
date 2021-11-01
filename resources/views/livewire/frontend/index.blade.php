@@ -42,7 +42,6 @@
                             @endif
                         <div class="banner__item__text">
                             <h2>{{$cate->categoryName}}</h2>
-                            <a href="{{URL::to('product/category/'.$cate->id)}}">Shop now</a>
                         </div>
                     </div>
                     </a>
@@ -58,16 +57,15 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ul class="filter__controls">
-                        <li class="active" data-filter="*">Best Sellers</li>
-                        <li data-filter=".new-arrivals">New Arrivals</li>
-                        <li data-filter=".hot-sales">Hot Sales</li>
+                        <li class="active" data-filter="*">Bán chạy</li>
+                        <li data-filter=".new-arrivals">Sản phẩm mới</li>
                     </ul>
                 </div>
             </div>
             <div class="row product__filter">
               
                 @forelse($product as $product)
-                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix ">
                     <div class="product__item">
                         <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}">
                         @if($product->Pri_Image != null)
@@ -78,7 +76,7 @@
                             <span class="label">New</span>
                             <ul class="product__hover">
 
-                                @if($product->wishlist != null)
+                                @if($product->wishlist != null && Auth::user())
                                     @if(Auth::user()->id == $product->wishlist->id_user)
                                     
                                         @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
@@ -95,7 +93,11 @@
                         <div class="product__item__text">
                             <h6>{{ $product->productName }}</h6>
                             <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
-                            <h5>{{ number_format($product->productPrice) }} VND</h5>
+                            <div class="product_des">
+                                <h5>{{ number_format($product->productPrice) }} VND</h5>
+                                <h5>{{ $product->Category1->categoryName }}</h5>
+
+                            </div>
                         </div>
                     </div>
                 </div>

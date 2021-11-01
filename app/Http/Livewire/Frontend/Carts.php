@@ -61,4 +61,7 @@ class Carts extends Component
         $this->emitTo('pages.cart-count-component', 'refreshComponent');
 
     }
+    public function back(){
+        url()->previous(); 
+    }
 }
