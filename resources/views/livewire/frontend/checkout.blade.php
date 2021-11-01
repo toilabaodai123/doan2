@@ -8,11 +8,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Check Out</h4>
+                        <h4>Thanh toán</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
-                            <span>Check Out</span>
+                            <a href="{{URL::to('/index')}}">Trang chủ</a>
+                            <span>Thanh toán</span>
                         </div>
                     </div>
                 </div>
@@ -28,7 +27,7 @@
                 <form action="#" wire:submit.prevent="submit()">
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
-                            <h6 class="checkout__title">Billing Details</h6>
+                            <h6 class="checkout__title">Chi tiết thanh toán</h6>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="checkout__input">
@@ -83,18 +82,18 @@
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
-                                <h4 class="order__title">Your order</h4>
-                                <div class="checkout__order__products">Product <span>Total</span></div>
+                                <h4 class="order__title">Đơn hàng của bạn</h4>
+                                <div class="checkout__order__products">Sản phẩm <span>Tổng cộng</span></div>
                                 <ul class="checkout__total__products">
                                     @forelse($carts as $cart)
-                                    <li>01. {{$cart->name}} <span>{{number_format($cart->subtotal)  }} VND</span></li>
+                                    <li>*
+                                         {{$cart->name}} <span>{{number_format($cart->subtotal)  }} VND</span></li>
                                     @empty
                                     Chưa có sản phẩm
                                     @endforelse
                                 </ul>
                                 <ul class="checkout__total__all">
-                                    <li>Subtotal <span>{{number_format(Cart::subtotal())}} VND</span></li>
-                                    <li>Total <span>{{number_format(Cart::total())}} VND</span></li>
+                                    <li>Tổng cộng <span>{{number_format(Cart::total())}} VND</span></li>
                                 </ul>
                                
                                 

@@ -63,16 +63,32 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                                 @if(session()->has('message_size'))
                                     <p style=" margin: 20px; color: red">
                                     {{session('message_size')}}
+                                </p>
                                  @endif 
                                  
                                 @if(session()->has('message_add'))
                                 <p style=" margin: 20px; color: #3c763d">
                                     {{session('message_add')}}
+                                    </p>
                                 @endif
                             </div>
                             <div class="product__details__btns__option">
-                                <a href="#" wire:click.prevent="addToWishlisht({{ $pro->id }})"><i class="fa fa-heart"></i> add to wishlist</a>
-                            </div>
+                            @if($pro->wishlist != null && Auth::user())
+                                @if(Auth::user()->id == $pro->wishlist->id_user)
+                                
+                                        @if($pro->id === $pro->wishlist->productID && $pro->wishlist->status == 1)
+                                            <a href="#"  wire:click.prevent="removeWishlish({{$pro->wishlist->id}})"  >
+                                                <i class="fa fa-heart fill-heart"></i>move to wishlist</a>
+                                        @else
+                                            <a href="#"  wire:click.prevent="addToWishlisht({{$pro->id}})" ><i class="fa fa-heart"></i>add to wishlist</a>
+                                    
+                                        @endif
+                                     @endif
+
+                            @else
+                                <a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$pro->id}})" ><i class="fa fa-heart"></i>add to wishlist</a>
+                            @endif
+                                </div>
                             <div class="product__details__last__option">
                                 <ul>
                                     <li><span>Thể loại:</span> {{ $pro->Category1->categoryName }}</li>
@@ -153,29 +169,40 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
             <div class="row">
                 @forelse($relatedPro as $pro )
                 <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}">
-                            
-                        @if($pro->Pri_Image != null)
-							 <img src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
-                        @else
-                            <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
-                        @endif
-                        <span class="label">New</span>
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
-                            </ul>
+                    <a href="{{URL::to('shop-detail/'.$pro->id)}}">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}">
+                                
+                            @if($pro->Pri_Image != null)
+                                <img src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
+                            @else
+                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
+                            @endif
+                                <ul class="product__hover">
+                                @if($pro->wishlist != null && Auth::user())
+                                        @if(Auth::user()->id == $pro->wishlist->id_user)
+                                        
+                                            @if($pro->id === $pro->wishlist->productID && $pro->wishlist->status == 1)
+                                                <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$pro->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
+                                            @else
+                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$pro->id}})" ><i class="fa fa-heart"></i></a></li>
+                                
+                                            @endif
+                                        @endif
+
+                                @endif
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6>{{$pro->productName}}</h6>
+                                <a href="{{URL::to('shop-detail/'.$pro->id)}}" class="add-cart">+ Chi tiết sản phẩm</a>
+                                <div class="product_des">
+                                        <h5>{{ number_format($pro->productPrice) }} VND</h5>
+                                        <h5>{{ $pro->Category1->categoryName }}</h5>
+                                    </div>
+                            </div>
                         </div>
-                        <div class="product__item__text">
-                            <h6>{{$pro->productName}}</h6>
-                            <a href="{{URL::to('shop-detail/'.$pro->id)}}" class="add-cart">+ Chi tiết sản phẩm</a>
-                          
-                            <h5>{{number_format($pro->productPrice)}} VND</h5>
-                           
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 @empty
                 @endforelse

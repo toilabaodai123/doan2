@@ -26,7 +26,7 @@ class CategoryComponent extends Component
     public $categorylv1;
     public $categorylv2;
 // variable category
-    public $categoryId = NULL;
+    public $categoryId ;
     public $brandId = NULL;
     public $priceMin = 0;
     public $priceMax = 10000000000000;
@@ -40,7 +40,7 @@ class CategoryComponent extends Component
 
 
     public function mount($id){
-        $this->cate_id = $id;
+        $this->categoryId = $id;
     }
 
 
@@ -50,7 +50,7 @@ class CategoryComponent extends Component
 
         $this->categorylv1 = ProductCategory::all();
 
-        $cate = ProductCategory::find($this->cate_id);
+        $cate = ProductCategory::find($this->categoryId);
         $categorylv1_name =  $cate->categoryName;
 
         $this->categorylv2 = Level2ProductCategory::all();

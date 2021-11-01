@@ -155,7 +155,7 @@
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
                     <div class="footer__widget">
-                        <h6>Shopping</h6>
+                        <h6>Mua sắm</h6>
                         <ul>
                             <li><a href="{{URL::to('shop')}}">Danh mục</a></li>
                             <li><a href="{{URL::to('shop')}}">Sản phẩm</a></li>
@@ -164,7 +164,7 @@
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-6">
                     <div class="footer__widget">
-                        <h6>Pages</h6>
+                        <h6>Trang</h6>
                         <ul>
                             <li><a href="{{URL::to('contact')}}">Liên hệ</a></li>
                             <li><a href="{{URL::to('about')}}">Giới thiệu</a></li>
@@ -178,7 +178,7 @@
                         <h6>Liên hệ</h6>
                         <div class="footer__newslatter">
                             <p>Hãy là người đầu tiên biết về sản phẩm mới của chúng tôi!</p>
-                            <p>Email : caothang@gmail.com</p>
+                            <p>Email : yaya@gmail.com</p>
                             <!-- <form action="#">
                                 <input type="text" placeholder="Your email">
                                 <button type="submit"><span class="icon_mail_alt"></span></button>

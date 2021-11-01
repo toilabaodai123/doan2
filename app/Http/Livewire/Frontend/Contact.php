@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Frontend;
 
 use Livewire\Component;
 use App\Models\mMessage;
+use App\Models\mContact;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -12,6 +13,7 @@ class Contact extends Component
     public $name;
     public $email;
     public $des;
+    public $con;
 
     protected $rules = [
         'name' => 'required|min:6',
@@ -28,6 +30,7 @@ class Contact extends Component
     }
     public function render()
     {
+        $this->con = mContact::first();
         return view('livewire.frontend.contact')->layout('layouts.template3');
     }
     public function submit(){

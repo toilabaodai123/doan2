@@ -36,10 +36,9 @@ class Checkout extends Component
     public $pass_acount;
 
     public $rules = [
-        'Name' => 'required|min:6',
+        'Name' => 'required',
         'Phone' => 'required',
         'Email' => 'required|email',
-        'Note' => 'required',
         'Address' => 'required',
     ];
     
@@ -58,20 +57,22 @@ class Checkout extends Component
     }
     public function submit()
     {
-        // dd($this->create_acount);
-        if(Auth::User()){
-
             $validatedData = $this->validate();
+
             $Order = new Order();
-            $Order->user_id = Auth::User()->id;
+            if(Auth::User()){
+                $Order->user_id = Auth::User()->id;
+            }
             $Order->fullName = $this->Name;
             $Order->phone = $this->Phone;
             $Order->address = $this->Address;
             if($this->Email != null)
                 $Order->email = $this->Email;	
-            if($this->Note != null)
+            if($this->Note != null){
                 $Order->userNote = $this->Note;
-            
+            }else{
+                $Order->userNote = null;
+            }
             if(Order::all()->last())
                 $LastOrderID = Order::all()->last()->id;
             else
@@ -128,10 +129,8 @@ class Checkout extends Component
             
             session()->flash('OrderCode',$Order->orderCode);
             session()->forget('cart');
-            return redirect()->to('/hoan-tat');
-        }else {
 
-                return redirect()->to('/register');
-        }
+            return redirect()->to('/index');
+       
     }
 }

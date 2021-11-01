@@ -7,10 +7,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Shop</h4>
+                        <h4>Đơn hàng</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <span>Shop</span>
+                            <a href="{{URL::to('/index')}}">Trang chủ</a>
+                            <span>Đơn hàng</span>
                         </div>
                     </div>
                 </div>
@@ -46,36 +46,20 @@
                             <div class="row product__filter">
                                 <div class="shopping__cart__table">
                                     <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Quantity</th>
-                                                <th>Total</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
                                         <tbody>
-                                            <tr>
+                                            <tr style="display: flex; align-items: center;justify-content: space-between;">
                                                 <td class="product__cart__item">
                                                     <div class="product__cart__item__pic">
                                                         <img src="img/shopping-cart/cart-1.jpg" alt="">
                                                     </div>
                                                     <div class="product__cart__item__text">
                                                         <h6>T-shirt Contrast Pocket</h6>
-                                                        <h5>$98.499</h5>
+                                                        <h5>x1</h5>
                                                     </div>
                                                 </td>
-                                                <td class="quantity__item">
-                                                    <div class="quantity">
-                                                        <div class="pro-qty-2">
-                                                            1
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="cart__price">$ 30.00</td>
-                                                <td class="cart__close"><i class="fa fa-close"></i></td>
-
+                                                <td class="cart__price">30.00 VND</td>
                                             </tr>
+                                            
                                         </tbody>
                                     </table>
                                 </div>

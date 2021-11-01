@@ -94,31 +94,40 @@
                     <div class="row">
                         @foreach($products as $product)
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
-                                <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
-                                    <ul class="product__hover">
+                            <a href="{{URL::to('shop-detail/'. $product->id )}}" >
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
+                                    <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
+                                        <ul class="product__hover">
+                                            
+                                    @if($product->wishlist != null && Auth::user() != null)
+                                        @if(Auth::user()->id == $product->wishlist->id_user)
                                         
-                                @if($product->wishlist != null)
-                                    @if(Auth::user()->id == $product->wishlist->id_user)
-                                    
-                                        @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
-                                            <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
-                                        @else
-                                            <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
-                            
+                                            @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
+                                                <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
+                                            @else
+                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                                
+                                            @endif
                                         @endif
-                                    @endif
 
-                               @endif
-                                    </ul>
+                                        @else
+                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                                
+                                @endif
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6>{{ $product->productName }}</h6>
+                                        <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
+                                        <div class="product_des">
+                                            <h5>{{ number_format($product->productPrice) }} VND</h5>
+                                            <h5>{{ $product->Category1->categoryName }}</h5>
+
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="product__item__text">
-                                    <h6>{{ $product->productName }}</h6>
-                                    <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
-                                    <h5>{{ $product->productPrice }} VND</h5>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                         @endforeach
                     </div>

@@ -32,7 +32,7 @@
                             <div class="accordion" id="accordionExample">
                                 <div class="card">
                                     <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                                        <a data-toggle="collapse" data-target="#collapseOne">Danh mục</a>
                                     </div>
                                     <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="card">
                                     <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                                        <a data-toggle="collapse" data-target="#collapseThree">Lọc giá</a>
                                     </div>
                                     <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
@@ -75,14 +75,14 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__left">
-                                    <p>Showing 1–12 of 126 results</p>
+                                    <p>Trả về {{$products->count()}} kết quả</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__right">
-                                    <p>Sort by Price:</p>
+                                    <p>lọc theo giá:</p>
                                     <select wire:model="priceSort">
-                                        <option value="default">Default sorting</option>
+                                        <option value="default">Mặc định</option>
                                         <option value="price_asc">Low To High</option>
                                         <option value="price_desc">High To Low</option>
 
@@ -94,44 +94,42 @@
                     <div class="row">
                         @foreach($products as $product)
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
-                                <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
-                                    <ul class="product__hover">
+                        <a href="{{URL::to('shop-detail/'. $product->id )}}" >
+                                <div class="product__item">
+                                    <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
+                                    <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
+                                        <ul class="product__hover">
+                                            
+                                    @if($product->wishlist != null && Auth::user() != null)
+                                        @if(Auth::user()->id == $product->wishlist->id_user)
                                         
-                                @if($product->wishlist != null)
-                                    @if(Auth::user()->id == $product->wishlist->id_user)
-                                    
-                                        @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
-                                            <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
-                                        @else
-                                            <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
-                            
+                                            @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
+                                                <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
+                                            @else
+                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                                
+                                            @endif
                                         @endif
-                                    @endif
 
-                               @endif
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6>{{ $product->productName }}</h6>
-                                    <a href="#" wire:click="addCart({{ $product->id }})" class="add-cart">+ Add To Cart</a>
-                                  
-                                    <h5>${{ $product->productPrice }}</h5>
-                                    <div class="product__color__select">
-                                        <label for="pc-4">
-                                            <input type="radio" id="pc-4">
-                                        </label>
-                                        <label class="active black" for="pc-5">
-                                            <input type="radio" id="pc-5">
-                                        </label>
-                                        <label class="grey" for="pc-6">
-                                            <input type="radio" id="pc-6">
-                                        </label>
+                                        @else
+                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                                
+                                @endif
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6>{{ $product->productName }}</h6>
+                                    <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
+                                    
+                                        <div class="product_des">
+                                            <h5>{{ number_format($product->productPrice) }} VND</h5>
+                                            <h5>{{ $product->Category1->categoryName }}</h5>
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </a>
+                        </div></a>
                         @endforeach
                     </div>
                     <div class="row">

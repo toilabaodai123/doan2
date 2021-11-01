@@ -21,6 +21,11 @@ class Users extends Component
     ];
     public function render()
     {
+        if(Auth::User())
+        {
+            $this->name = Auth::User()->name;
+            $this->email = Auth::User()->email;
+        }
         // dd($this->name);
         return view('livewire.frontend.users')->layout('layouts.template3');
     }

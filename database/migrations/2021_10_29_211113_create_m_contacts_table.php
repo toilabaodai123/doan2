@@ -15,7 +15,7 @@ class CreateMContactsTable extends Migration
     {
         Schema::create('m_contacts', function (Blueprint $table) {
             $table->id();
-            $table->string('iframe');
+            $table->text('iframe');
             $table->string('sub_title');
             $table->string('contact');
             $table->string('contact_des');

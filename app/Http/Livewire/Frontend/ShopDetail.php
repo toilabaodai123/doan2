@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ProductSize;
 use Cart;
 
+use Illuminate\Support\Facades\DB;
+
+
 class ShopDetail extends Component
 {
     public $test;
@@ -20,8 +23,9 @@ class ShopDetail extends Component
     public $cart_qty = 1;
 
     public function mount($id){
-        $this->relatedPro = Product::with('Pri_image')->with('Category1')->orderBy('id', 'DESC')->get()->take(4);
-        $this->product = Product::with('Pri_image')->with('Models')->where('id', $id)->get();
+        $this->relatedPro = Product::with('Pri_image')->with('Category1')
+        ->orderBy('id', 'DESC')->get()->take(4);
+        $this->product = Product::with('Pri_image')->with('Models')->with('wishlist')->where('id', $id)->get();
         // $this->size = ProductSize::all();
 		$this->Sizes = ProductModel::with('Size')->where('productID',$id)->get();
     }

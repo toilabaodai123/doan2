@@ -7,10 +7,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Wishlist</h4>
+                        <h4>Trang yêu thích</h4>
                         <div class="breadcrumb__links">
-                            <a href="{{URL::to('/index')}}">Home</a>
-                            <a href="{{URL::to('/wishlist')}}">Wishlist </a>
+                            <a href="{{URL::to('/index')}}">Trang chủ</a>
+                            <span>Trang yêu thích </span>
                         </div>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__left">
-                                    <p>Showing  {{$products->count()}} results</p>
+                                    <p>Trả về  {{$products->count()}} kết quả</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -44,7 +44,6 @@
                                     @else
                                         <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
                                     @endif
-                                    <span class="label">Sale</span>
                                     <ul class="product__hover">
                                         @if( $product->status == 1)
                                         <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>

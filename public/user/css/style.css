@@ -3488,6 +3488,12 @@ ol {
 /*--------------------------------- custom  -----------------------------*/
 
 /* index */
+img {
+    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
+    object-fit: cover;
+}
 .banner__item__text h2::before{
 	position: absolute;
     left: 0;

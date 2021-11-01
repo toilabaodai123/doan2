@@ -29,7 +29,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                            <h2 class="title">Category</h2>
+                            <h2 class="title">Danh mục</h2>
                 </div>
                 @forelse($category as $key => $cate)
                 <div class="col-md-3">
@@ -57,8 +57,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ul class="filter__controls">
-                        <li class="active" data-filter="*">Bán chạy</li>
-                        <li data-filter=".new-arrivals">Sản phẩm mới</li>
+                        <li class="active" data-filter="*"><h2 class="title">Sản phẩm</h2></li>
                     </ul>
                 </div>
             </div>
@@ -66,40 +65,41 @@
               
                 @forelse($product as $product)
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix ">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}">
-                        @if($product->Pri_Image != null)
-							 <img src="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}" alt="">
-                        @else
-                            <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
-                        @endif
-                            <span class="label">New</span>
-                            <ul class="product__hover">
+                    <a href="{{URL::to('shop-detail/'. $product->id )}}" >
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}">
+                            @if($product->Pri_Image != null)
+                                <img src="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}" alt="">
+                            @else
+                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
+                            @endif
+                                <ul class="product__hover">
 
-                                @if($product->wishlist != null && Auth::user())
-                                    @if(Auth::user()->id == $product->wishlist->id_user)
-                                    
-                                        @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
-                                            <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
-                                        @else
-                                            <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
-                            
+                                    @if($product->wishlist != null && Auth::user())
+                                        @if(Auth::user()->id == $product->wishlist->id_user)
+                                        
+                                            @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
+                                                <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
+                                            @else
+                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                                
+                                            @endif
                                         @endif
-                                    @endif
 
-                               @endif
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>{{ $product->productName }}</h6>
-                            <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
-                            <div class="product_des">
-                                <h5>{{ number_format($product->productPrice) }} VND</h5>
-                                <h5>{{ $product->Category1->categoryName }}</h5>
+                                @endif
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6>{{ $product->productName }}</h6>
+                                <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
+                                <div class="product_des">
+                                    <h5>{{ number_format($product->productPrice) }} VND</h5>
+                                    <h5>{{ $product->Category1->categoryName }}</h5>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 @empty
                 Không có san phẩm
@@ -183,8 +183,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Latest News</span>
-                        <h2>Fashion New Trends</h2>
+                        <span>Tin mới nhất</span>
+                        <h2>Xu Hướng Thời Trang </h2>
                     </div>
                 </div>
             </div>
