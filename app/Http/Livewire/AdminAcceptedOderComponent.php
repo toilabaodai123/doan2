@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Order;
 use App\Models\ShippingUnit;
 use App\Models\AdminLog;
+use App\Models\DeliveryBill;
 
 class AdminAcceptedOderComponent extends Component
 {
@@ -13,6 +14,7 @@ class AdminAcceptedOderComponent extends Component
 	public $ShipUnits;
 	public $flag_shipunit = false;
 	public $shipunit_id;
+	public $delivery_price;
 	
 	public $add_shipunit_name;
 	public $add_shipunit_address;
@@ -70,5 +72,39 @@ class AdminAcceptedOderComponent extends Component
 		session()->flash('success','Thêm đơn vị nhập hàng thành công!');		
 		$this->reset();
 
+	}
+	
+	public function submitDelivery($id){
+		$this->validate([
+			'shipunit_id' => 'required',
+			'delivery_price' => 'required|numeric'
+		],[
+			'shipunit_id.required' => 'Hãy chọn một đơn vị vận chuyển',
+			'delivery_price.required' => 'Hãy nhập phí giao hàng',
+			'delivery_price.numeric' => 'Phí giao hàng chỉ nhập được số'
+		]);
+		
+		//Tạo hóa đơn vận chuyển
+		$DeliveryBill = new DeliveryBill();
+		$DeliveryBill->admin_id = auth()->user()->id;
+		$DeliveryBill->order_id = $id;
+		$DeliveryBill->shipunit_id = $this->shipunit_id;
+		$DeliveryBill->price = $this->delivery_price;
+		$DeliveryBill->save();
+		
+		//Cập nhật trạng thái đơn hàng
+		$Order = Order::find($id);
+		$Order->status = 3 ;
+		$Order->save();
+		
+		//Cập nhật admin log
+		$Log = new AdminLog();
+		$Log->admin_id = auth()->user()->id;
+		$Log->note = 'Chuyển sang trạng thái Giao Hàng của đơn hàng id:'.$id;
+		$Log->save();
+		
+		$this->reset();
+		session()->flash('success','Vận chuyển đơn hàng thành công');
+		
 	}
 }

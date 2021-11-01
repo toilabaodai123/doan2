@@ -25,7 +25,7 @@ class AdminProductCategoryComponent extends Component
 	public $tempImgUrl=null;
 	
 	protected $rules=[
-		'categoryName' => 'required|unique:product_categories'
+		'categoryName' => 'required'
 		//'categoryImage' => 'image'
 	];
 	

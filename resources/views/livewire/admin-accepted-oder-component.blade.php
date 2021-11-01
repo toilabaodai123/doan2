@@ -75,7 +75,7 @@
 															<button type="button" wire:click="acceptOrder({{$o->id}})" class="btn btn-success">Chấp nhận</button>	
 															@elseif($o->status == 2)
 																<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalDeliver{{$o->id}}">Giao hàng</button>
-																<div class="modal fade" id="myModalDeliver{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																<div wire:ignore.self class="modal fade" id="myModalDeliver{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																	<div class="modal-dialog" role="document">
 																		<div class="modal-content">
 																			<div class="modal-header">
@@ -90,11 +90,17 @@
 																					@empty
 																					@endforelse
 																				</select>
-																				
+																				@error('shipunit_id')
+																					<p class="text-danger">{{$message}}</p>
+																				@enderror
+																				<input class="form-control" placeholder="Nhập phí vận chuyển" wire:model.defer="delivery_price">
+																				@error('delivery_price')
+																					<p class="text-danger">{{$message}}</p>
+																				@enderror
 																			<div class="modal-footer">
-																				<button type="button" wire:click="setFlagShipunit" class="btn btn-default">Thêm đơn vị vận chuyển</button>
+																				<button type="button" style="float:left" wire:click="setFlagShipunit" class="btn btn-default" data-dismiss="modal">Thêm đơn vị vận chuyển</button>
 																				<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-																				<button type="button" class="btn btn-primary" >Sửa</button>
+																				<button type="button" wire:click="submitDelivery({{$o->id}})" class="btn btn-success">Lưu</button>
 																			</div>
 																		</div>
 																		<!-- /.modal-content -->

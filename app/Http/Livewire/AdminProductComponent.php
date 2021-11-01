@@ -111,8 +111,8 @@ class AdminProductComponent extends Component
 								->with('Category2')
 								->get();*/
 								
-		$this->ProductCategories = ProductCategory::all();
-		$this->Suppliers = Supplier::all();
+		$this->ProductCategories = ProductCategory::where('status',1)->get();
+		$this->Suppliers = Supplier::where('status',1)->get();
         return view('livewire.admin-product-component',['Products2' => $Products2])
 					->layout('layouts.template');
     }
@@ -264,7 +264,7 @@ class AdminProductComponent extends Component
 	}
 	
 	public function lv1CategoryChange(){
-		$this->ProductCategories2 = Level2ProductCategory::where('lv1PCategoryID',$this->CategoryID)->get();
+		$this->ProductCategories2 = Level2ProductCategory::where('lv1PCategoryID',$this->CategoryID)->where('status',1)->get();
 	}
 	
 	public function show($id){
