@@ -39,8 +39,7 @@ class Checkout extends Component
         'Name' => 'required|min:6',
         'Phone' => 'required',
         'Email' => 'required|email',
-        'Note' => 'required',
-        'Address' => 'required',
+        'Address' => 'required'
     ];
     
     public function render()
@@ -63,8 +62,7 @@ class Checkout extends Component
             $Order->fullName = $this->Name;
             $Order->phone = $this->Phone;
             $Order->address = $this->Address;
-            if($this->Email != null)
-                $Order->email = $this->Email;	
+            $Order->email = $this->Email;	
             if($this->Note != null)
                 $Order->userNote = $this->Note;
             
@@ -116,11 +114,12 @@ class Checkout extends Component
             $OrderLog->save();	
             
 			//Gửi thông tin đơn hàng qua mail khách hàng
+
 			$mail = [
 				'title' => 'Đặt hàng online',
 				'body' => 'Bạn vừa đặt hàng , mã đơn hàng là:'.$Order->orderCode
 			];
-			Mail::to('nhoclovelytimgirlq6@gmail.com')->send(new MailService($this->mail));
+			Mail::to($this->Email)->send(new MailService($this->mail));
             
             session()->flash('OrderCode',$Order->orderCode);
             session()->forget('cart');

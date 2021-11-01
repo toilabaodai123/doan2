@@ -1,8 +1,9 @@
 <div>
-	
+
 	<div class="row">
 			<div class="col-lg-12">	
 				<div class="panel panel-default">
+					
 					<div class="panel-heading">
 						Danh sách các đơn hàng mới	
 					</div>
@@ -51,8 +52,8 @@
 														<td>{{$o->address}}</td>
 														<td>{{$o->created_at}}</td>
 														<td>
-															<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#myModal{{$o->id}}">Xem</button>
-															<div class="modal fade" id="myModal{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#myModal1">Xem</button>
+															<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
@@ -69,7 +70,6 @@
 																											</div>
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-																												<button type="button" class="btn btn-primary" >Sửa</button>
 																											</div>
 																										</div>
 																										<!-- /.modal-content -->

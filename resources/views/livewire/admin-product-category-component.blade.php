@@ -59,9 +59,6 @@
 													<div class="form-group">
 														<label>ID Danh mục</label>
 														<input class="form-control" disabled wire:model="category_id">
-														@error('categoryName')
-															<p class="text-danger">{{$message}}</p>
-														@enderror
 													</div>											
 													<div class="form-group">
 														<label>Tên danh mục</label>

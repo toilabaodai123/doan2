@@ -8,6 +8,7 @@
                                                         <th>ID</th>
                                                         <th>Danh mục 1</th>
 														<th>Tên danh mục</th>
+														<th>Trạng thái</th>
                                                         <th>Tùy chọn</th>
                                                     </tr>
                                                     </thead>
@@ -17,6 +18,13 @@
                                                         <td>{{$c->id}}</td>
                                                         <td>{{$c->categorylv1->categoryName}}</td>													
 														<td>{{$c->category_name}}</td>
+														<td>
+															@if($c->status == 1)
+																<label style="color:green">Hiện</label>
+															@else
+																<label style="color:grey">Ẩn</label>
+															@endif
+														</td>
 														<td>
 															<button wire:click="editCategory({{$c->id}})" type="button" class="btn btn-info">Sửa</button>
 															<button wire:click="deleteCategory({{$c->id}})" type="button" class="btn btn-danger">Ẩn</button>
@@ -57,13 +65,27 @@
 														@endforeach
 													</select>
 
-												</div>											
+												</div>	
+												@error('CategoryID1')
+													<p class="text-danger">{{$message}}</p>
+												@enderror												
 												<div class="form-group">
                                                     <label>Tên danh mục</label>
-                                                    <input class="form-control" wire:model="categoryName">
-
-												</div>											
-												<button type="submit" class="btn btn-default">Lưu</button>
+                                                    <input class="form-control" wire:model="category_name">
+												</div>
+												@error('category_name')
+													<p class="text-danger">{{$message}}</p>
+												@enderror			
+												<div class="col-lg-9">
+													<div class="checkbox">
+														<label>
+															<input type="checkbox" {{$category_id == null ? 'disabled' : ''}} wire:model="status">Ẩn
+														</label>
+													</div>	
+												</div>	
+												<div class="col-lg-12">
+													<button type="submit" class="btn btn-default">Lưu</button>
+												</div>
                                             </form>
                                         </div>
 									

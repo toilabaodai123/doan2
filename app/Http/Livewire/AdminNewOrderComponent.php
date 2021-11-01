@@ -5,10 +5,12 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Order;
 use App\Models\OrderLog;
-use App\Model\AdminLog;
+use App\Models\AdminLog;
+use Livewire\WithPagination;
 
 class AdminNewOrderComponent extends Component
 {
+	use WithPagination;
 	public $Orders;
 	
 	public $decline_note;
@@ -16,20 +18,22 @@ class AdminNewOrderComponent extends Component
 	public $sortField='id';
 	public $sortDirection='ASC';
 	
+	public function sortBy($field,$direction){
+		$this->sortField = $field;
+		$this->sortDirection = $direction;
+	}
+	
     public function render()
     {
-		$this->Orders = Order::with('Details')->where('orderStatus_id',1)->get();
-		$Orders2 = Order::with('Details')->where('status',1)
-										 ->orderBy($this->sortField,$this->sortDirection)
+		$this->Orders = Order::with('Details')->where('status',1)->get();
+		$Orders2 = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
+										 ->where('status',1)
 										 ->paginate(2);
         return view('livewire.admin-new-order-component',['Orders2' => $Orders2])
 					->layout('layouts.template');
     }
 	
-	public function sortBy($field,$direction){
-		$this->sortField = $field;
-		$this->sortDirection = $direction;
-	}
+
 	
 	
 	public function acceptOrder($id){

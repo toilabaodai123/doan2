@@ -25,12 +25,13 @@ class AdminProductCategoryComponent extends Component
 	public $tempImgUrl=null;
 	
 	protected $rules=[
-		'categoryName' => 'required'
+		'categoryName' => 'required|unique:product_categories'
 		//'categoryImage' => 'image'
 	];
 	
 	protected $messages=[
 		'categoryName.required' => 'Hãy nhập tên danh mục',
+		'categoryName.unique' => 'Trùng tên'
 		//'categoryImage.image' => 'Chỉ được chọn hình'
 	];
 	
@@ -39,7 +40,7 @@ class AdminProductCategoryComponent extends Component
     {
 		//$this->ProductCategory = ProductCategory::with('Image')->get();
 		//dd($this);
-		$ProductCategory2 = ProductCategory::with('Image')->paginate(3);
+		$ProductCategory2 = ProductCategory::with('Image')->paginate(2);
 		
         return view('livewire.admin-product-category-component',['ProductCategory2' => $ProductCategory2])
 					->layout('layouts.template');
