@@ -16,8 +16,9 @@ class CreateComment2sTable extends Migration
         Schema::create('comment2s', function (Blueprint $table) {
             $table->id();
 			$table->unsignedbiginteger('user_id');
-			$table->unsignedbiginteger('product_id');
-			$table->unsignedbiginteger('order_id');
+			$table->unsignedbiginteger('product_id')->nullable();
+			$table->unsignedbiginteger('order_id')->nullable();
+			$table->string('text');
 			$table->integer('rating');
 			$table->integer('type');
 			$table->integer('status');

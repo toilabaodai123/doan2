@@ -73,8 +73,8 @@
 												<td>
 													@if($Order->status == 4 && $Order->checkReview == null)
 													<div class="col-lg-12">
-														<button type="button" class="btn btn-success" data-toggle="modal" data-target="#reviewOrder({{$Order->id}})">Đánh giá</button>
-															<div class="modal fade" id="reviewOrder({{$Order->id}})" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+														<button type="button" class="btn btn-success" data-toggle="modal" data-target="#reviewOrder{{$Order->id}}">Đánh giá</button>
+															<div wire:ignore.self class="modal fade" id="reviewOrder{{$Order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
@@ -82,10 +82,11 @@
 																												<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
 																											</div>
 																											<div class="modal-body">
+																												<input class="form-control wire:model.defer="review_input" placeholder="Nhập đánh giá">
 																											</div>
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-																												<button type="button"  data-dismiss="modal"class="btn btn-primary" >Sửa</button>
+																												<button type="button"  wire:click="submitReview({{$Order->id}})" data-dismiss="modal"class="btn btn-primary" >Lưu</button>
 																											</div>
 																										</div>
 																										<!-- /.modal-content -->
