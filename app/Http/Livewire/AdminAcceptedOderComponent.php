@@ -176,7 +176,6 @@ class AdminAcceptedOderComponent extends Component
 			//Cập nhật order log
 			$OrderLog = new OrderLog();
 			$OrderLog->order_id = $id;
-			$OrderLog->messageDate=now();
 			$OrderLog->message = 'Đơn hàng đã giao thành công';
 			$OrderLog->save();
 			

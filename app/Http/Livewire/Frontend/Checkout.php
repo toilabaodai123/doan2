@@ -124,7 +124,6 @@ class Checkout extends Component
 
             $OrderLog = new OrderLog();
             $OrderLog->order_id = $Order->id;
-            $OrderLog->messageDate = now();
             $OrderLog->message = 'Tạo đơn hàng';
             $OrderLog->save();	
             

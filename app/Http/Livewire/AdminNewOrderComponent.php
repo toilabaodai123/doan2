@@ -43,7 +43,6 @@ class AdminNewOrderComponent extends Component
 		$Order->save();
 		
 		$OrderLog = new OrderLog();
-		$OrderLog->messageDate = now();
 		$OrderLog->message = 'Đơn hàng được duyệt';
 		$OrderLog->order_id = $Order->id;
 		$OrderLog->save();

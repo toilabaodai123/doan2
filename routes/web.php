@@ -88,7 +88,7 @@ Route::middleware(['VisitCounter'])->group(function(){
 	Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');	
 	Route::get('tra-cuu-don-hang',CheckOrderComponent::class);
 	Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('auth');
-	Route::middleware(['auth'])->group(function(){
+	Route::middleware(['auth','CheckType_Admin'])->group(function(){
 		Route::get('/admin/dashboard', AdminDashboardComponent::class)->name('admin.dashboard');
 		Route::get('/admin-post', AdminPostComponent::class);
 		Route::get('/admin/products', AdminProductComponent::class);
