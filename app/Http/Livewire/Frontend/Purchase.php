@@ -11,24 +11,19 @@ use App\Models\OrderDetail;
 use App\Models\OrderLog;
 use App\Models\User;
 use App\Models\Wishlist;
+use App\Models\Comment2;
 
 use Cart;
 use Illuminate\Support\Facades\Auth;
 
 class Purchase extends Component
 {
-    public $data;
+    public $OrderedList;
+	public $Comments;
     public function render()
     {
-        $order_id= Order::with('Details')->where('user_id', Auth::user()->id )->get();
-        // dd( $order_id );
-
-
-
-
-        // dd( $productModel_id );
-
-
+        $this->OrderedList = Order::with('Details','Reviews.User','checkReview')->where('user_id',auth()->user()->id)->get();
+		//dd($this->OrderedList);
         return view('livewire.frontend.purchase')->layout('layouts.template3');
     }
 }

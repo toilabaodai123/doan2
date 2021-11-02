@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\OrderDetail;
 use App\Models\Order;
 use App\Models\ProductModel;
+use App\Models\Comment2;
 
 class Order extends Model
 {
@@ -16,6 +17,14 @@ class Order extends Model
 	public function Details() {
 		return $this->hasMany(OrderDetail::class,'order_id','id');
 	}	
+	
+	public function Reviews() {
+		return $this->hasMany(Comment2::class,'order_id','id');
+	}
+	
+	public function checkReview(){
+		return $this->hasOne(Comment2::class,'order_id','id')->where('user_id',auth()->user()->id)->latest();
+	}
 	
 	public function DetailInfo(){
 		return $this->hasManyThrough(
