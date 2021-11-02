@@ -40,7 +40,7 @@
                                                 <ul class="nice-scroll">
                                                     <li><a href="javascript:void(0)" wire:click="category(null)">Tất cả</a></li>
                                                     @foreach($categorylv1 as $categorylv1)
-                                                    <li><a href="javascript:void(0)" wire:click="category({{$categorylv1->id}})">{{$categorylv1->categoryName}} (20)</a></li>
+                                                    <li><a href="javascript:void(0)" wire:click="category({{$categorylv1->id}})">{{$categorylv1->categoryName}}</a></li>
                                                     @endforeach
                                                 </ul>
                                             </div>

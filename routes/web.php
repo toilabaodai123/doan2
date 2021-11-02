@@ -50,8 +50,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 */
 
 
-
-
 Route::middleware(['VisitCounter'])->group(function(){
 	// Frontend
 	Route::get('/', App\Http\Livewire\Frontend\Index::class);

@@ -17,8 +17,8 @@ class Controller extends BaseController
 {
     public function index()
     {
-        $data =  Blog_detail::all();
-        return view('livewire.pages.blog', compact('data'));
+        $datas =  Blog_detail::paginate(3);;
+        return view('livewire.pages.blog', compact('datas'));
     }
     public function show_edit_blog($id)
     {
@@ -34,7 +34,7 @@ class Controller extends BaseController
         ]);
         $data = new Blog_detail();
         $data->head_title = $req->heading;
-        $data->category = $req->category;
+        $data->category = 0;
         $data->short_des = $req->short_des;
         $data->des = $req->des;
         $data->tag = 0;
@@ -69,10 +69,10 @@ class Controller extends BaseController
         
         $data = Blog_detail::where('id', $id)->first();
         $data->head_title = $req->heading;
-        $data->category = $req->category;
+        $data->category = 0;
         $data->short_des = $req->short_des;
         $data->des = $req->des;
-        $data->tag = $data->tag;
+        $data->tag = 0;
         $data->author = Auth::user()->name;
 
         $full_image = $req->file('full_image');

@@ -221,6 +221,9 @@
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
                             <li>
                                 <a href="{{url('/slider')}}">Slider</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/post')}}">Đăng bài viết</a>
                             </li>	
                             <li>
                                 <a href="{{url('/instagram')}}">Instagram</a>

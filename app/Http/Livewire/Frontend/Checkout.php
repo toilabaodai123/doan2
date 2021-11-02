@@ -130,11 +130,11 @@ class Checkout extends Component
             
 			//Gửi thông tin đơn hàng qua mail khách hàng
 
-			$mail = [
-				'title' => 'Đặt hàng online',
-				'body' => 'Bạn vừa đặt hàng , mã đơn hàng là:'.$Order->orderCode
-			];
-			Mail::to($this->Email)->send(new MailService($this->mail));
+			// $mail = [
+			// 	'title' => 'Đặt hàng online',
+			// 	'body' => 'Bạn vừa đặt hàng , mã đơn hàng là:'.$Order->orderCode
+			// ];
+			// Mail::to($this->Email)->send(new MailService($this->mail));
             
             session()->flash('OrderCode',$Order->orderCode);
             session()->forget('cart');

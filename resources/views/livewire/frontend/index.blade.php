@@ -85,13 +85,15 @@
                                 
                                             @endif
                                         @endif
-
+                                        @else
+                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                                
                                 @endif
                                 </ul>
                             </div>
                             <div class="product__item__text">
-                                <h6>{{ $product->productName }}</h6>
                                 <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
+                               <h6>{{ $product->productName }}</h6>
                                 <div class="product_des">
                                     <h5>{{ number_format($product->productPrice) }} VND</h5>
                                     <h5>{{ $product->Category1->categoryName }}</h5>
@@ -159,7 +161,12 @@
                 <div class="col-lg-8">
                     <div class="instagram__pic">
                         @foreach($insta as $in)
-                        <a href="{{$in->link}}"><div class="instagram__pic__item set-bg" data-setbg="{{asset('storage/images/'.$in->image)}}"></div></a>
+                        <a href="{{$in->link}}">
+                            <div class="instagram__pic__item set-bg" 
+                            style="background-image: url('{{asset('storage/images/'.$in->image)}}')"
+                            data-setbg="{{asset('storage/images/'.$in->image)}}"></div>
+                            <!-- <img src="{{asset('storage/images/'.$in->image)}}" alt=""> -->
+                        </a>
                        
                        @endforeach
                     </div>
@@ -192,9 +199,11 @@
                 @forelse($blog as $blog)
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="{{asset('public/images/post/'.$blog->avata_image)}}"></div>
+                        <div class="blog__item__pic set-bg"  style="background-image: url('{{asset('public/images/post/'.$blog->avata_image)}}')"
+                        data-setbg="{{asset('public/images/post/'.$blog->avata_image)}}"></div>
+                       <!-- <img src="{{asset('public/images/post/'.$blog->avata_image)}}" alt=""> -->
                         <div class="blog__item__text">
-                            <span><img src="img/icon/calendar.png" alt=""> 16 February 2020</span>
+                            <span><img src="img/icon/calendar.png" style="width: unset" alt=""> 16 February 2020</span>
                             <h5>{{$blog->head_title}}</h5>
                             <a href="{{URL::to('blog-detail/'.$blog->id)}}">Read More</a>
                         </div>

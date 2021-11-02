@@ -123,7 +123,7 @@ class AdminNewOrderComponent extends Component
 			if($Check->count() == 0){
 				$Block->duration = 1;
 			}
-			else if($Check->count() == 1)){
+			else if($Check->count() == 1){
 				$Block->duration = 7;
 			}
 			else{

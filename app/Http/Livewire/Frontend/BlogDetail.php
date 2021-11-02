@@ -44,7 +44,7 @@ class BlogDetail extends Component
     {
         $this->blog = Blog_detail::where('id',$this->id2)->get();
         $this->all_blog = Blog_detail::orderBy('id' , 'desc')->get()->take(3);
-        $com = Comment::where('post_id',$this->id2)->orderBy('id' , 'desc')->paginate($this->pages);
+        $com = Comment::where('post_id',$this->id2)->orderBy('id' , 'desc')->where('status', 1)->paginate($this->pages);
         return view('livewire.frontend.blog-detail', compact('com'))->layout('layouts.template3');
     }
     public function submitUser($id){
@@ -69,6 +69,15 @@ class BlogDetail extends Component
         $data->comment = $this->comment;
         $data->status = 1;
         $data->comments()->associate($post);
+
+        $data->save();
+        // $this->reset();
+
+    }
+    public function deleteComment($id){
+        
+        $data =  Comment::find($id);
+        $data->status = 0;
 
         $data->save();
         // $this->reset();
