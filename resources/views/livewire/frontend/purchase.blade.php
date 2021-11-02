@@ -83,10 +83,22 @@
 																											</div>
 																											<div class="modal-body">
 																												<input class="form-control wire:model.defer="review_input" placeholder="Nhập đánh giá">
+																												<select class="form-control" wire:model="rating">
+																													<option>Chọn chất lượng</option>
+																													<option value="1">1 sao</option>
+																													<option value="2">2 sao</option>
+																													<option value="3">3 sao</option>
+																													<option value="4">4 sao</option>
+																													<option value="5">5 sao</option>
+																												</select>
+																												@error('rating')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror
 																											</div>
+																											
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-																												<button type="button"  wire:click="submitReview({{$Order->id}})" data-dismiss="modal"class="btn btn-primary" >Lưu</button>
+																												<button type="button"  wire:click="submitReview({{$Order->id}})" class="btn btn-primary" >Lưu</button>
 																											</div>
 																										</div>
 																										<!-- /.modal-content -->

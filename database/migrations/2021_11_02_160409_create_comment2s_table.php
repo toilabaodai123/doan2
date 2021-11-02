@@ -18,7 +18,7 @@ class CreateComment2sTable extends Migration
 			$table->unsignedbiginteger('user_id');
 			$table->unsignedbiginteger('product_id')->nullable();
 			$table->unsignedbiginteger('order_id')->nullable();
-			$table->string('text');
+			$table->string('text')->nullable();
 			$table->integer('rating');
 			$table->integer('type');
 			$table->integer('status');

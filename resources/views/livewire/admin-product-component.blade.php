@@ -61,7 +61,7 @@
 														</td>
 														<td>
 															<button type="button" class="btn btn-success"  data-toggle="modal" data-target="#myModal{{$p->id}}">Xem</button>
-															<div class="modal fade" id="myModal{{$p->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<div wire:ignore.self class="modal fade" id="myModal{{$p->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
@@ -69,13 +69,6 @@
 																												<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
 																											</div>
 																											<div class="modal-body">
-																												<div class="panel-body">
-																													@if ($productImage2 == null)
-																														<img src="{{asset('storage/images/notfound.jpg')}}" style="width:100%;height:200px"> </img>
-																													@else
-																														<img src="{{asset('storage/images/product/'.$productImage2)}}" style="width:100%;height:200px"> </img>
-																													@endif
-																												</div>
 																												<label>Tên sản phẩm : {{$p->productName}}</label><br>
 																												<label>Slug : {{$p->productSlug}}</label><br>
 																												<label>Nhà cung cấp : {{$p->Supplier->supplierName}}</label><br>
@@ -92,7 +85,12 @@
 																													<label style="color:gray">Ẩn</label>
 																												@endif
 																												<br>
-																												
+																												<label>Tồn kho:</label><br>
+																												@forelse($p->Models as $Model)
+																												<label>-Size:</label>{{$Model->size}} || <label>Tồn kho: </label>{{$Model->stockTemp}}||<label>Tồn kho (thực): </label>{{$Model->stock}}<br>
+																												@empty
+																													Chưa nhập hàng
+																												@endforelse
 																											</div>
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>

@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{{asset('user/css/font-awesome.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('user/css/elegant-icons.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('user/css/magnific-popup.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('user/css/nice-select.css')}}" type="text/css">
+  <!--   <link rel="stylesheet" href="{{asset('user/css/nice-select.css')}}" type="text/css"> -->
     <link rel="stylesheet" href="{{asset('user/css/owl.carousel.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('user/css/slicknav.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('user/css/style.css')}}" type="text/css">
@@ -213,8 +213,8 @@
     <script src="{{asset('user/js/jquery-3.3.1.min.js')}}"></script>
 	
     <script src="{{asset('user/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('user/js/jquery.nice-select.min.js')}}"></script>
-    <script src="{{asset('user/js/jquery.nicescroll.min.js')}}"></script>
+  <!--  <script src="{{asset('user/js/jquery.nice-select.min.js')}}"></script> -->
+    <script src="{{asset('user/js/jquery.nicescroll.min.js')}}"></script> 
     <script src="{{asset('user/js/jquery.magnific-popup.min.js')}}"></script>
     <script src="{{asset('user/js/jquery.countdown.min.js')}}"></script>
     <script src="{{asset('user/js/jquery.slicknav.js')}}"></script>

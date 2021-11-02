@@ -21,6 +21,7 @@ class Purchase extends Component
     public $OrderedList;
 	public $Comments;
 	public $review_input;
+	public $rating;
 	
 	
     public function render()
@@ -32,14 +33,18 @@ class Purchase extends Component
 	public function submitReview($id){
 		$Check = Comment2::where('user_id',auth()->user()->id)->where('order_id',$id)->get()->last();
 		if(!$Check){
+			$this->validate([
+				'rating' => 'required'
+			],[
+				'rating.required' => 'Hãy chọn chất lượng đánh giá'
+			]);
 			$Review = new Comment2();
 			$Review->user_id = auth()->user()->id;
 			$Review->order_id = $id;
-			//$Review->text = $this->review_input;
-			$Review->product_id = 1;
+			$Review->text = $this->review_input;
 			$Review->rating = 5;
 			$Review->type = 2;
-			$Review->status = 1;
+			$Review->status = $this->rating;
 			$Review->save();
 			session()->flash('success','Đánh giá thành công , xin cảm ơn bạn');
 		}else{
