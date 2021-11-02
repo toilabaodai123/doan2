@@ -19,6 +19,7 @@ class CreateUserActionBlocksTable extends Migration
 			$table->unsignedbiginteger('admin_id');
 			$table->integer('duration');
 			$table->string('action');
+			$table->string('reason');
             $table->timestamps();
         });
     }

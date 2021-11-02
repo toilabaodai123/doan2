@@ -27,6 +27,7 @@ class CreateOrdersTable extends Migration
 			$table->dateTime('orderDate');
 			$table->integer('orderTotal');
 			$table->integer('status');
+			$table->string('ip');
             $table->timestamps();
 			
 			$table->foreign('user_id')->references('id')->on('users');

@@ -11,6 +11,11 @@
 						{{$Orders2->links()}}
 						<div class="col-lg-12">
 								<div class="row">
+									@if(session()->has('success'))
+									<div class="alert alert-success">
+										{{session('success')}}
+                                    </div>
+									@endif
 									<div class="table-responsive">
 										<table class="table table-bordered table-hover table-striped">
 											<thead>
@@ -52,8 +57,8 @@
 														<td>{{$o->address}}</td>
 														<td>{{$o->created_at}}</td>
 														<td>
-															<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#myModal1">Xem</button>
-															<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#viewOrder({{$o->id}})">Xem</button>
+															<div class="modal fade" id="viewOrder({{$o->id}})" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
@@ -63,9 +68,29 @@
 																											<div class="modal-body" >
 																												<label>Chi tiết hóa đơn</label>
 																												<div>
-																													@foreach($o->Details as $d)
-																														{{$d->id}}
+																													@foreach($o->Details as $Details)
+																														<label>Tên sản phẩm :</label> {{$Details->ProductModel->Product->productName}} |<label>Size :</label> {{$Details->ProductModel->size}}|<label>Số lượng:</label> {{$Details->quantity}}<br>
 																													@endforeach
+																													<label>Note (Người dùng): </label>{{$o->userNote}}<br>
+																													<label>Trạng thái :</label>	
+																														@if($o->status == 2)
+																															<label style="color:blue">Đã duyệt</label>
+																														@elseif($o->status == 3)
+																															<label style="color:orange">Đang chuyển hàng</label>
+																														@elseif($o->status == 4)
+																															<label style="color:green">Đã hoàn tất</label>
+																														@elseif($o->status == 5)
+																															<label style="color:red">Đã hủy đơn</label>
+																														@elseif($o->status == 0)
+																															<label style="color:grey">Đã bị từ chối</label>
+																														@elseif($o->status == 1)
+																															<label style="color:green">Đơn hàng mới</label>
+																														@endif
+																														<br>
+																														@if($o->adminNote != null)
+																															<label>Note (Admin): </label>{{$o->adminNote}}<br>
+																														@endif
+																														
 																												</div>
 																											</div>
 																											<div class="modal-footer">
@@ -77,8 +102,8 @@
 																									<!-- /.modal-dialog -->
 															</div>	
 															<button type="button" wire:click="acceptOrder({{$o->id}})" class="btn btn-success">Duyệt</button>	
-															<button type="button" data-toggle="modal" data-target="#myModal2" class="btn btn-warning">Từ chối</button>	
-															<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<button type="button" data-toggle="modal" data-target="#declineOrder({{$o->id}})" class="btn btn-warning">Từ chối</button>	
+															<div wire:ignore.self class="modal fade" id="declineOrder({{$o->id}})" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
@@ -86,7 +111,18 @@
 																												<h4 class="modal-title" wire:model.lazy="decline_note" id="myModalLabel">Lý do từ chối</h4>
 																											</div>
 																											<div class="modal-body" >
-																												<input class="form-control" placeholder="Hãy nhập lý do từ chối đơn hàng">
+																												<input class="form-control" placeholder="Hãy nhập lý do từ chối đơn hàng" wire:model.defer="decline_note">
+																												@error('decline_note')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror
+																												<div class="checkbox">
+																													<label>
+																														<input type="checkbox" wire:model.defer="decline_status">Tôi đồng ý
+																													</label>																														</label>
+																												</div>
+																												@error('decline_status')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror																												
 																											</div>
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
@@ -97,16 +133,27 @@
 																									</div>
 																									<!-- /.modal-dialog -->
 															</div>	
-															<button type="button" data-toggle="modal" data-target="#myModal3" class="btn btn-danger">Chặn</button>
-															<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<button type="button" data-toggle="modal" data-target="#blockOrder({{$o->id}})" class="btn btn-danger">Chặn</button>
+															<div wire:ignore.self class="modal fade" id="blockOrder({{$o->id}})" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
 																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																												<h4 class="modal-title" wire:model.lazy="decline_note" id="myModalLabel">Lý do chặn</h4>
+																												<h4 class="modal-title" wire:model.lazy="block_note" id="myModalLabel">Lý do chặn</h4>
 																											</div>
 																											<div class="modal-body" >
-																												<input class="form-control" placeholder="Hãy nhập lý do chặn">
+																												<input class="form-control" placeholder="Hãy nhập lý do chặn" wire:model.defer="block_note">
+																												@error('block_note')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror
+																												<div class="checkbox">
+																													<label>
+																														<input type="checkbox" wire:model.defer="block_status">Tôi đồng ý
+																													</label>																														</label>
+																												</div>
+																												@error('block_status')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror	
 																											</div>
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>

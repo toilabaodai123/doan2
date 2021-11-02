@@ -10,6 +10,7 @@ use App\Models\ShippingUnit;
 use App\Models\AdminLog;
 use App\Models\ProductModel;
 use App\Models\DeliveryBill;
+use App\Models\UserActionBlock;
 
 use Livewire\WithPagination;
 
@@ -33,10 +34,16 @@ class AdminAcceptedOderComponent extends Component
 	public $delivery_status=false;
 	public $decline_input;
 	
+	public $block_status=false;
+	public $block_note;
+	
 	public $searchField='fullName';
 	public $searchInput;
 	public $sortField='id';
 	public $sortDirection='ASC';
+	
+	public $tempStatus;
+	
     public function render()
 	{
 		$this->ShipUnits = ShippingUnit::all();//where('status',1)->get();
@@ -229,4 +236,58 @@ class AdminAcceptedOderComponent extends Component
 		
 		$this->reset();
 	}
+	
+	public function updateOrderStatus($status){
+		$this->tempStatus = $status;
+	}
+	
+	public function blockOrder($id){
+		$Order = Order::find($id);
+		if($Order->status == $this->tempStatus){
+			$this->validate([
+				'block_note' => 'required',
+				'block_status' => 'accepted'
+			],[
+				'block_note.required' => 'Hãy nhập lý do chặn',
+				'block_status.accepted' => 'Hãy check vào đây'
+			]);			
+			$Order->status = 0 ;
+			$Order->adminNote = $this->block_note;
+			$Order->save();
+			
+			$Log = new AdminLog();
+			$Log->admin_id = auth()->user()->id;
+			$Log->note = 'Đã chặn người dùng ip :'.$Order->ip. ' đặt hàng';
+			$Log->save();
+			
+			$OrderLog = new OrderLog();
+			$OrderLog->message = 'Đơn hàng đã bị hủy';
+			$OrderLog->order_id = $id;
+			$OrderLog->save();
+			
+			$Check = UserActionBlock::where('ip',$Order->ip)->get();
+			$Block = new UserActionBlock();
+			$Block->ip = $Order->ip;
+			$Block->admin_id = auth()->user()->id;
+			$Block->action = 'Đặt hàng';
+				$Block->reason = $this->block_note;
+			if($Check->count() == 0){
+				$Block->duration = 1;
+			}
+			else if($Check->count() == 1){
+				$Block->duration = 7;
+			}
+			else{
+				$Block->duration = 999;
+			}
+			$Block->save();
+			
+			session()->flash('success','Đã chặn người dùng của đơn hàng id:'.$id);
+		}else{
+			session()->flash('success','Lỗi');
+		}
+		
+		$this->reset();
+	}
+	
 }

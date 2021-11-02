@@ -69,6 +69,7 @@ class Checkout extends Component
             $Order->fullName = $this->Name;
             $Order->phone = $this->Phone;
             $Order->address = $this->Address;
+			$Order->ip = Request()->ip();
 
             if($this->Email != null)
                 $Order->email = $this->Email;	
