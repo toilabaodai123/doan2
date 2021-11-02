@@ -43,16 +43,18 @@ use App\Http\Livewire\AdminShipperBillListComponent;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+/*
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+*/
+
+
+
 
 Route::middleware(['VisitCounter'])->group(function(){
-		// Frontend
+	// Frontend
+	Route::get('/', App\Http\Livewire\Frontend\Index::class);
 	Route::get('index', App\Http\Livewire\Frontend\Index::class)->name('index');
 	Route::get('shop', App\Http\Livewire\Frontend\Shop::class);
 	Route::get('shop-detail/{id}', App\Http\Livewire\Frontend\ShopDetail::class);

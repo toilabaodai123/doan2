@@ -16,7 +16,6 @@ class CreateOrderLogsTable extends Migration
         Schema::create('order_logs', function (Blueprint $table) {
             $table->id();
 			$table->unsignedbiginteger('order_id');
-			$table->datetime('messageDate');
 			$table->string('message');
             $table->timestamps();
 			

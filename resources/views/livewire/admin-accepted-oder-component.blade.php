@@ -57,8 +57,8 @@
 																											<div class="modal-body" >
 																												<label>Chi tiết hóa đơn</label>
 																												<div>
-																													@foreach($o->Details as $d)
-																														{{$d->id}}
+																													@foreach($o->Details as $Details)
+																														<label>Tên sản phẩm :</label> {{$Details->ProductModel->Product->productName}} |<label>Size :</label> {{$Details->ProductModel->size}}|<label>Số lượng:</label> {{$Details->quantity}}<br>
 																													@endforeach
 																												</div>
 																											</div>
@@ -108,12 +108,37 @@
 																	<!-- /.modal-dialog -->
 																	</div>	
 																</div>
-																
-																
-																
 																<button type="button" wire:click="declineOrder({{$o->id}})"class="btn btn-warning">Từ chối</button>	
 																<button type="button" wire:click="blockOrder({{$o->id}})" class="btn btn-danger">Chặn</button>
 															@elseif ($o->status == 3)
+																<button type="button" class="btn btn-success" data-toggle="modal" data-target="#DeliveryCompleted{{$o->id}}">Hoàn tất giao hàng</button>
+																<div wire:ignore.self class="modal fade" id="DeliveryCompleted{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																	<div class="modal-dialog" role="document">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																				<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
+																			</div>
+																			<div class="modal-body" >
+																				<label>Bạn chắc chắn muốn thực hiện "Hoàn tất giao hàng" cho đơn hàng id:{{$o->id}} ?</label>
+																				<div class="checkbox">
+																					<label>
+																						<input type="checkbox" wire:model.defer="delivery_status">Tôi đồng ý
+																						@error('delivery_status')
+																							<p class="text-danger">{{$message}}</p>
+																						@enderror
+																					</label>
+																				</div>
+																			<div class="modal-footer">
+																				<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																				<button type="button" wire:click="deliveryCompleted({{$o->id}})" class="btn btn-success">Lưu</button>
+																			</div>
+																		</div>
+																		<!-- /.modal-content -->
+																	</div>
+																	<!-- /.modal-dialog -->
+																	</div>	
+																</div>
 																<button type="button" wire:click="blockOrder({{$o->id}})" class="btn btn-danger">Hủy đơn</button>
 															@endif
 															
