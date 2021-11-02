@@ -47,18 +47,59 @@
                                 <div class="shopping__cart__table">
                                     <table>
                                         <tbody>
+											@forelse($OrderedList as $Order)
                                             <tr style="display: flex; align-items: center;justify-content: space-between;">
                                                 <td class="product__cart__item">
-                                                    <div class="product__cart__item__pic">
-                                                        <img src="img/shopping-cart/cart-1.jpg" alt="">
-                                                    </div>
                                                     <div class="product__cart__item__text">
-                                                        <h6>T-shirt Contrast Pocket</h6>
-                                                        <h5>x1</h5>
+                                                        <h6>{{$Order->orderCode}}</h6>
+                                                        <h5>
+															@if($Order->status == 1)
+																Đang chờ duyệt
+															@elseif ($Order->status == 2)
+																Đã duyệt , chờ giao hàng
+															@elseif ($Order->status == 3)
+																Đang giao hàng
+															@elseif ($Order->status == 4)
+																Đơn hàng đã được giao
+															@elseif ($Order->status == 5)
+																Đã bị hủy
+															@elseif ($Order->status == 0)
+																Đã bị xóa 
+															@endif
+														</h5>
                                                     </div>
                                                 </td>
-                                                <td class="cart__price">30.00 VND</td>
+                                                <td class="cart__price">{{$Order->orderTotal}}</td>
+												<td>
+													@if($Order->status == 4 && $Order->checkReview == null)
+													<div class="col-lg-12">
+														<button type="button" class="btn btn-success" data-toggle="modal" data-target="#reviewOrder{{$Order->id}}">Đánh giá</button>
+															<div wire:ignore.self class="modal fade" id="reviewOrder{{$Order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																									<div class="modal-dialog" role="document">
+																										<div class="modal-content">
+																											<div class="modal-header">
+																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																												<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
+																											</div>
+																											<div class="modal-body">
+																												<input class="form-control wire:model.defer="review_input" placeholder="Nhập đánh giá">
+																											</div>
+																											<div class="modal-footer">
+																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																												<button type="button"  wire:click="submitReview({{$Order->id}})" data-dismiss="modal"class="btn btn-primary" >Lưu</button>
+																											</div>
+																										</div>
+																										<!-- /.modal-content -->
+																									</div>
+																									<!-- /.modal-dialog -->
+															</div>															
+													</div>
+													@endif
+												</td>
                                             </tr>
+											@empty
+												Chưa đặt đơn hàng nào!
+											@endforelse
                                             
                                         </tbody>
                                     </table>

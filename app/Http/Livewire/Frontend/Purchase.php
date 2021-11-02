@@ -11,24 +11,40 @@ use App\Models\OrderDetail;
 use App\Models\OrderLog;
 use App\Models\User;
 use App\Models\Wishlist;
+use App\Models\Comment2;
 
 use Cart;
 use Illuminate\Support\Facades\Auth;
 
 class Purchase extends Component
 {
-    public $data;
+    public $OrderedList;
+	public $Comments;
+	public $review_input;
+	
+	
     public function render()
     {
-        $order_id= Order::with('Details')->where('user_id', Auth::user()->id )->get();
-        // dd( $order_id );
-
-
-
-
-        // dd( $productModel_id );
-
-
+        $this->OrderedList = Order::with('Details','Reviews.User','checkReview')->where('user_id',auth()->user()->id)->get();
         return view('livewire.frontend.purchase')->layout('layouts.template3');
     }
+	
+	public function submitReview($id){
+		$Check = Comment2::where('user_id',auth()->user()->id)->where('order_id',$id)->get()->last();
+		if(!$Check){
+			$Review = new Comment2();
+			$Review->user_id = auth()->user()->id;
+			$Review->order_id = $id;
+			//$Review->text = $this->review_input;
+			$Review->product_id = 1;
+			$Review->rating = 5;
+			$Review->type = 2;
+			$Review->status = 1;
+			$Review->save();
+			session()->flash('success','Đánh giá thành công , xin cảm ơn bạn');
+		}else{
+			session()->flash('success','Lỗi');
+		}
+		$this->reset();
+	}
 }
