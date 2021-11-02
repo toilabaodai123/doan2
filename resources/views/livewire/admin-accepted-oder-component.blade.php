@@ -1,4 +1,17 @@
 <div>
+	<div class="row" style="margin-bottom:20px;">
+		<div class="col-lg-3">
+			<input class="form-control" wire:model="searchInput" placeholder="Nhập thông tin cần tìm">
+		</div>
+		<div class="col-lg-3">
+			<select class="form-control" wire:model="searchField">
+				<option value="fullName">Theo tên</option>
+				<option value="phone">Theo số điện thoại</option>
+				<option value="email">Theo email</option>
+				<option value="address">Theo địa chỉ</option>
+			</select>
+		</div>	
+	</div>
 	<div class="row">
 			<div class="col-lg-12">	
 				<div class="panel panel-default">
@@ -10,27 +23,58 @@
 							{{session('success')}}
                         </div>
 					@endif					
-					<div class="panel-body">	
+					<div class="panel-body">
+						{{$Orders2->links()}}
 						<div class="col-lg-12">
 								<div class="row">
 									<div class="table-responsive">
 										<table class="table table-bordered table-hover table-striped">
 											<thead>
 												<tr>
-													<th>ID</th>
-													<th>Họ tên</th>
-													<th>Email</th>
-													<th>Địa chỉ</th>
-													<th>Thời gian đặt</th>
-													<th>Trạng thái</th>
+													<th>
+														ID
+														<i class="fa fa-arrow-up" wire:click="sortBy('id','ASC')" style="cursor:pointer;{{$sortField=='id' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+														<i class="fa fa-arrow-down" wire:click="sortBy('id','DESC')" style="cursor:pointer;{{$sortField=='id' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+													</th>
+													<th>
+														Họ tên
+														<i class="fa fa-arrow-up" wire:click="sortBy('fullName','ASC')" style="cursor:pointer;{{$sortField=='fullName' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+														<i class="fa fa-arrow-down" wire:click="sortBy('fullName','DESC')" style="cursor:pointer;{{$sortField=='fullName' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+													</th>
+													<th>
+														Số điện thoại
+														<i class="fa fa-arrow-up" wire:click="sortBy('phone','ASC')" style="cursor:pointer;{{$sortField=='phone' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+														<i class="fa fa-arrow-down" wire:click="sortBy('phone','DESC')" style="cursor:pointer;{{$sortField=='phone' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+													</th>
+													<th>
+														Email
+														<i class="fa fa-arrow-up" wire:click="sortBy('email','ASC')" style="cursor:pointer;{{$sortField=='email' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+														<i class="fa fa-arrow-down" wire:click="sortBy('email','DESC')" style="cursor:pointer;{{$sortField=='email' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+													</th>
+													<th>
+														Địa chỉ
+														<i class="fa fa-arrow-up" wire:click="sortBy('address','ASC')" style="cursor:pointer;{{$sortField=='address' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+														<i class="fa fa-arrow-down" wire:click="sortBy('address','DESC')" style="cursor:pointer;{{$sortField=='address' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+													</th>
+													<th>
+														Thời gian đặt
+														<i class="fa fa-arrow-up" wire:click="sortBy('created_at','ASC')" style="cursor:pointer;{{$sortField=='created_at' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+														<i class="fa fa-arrow-down" wire:click="sortBy('created_at','DESC')" style="cursor:pointer;{{$sortField=='created_at' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+													</th>
+													<th>
+													Trạng thái
+														<i class="fa fa-arrow-up" wire:click="sortBy('status','ASC')" style="cursor:pointer;{{$sortField=='status' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+														<i class="fa fa-arrow-down" wire:click="sortBy('status','DESC')" style="cursor:pointer;{{$sortField=='status' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+													</th>
 													<th>Tùy chọn</th>
 												</tr>
 											</thead>
 											<tbody>
-												@forelse($Orders as $o)
+												@forelse($Orders2 as $o)
 													<tr>
 														<td><label wire:model="testid.{{$o->id}}">{{$o->id}}</label></td>
 														<td>{{$o->fullName}}</td>
+														<td>{{$o->phone}}</td>
 														<td>{{$o->email}}</td>
 														<td>{{$o->address}}</td>
 														<td>{{$o->orderDate}}</td>
@@ -108,7 +152,38 @@
 																	<!-- /.modal-dialog -->
 																	</div>	
 																</div>
-																<button type="button" wire:click="declineOrder({{$o->id}})"class="btn btn-warning">Từ chối</button>	
+																<button type="button" data-toggle="modal" data-target="#decline{{$o->id}}" class="btn btn-warning">Từ chối</button>
+																<div wire:ignore.self class="modal fade" id="decline{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																										<div class="modal-dialog" role="document">
+																											<div class="modal-content">
+																												<div class="modal-header">
+																													<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																													<h4 class="modal-title" id="myModalLabel">Từ chối đơn hàng</h4>
+																												</div>
+																												<div class="modal-body" >
+																													<label>Bạn chắc chắn muốn từ chối đơn hàng id:{{$o->id}} ?</label>
+																													<input class="form-control" placeholder="Hãy nhập lý do từ chối" wire:model="decline_input">
+																													@error('decline_input')
+																														<p class="text-danger">{{$message}}</p>
+																													@enderror
+																													<div class="checkbox">
+																														<label>
+																															<input type="checkbox" wire:model.defer="decline_status">Tôi đồng ý
+																															@error('decline_status')
+																																<p class="text-danger">{{$message}}</p>
+																															@enderror
+																														</label>
+																													</div>
+																												</div>
+																												<div class="modal-footer">
+																													<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																													<button type="button" class="btn btn-primary" wire:click="declineOrder({{$o->id}})">Lưu</button>
+																												</div>
+																											</div>
+																											<!-- /.modal-content -->
+																										</div>
+																										<!-- /.modal-dialog -->
+																</div>																
 																<button type="button" wire:click="blockOrder({{$o->id}})" class="btn btn-danger">Chặn</button>
 															@elseif ($o->status == 3)
 																<button type="button" class="btn btn-success" data-toggle="modal" data-target="#DeliveryCompleted{{$o->id}}">Hoàn tất giao hàng</button>

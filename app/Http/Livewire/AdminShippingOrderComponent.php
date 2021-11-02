@@ -65,8 +65,6 @@ class AdminShippingOrderComponent extends Component
 			$ProductModel->stockTemp-=$o->quantity;
 			$ProductModel->save();
 		}
-		
-		date_default_timezone_set('Asia/Ho_Chi_Minh');
 		$OrderLog = new OrderLog();
 		$OrderLog->messageDate = now();
 		$OrderLog->message = 'Đơn hàng đã được giao cho shipper';

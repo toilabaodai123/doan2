@@ -11,8 +11,13 @@ use App\Models\AdminLog;
 use App\Models\ProductModel;
 use App\Models\DeliveryBill;
 
+use Livewire\WithPagination;
+
 class AdminAcceptedOderComponent extends Component
 {
+	use WithPagination;
+	
+	
 	public $Orders;
 	public $ShipUnits;
 	public $flag_shipunit = false;
@@ -24,17 +29,38 @@ class AdminAcceptedOderComponent extends Component
 	public $add_shipunit_email;
 	public $add_shipunit_phone;
 	
+	public $decline_status=false;
 	public $delivery_status=false;
+	public $decline_input;
 	
+	public $searchField='fullName';
+	public $searchInput;
+	public $sortField='id';
+	public $sortDirection='ASC';
     public function render()
 	{
 		$this->ShipUnits = ShippingUnit::all();//where('status',1)->get();
 		
 		$this->Orders = Order::with('Details.ProductModel.Product')->where('status','!=',1)->get();
-        return view('livewire.admin-accepted-oder-component')
+		
+		if($this->searchInput != null){
+			$Orders2 = Order::with('Details.ProductModel.Product')->where('status','!=',1)
+																  ->where($this->searchField,'LIKE','%'.$this->searchInput.'%')
+																  ->orderBy($this->sortField,$this->sortDirection)
+																  ->paginate(5);
+		}else{
+			$Orders2 = Order::with('Details.ProductModel.Product')->where('status','!=',1)
+																  ->orderBy($this->sortField,$this->sortDirection)
+																  ->paginate(5);			
+		}
+        return view('livewire.admin-accepted-oder-component',['Orders2' => $Orders2])
 					->layout('layouts.template');
     }
 	
+	public function sortBy($field,$direction){
+		$this->sortField = $field;
+		$this->sortDirection = $direction;
+	}
 	public function deliverOrder($id){
 		$Order = Order::with('Details')->find($id);
 		if($Order->status == 2){
@@ -167,5 +193,41 @@ class AdminAcceptedOderComponent extends Component
 		}
 		$this->reset();
 		
+	}
+	
+	public function declineOrder($id){
+		$Order = Order::find($id);
+		if($Order->status == 2){
+			$this->validate([
+				'decline_status' => 'accepted',
+				'decline_input' => 'required'
+			],[
+				'decline_status.accepted' => 'Hãy check vào đây',
+				'decline_input.required' => 'Hãy nhập lý do từ chối'
+			]);
+			
+			//Cập nhật trạng thái
+			$Order->status = 0;
+			$Order->save();
+			
+			//Cập nhật order log
+			$OrderLog = new OrderLog();
+			$OrderLog->message= 'Đơn hàng đã bị từ chối';
+			$OrderLog->order_id = $id;
+			$OrderLog->save();
+			
+			//Cập nhật admin log
+			$AdminLog = new AdminLog();
+			$AdminLog->admin_id = auth()->user()->id;
+			$AdminLog->note = 'Đã từ chối đơn hàng id:'.$id;
+			$AdminLog->save();
+			
+			session()->flash('success','Từ chối đơn hàng id:'.$id.' thành công');
+			
+		}else{
+			session()->flash('success','Lỗi');
+		}
+		
+		$this->reset();
 	}
 }
