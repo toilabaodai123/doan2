@@ -2,6 +2,7 @@
 
 use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
+use App\Models\User;
 
 return [
 
@@ -61,7 +62,13 @@ return [
     |
     */
 
-    'home' => RouteServiceProvider::HOME,
+    'home' => function(){
+		$User = User::find(auth()->user()->id);
+		if($User->user_type == 'Người dùng')
+			return route('index');
+		else
+			return route('admin.dashboard');
+	},
 
     /*
     |--------------------------------------------------------------------------

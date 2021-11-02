@@ -51,80 +51,63 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-// Frontend
+Route::middleware(['VisitCounter'])->group(function(){
+		// Frontend
+	Route::get('index', App\Http\Livewire\Frontend\Index::class)->name('index');
+	Route::get('shop', App\Http\Livewire\Frontend\Shop::class);
+	Route::get('shop-detail/{id}', App\Http\Livewire\Frontend\ShopDetail::class);
+	Route::get('product/category/{id}',App\Http\Livewire\Frontend\CategoryComponent::class);
+	Route::get('blog',App\Http\Livewire\Frontend\Blog::class);
+	Route::get('cart', App\Http\Livewire\Frontend\carts::class);
+	Route::get('blog-detail/{id}',App\Http\Livewire\Frontend\BlogDetail::class);
+	Route::get('checkout',App\Http\Livewire\Frontend\Checkout::class);
+	Route::get('contact',App\Http\Livewire\Frontend\Contact::class);
+	Route::get('about',App\Http\Livewire\Frontend\About::class);
+	Route::get('wishlist',App\Http\Livewire\Frontend\WhislistComponent::class);
+	Route::get('tim-kiem',App\Http\Livewire\Frontend\SearchComponent::class);
+	Route::get('users',App\Http\Livewire\Frontend\Users::class);
+	Route::get('don-hang',App\Http\Livewire\Frontend\Purchase::class);
+	Route::get('slider', App\Http\Livewire\Pages\Slider::class);
+	Route::get('sale', App\Http\Livewire\Pages\Sale::class);
+	Route::get('instagram', App\Http\Livewire\Pages\Instagrams::class);
+	Route::get('coupon', App\Http\Livewire\Pages\AdminCoupon::class);
+	Route::get('/admin-contact', App\Http\Livewire\Pages\Admincontact::class);
+	Route::get('/tin-nhan', App\Http\Livewire\Pages\AdminMessage::class);
+	// Blog
+	Route::get('post',[App\Http\Controllers\Controller::class, 'index']);
+	Route::post('addpost',[App\Http\Controllers\Controller::class, 'addpost']);
+	Route::get('edit-blog/{id}',[App\Http\Controllers\Controller::class, 'show_edit_blog']);
+	Route::post('update-blog/{id}',[App\Http\Controllers\Controller::class, 'update_post']);
+	// end Frontend
+	Route::get('trang-chu',IndexComponent::class);
+	Route::get('san-pham/{id}',ProductDetailComponent::class);
+	Route::get('gio-hang',CartComponent::class);
+	Route::get('thanh-toan',CheckoutComponent::class);
+	Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');	
+	Route::get('tra-cuu-don-hang',CheckOrderComponent::class);
+	Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('auth');
+	Route::middleware(['auth'])->group(function(){
+		Route::get('/admin/dashboard', AdminDashboardComponent::class)->name('admin.dashboard');
+		Route::get('/admin-post', AdminPostComponent::class);
+		Route::get('/admin/products', AdminProductComponent::class);
+		Route::get('/admin/product-category/lv1', AdminProductCategoryComponent::class);
+		Route::get('admin/suppliers', AdminSupplierComponent::class);
+		Route::get('admin/product-category/lv2',AdminProductCategoryLv2Component::class);
+		Route::get('admin/orders',AdminOrderComponent::class);
+		Route::get('admin/orders/accepted',AdminAcceptedOderComponent::class);
+		Route::get('admin/orders/new',AdminNewOrderComponent::class);
+		Route::get('admin/orders/completed',AdminCompletedOrderComponent::class);
+		Route::get('admin/orders/declined',AdminDeclinedOrderComponent::class);
+		Route::get('admin/demo/ship',DemoShipComponent::class);
+		Route::get('admin/shippers',AdminShippingUnitComponent::class);
+		Route::get('admin/shippers/create-bill',AdminShippingOrderComponent::class);
+		Route::get('admin/users/staff',AdminStaffComponent::class);
+		Route::get('admin/product-import/list', AdminProductImportBillListComponent::class);
+		Route::get('admin/product-import/new', AdminProductImportComponent::class);
+		Route::get('admin/product-import/manager',AdminProductImportManagerComponent::class);
+		Route::get('admin/import/request', AdminImportRequestComponent::class);
+		Route::get('admin/accountant/list',AdminAccountantComponent::class);
+		Route::get('admin/shippers/bill-list',AdminShipperBillListComponent::class);	
+	});
+});
 
-Route::get('index', App\Http\Livewire\Frontend\Index::class);
-Route::get('shop', App\Http\Livewire\Frontend\Shop::class);
-Route::get('shop-detail/{id}', App\Http\Livewire\Frontend\ShopDetail::class);
-Route::get('product/category/{id}',App\Http\Livewire\Frontend\CategoryComponent::class);
-Route::get('blog',App\Http\Livewire\Frontend\Blog::class);
-Route::get('cart', App\Http\Livewire\Frontend\carts::class);
-Route::get('blog-detail/{id}',App\Http\Livewire\Frontend\BlogDetail::class);
-Route::get('checkout',App\Http\Livewire\Frontend\Checkout::class);
-Route::get('contact',App\Http\Livewire\Frontend\Contact::class);
-Route::get('about',App\Http\Livewire\Frontend\About::class);
-Route::get('wishlist',App\Http\Livewire\Frontend\WhislistComponent::class);
-Route::get('tim-kiem',App\Http\Livewire\Frontend\SearchComponent::class);
-
-
-Route::get('users',App\Http\Livewire\Frontend\Users::class);
-Route::get('don-hang',App\Http\Livewire\Frontend\Purchase::class);
-
-Route::get('slider', App\Http\Livewire\Pages\Slider::class);
-Route::get('sale', App\Http\Livewire\Pages\Sale::class);
-Route::get('instagram', App\Http\Livewire\Pages\Instagrams::class);
-Route::get('coupon', App\Http\Livewire\Pages\AdminCoupon::class);
-Route::get('/admin-contact', App\Http\Livewire\Pages\Admincontact::class);
-Route::get('/tin-nhan', App\Http\Livewire\Pages\AdminMessage::class);
-
-// Blog
-Route::get('post',[App\Http\Controllers\Controller::class, 'index']);
-Route::post('addpost',[App\Http\Controllers\Controller::class, 'addpost']);
-Route::get('edit-blog/{id}',[App\Http\Controllers\Controller::class, 'show_edit_blog']);
-Route::post('update-blog/{id}',[App\Http\Controllers\Controller::class, 'update_post']);
-
-
-// end Frontend
-
-
-Route::get('trang-chu',IndexComponent::class)->middleware('VisitCounter');
-Route::get('san-pham/{id}',ProductDetailComponent::class);
-Route::get('gio-hang',CartComponent::class);
-
-Route::get('/admin/dashboard', AdminDashboardComponent::class);
-Route::get('/admin-post', AdminPostComponent::class);
-Route::get('/admin/products', AdminProductComponent::class);
-Route::get('/admin/product-category/lv1', AdminProductCategoryComponent::class);
-Route::get('admin/suppliers', AdminSupplierComponent::class);
-
-Route::get('admin/product-category/lv2',AdminProductCategoryLv2Component::class);
-Route::get('thanh-toan',CheckoutComponent::class);
-Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');
-
-
-Route::get('admin/orders',AdminOrderComponent::class);
-Route::get('admin/orders/accepted',AdminAcceptedOderComponent::class);
-Route::get('admin/orders/new',AdminNewOrderComponent::class);
-Route::get('admin/orders/completed',AdminCompletedOrderComponent::class);
-Route::get('admin/orders/declined',AdminDeclinedOrderComponent::class);
-
-
-Route::get('admin/demo/ship',DemoShipComponent::class);
-Route::get('tra-cuu-don-hang',CheckOrderComponent::class);
-
-Route::get('admin/shippers',AdminShippingUnitComponent::class);
-Route::get('admin/shippers/create-bill',AdminShippingOrderComponent::class);
-
-Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('checkType_User');
-
-Route::get('admin/users/staff',AdminStaffComponent::class);
-
-Route::get('admin/product-import/list', AdminProductImportBillListComponent::class);
-Route::get('admin/product-import/new', AdminProductImportComponent::class);
-Route::get('admin/product-import/manager',AdminProductImportManagerComponent::class);
-
-Route::get('admin/import/request', AdminImportRequestComponent::class);
-
-Route::get('admin/accountant/list',AdminAccountantComponent::class);
-
-Route::get('admin/shippers/bill-list',AdminShipperBillListComponent::class);
