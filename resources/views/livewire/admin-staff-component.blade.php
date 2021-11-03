@@ -3,12 +3,11 @@
 		
 		<div class="col-lg-4">
 			<div class="form-group">
-				<label>Nhập thông tin </label>
-				<input class="form-control" wire:model="searchInput">
+				<input class="form-control" wire:model="searchInput" placeholder="Nhập thông tin cần tìm">
 			</div>
 		</div>
 		<div class="col-lg-3">
-			<select wire:model="searchField" class="form-control" style="margin-top:24px">
+			<select wire:model="searchField" class="form-control" >
 				<option value="fullName">Theo tên</option>
 				<option value="email">Theo Email</option>
 				<option value="phone">Theo Số điện thoại</option>
@@ -57,14 +56,20 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach($Users2 as $u)
+								@forelse($Users2 as $u)
 								<tr>	
 										<td>{{$u->id}}</td>
 										<td>{{$u->name}}</td>
 										<td>{{$u->user_type}}</td>
 										<td>{{$u->email}}</td>
 										<td>{{$u->phone}}</td>
-										<td></td>
+										<td>
+											@if($u->status == 1)
+												<label style="color:green">Tốt</label>
+											@else
+												<label style="color:grey">Đã bị khóa</label>
+											@endif
+										</td>
 										<td>
 											<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal{{$u->id}}">Xem</button>
 											<div class="modal fade" id="myModal{{$u->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -72,10 +77,45 @@
 													<div class="modal-content">
 														<div class="modal-header">
 														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-														<h4 class="modal-title" id="myModalLabel">Thông tin nhà cung cấp</h4>
+														<h4 class="modal-title" id="myModalLabel">Thông tin nhân viên</h4>
 														</div>
 													<div class="modal-body">
 														
+														    <div class="row">
+																<div class="col-lg-12">
+																		<div class="row">
+																			<div class="table-responsive">
+																				<table class="table table-bordered table-hover table-striped">
+																					<thead>
+																						<tr>
+																							<th>
+																								ID
+																							</th>
+																							<th>
+																								Hoạt động
+																							</th>
+																							<th>
+																								Thời gian
+																							</th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						@forelse($u->admin_activities as $activity)
+																						<tr>
+																							<td>{{$activity->id}}</td>
+																							<td>{{$activity->note}}</td>
+																							<td>{{$activity->created_at}}</td>
+																						</tr>
+																						@empty
+																							Không có hoạt động nào
+																						@endforelse
+																					</tbody>
+																				</table>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+													
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
@@ -85,27 +125,51 @@
 												</div>
 											</div>
 											<button wire:click="edit({{$u->id}})"type="button" class="btn btn-info">Sửa</button>
-											<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDelete{{$u->id}}">Khóa</button>
-											<div class="modal fade" id="myModalDelete{{$u->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+											@if($u->status==1)
+												<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDelete{{$u->id}}">Khóa</button>
+											@endif
+											<div wire:ignore.self class="modal fade" id="myModalDelete{{$u->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 												<div class="modal-dialog" role="document">
 													<div class="modal-content">
 														<div class="modal-header">
 														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-														<h4 class="modal-title" id="myModalLabel">Tùy chọn</h4>
+														<h4 class="modal-title" id="myModalLabel">Khóa tài khoản nhân viên {{$u->name}}</h4>
 														</div>
 													<div class="modal-body">
-														<label>Bạn có muốn xóa nhà cung cấp không ? </label>
+														@if(session()->has('block_staff_success'))
+															<div class="alert alert-success">
+																{{session('block_staff_success')}}
+															</div>
+														@elseif(session()->has('block_staff_error'))
+															<div class="alert alert-danger">
+																{{session('block_staff_error')}}
+															</div>
+														@endif	
+														<input class="form-control" placeholder="Nhập lý do khóa" wire:model.defer="block_note">
+														@error('block_note')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
+														<div class="checkbox">
+															<label>
+																<input type="checkbox" wire:model.defer="check_status">Tôi đồng ý
+															</label>
+														</div>
+														@error('check_status')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-														<button wire:click="deleteSupplier({{$u->id}})"type="button" class="btn btn-primary" >Xóa</button>
+														<button wire:click="blockStaff({{$u->id}})"type="button" class="btn btn-success" >Lưu</button>
 													</div>
 													</div>
 												</div>
 											</div>											
 										</td>
 								</tr>
-								@endforeach
+								@empty
+									Không có nhân viên nào!
+								@endforelse
 								{{$Users2->links()}}
 								
 							</tbody>
@@ -136,9 +200,11 @@
 									</div>
 									<div class="col-lg-9">
 										<label>Loại nhân viên </label>
-										<select class="form-control" wire:model.defer="user_type">
-											<option value="Nhân viên nhập hàng">Nhân viên kế toán</option>
-											<option value="Nhân viên giao hàng">Nhân viên thủ kho</option>
+										<select class="form-control" {{auth()->user()->id == $userID?'disabled':''}} wire:model.defer="user_type">
+											<option>Chọn</option>
+											<option value="Admin">Admin</option>
+											<option value="Nhân viên kế toán">Nhân viên kế toán</option>
+											<option value="Nhân viên thủ kho">Nhân viên thủ kho</option>
 										</select>
 										@error('user_type_id')
 											<p class="text-danger">{{$message}}</p>
@@ -197,12 +263,19 @@
 									@error('user_type_id')
 										<p class="text-danger">{{$message}}</p>
 									@enderror
-									</div>	
+									</div>
+									<div class="col-lg-9">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" wire:model="status">Khóa
+											</label>	
+										</div>	
+									</div>									
 								</div>
 								<div class="col-lg-3">
 									<div class="panel panel-default">
 										<div class="panel-heading">
-											Hình ảnh chính sản phẩm
+											Hình ảnh nhân viên
 										</div>
 										<div class="panel-body">
 											@if ($user_image == null)
@@ -242,7 +315,7 @@
 <script >
     $(function () {
         $('#birth_date').datetimepicker({
-            format : 'Y-MM-DD h:m:s',
+            format : 'Y-MM-DD',
         })
         .on('dp.change', function(ev) {
             var data = $('#birth_date').val();

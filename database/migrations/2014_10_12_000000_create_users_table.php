@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('profile_photo_path', 2048)->nullable();
 			$table->string('user_type')->default('Người dùng');
 			$table->string('cmnd')->nullable();
-			$table->string('birth_date')->nullable();
+			$table->date('birth_date')->nullable();
 			$table->integer('status')->default(1);
             $table->timestamps();
         });
