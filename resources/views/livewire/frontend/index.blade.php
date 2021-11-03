@@ -67,9 +67,9 @@
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix ">
                     <a href="{{URL::to('shop-detail/'. $product->id )}}" >
                         <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}">
+                            <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/watermark/product/'. $product->pri_Image->imageName)}}">
                             @if($product->Pri_Image != null)
-                                <img src="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}" alt="">
+                                <img src="{{asset('storage/images/watermark/product/'. $product->pri_Image->imageName)}}" alt="">
                             @else
                                 <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
                             @endif

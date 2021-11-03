@@ -185,7 +185,7 @@ class AdminProductImportComponent extends Component
 						
 			$Image = new Image();
 			$Image->imageName = $name2;
-			$Image->imageType = 4; //1 = Hình ảnh sp chính, 2 = phụ , 3 = category , 4 = hóa đơn
+			$Image->image_type = 'Hình ảnh hóa đơn nhập hàng'; //1 = Hình ảnh sp chính, 2 = phụ , 3 = category , 4 = hóa đơn
 			$Image->import_bill_id = $Bill->id;
 			$Image->save();
 		}

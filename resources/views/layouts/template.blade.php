@@ -132,6 +132,14 @@
                         </ul>
                     </li>
 					@endif
+					<li class="active">
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý hình ảnh<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+                            <li>
+                                <a href="{{url('/admin/image/product-logo')}}">Đóng dấu hình sản phẩm</a>
+                            </li>
+                        </ul>
+                    </li>
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')					
                     <li>

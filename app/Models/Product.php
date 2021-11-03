@@ -42,6 +42,10 @@ class Product extends Model
 	public function Pri_Image(){
 		return $this->hasOne(Image::class,'productID','id');
 	}
+	public function PrimaryImage(){
+		return $this->hasOne(Image::class,'productID','id');
+	}
+	
 	public function Pri_Wish(){
 		return $this->hasOne(Wishlist::class,'productID','id');
 	}
