@@ -9,6 +9,7 @@ use App\Models\Supplier;
 use App\Models\Image;
 use App\Models\Wishlist;
 use App\Models\Level2ProductCategory;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -51,6 +52,10 @@ class Product extends Model
 	}
 	public function wishlist(){
 		return $this->hasOne(Wishlist::class,'productID','id');
+	}
+	
+	public function checkWishlist(){
+		return $this->hasOne(Wishlist::class,'productId','id')->where('id_user',auth()->user()->id)->where('status',1)->latest();
 	}
 
 	

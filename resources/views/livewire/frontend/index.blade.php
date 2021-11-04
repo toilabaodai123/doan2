@@ -61,8 +61,13 @@
                     </ul>
                 </div>
             </div>
+			     @if(session()->has('add_favorite'))
+					{{session('add_favorite')}}
+				@elseif(session()->has('delete_favorite'))
+					{{session('delete_favorite')}}
+				@endif
             <div class="row product__filter">
-              
+
                 @forelse($product as $product)
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix ">
                     <a href="{{URL::to('shop-detail/'. $product->id )}}" >
@@ -74,23 +79,16 @@
                                 <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
                             @endif
                                 <ul class="product__hover">
-
-                                    @if($product->wishlist != null && Auth::user())
-                                        @if(Auth::user()->id == $product->wishlist->id_user)
-                                        
-                                            @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
-                                                <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
-                                            @else
-                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
-                                
-                                            @endif
-                                        @endif
-                                        @else
-                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
-                                
-                                @endif
+									@auth
+										@if($product->checkWishlist == null)
+											<li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+										@else
+											 <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
+										@endif
+									@endauth
                                 </ul>
                             </div>
+
                             <div class="product__item__text">
                                 <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
                                <h6>{{ $product->productName }}</h6>
