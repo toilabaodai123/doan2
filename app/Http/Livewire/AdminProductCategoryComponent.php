@@ -68,7 +68,7 @@ class AdminProductCategoryComponent extends Component
 						
 				$Image = new Image();
 				$Image->imageName = $name2;
-				$Image->imageType = 3; //3 = Danh mục sản phẩm
+				$Image->image_type = 'Hình danh mục sản phẩm';
 				$Image->category_id = $Category->id;
 				$Image->save();
 			}
@@ -101,7 +101,7 @@ class AdminProductCategoryComponent extends Component
 						
 				$Image = new Image();
 				$Image->imageName = $name2;
-				$Image->imageType = 3; //3 = Danh mục sản phẩm
+				$Image->image_type = 'Hình danh mục sản phẩm'; //3 = Danh mục sản phẩm
 				$Image->category_id = $Category->id;
 				$Image->save();
 			}			

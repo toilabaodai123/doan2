@@ -21,6 +21,16 @@ class AdminSettingComponent extends Component
 		'user_password.required' => 'Hãy nhập mật khẩu',
 		'maintenance_note.required' => 'Hãy nhập lý do'
 	];
+	
+	public function mount(){
+		$this->Settings = AdminSetting::get()->last();
+		if($this->Settings == null){
+			$Setting = new AdminSetting();
+			$Setting->is_maintenance = 0;
+			$Setting->save();
+		}
+	}
+	
     public function render()
     {
 		$this->Settings = AdminSetting::get()->last();

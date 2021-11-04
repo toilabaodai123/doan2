@@ -141,6 +141,7 @@ class AdminProductComponent extends Component
 						if($Watermark == null){
 							//$this->productImage2->storeAs('/images/product/',$name2,'public');
 							imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/product/'.$name4.'.jpeg');
+							imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/watermark/product/'.$name4.'.jpeg');
 							$PrimaryImage = new Image();
 							$PrimaryImage->imageName = $name4.'.jpeg';
 							$PrimaryImage->image_type = 'Hình ảnh chính sản phẩm';
@@ -228,6 +229,7 @@ class AdminProductComponent extends Component
 						imagejpeg($source,public_path().'/storage/images/watermark/product/'.$name4.'.jpeg',100);
 					}else{
 						imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/product/'.$name4.'.jpeg');
+						imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/watermark/product/'.$name4.'.jpeg');
 					}						
 					if($Product->Pri_Image()->get()->last() == null){
 						$PrimaryImage = new Image();

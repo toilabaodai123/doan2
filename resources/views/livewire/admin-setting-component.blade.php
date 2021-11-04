@@ -5,9 +5,9 @@
 			Trạng thái website : 
 			<label>
 				@if($Settings->is_maintenance == 0)
-					<label style="green">Đang hoạt động</label>
+					<label style="color:green">Đang hoạt động</label>
 				@else
-					<label style="orange">Đang bảo trì</label>
+					<label style="color:orange">Đang bảo trì</label>
 				@endif
 			</label>
 		</label>
