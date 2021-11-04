@@ -11,6 +11,7 @@ use App\Models\AdminLog;
 use App\Models\ProductModel;
 use App\Models\DeliveryBill;
 use App\Models\UserActionBlock;
+use App\Models\Assignment;
 
 use Livewire\WithPagination;
 
@@ -21,6 +22,7 @@ class AdminAcceptedOderComponent extends Component
 	
 	public $Orders;
 	public $ShipUnits;
+	public $Assignments;
 	public $flag_shipunit = false;
 	public $shipunit_id;
 	public $delivery_price;
@@ -49,14 +51,16 @@ class AdminAcceptedOderComponent extends Component
 		$this->ShipUnits = ShippingUnit::all();//where('status',1)->get();
 		
 		$this->Orders = Order::with('Details.ProductModel.Product')->where('status','!=',1)->get();
-		
+		$this->Assignments = Assignment::where('admin_id',auth()->user()->id)->orWhereNull('admin_id')->get('order_id');
 		if($this->searchInput != null){
-			$Orders2 = Order::with('Details.ProductModel.Product')->where('status','!=',1)
+			$Orders2 = Order::with('Details.ProductModel.Product')->whereIn('id',$this->Assignments)
+																  ->where('status','!=',1)
 																  ->where($this->searchField,'LIKE','%'.$this->searchInput.'%')
 																  ->orderBy($this->sortField,$this->sortDirection)
 																  ->paginate(5);
 		}else{
-			$Orders2 = Order::with('Details.ProductModel.Product')->where('status','!=',1)
+			$Orders2 = Order::with('Details.ProductModel.Product')->whereIn('id',$this->Assignments)
+																  ->where('status','!=',1)
 																  ->orderBy($this->sortField,$this->sortDirection)
 																  ->paginate(5);			
 		}

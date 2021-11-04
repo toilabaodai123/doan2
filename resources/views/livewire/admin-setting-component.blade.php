@@ -1,4 +1,5 @@
 <div>
+	@if($Settings != null)
 	<div class="col-lg-12">
 		<label>
 			Trạng thái website : 
@@ -35,10 +36,13 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-info" data-dismiss="modal">Ẩn</button>
-						<button type="button" wire:click="submitAdminSetting" data-dismiss="modal"class="btn btn-success" >Lưu</button>
+						<button type="button" class="btn btn-success" wire:click="submitAdminSetting" >Lưu</button>
 					</div>
 				</div>
 			</div>
 		</div>		
 	</div>
+	@else
+		Admin Settings trống !
+	@endif
 </div>

@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderLog;
 use App\Models\User;
+use App\Models\Assignment;
 use App\Mail\MailService;	
 
 use Cart;
@@ -127,6 +128,41 @@ class Checkout extends Component
             $OrderLog->order_id = $Order->id;
             $OrderLog->message = 'Tạo đơn hàng';
             $OrderLog->save();	
+			
+			
+			
+			//Phân công
+			$OrderID = Order::get()->last();
+			$Assignment = Assignment::get()->last();
+			if($Assignment == null){
+				$NewAssignment = new Assignment();
+				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
+				//dd($OrderID);
+				$NewAssignment->order_id = $OrderID->id;
+				if($Admin != null){
+					$NewAssignment->admin_id = $Admin->id;
+				}else{
+					$NewAssignment->admin_id = null;
+				}
+				$NewAssignment->save();
+			}
+			else{
+				$NewAssignment = new Assignment();				
+				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$Assignment->admin_id==null?0:$Assignment->admin_id)->get()->first();
+				$NewAssignment->order_id = $OrderID->id;
+				if($Admin != null){
+					$NewAssignment->admin_id = $Admin->id;
+				}
+				else{
+					$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
+					if($Admin2 != null)
+						$NewAssignment->admin_id = $Admin2->id;
+					else
+						$NewAssignment->admin_id = null;
+				}
+				$NewAssignment->save();
+					
+			}
             
 			//Gửi thông tin đơn hàng qua mail khách hàng
 
@@ -139,7 +175,7 @@ class Checkout extends Component
             session()->flash('OrderCode',$Order->orderCode);
             session()->forget('cart');
 
-            return redirect()->to('/index');
+            return redirect()->to('/checkout');
        
     }
 }

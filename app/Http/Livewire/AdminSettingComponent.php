@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\AdminSetting;
 use App\Models\AdminLog;
+use Illuminate\Support\Facades\Hash;
 
 class AdminSettingComponent extends Component
 {
@@ -27,7 +28,7 @@ class AdminSettingComponent extends Component
 					->layout('layouts.template');
     }
 	
-	public function subbmitAdminSetting(){
+	public function submitAdminSetting(){
 		$this->validate();
 		if(Hash::check($this->user_password,auth()->user()->password)){
 			$this->Settings->is_maintenance = 1;
