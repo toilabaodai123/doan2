@@ -65,6 +65,7 @@ class AdminProductLogo extends Component
 
 						imagecopymerge($source,$watermark,imagesx($source) - $sx,imagesy($source) - $sy,0,0,$sx==$sy?$sy:$sx,$sy,50);
 						imagejpeg($source,public_path().'/storage/images/watermark/product/'.$image->imageName,100);
+						
 					}
 				}
 				$this->check_watermark->imageName = $name4.'.jpeg';

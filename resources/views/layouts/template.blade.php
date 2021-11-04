@@ -145,6 +145,9 @@
                     <li>
                         <a href="{{url('admin/suppliers')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhà cung cấp</a>
                     </li>
+                    <li>
+                        <a href="{{url('admin/storage')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý kho</a>
+                    </li>					
 					@endif
 					@if(auth()->user()->user_type == 'Nhân viên nhập hàng' || 
 						auth()->user()->user_type == 'Admin' || 

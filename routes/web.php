@@ -30,6 +30,7 @@ use App\Http\Livewire\AdminImportRequestComponent;
 use App\Http\Livewire\AdminAccountantComponent;
 use App\Http\Livewire\AdminShipperBillListComponent;
 use App\Http\Livewire\AdminProductLogo;
+use App\Http\Livewire\AdminStorageComponent;
 
 
 
@@ -110,6 +111,7 @@ Route::middleware(['VisitCounter'])->group(function(){
 		Route::get('admin/accountant/list',AdminAccountantComponent::class);
 		Route::get('admin/shippers/bill-list',AdminShipperBillListComponent::class);
 		Route::get('admin/image/product-logo',AdminProductLogo::class);
+		Route::get('admin/storage',AdminStorageComponent::class);
 	});
 });
 

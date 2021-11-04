@@ -215,24 +215,23 @@ class AdminProductComponent extends Component
 					//$this->productImage2->storeAs('/images/product/',$name2,'public');
 					$name3 = explode('.',$name);
 					$name4 = date("Y-m-d-H-i-s").$name3[0];
-					
-					imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/product/'.$name4.'.jpeg');
-					$source = imagecreatefromjpeg(public_path().'/storage/images/product/'.$name4.'.jpeg');
-					$watermark = imagescale(imagecreatefromjpeg(public_path().'/storage/images/watermark/'.$Watermark->imageName),70,70);
-							
-					$sx = imagesx($watermark);
-					$sy = imagesy($watermark);
-							
-					imagecopymerge($source,$watermark,imagesx($source) - $sx,imagesy($source) - $sy,0,0,$sx==$sy?$sy:$sx,$sy,25);
-							
-					imagejpeg($source,public_path().'/storage/images/watermark/product/'.$name4.'.jpeg',100);
-												
-					
-					
-					
+					if($Watermark != null){
+						imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/product/'.$name4.'.jpeg');
+						$source = imagecreatefromjpeg(public_path().'/storage/images/product/'.$name4.'.jpeg');
+						$watermark = imagescale(imagecreatefromjpeg(public_path().'/storage/images/watermark/'.$Watermark->imageName),70,70);
+								
+						$sx = imagesx($watermark);
+						$sy = imagesy($watermark);
+								
+						imagecopymerge($source,$watermark,imagesx($source) - $sx,imagesy($source) - $sy,0,0,$sx==$sy?$sy:$sx,$sy,25);
+								
+						imagejpeg($source,public_path().'/storage/images/watermark/product/'.$name4.'.jpeg',100);
+					}else{
+						imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/product/'.$name4.'.jpeg');
+					}						
 					if($Product->Pri_Image()->get()->last() == null){
 						$PrimaryImage = new Image();
-						$PrimaryImage->imageName = $name4;
+						$PrimaryImage->imageName = $name4.'.jpeg';
 						$PrimaryImage->image_type = 'Hình ảnh chính sản phẩm'; //1 = Hình ảnh chính
 						$PrimaryImage->productID = $Product->id;
 						$PrimaryImage->save();
