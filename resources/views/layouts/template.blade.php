@@ -91,7 +91,7 @@
                     <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a href="{{url('logout')}}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
             </li>
@@ -103,7 +103,10 @@
                 <ul class="nav" id="side-menu">
                     <li>
                         <a href="{{url('/admin/dashboard')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Thông tin tài khoản</a>
-                    </li>				
+                    </li>
+					<li>
+                        <a href="{{url('/admin/setting')}}"><i class="fa fa-dashboard fa-fw"></i>Tùy chỉnh hệ thống website</a>
+                    </li>
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')				
                     <li>
