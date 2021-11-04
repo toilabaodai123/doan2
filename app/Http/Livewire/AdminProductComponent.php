@@ -237,7 +237,7 @@ class AdminProductComponent extends Component
 						$PrimaryImage->save();
 					}else{
 						$PrimaryImage = Image::where('productID',$this->productID)->get()->last();
-						$PrimaryImage->imageName = $name4;
+						$PrimaryImage->imageName = $name4.'.jpeg';
 						$PrimaryImage->save();
 					}
 				}

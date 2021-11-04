@@ -157,17 +157,11 @@
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
 							@if(auth()->user()->user_type == 'Nhân viên nhập hàng' ||  auth()->user()->user_type == 'Admin')
                             <li>
-                                <a href="{{url('/admin/product-import/list')}}">Danh sách hóa đơn nhập hàng</a>
-                            </li>
-                            <li>
                                 <a href="{{url('/admin/product-import/new')}}">Tạo hóa đơn nhập hàng</a>
                             </li>							
 							@endif
 
 							@if(auth()->user()->user_type == 'Quản lý' || auth()->user()->user_type == 'Admin')
-                            <li>
-                                <a href="{{url('admin/product-import/manager')}}">Kiểm duyệt hóa đơn nhập hàng</a>
-                            </li>
 							@endif
   							
                         </ul>
@@ -209,10 +203,7 @@
                             </li>
                             <li>
                                 <a href="{{url('/admin/shippers/create-bill')}}">Tạo hóa đơn vận chuyển</a>
-                            </li>
-                            <li>
-                                <a href="{{url('/admin/shippers/bill-list')}}">Danh sách hóa đơn vận chuyển</a>
-                            </li>								
+                            </li>							
                         </ul>
                     </li>		
                   					
