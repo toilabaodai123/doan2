@@ -67,7 +67,7 @@ return [
 		if($User->user_type == 'Người dùng')
 			return route('index');
 		else
-			return route('admin.dashboard');
+			return route('admin.info');
 	},
 
     /*

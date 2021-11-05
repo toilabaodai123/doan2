@@ -101,12 +101,6 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
-                    <li>
-                        <a href="{{url('/admin/info')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Thông tin tài khoản</a>
-                    </li>
-					<li>
-                        <a href="{{url('/admin/setting')}}"><i class="fa fa-dashboard fa-fw"></i>Tùy chỉnh hệ thống website</a>
-                    </li>
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')				
                     <li>
@@ -241,7 +235,12 @@
                             </li>							
                         </ul>
                     </li>	
-					
+					<li>
+                        <a href="{{url('/admin/info')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Thông tin tài khoản</a>
+                    </li>
+					<li>
+                        <a href="{{url('/admin/setting')}}"><i class="fa fa-dashboard fa-fw"></i>Tùy chỉnh hệ thống website</a>
+                    </li>
                 </ul>
             </div>
         </div>

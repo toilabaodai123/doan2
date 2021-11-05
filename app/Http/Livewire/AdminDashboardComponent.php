@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Order;
 use App\Models\ShipOrder;
 use App\Models\Visit;
+use App\Models\DeliveryBill;
 use App\Models\Comment2;
 use App\Models\ProductImportBill;
 
@@ -27,7 +28,7 @@ class AdminDashboardComponent extends Component
 		$this->Reviews = Comment2::where('type',2)->count();
 		$this->NewOrdersCounter = count(Order::whereNotIn('status',[0,1,5])->get());
 		$this->CompletedOrders = Order::where('status',4)->sum('orderTotal');
-		$this->ShipFree = ShipOrder::all()->sum('shipOrderTotal');
+		$this->ShipFree = DeliveryBill::all()->sum('price');
 		$this->Imports = ProductImportBill::all()->sum('importBillTotal');
 		$this->Profit = $this->CompletedOrders - $this->Imports - $this->ShipFree;
         return view('livewire.admin-dashboard-component')

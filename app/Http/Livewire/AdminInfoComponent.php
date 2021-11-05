@@ -5,9 +5,36 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\Order;
+use Livewire\WithFileUploads;
 
 class AdminInfoComponent extends Component
 {
+	use WithFileUploads;
+	
+	public $user_image;
+	public $is_update = false;
+
+	
+	public $name;
+	public $email;
+	public $phone;
+	public $cmnd;
+	public $birth_date;
+	
+	protected $rules=[
+		'name' => 'required',
+		'phone' => 'required',
+		'cmnd' => 'required',
+	];
+	
+	protected $messages = [
+		'name.required' => 'Hãy nhập tên',
+		'phone.required' => 'Hãy nhập số điện thoại',
+		'cmnd.required' => 'Hãy nhập cmnd'
+		
+	];
+	
+	
     public function render()
     {
         return view('livewire.admin-info-component')
@@ -22,7 +49,6 @@ class AdminInfoComponent extends Component
 				$Orders = Order::where('assigned_to',auth()->user()->id)->get();
 				$prev_id = null;
 				if($Orders->count() != 0){
-					//dd($Orders);
 					foreach($Orders as $order){
 						if($prev_id == null)
 							$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$order->assigned_to)->get()->first();
@@ -30,7 +56,6 @@ class AdminInfoComponent extends Component
 							$OrderID = Order::find($prev_id);
 							$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$OrderID->assigned_to)->get()->first();
 						}
-						//dd($Admin);
 						if($Admin == null){
 							$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
 						if($Admin2 == null)
@@ -50,7 +75,24 @@ class AdminInfoComponent extends Component
 		else
 			auth()->user()->status = 1;
 		auth()->user()->save();
-		
-
+	}
+	
+	public function isUpdate(){
+		if($this->is_update == false){
+			$this->is_update = true;
+			$this->name = auth()->user()->name;
+			$this->phone = auth()->user()->phone;
+			$this->cmnd = auth()->user()->cmnd;
+		}
+		else{
+			$this->validate();
+			auth()->user()->name = $this->name;
+			auth()->user()->phone = $this->phone;
+			auth()->user()->cmnd = $this->cmnd;
+			if($this->birth_date != null)
+				auth()->user()->birth_date = $this->birth_date;
+			auth()->user()->save();
+			$this->is_update = false;
+		}
 	}
 }
