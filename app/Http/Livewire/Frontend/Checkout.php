@@ -10,7 +10,6 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderLog;
 use App\Models\User;
-use App\Models\Assignment;
 use App\Mail\MailService;	
 
 use Cart;
@@ -61,6 +60,11 @@ class Checkout extends Component
     }
     public function submit()
     {
+			//dd($Order22 = Order::get()->last());
+			if(Order::get()->last() == null)
+				$Assigned_id = null;
+			else
+				$Assigned_id = Order::get()->last();
             $validatedData = $this->validate();
 
             $Order = new Order();
@@ -132,37 +136,30 @@ class Checkout extends Component
 			
 			
 			//Phân công
-			$OrderID = Order::get()->last();
-			$Assignment = Assignment::get()->last();
-			if($Assignment == null){
-				$NewAssignment = new Assignment();
+			$LastOrder = Order::get()->last();
+			if($Assigned_id == null){
 				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
-				//dd($OrderID);
-				$NewAssignment->order_id = $OrderID->id;
-				if($Admin != null){
-					$NewAssignment->admin_id = $Admin->id;
-				}else{
-					$NewAssignment->admin_id = null;
-				}
-				$NewAssignment->save();
+				if($Admin == null)
+					$LastOrder->assigned_to = null;
+				else
+					$LastOrder->assigned_to = $Admin->id;
 			}
-			else{
-				$NewAssignment = new Assignment();				
-				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$Assignment->admin_id==null?0:$Assignment->admin_id)->get()->first();
-				$NewAssignment->order_id = $OrderID->id;
-				if($Admin != null){
-					$NewAssignment->admin_id = $Admin->id;
-				}
-				else{
+			else{				
+				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$Assigned_id->assigned_to==null?0:$Assigned_id->assigned_to)->get()->first();
+				//dd($OrderID->assigned_to);
+				//dd($Admin);
+				if($Admin == null){
 					$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
-					if($Admin2 != null)
-						$NewAssignment->admin_id = $Admin2->id;
+					if($Admin2 == null)
+						$LastOrder->assigned_to = null;
 					else
-						$NewAssignment->admin_id = null;
+						$LastOrder->assigned_to = $Admin2->id;
 				}
-				$NewAssignment->save();
-					
+				else
+					$LastOrder->assigned_to = $Admin->id;
 			}
+			$LastOrder->save();
+
             
 			//Gửi thông tin đơn hàng qua mail khách hàng
 
