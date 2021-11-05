@@ -16,7 +16,7 @@ class CheckType_Admin
      */
     public function handle(Request $request, Closure $next)
     {
-		if(auth()->user()->user_type == 'Admin')
+		if(auth()->user()->user_type != 'Người dùng')
 			return $next($request);
 		else
 			return redirect('/index');

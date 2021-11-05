@@ -33,6 +33,7 @@ use App\Http\Livewire\AdminProductLogo;
 use App\Http\Livewire\AdminStorageComponent;
 use App\Http\Livewire\AdminSettingComponent;
 use App\Http\Livewire\UserMaintenanceComponent;
+use App\Http\Livewire\AdminInfoComponent;
 
 
 
@@ -116,6 +117,7 @@ Route::middleware(['VisitCounter','checkMaintenance'])->group(function(){
 		Route::get('admin/image/product-logo',AdminProductLogo::class);
 		Route::get('admin/storage',AdminStorageComponent::class);
 		Route::get('admin/setting',AdminSettingComponent::class);
+		Route::get('admin/info',AdminInfoComponent::class);
 	});
 
 Route::get('bao-tri',UserMaintenanceComponent::class);
