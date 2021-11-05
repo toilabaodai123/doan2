@@ -21,8 +21,8 @@ class CreateProductsTable extends Migration
 			$table->unsignedbiginteger('CategoryID2')->nullable();
 			$table->unsignedbiginteger('supplierID');
 			$table->integer('productPrice')->nullable();
-			$table->string('shortDesc')->nullable();
-			$table->string('longDesc')->nullable();
+			$table->text('shortDesc')->nullable();
+			$table->text('longDesc')->nullable();
 			$table->integer('status')->default(2);
             $table->timestamps();
 			
