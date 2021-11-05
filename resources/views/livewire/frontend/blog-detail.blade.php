@@ -109,9 +109,11 @@
                 @forelse($all_blog as $blog)
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="{{asset('public/images/post/'.$blog->avata_image)}}"></div>
+                        <div class="blog__item__pic set-bg"
+                        style="background-image: url('{{asset('public/images/post/'.$blog->avata_image)}}')"
+                         data-setbg="{{asset('public/images/post/'.$blog->avata_image)}}"></div>
                         <div class="blog__item__text">
-                            <span><img src="{{asset('img/icon/calendar.png')}}" alt=""> {{$blog->created_at}}</span>
+                            <span><img src="{{asset('img/icon/calendar.png')}}" style="width: unset" alt=""> {{$blog->created_at}}</span>
                             <h5>{{$blog->head_title}}</h5>
                             <a href="#">Read More</a>
                         </div>

@@ -17,7 +17,7 @@
                         <div class="section-title">
                             <span>{{$con->sub_title}}</span>
                             <h2>{{$con->contact}}</h2>
-                            <p>{{$con->contact_des}}</p>
+                            <p>{!! $con->contact_des!!}</p>
                         </div>
                         <ul>
                             <li>

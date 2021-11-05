@@ -9,9 +9,9 @@
                     <div class="breadcrumb__text">
                         <h4>Shopping Cart</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <a href="./shop.html">Shop</a>
-                            <span>Shopping Cart</span>
+                            <a href="{{URL::to('/index')}}">Trang chủ</a>
+                            <a href="{{URL::to('/shop')}}">sản phẩm</a>
+                            <span>giỏ hàng</span>
                         </div>
                     </div>
                 </div>

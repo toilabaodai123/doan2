@@ -8,8 +8,8 @@
                     <div class="breadcrumb__text">
                         <h4>Shop</h4>
                         <div class="breadcrumb__links">
-                            <a href="{{URL::to('/index')}}">Home</a>
-                            <a href="{{URL::to('/shop')}}">Shop </a>
+                            <a href="{{URL::to('/index')}}">Trang chủ</a>
+                            <a href="{{URL::to('/shop')}}">sản phẩm </a>
                             <span>{{$categorylv1_name}}</span>
                         </div>
                     </div>

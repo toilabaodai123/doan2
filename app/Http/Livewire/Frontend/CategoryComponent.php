@@ -51,7 +51,12 @@ class CategoryComponent extends Component
         $this->categorylv1 = ProductCategory::all();
 
         $cate = ProductCategory::find($this->categoryId);
-        $categorylv1_name =  $cate->categoryName;
+        if($this->categoryId != null){
+            $categorylv1_name =  $cate->categoryName;
+        }else{
+            $categorylv1_name =  'Tất cả';
+
+        }
 
         $this->categorylv2 = Level2ProductCategory::all();
 

@@ -41,9 +41,9 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                                 <div class="product__details__option__size" wire:ignore>
                                     <span>Size:</span>
                                     @forelse($Sizes as $size)
-                                    <label for="{{$size->size}}" value="{{$size->size}}" 
+                                    <label for="{{$size->size}}"
                                          wire:click="size('{{$size->size}}')">{{$size->size}}
-                                        <input type="radio"  id="xxl" >
+                                        <input type="radio"  id="{{$size->size}}" >
                                     </label>
                                   @empty
                                   Không có size san phẩm

@@ -6,13 +6,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>About Us</h4>
+                        <h4>Giới thiệu</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
-                            <span>About Us</span>
+                            <a href="{{URL::to('/index')}}">Trang chủ</a>
+                            <span>Giới thiệu</span>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </section>

@@ -75,19 +75,20 @@
                             @endif
                                 <ul class="product__hover">
 
-                                    @if($product->wishlist != null && Auth::user())
-                                        @if(Auth::user()->id == $product->wishlist->id_user)
-                                        
-                                            @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
-                                                <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
-                                            @else
-                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
-                                
-                                            @endif
-                                        @endif
+                                @if($product->wishlist != null && Auth::user())
+                                    @if(Auth::user()->id == $product->wishlist->id_user)
+                                    
+                                        @if($product->id === $product->wishlist->productID && $product->wishlist->status == 1)
+                                            <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
                                         @else
-                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
-                                
+                                            <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                            
+                                        @endif
+                                    @endif
+                                    
+                                @else
+                                    <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+                        
                                 @endif
                                 </ul>
                             </div>
@@ -174,9 +175,8 @@
                 <div class="col-lg-4">
                     <div class="instagram__text">
                         <h2>Instagram</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
-                        <h3>#Male_Fashion</h3>
+                        <p>Các sản phẩm trên instagram, trẻ trung năng động, phù hợp với các bạn teen.</p>
+                        <h3>#Fashion</h3>
                     </div>
                 </div>
             </div>

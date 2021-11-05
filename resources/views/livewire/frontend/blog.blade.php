@@ -24,7 +24,7 @@
                     <div class="blog__item">
                         <div class="blog__item__pic set-bg" data-setbg="{{asset('public/images/post/'.$blog->avata_image)}}"></div>
                         <div class="blog__item__text">
-                            <span><img src="img/icon/calendar.png" alt="">{{$blog->created_at}}</span>
+                            <span><img src="img/icon/calendar.png" style="width: unset" alt="">{{$blog->created_at}}</span>
                             <h5>{{$blog->head_title}}</h5>
                             <a href="{{URL::to('blog-detail/'.$blog->id)}}">Read More</a>
                         </div>
