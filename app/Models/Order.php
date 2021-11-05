@@ -25,8 +25,7 @@ class Order extends Model
 	public function checkReview(){
 		return $this->hasOne(Comment2::class,'order_id','id')->where('user_id',auth()->user()->id)->latest();
 	}
-	
-	
+		
 	public function DetailInfo(){
 		return $this->hasManyThrough(
 			OrderDetail::class,

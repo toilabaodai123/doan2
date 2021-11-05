@@ -7,6 +7,7 @@ use App\Models\ProductSize;
 use App\Models\ProductCategory;
 use App\Models\Supplier;
 use App\Models\Image;
+use App\Models\OrderDetail;
 use App\Models\Wishlist;
 use App\Models\Level2ProductCategory;
 use Illuminate\Support\Facades\Auth;

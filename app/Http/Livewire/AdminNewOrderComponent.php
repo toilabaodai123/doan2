@@ -8,7 +8,6 @@ use App\Models\OrderLog;
 use App\Models\AdminLog;
 use App\Models\UserActionBlock;
 use Livewire\WithPagination;
-use App\Models\Assignment;
 
 class AdminNewOrderComponent extends Component
 {
@@ -33,11 +32,11 @@ class AdminNewOrderComponent extends Component
 	
     public function render()
     {
-		$this->Assignments = Assignment::where('admin_id',auth()->user()->id)->orWhereNull('admin_id')->get('order_id');
+		//$this->Assignments = Assignment::where('admin_id',auth()->user()->id)->orWhereNull('admin_id')->get('order_id');
 		//dd($this->Assignments);
 		$Orders2 = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
 										 ->where('status',1)
-										 ->whereIn('id',$this->Assignments)
+										 ->where('assigned_to',auth()->user()->id)
 										 ->paginate(5);
         return view('livewire.admin-new-order-component',['Orders2' => $Orders2])
 					->layout('layouts.template');
