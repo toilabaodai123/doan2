@@ -5,6 +5,8 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Order;
 use App\Models\ShipOrder;
+use App\Models\Visit;
+use App\Models\Comment2;
 use App\Models\ProductImportBill;
 
 class AdminDashboardComponent extends Component
@@ -15,12 +17,16 @@ class AdminDashboardComponent extends Component
 	public $Imports;
 	public $CompletedOrders;
 	public $ShipFee;
+	public $Visits;
+	public $Reviews;
 	
 	
     public function render()
     {
-		$this->NewOrdersCounter = count(Order::where('orderStatus_id','!=',1)->get());
-		$this->CompletedOrders = Order::where('orderStatus_id',4)->sum('orderTotal');
+		$this->Visits = Visit::all()->count();
+		$this->Reviews = Comment2::where('type',2)->count();
+		$this->NewOrdersCounter = count(Order::whereNotIn('status',[0,1,5])->get());
+		$this->CompletedOrders = Order::where('status',4)->sum('orderTotal');
 		$this->ShipFree = ShipOrder::all()->sum('shipOrderTotal');
 		$this->Imports = ProductImportBill::all()->sum('importBillTotal');
 		$this->Profit = $this->CompletedOrders - $this->Imports - $this->ShipFree;

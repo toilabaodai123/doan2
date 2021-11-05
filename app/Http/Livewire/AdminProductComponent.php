@@ -133,15 +133,45 @@ class AdminProductComponent extends Component
 			if($Product->save()){
 				//Hình ảnh
 				if($this->productImage2!= null){
+					$Watermark = Image::where('image_type','LIKE','Watermark')->get()->last();
 					$name=$this->productImage2->getClientOriginalName();
 					$name2 = date("Y-m-d-H-i-s").'-'.$name;
-					$this->productImage2->storeAs('/images/product/',$name2,'public');
-						
-					$PrimaryImage = new Image();
-					$PrimaryImage->imageName = $name2;
-					$PrimaryImage->imageType = 1; //1 = Hình ảnh chính
-					$PrimaryImage->productID = $Product->id;
-					$PrimaryImage->save();
+					$name3 = explode('.',$name);
+					$name4 = date("Y-m-d-H-i-s").$name3[0];
+						if($Watermark == null){
+							//$this->productImage2->storeAs('/images/product/',$name2,'public');
+							imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/product/'.$name4.'.jpeg');
+							imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/watermark/product/'.$name4.'.jpeg');
+							$PrimaryImage = new Image();
+							$PrimaryImage->imageName = $name4.'.jpeg';
+							$PrimaryImage->image_type = 'Hình ảnh chính sản phẩm';
+							$PrimaryImage->productID = $Product->id;
+							$PrimaryImage->save();		
+						}else{
+							imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/product/'.$name4.'.jpeg');
+							$source = imagecreatefromjpeg(public_path().'/storage/images/product/'.$name4.'.jpeg');
+							$watermark = imagescale(imagecreatefromjpeg(public_path().'/storage/images/watermark/'.$Watermark->imageName),70,70);
+							
+							$sx = imagesx($watermark);
+							$sy = imagesy($watermark);
+							
+							imagecopymerge($source,$watermark,imagesx($source) - $sx,imagesy($source) - $sy,0,0,$sx==$sy?$sy:$sx,$sy,25);
+							
+							imagejpeg($source,public_path().'/storage/images/watermark/product/'.$name4.'.jpeg',100);
+							
+							
+							if($Product->Pri_Image()->get()->last() == null){
+								$Image = new Image();
+								$Image->imageName = $name4.'.jpeg';
+								$Image->productID = $Product->id;
+								$Image->image_type = 'Hình ảnh chính sản phẩm';
+								$Image->save();
+							}else{
+								$Image = Image::where('productID',$Product->id)->get()->last();
+								$Image->imageName = $name4[0].'.jpeg';
+								$Image->save();
+							}
+						}
 				}
 
 
@@ -149,16 +179,17 @@ class AdminProductComponent extends Component
 			$slug = SlugService::createSlug(Product::class, 'productSlug', $Product->productName);
 			$Product->productSlug = $slug.'-SP'.$Product->id;
 			$Product->save();
-
-				session()->flash('success','Thêm sản phẩm thành công');
-				$this->reset();
-			}
-			
 			//Ghi vào admin logs
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
 			$Log->note = "Tạo sản phẩm id:".$Product->id;		
 			$Log->save();
+			
+				session()->flash('success','Thêm sản phẩm thành công');
+				$this->reset();
+			}
+			
+
 		}
 		else{
 			$Product = Product::find($this->productID);
@@ -179,26 +210,50 @@ class AdminProductComponent extends Component
 				
 				//Hình ảnh
 				if($this->productImage2 != null && $this->productImage2 != $this->tempImageUrl){
+					$Watermark = Image::where('image_type','LIKE','Watermark')->get()->last();
 					$name=$this->productImage2->getClientOriginalName();
 					$name2 = date("Y-m-d-H-i-s").'-'.$name;
-					$this->productImage2->storeAs('/images/product/',$name2,'public');
-						
-					$PrimaryImage = new Image();
-					$PrimaryImage->imageName = $name2;
-					$PrimaryImage->imageType = 1; //1 = Hình ảnh chính
-					$PrimaryImage->productID = $Product->id;
-					$PrimaryImage->save();
+					//$this->productImage2->storeAs('/images/product/',$name2,'public');
+					$name3 = explode('.',$name);
+					$name4 = date("Y-m-d-H-i-s").$name3[0];
+					if($Watermark != null){
+						imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/product/'.$name4.'.jpeg');
+						$source = imagecreatefromjpeg(public_path().'/storage/images/product/'.$name4.'.jpeg');
+						$watermark = imagescale(imagecreatefromjpeg(public_path().'/storage/images/watermark/'.$Watermark->imageName),70,70);
+								
+						$sx = imagesx($watermark);
+						$sy = imagesy($watermark);
+								
+						imagecopymerge($source,$watermark,imagesx($source) - $sx,imagesy($source) - $sy,0,0,$sx==$sy?$sy:$sx,$sy,25);
+								
+						imagejpeg($source,public_path().'/storage/images/watermark/product/'.$name4.'.jpeg',100);
+					}else{
+						imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/product/'.$name4.'.jpeg');
+						imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/watermark/product/'.$name4.'.jpeg');
+					}						
+					if($Product->Pri_Image()->get()->last() == null){
+						$PrimaryImage = new Image();
+						$PrimaryImage->imageName = $name4.'.jpeg';
+						$PrimaryImage->image_type = 'Hình ảnh chính sản phẩm'; //1 = Hình ảnh chính
+						$PrimaryImage->productID = $Product->id;
+						$PrimaryImage->save();
+					}else{
+						$PrimaryImage = Image::where('productID',$this->productID)->get()->last();
+						$PrimaryImage->imageName = $name4.'.jpeg';
+						$PrimaryImage->save();
+					}
 				}
-
+				//Ghi vào admin logs
+				$Log = new AdminLog();
+				$Log->admin_id = auth()->user()->id;
+				$Log->note = "Sửa sản phẩm id:".$Product->id;			
+				$Log->save();
+				
 				session()->flash('success','Sửa sản phẩm thành công');
 				$this->reset();
 			}
 			
-			//Ghi vào admin logs
-			$Log = new AdminLog();
-			$Log->admin_id = auth()->user()->id;
-			$Log->note = "Sửa sản phẩm id:".$Product->id;			
-			$Log->save();
+
 		}
 	}
 	

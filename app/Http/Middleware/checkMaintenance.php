@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\AdminSetting;
 
-class CheckType_Admin
+class checkMaintenance
 {
     /**
      * Handle an incoming request.
@@ -16,10 +17,10 @@ class CheckType_Admin
      */
     public function handle(Request $request, Closure $next)
     {
-		if(auth()->user()->user_type != 'Người dùng')
+		$Setting = AdminSetting::get()->last();
+		if($Setting == null || $Setting->is_maintenance == 0)
 			return $next($request);
-		else
-			return redirect('/index');
-        return $next($request);
-    }
+		else 
+			return redirect()->to('bao-tri');			
+    }	
 }

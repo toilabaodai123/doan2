@@ -60,6 +60,11 @@ class Checkout extends Component
     }
     public function submit()
     {
+			//dd($Order22 = Order::get()->last());
+			if(Order::get()->last() == null)
+				$Assigned_id = null;
+			else
+				$Assigned_id = Order::get()->last();
             $validatedData = $this->validate();
 
             $Order = new Order();
@@ -127,6 +132,34 @@ class Checkout extends Component
             $OrderLog->order_id = $Order->id;
             $OrderLog->message = 'Tạo đơn hàng';
             $OrderLog->save();	
+			
+			
+			
+			//Phân công
+			$LastOrder = Order::get()->last();
+			if($Assigned_id == null){
+				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
+				if($Admin == null)
+					$LastOrder->assigned_to = null;
+				else
+					$LastOrder->assigned_to = $Admin->id;
+			}
+			else{				
+				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$Assigned_id->assigned_to==null?0:$Assigned_id->assigned_to)->get()->first();
+				//dd($OrderID->assigned_to);
+				//dd($Admin);
+				if($Admin == null){
+					$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
+					if($Admin2 == null)
+						$LastOrder->assigned_to = null;
+					else
+						$LastOrder->assigned_to = $Admin2->id;
+				}
+				else
+					$LastOrder->assigned_to = $Admin->id;
+			}
+			$LastOrder->save();
+
             
 			//Gửi thông tin đơn hàng qua mail khách hàng
 
@@ -139,7 +172,7 @@ class Checkout extends Component
             session()->flash('OrderCode',$Order->orderCode);
             session()->forget('cart');
 
-            return redirect()->to('/index');
+            return redirect()->to('/checkout');
        
     }
 }

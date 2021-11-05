@@ -29,6 +29,11 @@ use App\Http\Livewire\AdminProductImportBillListComponent;
 use App\Http\Livewire\AdminImportRequestComponent;
 use App\Http\Livewire\AdminAccountantComponent;
 use App\Http\Livewire\AdminShipperBillListComponent;
+use App\Http\Livewire\AdminProductLogo;
+use App\Http\Livewire\AdminStorageComponent;
+use App\Http\Livewire\AdminSettingComponent;
+use App\Http\Livewire\UserMaintenanceComponent;
+use App\Http\Livewire\AdminInfoComponent;
 
 
 
@@ -50,7 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 */
 
 
-Route::middleware(['VisitCounter'])->group(function(){
+Route::middleware(['VisitCounter','checkMaintenance'])->group(function(){
 	// Frontend
 	Route::get('/', App\Http\Livewire\Frontend\Index::class);
 	Route::get('index', App\Http\Livewire\Frontend\Index::class)->name('index');
@@ -86,6 +91,7 @@ Route::middleware(['VisitCounter'])->group(function(){
 	Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');	
 	Route::get('tra-cuu-don-hang',CheckOrderComponent::class);
 	Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('auth');
+});
 	Route::middleware(['auth','CheckType_Admin'])->group(function(){
 		Route::get('/admin/dashboard', AdminDashboardComponent::class)->name('admin.dashboard');
 		Route::get('/admin-post', AdminPostComponent::class);
@@ -107,7 +113,12 @@ Route::middleware(['VisitCounter'])->group(function(){
 		Route::get('admin/product-import/manager',AdminProductImportManagerComponent::class);
 		Route::get('admin/import/request', AdminImportRequestComponent::class);
 		Route::get('admin/accountant/list',AdminAccountantComponent::class);
-		Route::get('admin/shippers/bill-list',AdminShipperBillListComponent::class);	
+		Route::get('admin/shippers/bill-list',AdminShipperBillListComponent::class);
+		Route::get('admin/image/product-logo',AdminProductLogo::class);
+		Route::get('admin/storage',AdminStorageComponent::class);
+		Route::get('admin/setting',AdminSettingComponent::class);
+		Route::get('admin/info',AdminInfoComponent::class);
 	});
-});
+
+Route::get('bao-tri',UserMaintenanceComponent::class);
 

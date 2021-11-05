@@ -44,12 +44,15 @@ class Index extends Component
 
     public function render()
     {
+		//dd(Auth::check());
+		$Products2 = Product::all();
+		//dd($Products2);
         $this->insta = Instagram::orderBy('id', 'desc')->take(6)->get();
         $this->blog = Blog_detail::orderBy('id','desc')->take(3)->get();
         $this->category = ProductCategory::with('Image')->take(8)->get(); 
         $this->slide = slide::orderBy('id','desc')->take(3)->get();
         $this->product = Product::with('Pri_Image')->with('wishlist')->where('status',1)->orderBy('id','desc')->take(8)->get();
-        
+        // dd($this->product);
         return view('livewire.frontend.index')->layout('layouts.template3');
     }
 
@@ -72,15 +75,25 @@ class Index extends Component
                 ->where('id_user', Auth::user()->id)
                 ->update(['status' => 1]);
             }
+			$ProductName = Product::find($id);
+			session()->flash('add_favorite','Đã thích sản phẩm '.$ProductName->productName);
         }
         else {
             return redirect('login');
         }
     }  
     public function removeWishlish($id){
+		/*
         $flight = Wishlist::find($id);
         $flight->status = 0;
 
         $flight->save();
+		*/
+		$ProductName = Product::find($id);
+		
+		$Favorite = Wishlist::where('id_user',auth()->user()->id)->where('productID',$id)->get()->last();
+		$Favorite->status = 0;
+		$Favorite->save();
+		session()->flash('delete_favorite','Đã hủy thích sản phẩm '.$ProductName->productName);
     } 
 }

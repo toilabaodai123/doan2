@@ -28,10 +28,12 @@ class CreateOrdersTable extends Migration
 			$table->integer('orderTotal');
 			$table->integer('status');
 			$table->string('ip');
+			$table->unsignedbiginteger('assigned_to')->nullable();
             $table->timestamps();
 			
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->foreign('admin_id')->references('id')->on('users');
+			$table->foreign('assigned_to')->references('id')->on('users');
         });
     }
 
