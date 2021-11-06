@@ -31,6 +31,13 @@ class AdminDashboardComponent extends Component
 	public $to_date=null;
 	public $admin_settings=null;
 	public $low_stock_products=null;
+	public $high_waiting_orders=null;
+
+	public function mount(){
+		$this->many_waiting_orders = Order::with('assignedTo')->where('status',1)->get();
+		$this->low_stock_products = ProductModel::where('stockTemp','<=',5)->get();
+		$this->admin_settings = AdminSetting::get()->first();
+	}
 
     public function render()
     {
@@ -38,8 +45,6 @@ class AdminDashboardComponent extends Component
 		$this->ShipFree = DeliveryBill::all()->sum('price');
 		$this->Imports = ProductImportBill::all()->sum('importBillTotal');
 		$this->Profit = $this->CompletedOrders - $this->Imports - $this->ShipFree;
-		$this->admin_settings = AdminSetting::get()->first();
-		$this->low_stock_products = ProductModel::where('stockTemp','<=',5)->get();
 
 		$from_date = strval($this->from_date);
 		$to_date = strval($this->to_date);

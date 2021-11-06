@@ -22,6 +22,10 @@ class Order extends Model
 		return $this->hasMany(Comment2::class,'order_id','id');
 	}
 	
+	public function assignedTo(){
+		return $this->hasOne(User::class,'id','assigned_to');
+	}
+	
 	public function checkReview(){
 		return $this->hasOne(Comment2::class,'order_id','id')->where('user_id',auth()->user()->id)->latest();
 	}

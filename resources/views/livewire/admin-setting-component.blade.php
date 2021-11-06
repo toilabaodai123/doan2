@@ -11,7 +11,33 @@
 				@endif
 			</label>
 		</label>
-		<button type="submit" wire:loading.attr="disabled" class="btn btn-{{$Settings->is_maintenance == 0?'danger':'success'}}" data-toggle="modal" data-target="#maintenance_modal">{{$Settings->is_maintenance == 0?'Bảo trì':'Bỏ bảo trì'}}</button>
+		<button type="submit" wire:loading.attr="disabled" class="btn btn-{{$Settings->is_maintenance == 0?'danger':'success'}}" data-toggle="modal" data-target="#maintenance_modal">Điều chỉnh</button>
+	
+	</div>
+	
+	<div class="col-lg-12">
+		<label>
+			Trạng thái website : 
+			<label>
+				@if($Settings->is_outofserivce == 0)
+					<label style="color:green">Đang nhận đặt hàng</label>
+				@else
+					<label style="color:orange">Đang ngừng nhận đặt hàng</label>
+				@endif
+			</label>
+		</label>
+		<button type="submit" wire:loading.attr="disabled" class="btn btn-{{$Settings->is_maintenance == 0?'danger':'success'}}" data-toggle="modal" data-target="#maintenance_modal">Điều chỉnh</button>
+	
+	</div>	
+	@else
+		Admin Settings trống !
+	@endif
+
+
+
+
+
+
 		<div wire:ignore.self class="modal fade" id="maintenance_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -41,8 +67,4 @@
 				</div>
 			</div>
 		</div>		
-	</div>
-	@else
-		Admin Settings trống !
-	@endif
 </div>

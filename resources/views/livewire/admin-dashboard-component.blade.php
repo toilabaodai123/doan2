@@ -1,15 +1,18 @@
 <div>
 <button type="button" class="btn btn-success" wire:click="test">Xem</button>
-@if($admin_settings != null)
-	@if($admin_settings->is_maintenance == true)
-		<div class="alert alert-danger">
-			Website đang trong trạng thái bảo trì
-		</div>
-	@endif
+@if($admin_settings->is_maintenance == true)
+	<div class="alert alert-danger">
+		Website đang trong trạng thái bảo trì
+	</div>
 @endif
 @if($low_stock_products != null)
 	<div class="alert alert-danger">
 		Có sản phẩm tồn kho thấp <button type="button" class="btn btn-success" data-toggle="modal" data-target="#viewLowStockProducts">Xem</button>
+	</div>	
+@endif
+@if($many_waiting_orders != null && count($many_waiting_orders) >= 15)
+	<div class="alert alert-danger">
+		Có {{$many_waiting_orders->count()}} đơn đặt hàng đang chờ được duyệt <button type="button" class="btn btn-success" data-toggle="modal" data-target="#viewManyWaitingOrders">Xem</button>
 	</div>	
 @endif
 <div class="row">
@@ -204,6 +207,44 @@
 																				</div>
 																				<div class="modal-body" >
 																					
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																				</div>
+																			</div>
+																			<!-- /.modal-content -->
+																		</div>
+																		<!-- /.modal-dialog -->
+																		</div>	
+</div>	
+<div class="modal fade" id="viewManyWaitingOrders" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title" id="myModalLabel">Thông tin các đơn hàng đang chờ duyệt</h4>
+																				</div>
+																				<div class="modal-body" >
+																										<div class="table-responsive">
+																											<table class="table table-bordered table-hover table-striped">
+																												<thead>
+																													<tr>
+																														<th>Mã đơn hàng</th>
+																														<th>Nhân viên được giao</th>
+																														<th>Thời gian đặt</th>
+																													</tr>
+																												</thead>
+																												<tbody>
+																													@forelse($many_waiting_orders as $order)
+																													<tr>
+																														<td>{{$order->orderCode}}</td>
+																														<td>{{$order->assignedTo->name}} || {{$order->assignedTo->phone}}</td>
+																														<td>{{$order->created_at}}</td>
+																													</tr>
+																													@empty
+																													@endforelse
+																												</tbody>
+																											</table>
+																										</div>																				
 																				<div class="modal-footer">
 																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
 																				</div>

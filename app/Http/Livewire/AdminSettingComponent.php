@@ -27,6 +27,7 @@ class AdminSettingComponent extends Component
 		if($this->Settings == null){
 			$Setting = new AdminSetting();
 			$Setting->is_maintenance = 0;
+			$Setting->is_outofserivce = 0;
 			$Setting->save();
 		}
 	}
