@@ -1,6 +1,6 @@
 <div>
 <button type="button" class="btn btn-success" wire:click="test">Xem</button>
-@if($admin_settings->is_maintenance == true)
+@if($admin_settings != null && $admin_settings->is_maintenance == true)
 	<div class="alert alert-danger">
 		Website đang trong trạng thái bảo trì
 	</div>

@@ -60,7 +60,7 @@ class AdminDashboardComponent extends Component
 										 DB::raw('sum(quantity) as total_quantity'),
 										 'products.productName',
 										 'product_models.size')
-								->where('orders.status','=',1)
+								->where('orders.status','!=',1)
 								->groupBy('productModel_id')
 								->orderBy('total_quantity','DESC')
 								->take($this->row_TopProducts)
@@ -83,7 +83,7 @@ class AdminDashboardComponent extends Component
 										 DB::raw('sum(quantity) as total_quantity'),
 										 'products.productName',
 										 'product_models.size')
-								->where('orders.status','=',1)
+								->where('orders.status','!=',1)
 								->whereDate('order_details.created_at','>=',strval($this->from_date))
 								->whereDate('order_details.created_at','<=',strval($this->to_date))
 								->groupBy('productModel_id')

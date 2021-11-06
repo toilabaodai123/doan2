@@ -296,25 +296,4 @@
                         </div>
                         <!-- /.col-lg-12 -->
                     </div>
-	<div class="row">
-		<div class="col-lg-12">	
-			<div class="panel panel-default">
-                <div class="panel-heading">
-                    Thêm bằng excel
-                </div>
-                <div class="panel-body">	
-					<form wire:submit.prevent="productImport">
-                        <input id="product-import" style="display:none" type="file" wire:model="productImport" >
-						@if($productImport)
-							<label>Sheesh</label>
-						@endif
-						<label for="product-import" class="custom-file-upload" style="background-color:#337ab7;color:white;border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;">
-							Thêm bằng file excel
-						</label>
-						<button type="submit" class="btn btn-default">Thêm</button>
-					</form>					
-				</div>
-			</div>
-		</div>
-	</div>
 </div>

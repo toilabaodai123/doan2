@@ -34,6 +34,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+<style>
+.top-left{
+	width:50px;
+	height:50px;
+	position:absolute;
+	z-index:1;
+	left:0;margin-left:32px;
+}
+.no_logo{
+	display:none;
+}
+</style>
+
 </head>
 <body>
 

@@ -28,6 +28,7 @@ class AdminSettingComponent extends Component
 			$Setting = new AdminSetting();
 			$Setting->is_maintenance = 0;
 			$Setting->is_outofserivce = 0;
+			$Setting->logo_position = 0;
 			$Setting->save();
 		}
 	}

@@ -13,6 +13,8 @@ use App\Models\Level2ProductCategory;
 use App\Models\User;
 use App\Models\AdminLog;
 use App\Models\Image;
+use App\Models\OrderDetail;
+
 
 use Livewire\WithPagination;
 use Livewire\Component;
@@ -71,10 +73,20 @@ class AdminProductImportComponent extends Component
 	public $sortDirection='ASC';
 	
 	public $selectedProductArray=[];
+
+	public $check_update=false;
+	public $Bills;
 	
+
+	protected $rules=[
+		'amount.*' => 'required|min:1',
+		'price.*' => 'required'
+	];
 
     public function render()
     {
+		
+		$this->Bills = ProductImportBill::all();
 		$this->Sizes = ProductSize::all();
 		$this->Categories1 = ProductCategory::all();
 		$this->Stockers = User::where('user_type','LIKE','%Nhân viên thủ kho%')->get();
@@ -100,16 +112,78 @@ class AdminProductImportComponent extends Component
 	}
 	
 	public function selectProduct2($id,$name){
-		array_push($this->selectedProductArray,['is_deleted'=>false,'product_id'=>$id,'product_name'=>$name]);
+		array_push($this->selectedProductArray,['is_deleted'=>false,'is_update'=>false,'size' => null,'quantity' => null,'model_id' => null ,'price' => null ,'product_id'=>$id,'product_name'=>$name]);
+	}
+	
+	public function pushProducts($id){
+		$this->check_update = true;
+			if($this->selectedProductArray != null)
+				$this->selectedProductArray = [];
+			$Details = ProductImportBillDetail::where('import_bill_id',$id)->get();
+			foreach($Details as $detail){
+				array_push($this->selectedProductArray,['is_deleted' => false,
+												  'is_update' => true,
+												  'size' => $detail->Model->size,
+												  'quantity' =>$detail->amount,
+												  'price' => $detail->price,
+												  'product_id' => $detail->Model->Product->id,
+												  'product_name' => $detail->Model->Product->productName
+												]);
+				
+			}
+			
+			foreach($this->selectedProductArray as $k=>$v){
+				$this->size[$k] = $v['size'];
+				$this->amount[$k] = $v['quantity'];
+				$this->price[$k] = $v['price'];
+			}
+			
+			$Bill = ProductImportBill::find($id);
+			$this->bill_date = $Bill->bill_date;
+			$this->bill_code = $Bill->bill_code;
+			$this->vat = $Bill->VAT;
+			$this->supplierID = $Bill->supplier_id;
+			$this->transporter_name = $Bill->transporter_name;
+			$this->stocker_id = $Bill->Stocker->name;
+			$this->accountant_id = $Bill->Accountant->name;
+			$this->stocker_id_submit = $Bill->stocker_id;
+			$this->accountant_id_submit = $Bill->accountant_id;
+			
+			
+		
+	}
+	public function a($k){
+		dd($k);
+	}
+	
+	
+	public function updateArray(){
+		
 	}
 	
 	
 	public function submit(){
-		
+		/*
+		$this->validate();
+		$flag = false;
+		if($this->selectedProductArray != []){
+			foreach($this->selectedProductArray as $k=>$v){
+				if($v['quantity']==0){
+					$flag = true;
+					break;
+				}
+			}
+		}else{
+			dd(3);
+		}
+		if($flag==true){
+			dd(4);
+		}
+		*/
+
 		//Thêm hóa đơn
 		$Bill = new ProductImportBill();
 		$Bill->user_id = auth()->user()->id;
-		$Bill->bill_date = now();
 		$Bill->status=1;
 		$Bill->bill_code = $this->bill_code;
 		$Bill->VAT = $this->vat;
@@ -202,18 +276,11 @@ class AdminProductImportComponent extends Component
 	}
 	
 	public function test(){
-		$total = 0;
-		foreach($this->selectedProducts as $k=>$v){
-			if($this->amount[$k+1] != null && $this->price[$k+1] != null && $this->amount != null && $this->price != null)
-				$total += $this->amount[$k+1] * $this->price[$k+1];
-		}
-		$this->bill_total = $total;
+		dd($this);
 	}
 	
 	public function resetBtn(){
-		//dd($this);
-		$this->bill_image = '2021-10-30-16-03-00-unnamed.png';
-		//$this->reset();
+		$this->reset();
 	}
 	
 	public function removeBtn($k){
@@ -277,4 +344,6 @@ class AdminProductImportComponent extends Component
 		$this->accountant_id = $User->name;
 		$this->accountant_id_submit = $User->id;
 	}
+	
+
 }

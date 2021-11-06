@@ -16,24 +16,25 @@ class AdminProductLogo extends Component
 	public $tempImgUrl;
 	public $check_watermark_id;
 	public $logo_position=1;
+	public $AdminSettings;
 	
 	public function mount(){
-		$image = Image::where('image_type','LIKE','Watermark')->get()->first();
+		$image = $this->check_watermark = Image::where('image_type','LIKE','Watermark')->get()->last();
 		if($image != null)
-			$this->logo_image = $image->imageName;
+			$this->logo_image = $image->imageName;	
 	}
 	
 	
     public function render()
     {
-		
 		$this->check_watermark = Image::where('image_type','LIKE','Watermark')->get()->last();
         return view('livewire.admin-product-logo')
 					->layout('layouts.template');
     }
 	
 	public function submitWatermark(){
-		if($this->logo_image != null && is_string($this->logo_image == false) ){
+
+		if($this->logo_image != null && is_string($this->logo_image) == false){
 			$name=$this->logo_image->getClientOriginalName();
 			$name2 = date("Y-m-d-H-i-s").'-'.$name;
 			$name3 = explode('.',$name);
@@ -79,9 +80,10 @@ class AdminProductLogo extends Component
 				}
 				$this->check_watermark->imageName = $name4.'.jpeg';
 				$this->check_watermark->save();
+				
+				session()->flash('succes','Cập nhật watermark thành công');
 			}
 		}
-		dd('ok');
 	}
 
 	public function test2(){

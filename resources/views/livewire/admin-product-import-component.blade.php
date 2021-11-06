@@ -1,4 +1,44 @@
 <div>
+<div class="row">
+	<div class="col-lg-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Mã hóa đơn</th>
+                                                        <th>Người tạo</th>
+														<th>Ngày tạo</th>
+														<th>Trạng thái</th>
+                                                        <th>Tùy chọn</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+														@forelse($Bills as $bill)
+														<tr>
+															<td>{{$bill->bill_code}}</td>
+															<td>{{$bill->User->name}}</td>
+															<td>{{$bill->created_at}}</td>
+															<td>
+																@if($bill->status == 1)
+																	<label style="color:green">Đã lưu</label>
+																@elseif($bill->status == 0)
+																	<label style="color:gray">Đã ẩn</label>
+																@endif
+															</td>
+															<td>
+																<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#myModal">Xem</button>
+																<button type="button" class="btn btn-warning"  wire:click="pushProducts({{$bill->id}})">Sửa</button>
+																<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#myModal">Ẩn</button>
+															</td>
+														</tr>
+														@empty
+														@endforelse
+													</tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.table-responsive -->
+    </div>
+</div>
 					<div class="row">
 						<div class="form-group">						
 								<div class="col-lg-12">
@@ -166,23 +206,39 @@
 																</thead>
 																<tbody>
 																	@forelse($selectedProductArray as $k=>$v)
-																	@if($v['is_deleted'] == false)
-																	<tr>
-																		<td>{{$v['product_name']}}</td>
-																		<td>
-																			<select wire:model="size.{{$k}}"class="form-control">
-																				<option value="null">Chọn</option>
-																				@foreach($Sizes as $size)
-																				
-																					<option value="{{$size->sizeName}}">{{$size->sizeName}}</option>
-																				@endforeach
-																			</select>
-																		</td>
-																		<td class="col-lg-1"><input  class="form-control"  wire:model.defer="amount.{{$k}}"placeholder="Nhập số lượng"></td>
-																		<td class="col-lg-2"><input  class="form-control"  wire:model.defer="price.{{$k}}"placeholder="Nhập đơn giá"></td>
-																		<td><button type="button" wire:click="removeBtn({{$k}})" class="btn btn-danger" >Xóa</button></td>
-																	</tr>
-																	@endif
+																		@if($v['is_deleted'] == false)
+																			@if($v['is_update']==false)
+																				<tr>
+																					<td>{{$v['product_name']}}</td>
+																					<td>
+																						<select wire:model="size.{{$k}}"class="form-control">
+																							<option>Chọn</option>
+																							<option>A</option>
+																							<option>B</option>
+																							<option>C</option>
+																						</select>
+																					</td>
+																					<td class="col-lg-1"><input  class="form-control" wire:change="updateArray" wire:model.defer="amount.{{$k}}"placeholder="Nhập số lượng"></td>
+																					<td class="col-lg-2"><input  class="form-control" wire:change="updateArray" wire:model.defer="price.{{$k}}"placeholder="Nhập đơn giá"></td>
+																					<td><button type="button" wire:click="removeBtn({{$k}})" class="btn btn-danger" >Xóa</button></td>
+																				</tr>
+																			@else
+																				<tr>
+																					<td>{{$v['product_name']}}</td>
+																					<td>
+																						<select wire:model="size.{{$k}}" class="form-control">
+																							<option>Chọn</option>
+																							<option value="A">A</option>
+																							<option value="B">B</option>
+																							<option value="C">C</option>
+																						</select>
+																					</td>
+																					<td class="col-lg-1"><input  class="form-control" wire:change="updateArray" value="{{$v['quantity']}}" wire:model.defer="amount.{{$k}}"placeholder="Nhập số lượng"></td>
+																					<td class="col-lg-2"><input  class="form-control" value="{{$v['price']}}" wire:change="updateArray" wire:model.defer="price.{{$k}}"placeholder="Nhập đơn giá"></td>
+																					<td><button type="button" wire:click="removeBtn({{$k}})" class="btn btn-danger" >Xóa</button></td>
+																				</tr>																				
+																			@endif
+																		@endif
 																	@empty
 																	@endforelse
 																</tbody>
