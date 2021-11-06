@@ -17,6 +17,7 @@ class CreateAdminSettingsTable extends Migration
             $table->id();
 			$table->integer('is_maintenance')->default(0);
 			$table->integer('is_outofserivce')->default(0);
+			$table->integer('logo_position');
             $table->timestamps();
         });
     }

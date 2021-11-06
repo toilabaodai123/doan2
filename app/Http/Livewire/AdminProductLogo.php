@@ -6,25 +6,34 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Image;
 use App\Models\Product;
+use App\Models\AdminSetting;
 
 class AdminProductLogo extends Component
 {
 	use WithFileUploads;	
 	
 	public $logo_image;
-	public $logo_to_png;
 	public $tempImgUrl;
 	public $check_watermark_id;
+	public $logo_position=1;
+	
+	public function mount(){
+		$image = Image::where('image_type','LIKE','Watermark')->get()->first();
+		if($image != null)
+			$this->logo_image = $image->imageName;
+	}
+	
 	
     public function render()
     {
+		
 		$this->check_watermark = Image::where('image_type','LIKE','Watermark')->get()->last();
         return view('livewire.admin-product-logo')
 					->layout('layouts.template');
     }
 	
 	public function submitWatermark(){
-		if($this->logo_image != null){
+		if($this->logo_image != null && is_string($this->logo_image == false) ){
 			$name=$this->logo_image->getClientOriginalName();
 			$name2 = date("Y-m-d-H-i-s").'-'.$name;
 			$name3 = explode('.',$name);
@@ -74,27 +83,9 @@ class AdminProductLogo extends Component
 		}
 		dd('ok');
 	}
-	
-	public function logoToImage(){
-		//dd(1);
-		$Products = Product::all();
-		dd($Products);
-	}
-	
+
 	public function test2(){
-		$Products = Product::with('Pri_Image')->get();
-		dd($Products);
-	
+		dd($this);
 	}
-	
-	public function dd_laravel(){
-		$watermark = imagescale(imagecreatefromjpeg(public_path().'/storage/images/watermark/logo2.jpeg'),120,120);
-		$source = imagecreatefromjpeg(public_path().'/storage/images/test_watermark/logo2.jpeg');
-		$sx = imagesx($watermark);
-		$sy = imagesy($watermark);
-		imagecopymerge($source,$watermark,imagesx($source) - $sx - 10,imagesy($source) - $sy - 10,0,0,$sx==$sy?$sy:$sx,$sy,25);
-		$i = imagejpeg($source,public_path().'/storage/images/source_test_watermark/'.'logo2.jpeg',9);	
-		imagedestroy($source);	
-		dd('ok');
-	}
+
 }
