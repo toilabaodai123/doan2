@@ -1,6 +1,19 @@
 <div>
 <button type="button" class="btn btn-success" wire:click="test">Xem</button>
+@if($admin_settings != null)
+	@if($admin_settings->is_maintenance == true)
+		<div class="alert alert-danger">
+			Website đang trong trạng thái bảo trì
+		</div>
+	@endif
+@endif
+@if($low_stock_products != null)
+	<div class="alert alert-danger">
+		Có sản phẩm tồn kho thấp <button type="button" class="btn btn-success" data-toggle="modal" data-target="#viewLowStockProducts">Xem</button>
+	</div>	
+@endif
 <div class="row">
+
 	<div class="col-lg-2" style="float:right;margin-bottom:50px" wire:ignore>
 	<label>Ngày kết thúc</label>
 		<div>
@@ -12,7 +25,7 @@
 		<div>
 			<input class="form-control" id="from_date" name="from_date">
 		</div>
-	</div>		
+	</div>	
 </div>
 	<div class="row">
                         <div class="col-lg-12 col-md-6">
@@ -326,6 +339,65 @@
 																		<!-- /.modal-dialog -->
 																		</div>	
 </div>
+
+
+<div class="modal fade" id="viewLowStockProducts" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title" id="myModalLabel">Thông tin các sản phẩm có tồn kho thấp</h4>
+																				</div>
+																				<div class="modal-body" >
+																					<div class="panel panel-default">
+																						<div class="panel-heading">
+																						</div>
+																						<div class="panel-body">
+																							<div class="col-lg-12">
+																									<div class="row">
+																										<div class="table-responsive">
+																											<table class="table table-bordered table-hover table-striped">
+																												<thead>
+																													<tr>
+																														<th>Tên sản phẩm</th>
+																														<th>Size</th>
+																														<th>Nhà cung cấp</th>
+																														<th>Tồn kho</th>
+																														<th>Tồn kho (thực)</th>
+																													</tr>
+																												</thead>
+																												<tbody>
+																													@forelse($low_stock_products as $model)
+																														<tr>
+																															<td>{{$model->Product->productName}}</td>
+																															<td>{{$model->size}}</td>
+																															<td>{{$model->Product->Supplier->supplierName}}</td>
+																															<td>{{$model->stockTemp}}</td>
+																															<td>{{$model->stock}}</td>
+																														</tr>
+																													@empty
+																													@endforelse
+																												</tbody>
+																											</table>
+																										</div>
+																									</div>
+																							</div>					
+																						</div>
+																					</div>																					
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																				</div>
+																			</div>
+																			<!-- /.modal-content -->
+																		</div>
+																		<!-- /.modal-dialog -->
+																		</div>	
+</div>
+
+
+
+
+
 
 
 </div>

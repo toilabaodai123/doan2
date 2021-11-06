@@ -11,7 +11,8 @@ use App\Models\Comment2;
 use App\Models\OrderDetail;
 use App\Models\ProductImportBill;
 use DB;
-use Carbon\Carbon;
+use App\Models\AdminSetting;
+use App\Models\ProductModel;
 
 class AdminDashboardComponent extends Component
 {
@@ -28,7 +29,8 @@ class AdminDashboardComponent extends Component
 	public $row_TopProducts=5;
 	public $from_date=null;
 	public $to_date=null;
-	
+	public $admin_settings=null;
+	public $low_stock_products=null;
 
     public function render()
     {
@@ -36,6 +38,8 @@ class AdminDashboardComponent extends Component
 		$this->ShipFree = DeliveryBill::all()->sum('price');
 		$this->Imports = ProductImportBill::all()->sum('importBillTotal');
 		$this->Profit = $this->CompletedOrders - $this->Imports - $this->ShipFree;
+		$this->admin_settings = AdminSetting::get()->first();
+		$this->low_stock_products = ProductModel::where('stockTemp','<=',5)->get();
 
 		$from_date = strval($this->from_date);
 		$to_date = strval($this->to_date);

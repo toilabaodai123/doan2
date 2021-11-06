@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdminSettingsTable extends Migration
+class CreateFlashSalesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateAdminSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('admin_settings', function (Blueprint $table) {
+        Schema::create('flash_sales', function (Blueprint $table) {
             $table->id();
-			$table->integer('is_maintenance')->default(0);
-			$table->integer('is_outofserivce')->default(0);
+			$table->string('name');
+			$table->string('desc');
+			$table->date('from_date');
+			$table->date('to_date');
+			$table->integer('status');
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateAdminSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admin_settings');
+        Schema::dropIfExists('flash_sales');
     }
 }
