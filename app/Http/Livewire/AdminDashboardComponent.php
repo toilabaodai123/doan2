@@ -19,10 +19,10 @@ class AdminDashboardComponent extends Component
 	public $Profit;
 	
 	public $Imports;
-	public $CompletedOrders;
+	public $CompletedOrders=[];
 	public $ShipFee;
-	public $Visits;
-	public $Reviews;
+	public $Visits=[];
+	public $Reviews=[];
 	
 	public $TopProducts=[];
 	public $row_TopProducts=5;
@@ -32,16 +32,11 @@ class AdminDashboardComponent extends Component
 
     public function render()
     {
-		
-		
-
 		$this->CompletedOrders = Order::where('status',4)->sum('orderTotal');
 		$this->ShipFree = DeliveryBill::all()->sum('price');
 		$this->Imports = ProductImportBill::all()->sum('importBillTotal');
 		$this->Profit = $this->CompletedOrders - $this->Imports - $this->ShipFree;
-		
-		//$this->Orders = OrderDetail::sum('quantity');
-		
+
 		$from_date = strval($this->from_date);
 		$to_date = strval($this->to_date);
 		
@@ -51,15 +46,21 @@ class AdminDashboardComponent extends Component
 								->join('products','product_models.productID','products.id')
 								->join('suppliers','products.supplierID','suppliers.id')
 								->join('orders','order_details.order_id','orders.id')
-								->select('suppliers.supplierName','product_models.id','productModel_id',DB::raw('sum(quantity) as total_quantity'),'products.productName','product_models.size')
+								->select('suppliers.supplierName','product_models.id',
+									     'productModel_id',
+										 DB::raw('sum(quantity) as total_quantity'),
+										 'products.productName',
+										 'product_models.size')
 								->where('orders.status','=',1)
 								->groupBy('productModel_id')
 								->orderBy('total_quantity','DESC')
 								->take($this->row_TopProducts)
 								->get();
-			$this->Visits = Visit::all()->count();	
-			$this->NewOrdersCounter = count(Order::whereNotIn('status',[0,1,5])->get());
-			$this->Reviews = Comment2::where('type',2)->count();
+			$this->Visits = Visit::orderBy('created_at','DESC')->get();
+			$this->NewOrdersCounter = Order::whereNotIn('status',[0,1,5])
+											->orderBy('created_at','DESC')
+											->get();
+			$this->Reviews = Comment2::where('type',2)->orderBy('created_at','DESC')->get();
 		}
 		else{
 			$this->TopProducts = DB::table('order_details')
@@ -67,7 +68,12 @@ class AdminDashboardComponent extends Component
 								->join('products','product_models.productID','products.id')
 								->join('suppliers','products.supplierID','suppliers.id')
 								->join('orders','order_details.order_id','orders.id')
-								->select('suppliers.supplierName','product_models.id','productModel_id',DB::raw('sum(quantity) as total_quantity'),'products.productName','product_models.size')
+								->select('suppliers.supplierName',
+										 'product_models.id',
+										 'productModel_id',
+										 DB::raw('sum(quantity) as total_quantity'),
+										 'products.productName',
+										 'product_models.size')
 								->where('orders.status','=',1)
 								->whereDate('order_details.created_at','>=',strval($this->from_date))
 								->whereDate('order_details.created_at','<=',strval($this->to_date))
@@ -77,17 +83,18 @@ class AdminDashboardComponent extends Component
 								->get();
 			$this->Visits = Visit::whereDate('created_at','>=',$from_date)
 									->whereDate('created_at','<=',$to_date)
-									->count();
+									->orderBy('created_at','DESC')
+									->get();
 			$this->NewOrdersCounter = Order::whereDate('created_at','>=',$from_date)
 											->whereDate('created_at','<=',$to_date)
-											->whereNotIn('status',[0,5])
-											->get()
-											->count();
+											->whereNotIn('status',[0,1,5])
+											->orderBy('created_at','DESC')
+											->get();
 			$this->Reviews = Comment2::where('type',2)
 										->whereDate('created_at','>=',$from_date)
 										->whereDate('created_at','<=',$to_date)
-										->get()
-										->count();								
+										->orderBy('created_at','DESC')
+										->get();								
 		}								
 						
         return view('livewire.admin-dashboard-component')

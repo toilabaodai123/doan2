@@ -28,7 +28,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#">
+                                <a href="#" data-toggle="modal" data-target="#viewProfit">
                                     <div class="panel-footer">
                                         <span class="pull-left">View Details</span>
                                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -36,6 +36,7 @@
                                         <div class="clearfix"></div>
                                     </div>
                                 </a>
+								
                             </div>
                         </div>		
 	</div>
@@ -49,13 +50,13 @@
                                             <i class="fa fa-comments fa-5x"></i>
                                         </div>
                                         <div class="col-xs-9 text-right">
-                                            <div class="huge">{{$Reviews}}</div>
+                                            <div class="huge">{{count($Reviews)}}</div>
 											<div>Đánh giá mới</div>
 
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#">
+                                <a href="#" data-toggle="modal" data-target="#viewReviews" >
                                     <div class="panel-footer">
                                         <span class="pull-left">View Details</span>
                                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -73,12 +74,12 @@
                                             <i class="fa fa-tasks fa-5x"></i>
                                         </div>
                                         <div class="col-xs-9 text-right">
-                                            <div class="huge">{{$Visits}}</div>
-                                            <div>Viếng thăm mới!</div>
+                                            <div class="huge">{{count($Visits)}}</div>
+                                            <div>Lượt xem mới!</div>
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#">
+                                <a href="#" data-toggle="modal" data-target="#viewVisit">
                                     <div class="panel-footer">
                                         <span class="pull-left">View Details</span>
                                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -96,12 +97,12 @@
                                             <i class="fa fa-shopping-cart fa-5x"></i>
                                         </div>
                                         <div class="col-xs-9 text-right">
-                                            <div class="huge">{{$NewOrdersCounter}}</div>
-                                            <div>Đơn hàng được chấp nhận mới!</div>
+                                            <div class="huge">{{count($NewOrdersCounter)}}</div>
+                                            <div>Đơn hàng được chấp nhận!</div>
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#">
+                                <a href="#" data-toggle="modal" data-target="#viewOrders">
                                     <div class="panel-footer">
                                         <span class="pull-left">View Details</span>
                                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -148,24 +149,24 @@
 													<td>
 														<button type="button" class="btn btn-success" data-toggle="modal" data-target="#viewModal{{$product->id}}">Xem</button>
 																	<div wire:ignore.self class="modal fade" id="viewModal{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-																	<div class="modal-dialog" role="document">
-																		<div class="modal-content">
-																			<div class="modal-header">
-																				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																				<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
+																				</div>
+																				<div class="modal-body" >
+																					<label>Tên sản phẩm : </label>{{$product->productName}}<br>
+																					<label>Nhà cung cấp : </label>{{$product->supplierName}}<br>
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																				</div>
 																			</div>
-																			<div class="modal-body" >
-																				<label>Tên sản phẩm : </label>{{$product->productName}}<br>
-																				<label>Nhà cung cấp : </label>{{$product->supplierName}}<br>
-																			<div class="modal-footer">
-																				<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-																			</div>
+																			<!-- /.modal-content -->
 																		</div>
-																		<!-- /.modal-content -->
-																	</div>
-																	<!-- /.modal-dialog -->
-																	</div>	
-																</div>														
+																		<!-- /.modal-dialog -->
+																		</div>	
+																	</div>														
 													</td>
 												</tr>
 											@empty
@@ -180,7 +181,159 @@
             </div>
         </div>			
 	</div>
+
+<div class="modal fade" id="viewReviews" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title" id="myModalLabel">Thông tin các đánh giá</h4>
+																				</div>
+																				<div class="modal-body" >
+																					
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																				</div>
+																			</div>
+																			<!-- /.modal-content -->
+																		</div>
+																		<!-- /.modal-dialog -->
+																		</div>	
+</div>	
+
+
+<div class="modal fade" id="viewProfit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title" id="myModalLabel">Thông tin lợi nhuận</h4>
+																				</div>
+																				<div class="modal-body" >
+																					
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																				</div>
+																			</div>
+																			<!-- /.modal-content -->
+																		</div>
+																		<!-- /.modal-dialog -->
+																		</div>	
+</div>	
+
+<div class="modal fade" id="viewVisit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title" id="myModalLabel">Thông tin số lượt xem</h4>
+																				</div>
+																				<div class="modal-body" >
+																					<div class="panel panel-default">
+																						<div class="panel-heading">
+																						</div>
+																						<div class="panel-body">
+																							<div class="col-lg-12">
+																									<div class="row">
+																										<div class="table-responsive">
+																											<table class="table table-bordered table-hover table-striped">
+																												<thead>
+																													<tr>
+																														<th>Địa chỉ</th>
+																														<th>Thời gian</th>
+																													</tr>
+																												</thead>
+																												<tbody>
+																													@forelse($Visits as $visit)
+																														<tr>
+																															<td>{{$visit->ip}}</td>
+																															<td>{{$visit->created_at}}</td>
+																														</tr>
+																													@empty
+																													@endforelse
+																												</tbody>
+																											</table>
+																										</div>
+																									</div>
+																							</div>					
+																						</div>
+																					</div>																					
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																				</div>
+																			</div>
+																			<!-- /.modal-content -->
+																		</div>
+																		<!-- /.modal-dialog -->
+																		</div>	
 </div>
+
+<div class="modal fade" id="viewOrders" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title" id="myModalLabel">Thông tin số đơn đặt hàng</h4>
+																				</div>
+																				<div class="modal-body" >
+																					<div class="panel panel-default">
+																						<div class="panel-heading">
+																						</div>
+																						<div class="panel-body">
+																							<div class="col-lg-12">
+																									<div class="row">
+																										<div class="table-responsive">
+																											<table class="table table-bordered table-hover table-striped">
+																												<thead>
+																													<tr>
+																														<th>Họ tên</th>
+																														<th>Tổng giá trị</th>
+																														<th>Thời gian</th>
+																														<th>Trạng thái</th>
+																													</tr>
+																												</thead>
+																												<tbody>
+																													@forelse($NewOrdersCounter as $order)
+																														<tr>
+																															<td>{{$order->fullName}}</td>
+																															<td>{{$order->orderTotal}}</td>
+																															<td>{{$order->created_at}}</td>
+																															<td>
+																																@if($order->status == 2)
+																																	<label style="color:blue">Đã duyệt</label>
+																																@elseif($order->status == 3)
+																																	<label style="color:orange">Đang giao hàng</label>
+																																@elseif($order->status==4)
+																																	<label style="color:green">Đã nhận hàng</label>
+																																@endif
+																															</td>
+																														</tr>
+																													@empty
+																													@endforelse
+																												</tbody>
+																											</table>
+																										</div>
+																									</div>
+																							</div>					
+																						</div>
+																					</div>																						
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																				</div>
+																			</div>
+																			<!-- /.modal-content -->
+																		</div>
+																		<!-- /.modal-dialog -->
+																		</div>	
+</div>
+
+
+</div>
+
+
+
+
+
 
 @push('scripts')
 
