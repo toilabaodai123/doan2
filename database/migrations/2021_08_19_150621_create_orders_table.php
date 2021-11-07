@@ -28,6 +28,7 @@ class CreateOrdersTable extends Migration
 			$table->integer('orderTotal');
 			$table->integer('status');
 			$table->string('ip');
+			$table->integer('order_type')->default(1);
 			$table->unsignedbiginteger('assigned_to')->nullable();
             $table->timestamps();
 			

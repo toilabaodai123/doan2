@@ -1,14 +1,42 @@
 <div>
+<div class="row" style="margin-bottom:30px">
+	<div class="col-lg-4">
+		<input class="form-control" wire:model="bill_searchInput" placeholder="Nhập thông tin cần tìm">
+	</div>
+	<div class="col-lg-4">
+		<select class="form-control" wire:model="bill_searchField">
+			<option value="bill_code">Theo mã hóa đơn</option>
+			<option value="name">Theo mã người tạo</option>
+		</select>
+	</div>
+</div>
 <div class="row">
+{{$Bills->links()}}
 	<div class="col-lg-12">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered table-hover table-striped">
                                                     <thead>
                                                     <tr>
-                                                        <th>Mã hóa đơn</th>
-                                                        <th>Người tạo</th>
-														<th>Ngày tạo</th>
-														<th>Trạng thái</th>
+                                                        <th>
+															Mã hóa đơn
+															<i class="fa fa-arrow-up" wire:click="sortByBill('bill_code','ASC')" style="cursor:pointer;{{$bill_sortField=='bill_code' && $bill_sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortByBill('bill_code','DESC')" style="cursor:pointer;{{$bill_sortField=='bill_code' && $bill_sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
+                                                        <th>
+															Người tạo
+															<i class="fa fa-arrow-up" wire:click="sortByBill('name','ASC')" style="cursor:pointer;{{$bill_sortField=='name' && $bill_sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortByBill('name','DESC')" style="cursor:pointer;{{$bill_sortField=='name' && $bill_sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
+														<th>
+															Ngày tạo
+															<i class="fa fa-arrow-up" wire:click="sortByBill('bill_date','ASC')" style="cursor:pointer;{{$bill_sortField=='bill_date' && $bill_sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortByBill('bill_date','DESC')" style="cursor:pointer;{{$bill_sortField=='bill_date' && $bill_sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
+														<th>
+															Trạng thái
+															<i class="fa fa-arrow-up" wire:click="sortByBill('status','ASC')" style="cursor:pointer;{{$bill_sortField=='status' && $bill_sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortByBill('status','DESC')" style="cursor:pointer;{{$bill_sortField=='status' && $bill_sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
                                                         <th>Tùy chọn</th>
                                                     </tr>
                                                     </thead>
@@ -16,8 +44,8 @@
 														@forelse($Bills as $bill)
 														<tr>
 															<td>{{$bill->bill_code}}</td>
-															<td>{{$bill->User->name}}</td>
-															<td>{{$bill->created_at}}</td>
+															<td>{{$bill->name}}</td>
+															<td>{{$bill->bill_date}}</td>
 															<td>
 																@if($bill->status == 1)
 																	<label style="color:green">Đã lưu</label>
@@ -28,7 +56,7 @@
 															<td>
 																<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#myModal">Xem</button>
 																<button type="button" class="btn btn-warning"  wire:click="pushProducts({{$bill->id}})">Sửa</button>
-																<button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#myModal">Ẩn</button>
+																<button type="button" class="btn btn-danger"  wire:click="deleteBill({{$bill->id}})">Ẩn</button>
 															</td>
 														</tr>
 														@empty
@@ -51,7 +79,7 @@
 												<div class="col-lg-12">
 													<div class="col-lg-4">
 														<div class="form-group">
-															<select class="form-control" style="margin-top:24px"wire:model="supplierID">
+															<select class="form-control" {{$bill_id !=null?'disabled':''}} style="margin-top:24px"wire:model="supplierID">
 																<option value="null">Chọn nhà cung cấp</option>
 															@forelse($Suppliers as $s)
 																<option value="{{$s->id}}">{{$s->supplierName}}</option>
@@ -150,11 +178,7 @@
 																
 																	</th>
 																	<th>
-																		Size
-																	</th>
-																	<th>
-																		Nhà cung cấp
-																		
+																		Loại sản phẩm
 																	</th>
 																	<th>Tùy chọn</th>
 																</tr>
@@ -163,8 +187,7 @@
 																@forelse($Products as $p)
 																	<tr>
 																		<td>{{$p->productName}}</td>
-																		<td></td>
-																		<td>{{$p->supplierID}}</td>
+																		<td>{{$p->Category1->categoryName}}</td>
 																		<td>
 																			<button type="button" wire:click="selectProduct2({{$p->id}},'{{$p->productName}}')" class="btn btn-success">Chọn2</button>
 																		</td>
@@ -283,18 +306,6 @@
 																		Danh sách thủ kho
 																	</div>
 																	<div class="modal-body">
-																		<div class="row" style="margin-bottom:20px;">
-																			<div class="col-lg-6">
-																				<input class="form-control" placeholder="Nhập thông tin cần tìm">
-																			</div>
-																			<div class="col-lg-6">
-																				<select class="form-control">
-																					<option>Theo nhà cung cấp</option>
-																					<option>Theo thủ kho</option>
-																					<option>Theo kế toán</option>
-																				</select>
-																			</div>	
-																		</div>
 																		<div class="row">
 																			<div class="col-lg-12">
 																					<div class="row">
@@ -338,7 +349,7 @@
 												</div>
 												<div class="form-group">
 													<div class="col-lg-10">
-														<label>Kế toán duyệt duyệt</label>
+														<label>Kế toán kiểm duyệt</label>
 														<input wire:model.defer="accountant_id" disabled class="form-control" >
 													</div>
 													<div class="col-lg-2">
@@ -350,18 +361,6 @@
 																		Danh sách kế toán
 																	</div>
 																	<div class="modal-body">
-																		<div class="row" style="margin-bottom:20px;">
-																			<div class="col-lg-6">
-																				<input class="form-control" placeholder="Nhập thông tin cần tìm">
-																			</div>
-																			<div class="col-lg-6">
-																				<select class="form-control">
-																					<option>Theo nhà cung cấp</option>
-																					<option>Theo thủ kho</option>
-																					<option>Theo kế toán</option>
-																				</select>
-																			</div>	
-																		</div>
 																		<div class="row">
 																			<div class="col-lg-12">
 																					<div class="row">

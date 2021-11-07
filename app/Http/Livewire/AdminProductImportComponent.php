@@ -16,6 +16,7 @@ use App\Models\Image;
 use App\Models\OrderDetail;
 
 
+use DB;
 use Livewire\WithPagination;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -73,21 +74,18 @@ class AdminProductImportComponent extends Component
 	public $sortField='productName';
 	public $sortDirection='ASC';
 	
-	public $selectedProductArray=[];
-
-	public $check_update=false;
-	public $Bills;
+	public $bill_sortField='bill_code';
+	public $bill_sortDirection='ASC';
 	
-
-	protected $rules=[
-		'amount.*' => 'required|min:1',
-		'price.*' => 'required'
-	];
-
+	public $selectedProductArray=[];
+	
+	
+	public $bill_searchInput;
+	public $bill_searchField='bill_code';
+	
     public function render()
     {
 		
-		$this->Bills = ProductImportBill::all();
 		$this->Sizes = ProductSize::all();
 		$this->Categories1 = ProductCategory::all();
 		$this->Stockers = User::where('user_type','LIKE','%Nhân viên thủ kho%')->get();
@@ -103,7 +101,27 @@ class AdminProductImportComponent extends Component
 		else
 			$Products = Product::with('Models')->where('supplierID',$this->supplierID)
 											   ->paginate(5);
-		return view('livewire.admin-product-import-component',['Products' => $Products])
+											   
+		if($this->bill_searchInput == null)
+			$Bills = DB::table('product_import_bills')
+						->join('product_import_details','product_import_bills.id','product_import_details.import_bill_id')
+						->join('product_models','product_import_details.product_model_id','product_models.id')
+						->join('products','product_models.productID','products.id')
+						->join('users','product_import_bills.user_id','users.id')
+						->select('productName','name','bill_code','product_import_bills.created_at','product_import_bills.status','product_import_bills.id','product_import_bills.bill_date')
+						->orderBy($this->bill_searchField,$this->bill_sortDirection)
+						->paginate(3);
+		else
+			$Bills = DB::table('product_import_bills')
+						->join('product_import_details','product_import_bills.id','product_import_details.import_bill_id')
+						->join('product_models','product_import_details.product_model_id','product_models.id')
+						->join('products','product_models.productID','products.id')
+						->join('users','product_import_bills.user_id','users.id')
+						->select('productName','name','bill_code','product_import_bills.created_at','product_import_bills.status','product_import_bills.id','product_import_bills.bill_date')
+						->where($this->bill_searchField,'LIKE','%'.$this->bill_searchInput.'%')
+						->orderBy($this->bill_searchField,$this->bill_sortDirection)
+						->paginate(3);
+		return view('livewire.admin-product-import-component',['Products' => $Products,'Bills' => $Bills])
 					->layout('layouts.template');
     }
 	
@@ -111,6 +129,11 @@ class AdminProductImportComponent extends Component
 		$this->sortField = $field;
 		$this->sortDirection = $direction;
 	}
+	
+	public function sortByBill($field,$direction){
+		$this->bill_sortField = $field;
+		$this->bill_sortDirection = $direction;
+	}	
 	
 	public function selectProduct2($id,$name){
 		array_push($this->selectedProductArray,['is_deleted'=>false,'is_update'=>false,'size' => null,'quantity' => null,'model_id' => null ,'price' => null ,'product_id'=>$id,'product_name'=>$name]);
@@ -176,6 +199,8 @@ class AdminProductImportComponent extends Component
 		else{
 			if($this->bill_id != null){	
 				$OldBill = ProductImportBill::find($this->bill_id);
+				$OldBill->status=0;
+				$OldBill->save();
 				$Bill = new ProductImportBill();
 				$Bill->user_id = $OldBill->user_id;
 				$Bill->bill_code = $this->bill_code;
@@ -228,40 +253,39 @@ class AdminProductImportComponent extends Component
 				$Bill->save();
 
 				foreach($this->selectedProductArray as $k=>$v){
-					$checkModel = ProductModel::where('productID',$v['product_id'])
-												->where('size','LIKE',$this->size[$k])
-												->first();
-					if($checkModel == null){
-						$Model = new ProductModel();
-						$Model->productID = $v['product_id'];
-						$Model->size = $this->size[$k];
-						$Model->stock= $this->amount[$k];
-						$Model->stockTemp= $this->amount[$k];
-						$Model->productModelStatus=1;
-						$Model->save();
-					}else{
-						$checkModel->stock += $this->amount[$k];
-						$checkModel->stockTemp += $this->amount[$k];
-						$checkModel->save();
+					if($v['is_deleted']==false){
+						$checkModel = ProductModel::where('productID',$v['product_id'])
+													->where('size','LIKE',$this->size[$k])
+													->first();
+						if($checkModel == null){
+							$Model = new ProductModel();
+							$Model->productID = $v['product_id'];
+							$Model->size = $this->size[$k];
+							$Model->stock= $this->amount[$k];
+							$Model->stockTemp= $this->amount[$k];
+							$Model->productModelStatus=1;
+							$Model->save();
+						}else{
+							$checkModel->stock += $this->amount[$k];
+							$checkModel->stockTemp += $this->amount[$k];
+							$checkModel->save();
+						}
+						
+						$Product = Product::find($v['product_id']);
+						if($Product->productPrice == null || $Product->productPrice == 0)
+							$Product->productPrice = $this->price[$k]*10;
+						$Product->status = 1;
+						$Product->save();
+						
+						$Detail = new ProductImportBillDetail();
+						$Detail->import_bill_id = $Bill->id;
+						$Model = ProductModel::where('productID',$v['product_id'])->where('size',$this->size[$k])->first();
+						$Detail->product_model_id = $Model->id;
+						$Detail->amount = $this->amount[$k];
+						$Detail->price = $this->price[$k];
+						$Detail->save();
+						$this->bill_total += ($this->amount[$k] * $this->price[$k]);
 					}
-					
-					$Product = Product::find($v['product_id']);
-					if($Product->productPrice == null && $Product->productPrice == 0)
-						$Product->productPrice = $this->price[$k]*10;
-					$Product->save();
-					
-					$Detail = new ProductImportBillDetail();
-					$Detail->import_bill_id = $Bill->id;
-					$Model = ProductModel::where('productID',$v['product_id'])->where('size',$this->size[$k])->first();
-					$Detail->product_model_id = $Model->id;
-					$Detail->amount = $this->amount[$k];
-					$Detail->price = $this->price[$k];
-					$Detail->save();
-					$this->bill_total += ($this->amount[$k] * $this->price[$k]);
-					
-					$Product = Product::find($v['product_id']);
-					$Product->status = 1;
-					$Product->save();
 				}
 					
 				$this->bill_total += ( $this->bill_total * ( $this->vat ) / 100 );
@@ -270,7 +294,7 @@ class AdminProductImportComponent extends Component
 				
 				
 				//Hình ảnh
-				if($this->bill_image != null ){//&& $this->bill_image != $this->tempImageUrl){
+				if($this->bill_image != null && is_string($this->bill_image) == true){
 					$name=$this->bill_image->getClientOriginalName();
 					$name2 = date("Y-m-d-H-i-s").'-'.$name;
 					$this->bill_image->storeAs('/images/bill/',$name2,'public');
@@ -357,6 +381,33 @@ class AdminProductImportComponent extends Component
 		$User = User::find($id);
 		$this->accountant_id = $User->name;
 		$this->accountant_id_submit = $User->id;
+	}
+	
+	public function deleteBill($id){
+		$Bill = ProductImportBill::find($id);
+		if($Bill->status == 1){
+			$Bill->status = 0;
+			$Details = ProductImportBillDetail::where('import_bill_id',$id)->get();
+			foreach($Details as $detail){
+				$Model = ProductModel::find($detail->product_model_id);
+				$Model->stock -= $detail->amount;
+				$Model->stockTemp -= $detail->amount;
+				$Model->save();
+			}
+		}
+		else{
+			$Bill->status = 1;
+			$Details = ProductImportBillDetail::where('import_bill_id',$id)->get();
+			foreach($Details as $detail){
+				$Model = ProductModel::find($detail->product_model_id);
+				$Model->stock += $detail->amount;
+				$Model->stockTemp += $detail->amount;
+				$Model->save();
+			}
+		}
+		$Bill->save();
+		session()->flash('success','Thành công');
+		$this->reset();
 	}
 	
 
