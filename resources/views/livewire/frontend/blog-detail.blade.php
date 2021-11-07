@@ -1,7 +1,7 @@
 @section('title', 'Trang chi tiết bài viết')
 
 
-<div>
+<div >
    
   <!-- Blog Details Hero Begin -->
   @foreach($blog as $blog)
@@ -57,8 +57,11 @@
                             </div>
                             @empty
                             @endforelse
+
+                            @if($com->count() >= 2)
                             <a href="#" class="load_more" wire:click.prevent="test()">Load more
-                                <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+                               <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+                            @endif
                             </a>
                         </div>
                        
@@ -67,14 +70,11 @@
                             @if(Auth::user())
                             <form wire:submit.prevent="submitUser({{$blog->id}})">
                                 <div class="row">
-                                <div class="col-lg-4 col-md-6">
-                                        <input type="hidden" placeholder="Name" wire:model="name">
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <input type="hidden" placeholder="Email" wire:model="email">
-                                    </div>
+                             
                                     <div class="col-lg-12 text-center">
                                         <textarea placeholder="Comment" wire:model="comment"></textarea>
+                                        @error('comment')<p style="color: red">{{ $message }}</p> @enderror
+
                                         <button type="submit" class="site-btn">Post Comment</button>
                                     </div>
                                 </div>
@@ -82,14 +82,20 @@
                             @else
                             <form wire:submit.prevent="submitNoneUser({{$blog->id}})">
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Name" wire:model="name">
+                                    <div class="col-lg-6 col-md-4">
+                                        <input type="text" placeholder="Name" name="name" wire:model="name">
+                                        @error('name')<p style="color: red">{{ $message }}</p> @enderror
+
                                     </div>
-                                    <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Email" wire:model="email">
+                                    <div class="col-lg-6 col-md-4">
+                                        <input type="text" placeholder="Email" name="email" wire:model="email">
+                                        @error('email')<p style="color: red">{{ $message }}</p> @enderror
+
                                     </div>
                                     <div class="col-lg-12 text-center">
-                                        <textarea placeholder="Comment" wire:model="comment"></textarea>
+                                        <textarea placeholder="Comment" name="comment" wire:model="comment"></textarea>
+                                        @error('comment')<p style="color: red">{{ $message }}</p> @enderror
+
                                         <button type="submit" class="site-btn">Post Comment</button>
                                     </div>
                                 </div>

@@ -17,7 +17,6 @@ class BlogDetail extends Component
 {
     use WithPagination;
 
-    public $blog;
     public $id2;
 
 
@@ -29,6 +28,7 @@ class BlogDetail extends Component
     
     public $pages = 2;
 
+ 
     public function test(){
         $this->pages = $this->pages + 2;
     }
@@ -42,37 +42,49 @@ class BlogDetail extends Component
     }
     public function render()
     {
-        $this->blog = Blog_detail::where('id',$this->id2)->get();
-        $this->all_blog = Blog_detail::orderBy('id' , 'desc')->get()->take(3);
+        $blog = Blog_detail::where('id',$this->id2)->get();
+        $all_blog = Blog_detail::orderBy('id' , 'desc')->get()->take(3);
         $com = Comment::where('post_id',$this->id2)->orderBy('id' , 'desc')->where('status', 1)->paginate($this->pages);
-        return view('livewire.frontend.blog-detail', compact('com'))->layout('layouts.template3');
+        return view('livewire.frontend.blog-detail', compact('com','all_blog', 'blog'))->layout('layouts.template3');
     }
     public function submitUser($id){
+        $validatedData = $this->validate([
+            'comment' => 'required',
+        ]);
+        // dd(1);
         $post =  Blog_detail::find($id);
 
         $data = new Comment();
+        $data->status = 1;
         $data->name = Auth::user()->name;
         $data->email = Auth::user()->email;
         $data->comment = $this->comment;
-        $data->status = 1;
-        $data->comments()->associate($post);
+        $data->post_id = $post->id;
+        // $data->comments()->associate($post);
 
         $data->save();
-        $this->reset();
+        return redirect('/blog-detail/'.$this->id2);
+        
     }
     public function submitNoneUser($id){
-        
+        $validatedData = $this->validate([
+            'comment' => 'required',
+            'name' => 'required',
+            'email' => 'required|email',
+        ]);
         $post =  Blog_detail::find($id);
 
         $data = new Comment();
         $data->name = $this->name;
         $data->email = $this->email;
         $data->comment = $this->comment;
+        $data->post_id = $post->id;
         $data->status = 1;
-        $data->comments()->associate($post);
 
         $data->save();
-        // $this->reset();
+        return redirect('/blog-detail/'.$this->id2);
+        
+
 
     }
     public function deleteComment($id){
