@@ -103,24 +103,14 @@ class AdminProductImportComponent extends Component
 											   ->paginate(5);
 											   
 		if($this->bill_searchInput == null)
-			$Bills = DB::table('product_import_bills')
-						->join('product_import_details','product_import_bills.id','product_import_details.import_bill_id')
-						->join('product_models','product_import_details.product_model_id','product_models.id')
-						->join('products','product_models.productID','products.id')
-						->join('users','product_import_bills.user_id','users.id')
-						->select('productName','name','bill_code','product_import_bills.created_at','product_import_bills.status','product_import_bills.id','product_import_bills.bill_date')
-						->orderBy($this->bill_searchField,$this->bill_sortDirection)
-						->paginate(3);
+			$Bills = ProductImportBill::
+									   orderBy($this->bill_searchField,$this->bill_sortDirection)
+									   ->paginate(3);
 		else
-			$Bills = DB::table('product_import_bills')
-						->join('product_import_details','product_import_bills.id','product_import_details.import_bill_id')
-						->join('product_models','product_import_details.product_model_id','product_models.id')
-						->join('products','product_models.productID','products.id')
-						->join('users','product_import_bills.user_id','users.id')
-						->select('productName','name','bill_code','product_import_bills.created_at','product_import_bills.status','product_import_bills.id','product_import_bills.bill_date')
-						->where($this->bill_searchField,'LIKE','%'.$this->bill_searchInput.'%')
-						->orderBy($this->bill_searchField,$this->bill_sortDirection)
-						->paginate(3);
+			$Bills = ProductImportBill::where($this->bill_searchField,'LIKE','%'.$this->bill_searchInput.'%')
+										->orderBy($this->bill_searchField,$this->bill_sortDirection)
+										->paginate(3);
+		//dd($Bills);
 		return view('livewire.admin-product-import-component',['Products' => $Products,'Bills' => $Bills])
 					->layout('layouts.template');
     }
@@ -145,6 +135,7 @@ class AdminProductImportComponent extends Component
 	
 	
 	public function pushProducts($id){
+		$this->reset();
 		$this->bill_id = $id;
 			if($this->selectedProductArray != null)
 				$this->selectedProductArray = [];
@@ -218,6 +209,13 @@ class AdminProductImportComponent extends Component
 						$Detail = new ProductImportBillDetail();
 						$Detail->import_bill_id = $Bill->id;
 						$Model = ProductModel::where('productID',$v['product_id'])->where('size',$this->size[$k])->first();
+						if($Model == null){
+							$Model = new ProductModel();
+							$Model->productID = $v['product_id'];
+							$Model->size=$this->size[$k];
+							$Model->productModelStatus=1;
+							$Model->save();
+						}
 						$Detail->product_model_id = $Model->id;
 						$Detail->amount = $this->amount[$k];
 						$Detail->price = $this->price[$k];
@@ -235,7 +233,10 @@ class AdminProductImportComponent extends Component
 					$Model->stock -= $detail->amount;
 					$Model->stockTemp -= $detail->amount;
 					$Model->save();
-				}
+				}		
+				$this->bill_total += ( $this->bill_total * ( $this->vat ) / 100 );
+				$Bill->total = $this->bill_total;
+				$Bill->save();
 			}
 			else{
 				//Thêm hóa đơn
@@ -263,7 +264,7 @@ class AdminProductImportComponent extends Component
 							$Model->size = $this->size[$k];
 							$Model->stock= $this->amount[$k];
 							$Model->stockTemp= $this->amount[$k];
-							$Model->productModelStatus=1;
+							$Model->productModelStatus = 1;
 							$Model->save();
 						}else{
 							$checkModel->stock += $this->amount[$k];

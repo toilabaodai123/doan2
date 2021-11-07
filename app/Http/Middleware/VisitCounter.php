@@ -26,7 +26,11 @@ class VisitCounter
 			$Visit->view_type = 1;
 			$Visit->save();
 		}
-
+		
+		if(auth()->check() && $Check != null && $Check->user_id == null){
+			$Check->user_id = auth()->user()->id;
+			$Check->save();
+		}
 
         return $next($request);
     }

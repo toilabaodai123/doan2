@@ -19,7 +19,7 @@ class CreateProductModelsTable extends Migration
 			$table->string('size');
 			$table->integer('stock')->default(0);
 			$table->integer('stockTemp')->default(0);
-			$table->integer('productModelStatus')->default(0);
+			$table->integer('productModelStatus')->default(1);
             $table->timestamps();
 			
 			$table->foreign('productID')->references('id')->on('products');

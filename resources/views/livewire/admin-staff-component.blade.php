@@ -203,7 +203,7 @@
 										<select class="form-control" {{auth()->user()->id == $userID?'disabled':''}} wire:model.defer="user_type">
 											<option>Chọn</option>
 											<option value="Admin">Admin</option>
-											<option value="Nhân viên nhập hàng">Nhân viên nhập hàng</option>
+											<option value="Nhân viên bán hàng">Nhân viên bán hàng</option>
 											<option value="Nhân viên kế toán">Nhân viên kế toán</option>
 											<option value="Nhân viên thủ kho">Nhân viên thủ kho</option>
 										</select>

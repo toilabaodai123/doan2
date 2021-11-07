@@ -229,7 +229,7 @@
 													</div>
 													<div class="col-lg-9">
 														<label>Giá sản phẩm</label>
-														<input class="form-control" placeholder="Giá sản phẩm"></textarea>
+														<input class="form-control" {{$productID == null ?'disabled':''}} placeholder="Giá sản phẩm"></textarea>
 														@error('longDesc')
 															<p class="text-danger">{{$message}}</p>
 														@enderror
