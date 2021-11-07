@@ -7,6 +7,7 @@ use App\Models\Wishlist;
 use Livewire\WithPagination;
 use App\Models\Product;
 use Cart;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\ProductCategory;
 use App\Models\Level2ProductCategory;
@@ -53,8 +54,13 @@ class WhislistComponent extends Component
 
 
 
-        
-        $products = Wishlist::with('Product')->with('Pri_Image')->where('id_user', auth()->user()->id)->where('status',1)->paginate(12);
+        if(Auth::user()){
+            $products = Wishlist::with('Product')->with('Pri_Image')->where('id_user', auth()->user()->id)->where('status',1)->paginate(12);
+
+        }else {
+            $products = Wishlist::with('Product')->with('Pri_Image')->where('status',21)->paginate(12);
+
+        }
       
         return view('livewire.frontend.whislist-component', compact('products'))->layout('layouts.template3');
     }

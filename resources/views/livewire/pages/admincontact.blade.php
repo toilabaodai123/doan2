@@ -26,32 +26,32 @@
 
                             <div class="form-group">
                                     <label>Iframe</label>
-                                    <input class="form-control" wire:model="iframe">
+                                    <input class="form-control" name="name_c" wire:model="iframe">
                                     @error('iframe')<p class="text-danger">{{$message}}</p>@enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Sub title</label>
-                                    <input class="form-control" wire:model="sub_title">
+                                    <input class="form-control" name="sub_c" wire:model="sub_title">
                                     @error('sub_title')<p class="text-danger">{{$message}}</p>@enderror
                                 </div>
                                 <div class="form-group">
                                     <label>contact</label>
-                                    <input class="form-control" wire:model="contact">
+                                    <input class="form-control" name="contact_c" wire:model="contact">
                                     @error('contact')<p class="text-danger">{{$message}}</p>@enderror
                                 </div>	
                                 <div class="form-group">
                                     <label>Mô tả</label>
-                                    <input class="form-control" wire:model="contact_des">
+                                    <input class="form-control" name="des_c" wire:model="contact_des">
                                     @error('contact_des')<p class="text-danger">{{$message}}</p>@enderror
                                 </div>	
                                 <div class="form-group">
                                     <label>diadiem</label>
-                                    <input class="form-control" wire:model="diadiem">
+                                    <input class="form-control" name="dd_c" wire:model="diadiem">
                                     @error('diadiem')<p class="text-danger">{{$message}}</p>@enderror
                                 </div>
                                 <div class="form-group">
                                     <label>diadiem_des</label>
-                                    <input class="form-control" wire:model="diadiem_des">
+                                    <input class="form-control"  name="dddes_c" wire:model="diadiem_des">
                                     @error('diadiem_des')<p class="text-danger">{{$message}}</p>@enderror
                                 </div>
                              

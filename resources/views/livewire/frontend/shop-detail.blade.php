@@ -20,8 +20,11 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="product__details__pic__item">
-                                    <img style="width: 400px;"
-src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
+                            @if($pro->Pri_Image != null)
+                                    <img style="width: 400px;" src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
+                            @else
+                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
+                            @endif
                                 </div>
                             </div>
                         </div>
@@ -171,8 +174,9 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                 <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                     <a href="{{URL::to('shop-detail/'.$pro->id)}}">
                         <div class="product__item">
+                        @if($pro->Pri_Image != null)
                             <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}">
-                                
+                           @endif
                             @if($pro->Pri_Image != null)
                                 <img src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                             @else
@@ -194,8 +198,8 @@ src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
                                 </ul>
                             </div>
                             <div class="product__item__text">
-                                <h6>{{$pro->productName}}</h6>
                                 <a href="{{URL::to('shop-detail/'.$pro->id)}}" class="add-cart">+ Chi tiết sản phẩm</a>
+                                <h6>{{$pro->productName}}</h6>
                                 <div class="product_des">
                                         <h5>{{ number_format($pro->productPrice) }} VND</h5>
                                         <h5>{{ $pro->Category1->categoryName }}</h5>

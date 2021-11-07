@@ -1104,6 +1104,7 @@ ol {
 	font-size: 15px;
 	color: #e53637;
 	font-weight: 700;
+	z-index: 99;
 	position: absolute;
 	left: 0;
 	top: 0;
