@@ -44,7 +44,7 @@
 														@forelse($Bills as $bill)
 														<tr>
 															<td>{{$bill->bill_code}}</td>
-															<td>{{$bill->name}}</td>
+															<td>{{$bill->User->name}}</td>
 															<td>{{$bill->bill_date}}</td>
 															<td>
 																@if($bill->status == 1)

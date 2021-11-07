@@ -141,7 +141,7 @@ class Checkout extends Component
 			
 			
 			$LastOrder = Order::get()->last();
-			if($Assigned_id == null){
+			if($LastOrder == null){
 				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
 				if($Admin == null)
 					$LastOrder->assigned_to = null;
@@ -149,7 +149,7 @@ class Checkout extends Component
 					$LastOrder->assigned_to = $Admin->id;
 			}
 			else{				
-				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$Assigned_id->assigned_to==null?0:$Assigned_id->assigned_to)->get()->first();
+				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$LastOrder->assigned_to==null?0:$LastOrder->assigned_to)->get()->first();
 				if($Admin == null){
 					$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
 					if($Admin2 == null)

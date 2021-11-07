@@ -35,7 +35,7 @@ class AdminStaffComponent extends Component
 	public $searchField='name';
 	public $sortField='id';
 	public $sortDirection='ASC';
-	public $user_type='Nhân viên kế toán';
+	public $user_type;
 	
 	public $block_note;
 	public $check_status;
@@ -67,10 +67,12 @@ class AdminStaffComponent extends Component
     {
 		if($this->searchInput != null)
 			$Users2 = User::with('admin_activities')->where($this->searchField,'LIKE','%'.$this->searchInput.'%')
+													->where('user_type','NOT LIKE','Người dùng')
 													->orderBy($this->sortField,$this->sortDirection)
 													->paginate(5);
 		else
 			$Users2 = User::with('admin_activities')->orderBy($this->sortField,$this->sortDirection)
+													->where('user_type','NOT LIKE','Người dùng')
 													->paginate(5);
         return view('livewire.admin-staff-component',['Users2' => $Users2])
 					->layout('layouts.template');
