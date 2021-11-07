@@ -1,4 +1,4 @@
-@section('title', 'Tràn thanh toán')
+@section('title', 'Trang thanh toán')
 
 
 <div>

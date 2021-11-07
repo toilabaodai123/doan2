@@ -58,6 +58,7 @@ class BlogDetail extends Component
         $data->comments()->associate($post);
 
         $data->save();
+        $this->reset();
     }
     public function submitNoneUser($id){
         

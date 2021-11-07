@@ -75,13 +75,17 @@
                                 <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/notfound.jpg')}}">
                             @endif
                             <ul class="product__hover">
-									@auth
+									@if(Auth::user() != null)
 										@if($product->checkWishlist == null)
 											<li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
 										@else
 											 <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
 										@endif
-									@endauth
+                                        
+                                    @else
+                                    <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
+
+									@endif
                                 </ul>
                             </div>
                             <div class="product__item__text">

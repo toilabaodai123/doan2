@@ -51,8 +51,7 @@
                                     </div>
                                 </div>
                                 <div class="comment_text">
-                                    <a href="#" wire:click.prevent="deleteComment({{$blog1->id}})">xóa bình luận</a>
-                                    <span>{{$blog1->created_at}}</span>
+                                   <span>{{$blog1->created_at}}</span>
                                 </div>
                                
                             </div>

@@ -22,7 +22,7 @@
                         <ul>
                             <li>
                                 <h4>{{$con->diadiem}}</h4>
-                                <p>{{$con->diadiem_des}}</p>
+                                <p>{!!$con->diadiem_des!!}</p>
                             </li>
                         </ul>
                     </div>

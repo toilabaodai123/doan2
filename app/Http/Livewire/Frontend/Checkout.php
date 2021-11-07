@@ -47,19 +47,24 @@ class Checkout extends Component
     
     public function render()
     {
-        if(Auth::User())
-        {
-            $this->Name = Auth::User()->name;
-            $this->Email = Auth::User()->email;
-        }
+        // if(Auth::User())
+        // {
+        //     $this->Name = Auth::User()->name;
+        //     $this->Email = Auth::User()->email;
+        // }
 		if(Cart::instance('cart'))
         {
             $this->carts =Cart::instance('cart')->content() ;
+        }else  if(Cart::instance('cart')->count() != 0){
+            return redirect('/cart');
         }
         return view('livewire.frontend.checkout')->layout('layouts.template3');
     }
     public function submit()
     {
+
+        // dd(Cart::instance('cart')->count());
+        if(Cart::instance('cart')->count() != 0){
 			//dd($Order22 = Order::get()->last());
 			if(Order::get()->last() == null)
 				$Assigned_id = null;
@@ -169,7 +174,10 @@ class Checkout extends Component
             session()->flash('OrderCode',$Order->orderCode);
             session()->forget('cart');
 
-            return redirect()->to('/checkout');
+            return redirect()->to('/hoan-tat');
+            }else{
+                return redirect('/cart');
+            }
        
     }
 }
