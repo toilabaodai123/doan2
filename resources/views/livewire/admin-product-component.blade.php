@@ -228,6 +228,13 @@
 														@enderror
 													</div>
 													<div class="col-lg-9">
+														<label>Giá sản phẩm</label>
+														<input class="form-control" placeholder="Giá sản phẩm"></textarea>
+														@error('longDesc')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
+													</div>													
+													<div class="col-lg-9">
 														<div class="checkbox">
 															<label>
 																<input type="checkbox" wire:model="status">Ẩn

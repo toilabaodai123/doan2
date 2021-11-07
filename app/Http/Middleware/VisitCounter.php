@@ -21,6 +21,8 @@ class VisitCounter
 		if($Check == null || date_format($Check->created_at,'D M Y') != date_format(now(),'D M Y')){
 			$Visit = new Visit();
 			$Visit->ip = $request->ip();
+			if(auth()->check())
+				$Visit->user_id = auth()->user()->id;
 			$Visit->view_type = 1;
 			$Visit->save();
 		}

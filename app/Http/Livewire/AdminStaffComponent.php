@@ -35,7 +35,7 @@ class AdminStaffComponent extends Component
 	public $searchField='name';
 	public $sortField='id';
 	public $sortDirection='ASC';
-	public $user_type='Nhân viên kế toán';
+	public $user_type;
 	
 	public $block_note;
 	public $check_status;

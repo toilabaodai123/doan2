@@ -1,6 +1,6 @@
 <div>
 	{{$Categories2->links()}}
-    <div class="col-lg-4">
+    <div class="col-lg-12">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered table-hover table-striped">
                                                     <thead>

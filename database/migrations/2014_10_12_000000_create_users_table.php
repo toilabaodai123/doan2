@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
 			$table->string('user_type')->default('Người dùng');
 			$table->string('cmnd')->nullable();
 			$table->date('birth_date')->nullable();
+			$table->string('address')->nullable();
 			$table->integer('status')->default(1);
             $table->timestamps();
         });

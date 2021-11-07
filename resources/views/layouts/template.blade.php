@@ -165,7 +165,7 @@
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý tài khoản<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
                             <li>
-                                <a href="{{url('/admin/shippers')}}">Quản lý người dùng</a>
+                                <a href="{{url('/admin/users/user')}}">Quản lý người dùng</a>
                             </li>
                             <li>
                                 <a href="{{url('/admin/users/staff')}}">Quản lý nhân viên</a>
