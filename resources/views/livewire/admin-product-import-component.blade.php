@@ -218,23 +218,23 @@
 																							<option>C</option>
 																						</select>
 																					</td>
-																					<td class="col-lg-1"><input  class="form-control" wire:change="updateArray" wire:model.defer="amount.{{$k}}"placeholder="Nhập số lượng"></td>
-																					<td class="col-lg-2"><input  class="form-control" wire:change="updateArray" wire:model.defer="price.{{$k}}"placeholder="Nhập đơn giá"></td>
+																					<td class="col-lg-1"><input  class="form-control" wire:change="a({$k})" wire:model="amount.{{$k}}"placeholder="Nhập số lượng"></td>
+																					<td class="col-lg-2"><input  class="form-control"  wire:model="price.{{$k}}"placeholder="Nhập đơn giá"></td>
 																					<td><button type="button" wire:click="removeBtn({{$k}})" class="btn btn-danger" >Xóa</button></td>
 																				</tr>
 																			@else
 																				<tr>
 																					<td>{{$v['product_name']}}</td>
 																					<td>
-																						<select wire:model="size.{{$k}}" class="form-control">
+																						<select wire:model="size.{{$k}}" wire:change="$a({$k})"class="form-control">
 																							<option>Chọn</option>
 																							<option value="A">A</option>
 																							<option value="B">B</option>
 																							<option value="C">C</option>
 																						</select>
 																					</td>
-																					<td class="col-lg-1"><input  class="form-control" wire:change="updateArray" value="{{$v['quantity']}}" wire:model.defer="amount.{{$k}}"placeholder="Nhập số lượng"></td>
-																					<td class="col-lg-2"><input  class="form-control" value="{{$v['price']}}" wire:change="updateArray" wire:model.defer="price.{{$k}}"placeholder="Nhập đơn giá"></td>
+																					<td class="col-lg-1"><input  class="form-control"   wire:model="amount.{{$k}}"placeholder="Nhập số lượng"></td>
+																					<td class="col-lg-2"><input  class="form-control"   wire:model="price.{{$k}}"placeholder="Nhập đơn giá"></td>
 																					<td><button type="button" wire:click="removeBtn({{$k}})" class="btn btn-danger" >Xóa</button></td>
 																				</tr>																				
 																			@endif
@@ -266,6 +266,10 @@
 
 											<div class="panel-body">
 												<div class="form-group">
+													<div class="col-lg-10">
+														<label>ID Hóa đơn</label>
+														<input wire:model.defer="bill_id" disabled class="form-control" >
+													</div>												
 													<div class="col-lg-10">
 														<label>Thủ kho duyệt</label>
 														<input wire:model.defer="stocker_id" disabled class="form-control" >

@@ -39,7 +39,7 @@ class AdminProductImportComponent extends Component
 	public $searchSelect;
 	public $searchInput;
 	
-	public $size = [];
+	public $size;
 	public $amount;
 	public $price;
 	public $vat;
@@ -58,6 +58,7 @@ class AdminProductImportComponent extends Component
 	public $add_product_longDesc;
 	
 	public $bill_date;
+	public $bill_id;
 	
 	public $Stockers ;
 	public $Accountants;
@@ -115,8 +116,13 @@ class AdminProductImportComponent extends Component
 		array_push($this->selectedProductArray,['is_deleted'=>false,'is_update'=>false,'size' => null,'quantity' => null,'model_id' => null ,'price' => null ,'product_id'=>$id,'product_name'=>$name]);
 	}
 	
+	public function a($k){
+		
+	}
+	
+	
 	public function pushProducts($id){
-		$this->check_update = true;
+		$this->bill_id = $id;
 			if($this->selectedProductArray != null)
 				$this->selectedProductArray = [];
 			$Details = ProductImportBillDetail::where('import_bill_id',$id)->get();
@@ -152,127 +158,141 @@ class AdminProductImportComponent extends Component
 			
 		
 	}
-	public function a($k){
-		dd($k);
-	}
-	
-	
-	public function updateArray(){
-		
-	}
-	
 	
 	public function submit(){
-		/*
-		$this->validate();
 		$flag = false;
-		if($this->selectedProductArray != []){
-			foreach($this->selectedProductArray as $k=>$v){
-				if($v['quantity']==0){
-					$flag = true;
-					break;
-				}
+		if($this->amount != null && $this->size != null && $this->price != null){
+			foreach($this->amount as $k=>$v){
+				if($v == '' || $v <= 0 || $this->price[$k] =='' || $this->price[$k] <= 0 ||
+				count($this->size) < count($this->selectedProductArray) || 
+				count($this->amount) < count($this->selectedProductArray) || $this->size[$k] == 'Chọn')
+					$flag=true;
 			}
 		}else{
-			dd(3);
+			$flag=true;
 		}
-		if($flag==true){
-			dd(4);
-		}
-		*/
-
-		//Thêm hóa đơn
-		$Bill = new ProductImportBill();
-		$Bill->user_id = auth()->user()->id;
-		$Bill->status=1;
-		$Bill->bill_code = $this->bill_code;
-		$Bill->VAT = $this->vat;
-		$Bill->supplier_id = $this->supplierID;
-		$Bill->bill_od = $this->bill_od;
-		$Bill->bill_date = $this->bill_date;
-		$Bill->transporter_name = $this->transporter_name;
-		$Bill->stocker_id = $this->stocker_id_submit;
-		$Bill->accountant_id = $this->accountant_id_submit;
-		$Bill->save();
-		
-		
-		/*
-		//Thêm chi tiết hóa đơn theo từng sản phẩm được chọn
-		foreach($this->selectedProducts as $k=>$v){
-			$Detail = new ProductImportBillDetail();
-			$Detail->import_bill_id = $Bill->id;
-			$Detail->product_model_id = $v['id'];
-			$Detail->amount = $this->amount[$v['id']];
-			$Detail->price = $this->price[$v['id']];
-			$Detail->save();
-			$this->bill_total += ($this->amount[$v['id']] * $this->price[$v['id']]);
-		}
-		*/
-		
-		foreach($this->selectedProductArray as $k=>$v){
-			$checkModel = ProductModel::where('productID',$v['product_id'])
-										->where('size','LIKE',$this->size[$k])
-										->first();
-			if($checkModel == null){
-				$Model = new ProductModel();
-				$Model->productID = $v['product_id'];
-				$Model->size = $this->size[$k];
-				$Model->stock= $this->amount[$k];
-				$Model->stockTemp= $this->amount[$k];
-				$Model->productModelStatus=1;
-				$Model->save();
-			}else{
-				$checkModel->stock += $this->amount[$k];
-				$checkModel->stockTemp += $this->amount[$k];
-				$checkModel->save();
-			}
-			
-			$Product = Product::find($v['product_id']);
-			if($Product->productPrice == null && $Product->productPrice == 0)
-				$Product->productPrice = $this->price[$k]*10;
-			$Product->save();
-			
-			$Detail = new ProductImportBillDetail();
-			$Detail->import_bill_id = $Bill->id;
-			$Model = ProductModel::where('productID',$v['product_id'])->where('size',$this->size[$k])->first();
-			$Detail->product_model_id = $Model->id;
-			$Detail->amount = $this->amount[$k];
-			$Detail->price = $this->price[$k];
-			$Detail->save();
-			$this->bill_total += ($this->amount[$k] * $this->price[$k]);
-			
-			$Product = Product::find($v['product_id']);
-			$Product->status = 1;
-			$Product->save();
-		}
-			
-		$this->bill_total += ( $this->bill_total * ( $this->vat ) / 100 );
-		$Bill->total = $this->bill_total;
-		$Bill->save();
-		
-		
-		//Hình ảnh
-		if($this->bill_image != null ){//&& $this->bill_image != $this->tempImageUrl){
-			$name=$this->bill_image->getClientOriginalName();
-			$name2 = date("Y-m-d-H-i-s").'-'.$name;
-			$this->bill_image->storeAs('/images/bill/',$name2,'public');
+		if($flag==true)
+			session()->flash('error_bill','Hãy kiểm tra thông tin nhập!');
+		else{
+			if($this->bill_id != null){	
+				$OldBill = ProductImportBill::find($this->bill_id);
+				$Bill = new ProductImportBill();
+				$Bill->user_id = $OldBill->user_id;
+				$Bill->bill_code = $this->bill_code;
+				$Bill->VAT = $this->vat;
+				$Bill->supplier_id = $this->supplierID;
+				$Bill->bill_od = $this->bill_od;
+				$Bill->bill_date = $this->bill_date;
+				$Bill->transporter_name = $this->transporter_name;
+				$Bill->stocker_id = $this->stocker_id_submit;
+				$Bill->accountant_id = $this->accountant_id_submit;
+				$Bill->status=1;
+				$Bill->save();			
+				foreach($this->selectedProductArray as $k=>$v){
+					if($v['is_deleted'] == false){	
+						$Detail = new ProductImportBillDetail();
+						$Detail->import_bill_id = $Bill->id;
+						$Model = ProductModel::where('productID',$v['product_id'])->where('size',$this->size[$k])->first();
+						$Detail->product_model_id = $Model->id;
+						$Detail->amount = $this->amount[$k];
+						$Detail->price = $this->price[$k];
+						$Detail->save();
+						$this->bill_total += ($this->amount[$k] * $this->price[$k]);
 						
-			$Image = new Image();
-			$Image->imageName = $name2;
-			$Image->image_type = 'Hình ảnh hóa đơn nhập hàng'; //1 = Hình ảnh sp chính, 2 = phụ , 3 = category , 4 = hóa đơn
-			$Image->import_bill_id = $Bill->id;
-			$Image->save();
-		}
+						$Model->stock += $this->amount[$k];
+						$Model->stockTemp += $this->amount[$k];
+						$Model->save();
+					}
+				}
+				$OldDetails = ProductImportBillDetail::where('import_bill_id',$this->bill_id)->get();
+				foreach($OldDetails as $detail){
+					$Model = ProductModel::find($detail->product_model_id);
+					$Model->stock -= $detail->amount;
+					$Model->stockTemp -= $detail->amount;
+					$Model->save();
+				}
+			}
+			else{
+				//Thêm hóa đơn
+				$Bill = new ProductImportBill();
+				$Bill->user_id = auth()->user()->id;
+				$Bill->status=1;
+				$Bill->bill_code = $this->bill_code;
+				$Bill->VAT = $this->vat;
+				$Bill->supplier_id = $this->supplierID;
+				$Bill->bill_od = $this->bill_od;
+				$Bill->bill_date = $this->bill_date;
+				$Bill->transporter_name = $this->transporter_name;
+				$Bill->stocker_id = $this->stocker_id_submit;
+				$Bill->accountant_id = $this->accountant_id_submit;
+				$Bill->save();
 
-		$Log = new AdminLog();
-		$Log->admin_id = auth()->user()->id;
-		$Log->note = "Đã tạo hóa đơn nhập hàng id:".$Bill->id;
-		$Log->save();	
-		
-		
-		session()->flash('success','Thành công');
-		$this->reset();
-		
+				foreach($this->selectedProductArray as $k=>$v){
+					$checkModel = ProductModel::where('productID',$v['product_id'])
+												->where('size','LIKE',$this->size[$k])
+												->first();
+					if($checkModel == null){
+						$Model = new ProductModel();
+						$Model->productID = $v['product_id'];
+						$Model->size = $this->size[$k];
+						$Model->stock= $this->amount[$k];
+						$Model->stockTemp= $this->amount[$k];
+						$Model->productModelStatus=1;
+						$Model->save();
+					}else{
+						$checkModel->stock += $this->amount[$k];
+						$checkModel->stockTemp += $this->amount[$k];
+						$checkModel->save();
+					}
+					
+					$Product = Product::find($v['product_id']);
+					if($Product->productPrice == null && $Product->productPrice == 0)
+						$Product->productPrice = $this->price[$k]*10;
+					$Product->save();
+					
+					$Detail = new ProductImportBillDetail();
+					$Detail->import_bill_id = $Bill->id;
+					$Model = ProductModel::where('productID',$v['product_id'])->where('size',$this->size[$k])->first();
+					$Detail->product_model_id = $Model->id;
+					$Detail->amount = $this->amount[$k];
+					$Detail->price = $this->price[$k];
+					$Detail->save();
+					$this->bill_total += ($this->amount[$k] * $this->price[$k]);
+					
+					$Product = Product::find($v['product_id']);
+					$Product->status = 1;
+					$Product->save();
+				}
+					
+				$this->bill_total += ( $this->bill_total * ( $this->vat ) / 100 );
+				$Bill->total = $this->bill_total;
+				$Bill->save();
+				
+				
+				//Hình ảnh
+				if($this->bill_image != null ){//&& $this->bill_image != $this->tempImageUrl){
+					$name=$this->bill_image->getClientOriginalName();
+					$name2 = date("Y-m-d-H-i-s").'-'.$name;
+					$this->bill_image->storeAs('/images/bill/',$name2,'public');
+								
+					$Image = new Image();
+					$Image->imageName = $name2;
+					$Image->image_type = 'Hình ảnh hóa đơn nhập hàng'; //1 = Hình ảnh sp chính, 2 = phụ , 3 = category , 4 = hóa đơn
+					$Image->import_bill_id = $Bill->id;
+					$Image->save();
+				}
+
+				$Log = new AdminLog();
+				$Log->admin_id = auth()->user()->id;
+				$Log->note = "Đã tạo hóa đơn nhập hàng id:".$Bill->id;
+				$Log->save();	
+				
+				
+				session()->flash('success','Thành công');
+				
+			}
+			$this->reset();
+		}
 	}
 	
 	public function test(){
@@ -286,11 +306,7 @@ class AdminProductImportComponent extends Component
 	public function removeBtn($k){
 		$this->selectedProductArray[$k]['is_deleted']=true;
 	}
-	
-	public function addNewProduct(){
-		
-	}
-	
+
 	public function submitProduct(){
 		//dd($this);
 		$Product = new Product();
@@ -313,9 +329,7 @@ class AdminProductImportComponent extends Component
 				$Model->productModelStatus = 0 ;
 				$Model->save();
 			}
-			
-			
-			
+
 			session()->flash('successModal','Thành công');
 			$this->add_product_name = null;
 			$this->add_product_category_1 = null;
