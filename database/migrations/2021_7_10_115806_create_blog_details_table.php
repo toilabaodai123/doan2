@@ -21,7 +21,6 @@ class CreateBlogDetailsTable extends Migration
             $table->string('short_des');
             $table->text('des');
             $table->string('category');
-            $table->string('tag');
             $table->string('author');
             $table->timestamps();
         });

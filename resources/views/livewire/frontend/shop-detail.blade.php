@@ -9,9 +9,9 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="product__details__breadcrumb">
-                            <a href="{{URL::to('index')}}">Home</a>
-                            <a href="{{URL::to('shop')}}">Shop</a>
-                            <span>Product Details</span>
+                            <a href="{{URL::to('index')}}">Trang chủ</a>
+                            <a href="{{URL::to('shop')}}">Sản phẩm</a>
+                            <span>Chi tiết sản phẩm {{$pro->productName}}</span>
                         </div>
                     </div>
                 </div>
@@ -76,21 +76,17 @@
                                 @endif
                             </div>
                             <div class="product__details__btns__option">
-                            @if($pro->wishlist != null && Auth::user())
-                                @if(Auth::user()->id == $pro->wishlist->id_user)
-                                
-                                        @if($pro->id === $pro->wishlist->productID && $pro->wishlist->status == 1)
-                                            <a href="#"  wire:click.prevent="removeWishlish({{$pro->wishlist->id}})"  >
-                                                <i class="fa fa-heart fill-heart"></i>move to wishlist</a>
-                                        @else
-                                            <a href="#"  wire:click.prevent="addToWishlisht({{$pro->id}})" ><i class="fa fa-heart"></i>add to wishlist</a>
-                                    
-                                        @endif
-                                     @endif
-
+                         
+                            @if(Auth::user() != null)
+                                @if($pro->checkWishlist == null)
+                                    <a href="#" class="wishlist 3" wire:click.prevent="addToWishlisht({{$pro->id}})" ><i class="fa fa-heart"></i>add to wishlist</a>
+                                @else
+                                    <a href="#" class="wishlist 2 " wire:click.prevent="removeWishlish({{$pro->id}})"  ><i class="fa fa-heart fill-heart"></i>add to wishlist</a>
+                                @endif
+                                        
                             @else
-                                <a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$pro->id}})" ><i class="fa fa-heart"></i>add to wishlist</a>
-                            @endif
+                                <a href="#" class="wishlist 1 " wire:click.prevent="addToWishlisht({{$pro->id}})" ><i class="fa fa-heart"></i>add to wishlist</a>
+							@endif
                                 </div>
                             <div class="product__details__last__option">
                                 <ul>

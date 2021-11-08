@@ -31,7 +31,7 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-12">
                     <div class="blog__details__pic">
-                        <img src="{{asset('public/images/post/'.$blog->full_image)}}" alt="">
+                        <img src="{{asset('storage/images/post/'.$blog->full_image)}}" alt="">
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -39,6 +39,11 @@
                         <div class="blog__details__text">
                            {!! $blog->des !!}
                         </div>
+                        </div>
+                       
+                </div>
+                <div class="col-lg-12">
+                    <div class="blog__details__content">
                         <div class="comment">
                             <h4>Bình luận  ({{$com->count()}})</h4>
                         @forelse ($com as $blog1)
@@ -103,7 +108,6 @@
                             @endif
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </section>
@@ -115,8 +119,8 @@
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="blog__item">
                         <div class="blog__item__pic set-bg"
-                        style="background-image: url('{{asset('public/images/post/'.$blog->avata_image)}}')"
-                         data-setbg="{{asset('public/images/post/'.$blog->avata_image)}}"></div>
+                        style="background-image: url('{{asset('storage/images/post/'.$blog->avata_image)}}')"
+                         data-setbg="{{asset('storage/images/post/'.$blog->avata_image)}}"></div>
                         <div class="blog__item__text">
                             <span><img src="{{asset('img/icon/calendar.png')}}" style="width: unset" alt=""> {{$blog->created_at}}</span>
                             <h5>{{$blog->head_title}}</h5>

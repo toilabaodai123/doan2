@@ -39,8 +39,8 @@ class CategoryComponent extends Component
     public $cart;
 
 
-    public function mount($id){
-        $this->categoryId = $id;
+    public function mount(string $slug){
+        $this->categoryId = $slug;
     }
 
 
@@ -50,9 +50,12 @@ class CategoryComponent extends Component
 
         $this->categorylv1 = ProductCategory::all();
 
-        $cate = ProductCategory::find($this->categoryId);
+        $cate_slug = ProductCategory::where('slug',$this->categoryId )->first();
+
+          
+
         if($this->categoryId != null){
-            $categorylv1_name =  $cate->categoryName;
+            $categorylv1_name =  $cate_slug->categoryName;
         }else{
             $categorylv1_name =  'Tất cả';
 
@@ -64,7 +67,7 @@ class CategoryComponent extends Component
         if($this->priceSort == 'price_asc')
         {
             if($this->categoryId != null){
-                $products = Product::with('Pri_Image')->where('CategoryID', $this->categoryId)->
+                $products = Product::with('Pri_Image')->where('CategoryID', $cate_slug->id)->
                 orderBy('productPrice', 'ASC')->where('productName','LIKE', $search2)
                 ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
@@ -77,7 +80,7 @@ class CategoryComponent extends Component
         else if($this->priceSort == 'price_desc')
         {
             if($this->categoryId != null){
-                $products = Product::with('Pri_Image')->where('CategoryID', $this->categoryId)->
+                $products = Product::with('Pri_Image')->where('CategoryID', $cate_slug->id)->
                 orderBy('productPrice', 'DESC')->where('productName','LIKE', $search2)
                 ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
@@ -89,7 +92,7 @@ class CategoryComponent extends Component
         }
         else {
             if($this->categoryId != null  &&  $this->brandId == null){
-                $products = Product::with('Pri_Image')->where('CategoryID', $this->categoryId)
+                $products = Product::with('Pri_Image')->where('CategoryID', $cate_slug->id)
                 ->where('productName','LIKE', $search2)
                 ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
 
@@ -102,11 +105,8 @@ class CategoryComponent extends Component
 
         return view('livewire.frontend.category-component',compact('products','categorylv1_name'))->layout('layouts.template3');
     }
-    public function category($id){
-        $this->categoryId = $id;
-    }
-    public function brand($id){
-        $this->brandId = $id;
+    public function category($slug){
+        $this->categoryId = $slug;
     }
     public function price($min, $max){
         $this->priceMin = $min;

@@ -21,11 +21,7 @@ class Users extends Component
     ];
     public function render()
     {
-        if(Auth::User())
-        {
-            $this->name = Auth::User()->name;
-            $this->email = Auth::User()->email;
-        }
+       
         // dd($this->name);
         return view('livewire.frontend.users')->layout('layouts.template3');
     }
@@ -40,4 +36,10 @@ class Users extends Component
 
               session()->flash('message', 'Cập nhập tài khoản thành công');
     }
+     public  function edit()
+     {
+         $data = User::find(Auth::user()->id);
+         $this->name = $data->name;
+         $this->email = $data->email;
+     }
 }

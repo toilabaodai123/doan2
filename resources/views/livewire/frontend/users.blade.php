@@ -44,6 +44,18 @@
                                 <span> Email :</span> 
                                 {{ Auth::user()->email}}
                             </div>
+                            <a href="#" wire:click.prevent="edit()"
+                            style="display: inline-block;
+                                    font-size: 13px;
+                                    font-weight: 700;
+                                    text-transform: uppercase;
+                                    padding: 14px 30px;
+                                    color: #ffffff;
+                                    background: #000000;
+                                    letter-spacing: 4px;
+                                    margin-bottom: 20px;"
+                            
+                            >Edit</a>
                             @if(session()->has('message'))
                                 <div class="alert alert-success">
                                     {{session('message')}}
@@ -57,7 +69,7 @@
                                 @error('name')<p style="color: red">{{ $message }}</p> @enderror
                                 <div class="item">
                                     <span> Emai :</span>
-                                    <input type="text" placeholder="Email" name="email"  value="{{Auth::user()->email}}"  wire:model="email">
+                                    <input type="text" placeholder="Email" name="email"  wire:model="email">
                                 </div>
                                 @error('email')<p style="color: red">{{ $message }}</p> @enderror
                                 <button type="submit" >Lưu</button>

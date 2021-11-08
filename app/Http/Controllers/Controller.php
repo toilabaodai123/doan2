@@ -30,21 +30,24 @@ class Controller extends BaseController
     {
         $req->validate([
             'heading' => 'required',
-            'avata' => 'required'
+            'avata' => 'required',
+            'category' => 'required',
+            'full_image' => 'required',
+            'short_des' => 'required',
+            'des' => 'required',
         ]);
         $data = new Blog_detail();
         $data->head_title = $req->heading;
-        $data->category = 0;
+        $data->category = $req->category;
         $data->short_des = $req->short_des;
         $data->des = $req->des;
-        $data->tag = 0;
         $data->author = Auth::user()->name;
 
         $full_image = $req->file('full_image');
         If ($full_image){
             $name = $req->full_image->getClientOriginalName();
             $name2 = date("Y-m-d-H-i-s").'-'.$name;
-            $full_image->move('public/images/post',$name2);
+            $full_image->move('storage/images/post',$name2);
             $data->full_image = $name2;
         }else{
             $data->full_image = '$req->$name2';
@@ -54,7 +57,7 @@ class Controller extends BaseController
         If ($avata){
             $name = $req->avata->getClientOriginalName();
             $name2 = date("Y-m-d-H-i-s").'-'.$name;
-            $avata->move('public/images/post',$name2);
+            $avata->move('storage/images/post',$name2);
             $data->avata_image = $name2;
         }else{
             $data->avata_image = '$req->$name1';
@@ -69,17 +72,16 @@ class Controller extends BaseController
         
         $data = Blog_detail::where('id', $id)->first();
         $data->head_title = $req->heading;
-        $data->category = 0;
+        $data->category = $req->category;
         $data->short_des = $req->short_des;
         $data->des = $req->des;
-        $data->tag = 0;
         $data->author = Auth::user()->name;
 
         $full_image = $req->file('full_image');
         If ($full_image){
             $name = $req->full_image->getClientOriginalName();
             $name2 = date("Y-m-d-H-i-s").'-'.$name;
-            $full_image->move('public/images/post',$name2);
+            $full_image->move('storage/images/post',$name2);
             $data->full_image = $name2;
         }else{
             $data->full_image = $data->full_image;
@@ -89,7 +91,7 @@ class Controller extends BaseController
         If ($avata){
             $name = $req->avata->getClientOriginalName();
             $name2 = date("Y-m-d-H-i-s").'-'.$name;
-            $avata->move('public/images/post',$name2);
+            $avata->move('storage/images/post',$name2);
             $data->avata_image = $name2;
         }else{
             $data->avata_image = $data->avata_image;

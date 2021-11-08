@@ -119,13 +119,20 @@
                             <li><a href="#">Pages</a>
                                 <ul class="dropdown">
                                     <li><a href="{{URL::to('/about')}}">About Us</a></li>
+                                    <li><a href="{{URL::to('/contact')}}">Contacts</a></li>
                                     <li><a href="{{URL::to('/shop')}}">Shop</a></li>
                                     <li><a href="{{URL::to('/cart')}}">Shopping Cart</a></li>
                                     <li><a href="{{URL::to('/checkout')}}">Check Out</a></li>
                                     <li><a href="{{URL::to('/blog')}}">Blog </a></li>
                                 </ul>
                             </li>
-                            <li><a href="{{URL::to('/contact')}}">Contacts</a></li>
+                            <li><a href="{{URL::to('/blog')}}">Blog </a>
+                                <ul class="dropdown">
+                                    <li><a href="{{URL::to('/blog/caregory/'. 1)}}">Tin tức</a></li>
+                                    <li><a href="{{URL::to('/blog/caregory/'. 2)}}">Sự kiện</a></li>
+                                    <li><a href="{{URL::to('/blog/caregory/'. 3)}}">Thời Trang</a></li>
+                                </ul>
+                            </li>
                             <li><a href="{{URL::to('/tra-cuu-don-hang')}}">Tra cứu đơn hàng </a></li>
 
                         </ul>

@@ -37,6 +37,9 @@
                     <div class="row">
                            @foreach($products as $product)
                            <div class="col-lg-3 col-md-6 col-sm-6">
+                        <a href="
+                        {{URL::to('shop-detail/'. $product->Product->productSlug )}}" >
+
                             <div class="product__item sale">
                                 <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_Image->imageName)}}">
                                     @if($product->Pri_Image != null)
@@ -56,6 +59,7 @@
                                     <h5>{{ number_format($product->Product->productPrice) }} VND</h5>
                                 </div>
                             </div>
+                            </a>
                         </div>
                             @endforeach 
                     </div>

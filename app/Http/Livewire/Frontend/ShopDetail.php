@@ -22,12 +22,13 @@ class ShopDetail extends Component
     public $sizeId = '';
     public $cart_qty = 1;
 
-    public function mount($id){
+    public function mount(string $slug){
         $this->relatedPro = Product::with('Pri_image')->with('Category1')
         ->orderBy('id', 'DESC')->get()->take(4);
-        $this->product = Product::with('Pri_image')->with('Models')->with('wishlist')->where('id', $id)->get();
+        $this->product = Product::with('Pri_image')->with('Models')->with('wishlist')->where('productSlug', $slug)->get();
+        $proSlug = Product::where('productSlug', $slug)->first();
         // $this->size = ProductSize::all();
-		$this->Sizes = ProductModel::with('Size')->where('productID',$id)->get();
+		$this->Sizes = ProductModel::with('Size')->where('productID',$proSlug->id)->get();
     }
     public function render()
     {

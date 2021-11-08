@@ -61,9 +61,10 @@ Route::middleware(['VisitCounter','checkMaintenance'])->group(function(){
 	Route::get('/', App\Http\Livewire\Frontend\Index::class);
 	Route::get('index', App\Http\Livewire\Frontend\Index::class)->name('index');
 	Route::get('shop', App\Http\Livewire\Frontend\Shop::class);
-	Route::get('shop-detail/{id}', App\Http\Livewire\Frontend\ShopDetail::class);
-	Route::get('product/category/{id}',App\Http\Livewire\Frontend\CategoryComponent::class);
+	Route::get('shop-detail/{slug}', App\Http\Livewire\Frontend\ShopDetail::class);
+	Route::get('product/category/{slug}',App\Http\Livewire\Frontend\CategoryComponent::class);
 	Route::get('blog',App\Http\Livewire\Frontend\Blog::class);
+	Route::get('blog/caregory/{id}',App\Http\Livewire\Frontend\BlogCategory::class);
 	Route::get('cart', App\Http\Livewire\Frontend\carts::class);
 	Route::get('blog-detail/{id}',App\Http\Livewire\Frontend\BlogDetail::class);
 	Route::get('checkout',App\Http\Livewire\Frontend\Checkout::class);
