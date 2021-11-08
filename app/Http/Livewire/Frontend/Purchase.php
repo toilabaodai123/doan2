@@ -39,16 +39,24 @@ class Purchase extends Component
 				'rating.required' => 'Hãy chọn chất lượng đánh giá'
 			]);
 			$Details = OrderDetail::where('order_id',$id)->get();
+			$old_product_id = [];
 			foreach ($Details as $detail){
-				$Review = new Comment2();
-				$Review->user_id = auth()->user()->id;
-				$Review->order_id = $id;
-				$Review->product_id = $detail->ProductModel->Product->id;
-				$Review->text = $this->review_input;
-				$Review->rating = 5;
-				$Review->type = 2;
-				$Review->status = 1;
-				$Review->save();
+				$flag=false;
+				foreach($old_product_id as $old_id)
+					if($detail->ProductModel->Product->id == $old_id)
+						$flag=true;
+				if($flag==false){
+					$Review = new Comment2();
+					$Review->user_id = auth()->user()->id;
+					$Review->order_id = $id;
+					$Review->product_id = $detail->ProductModel->Product->id;
+					$Review->text = $this->review_input;
+					$Review->rating = 5;
+					$Review->type = 2;
+					$Review->status = 1;
+					$Review->save();
+					array_push($old_product_id,$detail->ProductModel->Product->id);
+				}
 			}
 			session()->flash('success_review','Đánh giá thành công , xin cảm ơn bạn');
 		}else{
