@@ -70,6 +70,10 @@ class Checkout extends Component
 		
         // dd(Cart::instance('cart')->count());
         if(Cart::instance('cart')->count() != 0){
+			
+			
+			
+			
 			//Kiểm tra ip bị chặn
 			if($CheckUserBlock && Carbon::now() <= $date->addDays($CheckUserBlock->duration) && 1==2){
 				$diff = $date->addDays($CheckUserBlock->duration)->diffInDays(Carbon::now());

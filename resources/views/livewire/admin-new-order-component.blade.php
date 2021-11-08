@@ -60,8 +60,8 @@
 														<td>{{$o->address}}</td>
 														<td>{{$o->created_at}}</td>
 														<td>
-															<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#viewOrder({{$o->id}})">Xem</button>
-															<div class="modal fade" id="viewOrder({{$o->id}})" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#viewOrder{{$o->id}}">Xem</button>
+															<div class="modal fade" id="viewOrder{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
@@ -105,8 +105,8 @@
 																									<!-- /.modal-dialog -->
 															</div>	
 															<button type="button" wire:click="acceptOrder({{$o->id}})" class="btn btn-success">Duyệt</button>	
-															<button type="button" data-toggle="modal" data-target="#declineOrder({{$o->id}})" class="btn btn-warning">Từ chối</button>	
-															<div wire:ignore.self class="modal fade" id="declineOrder({{$o->id}})" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<button type="button" data-toggle="modal" data-target="#declineOrder{{$o->id}}" class="btn btn-warning">Từ chối</button>	
+															<div wire:ignore.self class="modal fade" id="declineOrder{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
@@ -136,8 +136,8 @@
 																									</div>
 																									<!-- /.modal-dialog -->
 															</div>	
-															<button type="button" data-toggle="modal" data-target="#blockOrder({{$o->id}})" class="btn btn-danger">Chặn</button>
-															<div wire:ignore.self class="modal fade" id="blockOrder({{$o->id}})" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<button type="button" data-toggle="modal" data-target="#blockOrder{{$o->id}}" class="btn btn-danger">Chặn</button>
+															<div wire:ignore.self class="modal fade" id="blockOrder{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">

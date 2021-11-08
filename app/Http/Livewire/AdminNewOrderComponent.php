@@ -42,6 +42,7 @@ class AdminNewOrderComponent extends Component
 			$Orders2 = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
 											 ->where('status',1)
 											 ->orWhereNull('assigned_to',null)
+											 ->where('status',1)
 											 ->paginate(5);			
         return view('livewire.admin-new-order-component',['Orders2' => $Orders2])
 					->layout('layouts.template');
@@ -51,8 +52,11 @@ class AdminNewOrderComponent extends Component
 	
 	
 	public function acceptOrder($id){
+		//dd($id);
 		$Order = Order::find($id);
 		$Order->admin_id = auth()->user()->id;
+		if($Order->assigned_to == null)
+			$Order->assigned_to = auth()->user()->id;
 		$Order->status = 2;
 		$Order->save();
 		

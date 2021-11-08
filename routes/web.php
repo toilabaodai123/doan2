@@ -35,7 +35,7 @@ use App\Http\Livewire\AdminSettingComponent;
 use App\Http\Livewire\UserMaintenanceComponent;
 use App\Http\Livewire\AdminInfoComponent;
 use App\Http\Livewire\AdminUserComponent;
-
+use App\Http\Livewire\ReportComponent;
 
 
 /*
@@ -92,6 +92,7 @@ Route::middleware(['VisitCounter','checkMaintenance'])->group(function(){
 	Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');	
 	Route::get('tra-cuu-don-hang',CheckOrderComponent::class);
 	Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('auth');
+	Route::get('bao-cao/{type}/{id}',ReportComponent::class);
 });
 	Route::middleware(['auth','CheckType_Admin'])->group(function(){
 		Route::get('/admin/dashboard', AdminDashboardComponent::class)->name('admin.dashboard');

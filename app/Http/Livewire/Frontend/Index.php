@@ -96,4 +96,8 @@ class Index extends Component
 		$Favorite->save();
 		session()->flash('delete_favorite','Đã hủy thích sản phẩm '.$ProductName->productName);
     } 
+	
+	public function report($id){
+		return redirect()->to('bao-cao');
+	}
 }
