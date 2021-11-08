@@ -70,9 +70,21 @@ class Checkout extends Component
 		
         // dd(Cart::instance('cart')->count());
         if(Cart::instance('cart')->count() != 0){
-			if($CheckUserBlock && Carbon::now() <= $date->addDays($CheckUserBlock->duration)){
-				session()->flash('user_blocked','Bạn đã bị chặn đặt hàng , vui lòng liên hệ quản trị viên để biết thêm thông tin');
-			}
+			//Kiểm tra ip bị chặn
+			if($CheckUserBlock && Carbon::now() <= $date->addDays($CheckUserBlock->duration) && 1==2){
+				$diff = $date->addDays($CheckUserBlock->duration)->diffInDays(Carbon::now());
+				session()->flash('user_blocked','Bạn đã bị chặn đặt hàng '.$diff.' ngày , vui lòng liên hệ quản trị viên để biết thêm thông tin');
+			}else{
+				//Kiểm tra ip đặt quá nhiều đơn hàng
+				$CheckOrders = Order::where('ip',request()->ip())
+									->where('status',1)
+									->where('created_at','>=',Carbon::now()->subMinutes(60))
+									->get()
+									->last();
+				//dd($CheckOrders->created_at >= Carbon::now()->subMinutes(6) );
+				if($CheckOrders->count() >= 5){
+					session()->flash('user_blocked','Bạn đã đặt quá nhiều đơn hàng, vui lòng thử lại sau');
+				}
 			else{
 			//dd($Order22 = Order::get()->last());
 			if(Order::get()->last() == null)
@@ -186,7 +198,7 @@ class Checkout extends Component
             session()->forget('cart');
 
             return redirect()->to('/hoan-tat');
-	}}else{
+	}}}else{
                 return redirect('/cart');
             }
        
