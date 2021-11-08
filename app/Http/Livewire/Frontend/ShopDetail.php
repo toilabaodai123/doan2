@@ -23,6 +23,7 @@ class ShopDetail extends Component
     public $size;
     public $sizeId = '';
     public $cart_qty = 1;
+	public $get_id;
 
     public function mount(string $slug){
         $this->relatedPro = Product::with('Pri_image')->with('Category1')
@@ -32,6 +33,7 @@ class ShopDetail extends Component
 
         $this->comment = Comment2::where('product_id',$proSlug->id)->where('status',1)->get();
 		$this->Sizes = ProductModel::with('Size')->where('productID',$proSlug->id)->get();
+		$this->get_id = Product::where('productSlug',$slug)->get()->last();
     }
     public function render()
     {
@@ -103,4 +105,5 @@ class ShopDetail extends Component
 		$Review->status = 0;
 		$Review->save();
 	}
+
 }

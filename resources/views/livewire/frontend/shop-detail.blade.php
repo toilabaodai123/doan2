@@ -74,6 +74,7 @@
                                     {{session('message_add')}}
                                     </p>
                                 @endif
+								<a href="{{url('/bao-cao/san-pham/'.$get_id->id)}}" class="primary-btn">Báo lỗi</a>
                             </div>
                             <div class="product__details__btns__option">
                          
