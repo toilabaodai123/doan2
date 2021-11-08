@@ -24,6 +24,7 @@ class ShopDetail extends Component
     public $size;
     public $sizeId = '';
     public $cart_qty = 1;
+	public $get_id;
 
     public function mount(string $slug){
         $this->relatedPro = Product::with('Pri_image')->with('Category1')->orderBy('id', 'DESC')->get()->take(4);
@@ -31,9 +32,14 @@ class ShopDetail extends Component
        
         $proSlug = Product::where('productSlug', $slug)->first();
 
+<<<<<<< HEAD
         $this->bl = Comment2::with('User')->where('product_id',$proSlug->id)->get();
         // dd($this->bl);
+=======
+        $this->comment = Comment2::where('product_id',$proSlug->id)->where('status',1)->get();
+>>>>>>> e4652b1803ed4248ee8b398df35b5fdf720d49fa
 		$this->Sizes = ProductModel::with('Size')->where('productID',$proSlug->id)->get();
+		$this->get_id = Product::where('productSlug',$slug)->get()->last();
     }
     public function render()
     {
@@ -93,6 +99,7 @@ class ShopDetail extends Component
         }
     }  
     public function removeWishlish($id){
+<<<<<<< HEAD
         $ProductName = Product::find($id);
 		
 		$Favorite = Wishlist::where('id_user',auth()->user()->id)->where('productID',$id)->get()->last();
@@ -101,4 +108,19 @@ class ShopDetail extends Component
 		$Favorite->save();
 		session()->flash('delete_favorite','Đã hủy thích sản phẩm '.$ProductName->productName);
     } 
+=======
+        $flight = Wishlist::find($id);
+        $flight->status = 0;
+
+        $flight->save();
+    }
+
+
+	public function deleteReview($id){
+		$Review = Comment2::find($id);
+		$Review->status = 0;
+		$Review->save();
+	}
+
+>>>>>>> e4652b1803ed4248ee8b398df35b5fdf720d49fa
 }

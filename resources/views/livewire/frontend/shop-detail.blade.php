@@ -74,6 +74,7 @@
                                     {{session('message_add')}}
                                     </p>
                                 @endif
+								<a href="{{url('/bao-cao/san-pham/'.$get_id->id)}}" class="primary-btn">Báo lỗi</a>
                             </div>
                             <div class="product__details__btns__option">
                                      @if(Auth::user() != null)
@@ -149,8 +150,20 @@
                                                         <div class="comment_text">
                                                         <span>{{$blog1->created_at}}</span>
                                                         </div>
+<<<<<<< HEAD
                                                 @endforeach
                                             </div>
+=======
+                                                    </div>
+                                                    <div class="comment_text">
+                                                    <span>31231</span>
+                                                    </div>
+													@if(auth()->check() && auth()->user()->user_type=='Admin')
+														<button type="button" wire:click="deleteReview({{$com->id}})"class="btn btn-success">Xóa (Admin)</button>
+													@endif
+                                                </div>
+                                            @endforeach
+>>>>>>> e4652b1803ed4248ee8b398df35b5fdf720d49fa
                                         </div>
                                     </div>
                                 </div>
