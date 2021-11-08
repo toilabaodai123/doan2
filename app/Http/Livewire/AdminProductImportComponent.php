@@ -104,11 +104,11 @@ class AdminProductImportComponent extends Component
 											   
 		if($this->bill_searchInput == null)
 			$Bills = ProductImportBill::
-									   orderBy($this->bill_searchField,$this->bill_sortDirection)
+									   orderBy($this->bill_sortField,$this->bill_sortDirection)
 									   ->paginate(3);
 		else
 			$Bills = ProductImportBill::where($this->bill_searchField,'LIKE','%'.$this->bill_searchInput.'%')
-										->orderBy($this->bill_searchField,$this->bill_sortDirection)
+										->orderBy($this->bill_sortField,$this->bill_sortDirection)
 										->paginate(3);
 		//dd($Bills);
 		return view('livewire.admin-product-import-component',['Products' => $Products,'Bills' => $Bills])

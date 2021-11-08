@@ -6,6 +6,9 @@
 					
 					<div class="panel-heading">
 						Danh sách các đơn hàng mới	
+						<label>
+							<input type="checkbox" wire:model="show_all_status" style="margin-left:30px">Hiển thị các đơn hàng trống
+						</label>
 					</div>
 					<div class="panel-body">
 						{{$Orders2->links()}}

@@ -19,7 +19,9 @@
         </div>
     </section>
     <!-- Breadcrumb Section End -->
-
+	@if(session()->has('user_blocked'))
+		<h4>{{session('user_blocked')}}</h4>
+	@endif
     <!-- Checkout Section Begin -->
     <section class="checkout spad">
         <div class="container">
