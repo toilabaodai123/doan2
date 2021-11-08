@@ -57,6 +57,7 @@
                                     <h6>{{$product->Product->productName}}</h6>
                                      <a href="{{URL::to('shop-detail/'. $product->productID )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
                                     <h5>{{ number_format($product->Product->productPrice) }} VND</h5>
+
                                 </div>
                             </div>
                             </a>

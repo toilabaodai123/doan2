@@ -49,11 +49,7 @@ class Checkout extends Component
     
     public function render()
     {
-        // if(Auth::User())
-        // {
-        //     $this->Name = Auth::User()->name;
-        //     $this->Email = Auth::User()->email;
-        // }
+        
 		if(Cart::instance('cart'))
         {
             $this->carts =Cart::instance('cart')->content() ;

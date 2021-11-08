@@ -76,17 +76,35 @@
                                 @endif
                             </div>
                             <div class="product__details__btns__option">
-                         
-                            @if(Auth::user() != null)
-                                @if($pro->checkWishlist == null)
-                                    <a href="#" class="wishlist 3" wire:click.prevent="addToWishlisht({{$pro->id}})" ><i class="fa fa-heart"></i>add to wishlist</a>
-                                @else
-                                    <a href="#" class="wishlist 2 " wire:click.prevent="removeWishlish({{$pro->id}})"  ><i class="fa fa-heart fill-heart"></i>add to wishlist</a>
-                                @endif
+                                     @if(Auth::user() != null)
+										@if($pro->checkWishlist == null)
+                                        <a href="#"  wire:click.prevent="addToWishlisht({{$pro->id}})"  >
+                                                <i class="fa fa-heart 1"></i>add to wishlist</a>
+                                        @else
+										    <a href="#" wire:click.prevent="removeWishlish({{$pro->id}})"  >
+                                                <i class="fa fa-heart 2 fill-heart"></i>move to wishlist</a>
+                                        @endif
                                         
+                                    @else
+                                     <a href="#"  wire:click.prevent="addToWishlisht({{$pro->id}})" >
+                                                <i class="fa fa-heart 3"></i>add to wishlist</a>
+									@endif
+                            <!-- @if($pro->wishlist != null && Auth::user()!= null)
+                                @if(Auth::user()->id == $pro->wishlist->id_user)
+                                
+                                        @if($pro->id === $pro->wishlist->productID && $pro->wishlist->status == 1)
+                                            <a href="#"  wire:click.prevent="removeWishlish({{$pro->wishlist->id}})"  >
+                                                <i class="fa fa-heart fill-heart"></i>move to wishlist</a>
+                                        @else
+                                            <a href="#"  wire:click.prevent="addToWishlisht({{$pro->id}})" >
+                                                <i class="fa fa-heart"></i>add to wishlist</a>
+                                    
+                                        @endif
+                                     @endif
                             @else
-                                <a href="#" class="wishlist 1 " wire:click.prevent="addToWishlisht({{$pro->id}})" ><i class="fa fa-heart"></i>add to wishlist</a>
-							@endif
+                                <a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$pro->id}})" >
+                                    <i class="fa fa-heart"></i>add to wishlist</a>
+                            @endif -->
                                 </div>
                             <div class="product__details__last__option">
                                 <ul>
@@ -116,24 +134,23 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tabs-6" role="tabpanel">
-                                    <div class="product__details__tab__content" style="padding-top: 0px;">
+                                    <div class="product__details__tab__content" style="padding-top: unset">
                                         <div class="product__details__tab__content__item">
-                                        <div class="comment" style="border-top: unset;">
-                                            @foreach($bl as $com)
-                                                <div class="blog__show__comment" >
-                                                    <div class="top">
-                                                        <img src="{{asset('img/icon_user.jpg')}}" alt="" >
-                                                        <div class="user_info" style="align-items: flex-start;">
-                                                                <h5>Ngọc Thính</h5>
-                                                                <p>{{$com->text}}</p>
+                                        <div class="comment" style="border-top: unset">
+                                                @forelse ($bl as $blog1)
+                                                    <div class="blog__show__comment">
+                                                        <div class="top">
+                                                            <img src="{{asset('img/icon_user.jpg')}}" alt="" >
+                                                            <div class="user_info" style="    align-items: flex-start;">
+                                                                    <h5>Ngoc thinh</h5>
+                                                                    <p>{{$blog1->text}}</p>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="comment_text">
-                                                    <span>{{$com->created_at}}</span>
-                                                    </div>
-                                                
-                                                </div>
+                                                        <div class="comment_text">
+                                                        <span>{{$blog1->created_at}}</span>
+                                                        </div>
                                                 @endforeach
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
