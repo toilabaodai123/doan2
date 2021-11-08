@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderLog;
 use App\Models\User;
+use App\Models\AdminSetting;
 use App\Mail\MailService;	
 use App\Models\UserActionBlock;
 
@@ -72,7 +73,10 @@ class Checkout extends Component
         // dd(Cart::instance('cart')->count());
         if(Cart::instance('cart')->count() != 0){
 			
-			
+			$AdminSetting = AdminSetting::get()->last();
+			if($AdminSetting->is_outofservice == true)
+				session()->flash('user_blocked','Hệ thống đang tạm thời ngưng nhận đơn đặt hàng , bạn vui lòng thử lại sau');
+			else{
 			
 			
 			//Kiểm tra ip bị chặn
@@ -203,7 +207,7 @@ class Checkout extends Component
             session()->forget('cart');
 
             return redirect()->to('/hoan-tat');
-	}}}else{
+		}}}}else{
                 return redirect('/cart');
             }
        
