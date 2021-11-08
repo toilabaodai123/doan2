@@ -96,7 +96,7 @@
                     <div class="row">
                         @foreach($products as $product)
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                            <a href="{{URL::to('shop-detail/'. $product->id )}}" >
+                            <a href="{{URL::to('shop-detail/'. $product->productSlug )}}" >
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
                                     <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">

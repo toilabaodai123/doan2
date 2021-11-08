@@ -40,7 +40,7 @@
                                                 <ul class="nice-scroll">
                                                     <li><a href="javascript:void(0)" wire:click="category(null)">Tất cả</a></li>
                                                     @foreach($categorylv1 as $categorylv1)
-                                                    <li><a href="javascript:void(0)" wire:click="category({{$categorylv1->id}})">{{$categorylv1->categoryName}} </a></li>
+                                                    <li><a href="{{URL::to('product/category/'.$categorylv1->slug)}}" >{{$categorylv1->categoryName}} </a></li>
                                                     @endforeach
                                                 </ul>
                                             </div>
@@ -94,7 +94,7 @@
                     <div class="row">
                         @foreach($products as $product)
                         <div class="col-lg-4 col-md-6 col-sm-6">
-                        <a href="{{URL::to('shop-detail/'. $product->id )}}" >
+                        <a href="{{URL::to('shop-detail/'. $product->productSlug )}}" >
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $product->pri_image->imageName)}}">
                                     <img src="{{asset('storage/images/product/'. $product->pri_image->imageName)}}" alt="">
@@ -129,7 +129,7 @@
                                     </div>
                                 </div>
                             </a>
-                        </div></a>
+                        </div>
                         @endforeach
                     </div>
                     <div class="row">

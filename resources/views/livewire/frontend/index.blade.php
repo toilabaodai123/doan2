@@ -33,7 +33,7 @@
                 </div>
                 @forelse($category as $key => $cate)
                 <div class="col-md-3">
-                <a href="{{URL::to('product/category/'.$cate->id)}}">
+                <a href="{{URL::to('product/category/'.$cate->slug)}}">
                     <div class="banner__item">
                             @if($cate->Image != null)
                                 <img src="{{asset('storage/images/category/'.$cate->Image->imageName)}}" alt="">
@@ -66,7 +66,7 @@
 
                 @forelse($product as $product)
                 <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix ">
-                    <a href="{{URL::to('shop-detail/'. $product->id )}}" >
+                    <a href="{{URL::to('shop-detail/'. $product->productSlug )}}" >
                         <div class="product__item">
                             <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/watermark/product/'. $product->pri_Image->imageName)}}">
                             @if($product->Pri_Image != null)
@@ -203,9 +203,9 @@
                 @forelse($blog as $blog)
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="blog__item">
-                        <div class="blog__item__pic set-bg"  style="background-image: url('{{asset('public/images/post/'.$blog->avata_image)}}')"
-                        data-setbg="{{asset('public/images/post/'.$blog->avata_image)}}"></div>
-                       <!-- <img src="{{asset('public/images/post/'.$blog->avata_image)}}" alt=""> -->
+                        <div class="blog__item__pic set-bg"  style="background-image: url('{{asset('storage/images/post/'.$blog->avata_image)}}')"
+                        data-setbg="{{asset('storage/images/post/'.$blog->avata_image)}}"></div>
+                       <!-- <img src="{{asset('storage/images/post/'.$blog->avata_image)}}" alt=""> -->
                         <div class="blog__item__text">
                             <span><img src="img/icon/calendar.png" style="width: unset" alt=""> 16 February 2020</span>
                             <h5>{{$blog->head_title}}</h5>

@@ -268,7 +268,7 @@
                     <td>{{ $data->author }}</td>	
                     <td>{{ $data->head_title }}</td>		
                     <td>{{ $data->short_des }}</td>			
-                    <td><img src="{{asset('public/images/post/'. $data->avata_image )}}"  alt="" style="width: 150px"></td>		
+                    <td><img src="{{asset('storage/images/post/'. $data->avata_image )}}"  alt="" style="width: 150px"></td>		
                     <td>
                         <a href="{{URL::to('edit-blog/'.$data->id)}}" class="btn btn-primary">Sửa</a>
                         <a href="#" class="btn btn-danger">Xóa</a>
@@ -296,27 +296,36 @@
         <div class="form-group">
             <label>Title heading</label>
             <input type="text" class="form-control" style="" name="heading">
-            @error('heading'){{$message}}@enderror
+            @error('heading')<p style="color: red">{{ $message }}</p> @enderror
+
         </div>
 
         <div class="form-group">
             <label for="exampleInputPassword1" class="form-label">Full image</label>
             <input type="file" require class="form-control" name="full_image" enctype="multipart/form-data">
+            @error('full_image')<p style="color: red">{{ $message }}</p> @enderror
+
         </div>
 
         <div class="form-group">
             <label for="exampleInputPassword1" class="form-label">Avata</label>
             <input type="file" class="form-control" name="avata" enctype="multipart/form-data">
+            @error('avata')<p style="color: red">{{ $message }}</p> @enderror
+
         </div>
 
         <div class="form-group">
             <label for="exampleInputPassword1" class="form-label">Short description</label>
             <input type="text" class="form-control" name="short_des">
+            @error('short_des')<p style="color: red">{{ $message }}</p> @enderror
+
         </div>
 
         <div class="form-group">
             <label for="exampleInputPassword1" class="form-label">Description</label>
             <textarea class="form-control ckeditor" id="des" name="des" require></textarea>
+            @error('des')<p style="color: red">{{ $message }}</p> @enderror
+
             <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 
             <script type="text/javascript">
@@ -329,25 +338,18 @@
                 });
             </script>
         </div>
-        <!-- <div class="form-group">
+         <div class="form-group">
             <label for="exampleInputPassword1" class="form-label">Category</label>
             <select class="form-control" aria-label="Default select example" name="category">
                 <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="1">Tin tức</option>
+                <option value="2">Thời trang</option>
+                <option value="3">Sự kiện</option>
             </select>
+            @error('category')<p style="color: red">{{ $message }}</p> @enderror
+
          </div>
 
-         <div class="form-group">
-            <label for="exampleInputPassword1" class="form-label">Tag</label>
-            <select class="form-control" aria-label="Default select example" name="tag">
-                <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
-         </div> -->
 
         <button type="submit" class="btn btn-info">save</button>
 
