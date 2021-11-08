@@ -116,11 +116,11 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tabs-6" role="tabpanel">
-                                    <div class="product__details__tab__content">
+                                    <div class="product__details__tab__content" style="padding-top: 0px;">
                                         <div class="product__details__tab__content__item">
-                                        <div class="comment">
+                                        <div class="comment" style="border-top: unset;">
                                             @foreach($comment as $com)
-                                                <div class="blog__show__comment">
+                                                <div class="blog__show__comment" >
                                                     <div class="top">
                                                         <img src="{{asset('img/icon_user.jpg')}}" alt="" >
                                                         <div class="user_info" style="align-items: flex-start;">
