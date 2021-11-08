@@ -131,9 +131,11 @@
                                                     <div class="comment_text">
                                                     <span>31231</span>
                                                     </div>
-                                                
+													@if(auth()->user()->user_type=='Admin')
+														<button type="button" class="btn btn-success">Xóa (Admin)</button>
+													@endif
                                                 </div>
-                                                @endforeach
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
