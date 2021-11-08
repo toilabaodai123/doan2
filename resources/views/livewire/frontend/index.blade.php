@@ -86,7 +86,7 @@
                                     <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$product->id}})" ><i class="fa fa-heart"></i></a></li>
 
 									@endif
-									<li><a href="{{url('bao-cao/san-pham/'.$product->id)}}" class="wishlist"><i class="fa fa-warning"></i></a></li>
+									<li><a href="{{url('bao-cao/san-pham/'.$product->productSlug    )}}" class="wishlist"><i class="fa fa-warning"></i></a></li>
                                 </ul>
 								
 								

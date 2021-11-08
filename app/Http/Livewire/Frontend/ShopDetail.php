@@ -9,6 +9,7 @@ use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProductSize;
 use App\Models\Comment2;
+use App\Models\User;
 use Cart;
 
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class ShopDetail extends Component
 {
     public $test;
-    public $commnet;
+    public $bl;
     public $relatedPro;
     public $product;
     public $size;
@@ -28,9 +29,11 @@ class ShopDetail extends Component
         $this->relatedPro = Product::with('Pri_image')->with('Category1')
         ->orderBy('id', 'DESC')->get()->take(4);
         $this->product = Product::with('Pri_image')->with('Models')->with('wishlist')->where('productSlug', $slug)->get();
+       
         $proSlug = Product::where('productSlug', $slug)->first();
 
-        $this->comment = Comment2::where('product_id',$proSlug->id)->get();
+        $this->bl = Comment2::with('User')->where('product_id',$proSlug->id)->get();
+        // dd($this->bl);
 		$this->Sizes = ProductModel::with('Size')->where('productID',$proSlug->id)->get();
     }
     public function render()

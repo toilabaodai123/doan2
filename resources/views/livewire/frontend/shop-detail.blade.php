@@ -119,7 +119,7 @@
                                     <div class="product__details__tab__content" style="padding-top: 0px;">
                                         <div class="product__details__tab__content__item">
                                         <div class="comment" style="border-top: unset;">
-                                            @foreach($comment as $com)
+                                            @foreach($bl as $com)
                                                 <div class="blog__show__comment" >
                                                     <div class="top">
                                                         <img src="{{asset('img/icon_user.jpg')}}" alt="" >
@@ -129,7 +129,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="comment_text">
-                                                    <span>31231</span>
+                                                    <span>{{$com->created_at}}</span>
                                                     </div>
                                                 
                                                 </div>

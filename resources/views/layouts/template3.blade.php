@@ -158,6 +158,7 @@
                         <p>Khách hàng là trọng tâm của mô hình kinh doanh độc đáo của chúng tôi.</p>
                         
                         <p><b>Địa chỉ :</b> 931-937, Trần Hưng Đạo, Phường 1, Quận 5 , TPHCM</p>
+                        <p><b>Điện thoại :</b> 0392654822</p>
                     </div>
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
