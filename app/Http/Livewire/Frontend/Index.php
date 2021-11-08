@@ -44,15 +44,13 @@ class Index extends Component
 
     public function render()
     {
-		//dd(Auth::check());
 		$Products2 = Product::all();
-		//dd($Products2);
         $this->insta = Instagram::orderBy('id', 'desc')->take(6)->get();
         $this->blog = Blog_detail::orderBy('id','desc')->take(3)->get();
         $this->category = ProductCategory::with('Image')->take(8)->get(); 
         $this->slide = slide::orderBy('id','desc')->take(3)->get();
         $this->product = Product::with('Pri_Image')->with('wishlist')->where('status',1)->orderBy('id','desc')->take(8)->get();
-        // dd($this->product);
+
         return view('livewire.frontend.index')->layout('layouts.template3');
     }
 
