@@ -131,8 +131,8 @@
                                                     <div class="comment_text">
                                                     <span>31231</span>
                                                     </div>
-													@if(auth()->user()->user_type=='Admin')
-														<button type="button" class="btn btn-success">Xóa (Admin)</button>
+													@if(auth()->check() && auth()->user()->user_type=='Admin')
+														<button type="button" wire:click="deleteReview({{$com->id}})"class="btn btn-success">Xóa (Admin)</button>
 													@endif
                                                 </div>
                                             @endforeach

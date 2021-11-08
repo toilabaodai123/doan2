@@ -30,7 +30,7 @@ class ShopDetail extends Component
         $this->product = Product::with('Pri_image')->with('Models')->with('wishlist')->where('productSlug', $slug)->get();
         $proSlug = Product::where('productSlug', $slug)->first();
 
-        $this->comment = Comment2::where('product_id',$proSlug->id)->get();
+        $this->comment = Comment2::where('product_id',$proSlug->id)->where('status',1)->get();
 		$this->Sizes = ProductModel::with('Size')->where('productID',$proSlug->id)->get();
     }
     public function render()
@@ -95,5 +95,12 @@ class ShopDetail extends Component
         $flight->status = 0;
 
         $flight->save();
-    } 
+    }
+
+
+	public function deleteReview($id){
+		$Review = Comment2::find($id);
+		$Review->status = 0;
+		$Review->save();
+	}
 }
