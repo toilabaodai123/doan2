@@ -38,14 +38,18 @@ class Purchase extends Component
 			],[
 				'rating.required' => 'Hãy chọn chất lượng đánh giá'
 			]);
-			$Review = new Comment2();
-			$Review->user_id = auth()->user()->id;
-			$Review->order_id = $id;
-			$Review->text = $this->review_input;
-			$Review->rating = 5;
-			$Review->type = 2;
-			$Review->status = $this->rating;
-			$Review->save();
+			$Details = OrderDetail::where('order_id',$id)->get();
+			foreach ($Details as $detail){
+				$Review = new Comment2();
+				$Review->user_id = auth()->user()->id;
+				$Review->order_id = $id;
+				$Review->product_id = $detail->ProductModel->Product->id;
+				$Review->text = $this->review_input;
+				$Review->rating = 5;
+				$Review->type = 2;
+				$Review->status = 1;
+				$Review->save();
+			}
 			session()->flash('success_review','Đánh giá thành công , xin cảm ơn bạn');
 		}else{
 			session()->flash('success_review','Lỗi');
