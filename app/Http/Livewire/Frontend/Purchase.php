@@ -46,10 +46,14 @@ class Purchase extends Component
 			$Review->type = 2;
 			$Review->status = $this->rating;
 			$Review->save();
-			session()->flash('success','Đánh giá thành công , xin cảm ơn bạn');
+			session()->flash('success_review','Đánh giá thành công , xin cảm ơn bạn');
 		}else{
-			session()->flash('success','Lỗi');
+			session()->flash('success_review','Lỗi');
 		}
 		$this->reset();
+	}
+	
+	public function test(){
+		dd($this);
 	}
 }

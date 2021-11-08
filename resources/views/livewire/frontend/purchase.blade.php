@@ -31,7 +31,11 @@
                         </ul>
                     </div>
                 </div>
+
                 <div class="col-lg-8">
+				@if(session()->has('success_review'))
+					<h4>{{session('success_review')}}</h4>
+				@endif
                     <section class="info">
                         <div class="container">
                             <div class="row">
@@ -82,7 +86,10 @@
 																												<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
 																											</div>
 																											<div class="modal-body">
-																												<input class="form-control wire:model.defer="review_input" placeholder="Nhập đánh giá">
+																												@if(session()->has('success_review'))
+																												<h4>{{session('success_review')}}</h4>
+																												@endif
+																												<input class="form-control" wire:model.defer="review_input" placeholder="Nhập đánh giá">
 																												<select class="form-control" wire:model="rating">
 																													<option>Chọn chất lượng</option>
 																													<option value="1">1 sao</option>
@@ -97,7 +104,7 @@
 																											</div>
 																											
 																											<div class="modal-footer">
-																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																												<button type="button" wire:click="test" class="btn btn-default" data-dismiss="modal">Ẩn</button>
 																												<button type="button"  wire:click="submitReview({{$Order->id}})" class="btn btn-primary" >Lưu</button>
 																											</div>
 																										</div>

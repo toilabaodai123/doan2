@@ -17,6 +17,7 @@ class AdminNewOrderComponent extends Component
 	
 	public $decline_note;
 	public $block_note;
+	public $show_all_status=true;
 	
 	public $sortField='id';
 	public $sortDirection='ASC';
@@ -31,13 +32,17 @@ class AdminNewOrderComponent extends Component
 	}
 	
     public function render()
-    {
-		//$this->Assignments = Assignment::where('admin_id',auth()->user()->id)->orWhereNull('admin_id')->get('order_id');
-		//dd($this->Assignments);
-		$Orders2 = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
-										 ->where('status',1)
-										 ->where('assigned_to',auth()->user()->id)
-										 ->paginate(5);
+    {	
+		if($this->show_all_status == false)
+			$Orders2 = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
+											 ->where('status',1)
+											 ->where('assigned_to',auth()->user()->id)
+											 ->paginate(5);
+		else
+			$Orders2 = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
+											 ->where('status',1)
+											 ->orWhereNull('assigned_to',null)
+											 ->paginate(5);			
         return view('livewire.admin-new-order-component',['Orders2' => $Orders2])
 					->layout('layouts.template');
     }
