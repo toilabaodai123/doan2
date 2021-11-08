@@ -72,6 +72,7 @@ class AdminNewOrderComponent extends Component
 	}	
 	
 	public function declineOrder($id){
+
 		$Order = Order::find($id);
 		if($Order->status == 1){
 			$this->validate([
@@ -119,7 +120,7 @@ class AdminNewOrderComponent extends Component
 			
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = 'Đã chặn người dùng ip :'.$Order->ip. ' đặt hàng';
+			$Log->note = 'Đã hủy đơn hàng id:'.$Order->id.' , chặn người dùng ip :'.$Order->ip. ' đặt hàng';
 			$Log->save();
 			
 			$OrderLog = new OrderLog();
@@ -143,6 +144,19 @@ class AdminNewOrderComponent extends Component
 				$Block->duration = 999;
 			}
 			$Block->save();
+			
+			$UserOrders = Order::where('user_id',$Order->user_id)
+								->where('status',1)
+								->get();
+			foreach($UserOrders as $order){				
+				$order->status=0;
+				$order->save();
+				
+				$Log = new AdminLog();
+				$Log->admin_id = auth()->user()->id;
+				$Log->note = 'Đã hủy đơn hàng id:'.$order->id.' sau khi chặn';
+				$Log->save();				
+			}
 			
 			session()->flash('success','Đã chặn người dùng của đơn hàng id:'.$id);
 		}else{

@@ -65,7 +65,8 @@ class Checkout extends Component
     public function submit()
     {
 		$CheckUserBlock = UserActionBlock::where('ip',request()->ip())->where('action','LIKE','Đặt hàng')->get()->last();
-		$date = new Carbon($CheckUserBlock->created_at);
+		if($CheckUserBlock)
+			$date = new Carbon($CheckUserBlock->created_at);
 
 		
         // dd(Cart::instance('cart')->count());
@@ -75,9 +76,9 @@ class Checkout extends Component
 			
 			
 			//Kiểm tra ip bị chặn
-			if($CheckUserBlock && Carbon::now() <= $date->addDays($CheckUserBlock->duration) && 1==2){
+			if($CheckUserBlock && Carbon::now() <= $date->addDays($CheckUserBlock->duration)){
 				$diff = $date->addDays($CheckUserBlock->duration)->diffInDays(Carbon::now());
-				session()->flash('user_blocked','Bạn đã bị chặn đặt hàng '.$diff.' ngày , vui lòng liên hệ quản trị viên để biết thêm thông tin');
+				session()->flash('user_blocked','Bạn đã bị chặn đặt hàng , vui lòng liên hệ quản trị viên để biết thêm thông tin');
 			}else{
 				//Kiểm tra ip đặt quá nhiều đơn hàng
 				$CheckOrders = Order::where('ip',request()->ip())
@@ -86,7 +87,7 @@ class Checkout extends Component
 									->get()
 									->last();
 				//dd($CheckOrders->created_at >= Carbon::now()->subMinutes(6) );
-				if($CheckOrders->count() >= 5){
+				if($CheckOrders && $CheckOrders->count() >= 5){
 					session()->flash('user_blocked','Bạn đã đặt quá nhiều đơn hàng, vui lòng thử lại sau');
 				}
 			else{
