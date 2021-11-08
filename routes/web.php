@@ -36,6 +36,7 @@ use App\Http\Livewire\UserMaintenanceComponent;
 use App\Http\Livewire\AdminInfoComponent;
 use App\Http\Livewire\AdminUserComponent;
 use App\Http\Livewire\ReportComponent;
+use App\Http\Livewire\AdminFlashSaleComponent;
 
 
 /*
@@ -122,6 +123,7 @@ Route::middleware(['VisitCounter','checkMaintenance'])->group(function(){
 		Route::get('admin/setting',AdminSettingComponent::class);
 		Route::get('admin/info',AdminInfoComponent::class)->name('admin.info');
 		Route::get('admin/users/user',AdminUserComponent::class);
+		Route::get('admin/flash-sale',AdminFlashSaleComponent::class);
 	});
 
 Route::get('bao-tri',UserMaintenanceComponent::class);

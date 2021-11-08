@@ -15,12 +15,14 @@ class CreateFlashSalesTable extends Migration
     {
         Schema::create('flash_sales', function (Blueprint $table) {
             $table->id();
-			$table->string('name');
-			$table->string('desc');
-			$table->date('from_date');
-			$table->date('to_date');
+			$table->string('title');
+			$table->unsignedbiginteger('admin_id');
+			$table->datetime('from_date');
+			$table->datetime('to_date');
 			$table->integer('status');
             $table->timestamps();
+			
+			$table->foreign('admin_id')->references('id')->on('users');
         });
     }
 

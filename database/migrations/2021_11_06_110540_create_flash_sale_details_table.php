@@ -18,8 +18,7 @@ class CreateFlashSaleDetailsTable extends Migration
 			$table->unsignedbiginteger('sale_id');
 			$table->unsignedbiginteger('product_model_id');
 			$table->integer('amount');
-			$table->integer('old_price');
-			$table->integer('new_price');
+			$table->integer('price');
 			$table->integer('status');
             $table->timestamps();
 			

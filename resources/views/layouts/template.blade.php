@@ -223,6 +223,9 @@
 					<li>
                         <a href="{{url('/admin/setting')}}"><i class="fa fa-dashboard fa-fw"></i>Tùy chỉnh hệ thống website</a>
                     </li>
+                    <li>
+                        <a href="{{url('admin/flash-sale')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý flash sale</a>
+                    </li>					
                 </ul>
             </div>
         </div>
