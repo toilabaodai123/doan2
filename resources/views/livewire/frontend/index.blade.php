@@ -1,9 +1,11 @@
 @section('title', 'Trang chủ')
 
 <div>
+@if($FlashSale != null)
 <div style="width:100px;height:100px;position:fixed;background-color:red;right:0;bottom:0;margin-bottom:150px;margin-right:150px;">	
 	sdadasdas dsadas
 </div>
+@endif
 <section class="hero">
         <div class="hero__slider owl-carousel">
             @forelse($slide as $slide)
