@@ -7,6 +7,8 @@ use App\Models\FlashSale;
 use App\Models\Product;
 use App\Models\FlashSaleDetail;
 
+use Carbon\Carbon;
+
 class FlashSaleComponent extends Component
 {
 	public $FlashSale;
@@ -16,13 +18,15 @@ class FlashSaleComponent extends Component
 	
 	public function mount($id){
 		$this->sale_id = $id;
+		$FlashSale = FlashSale::findOrFail($id);
+		if($FlashSale->status == 0 || $FlashSale->to_date < Carbon::now())
+			abort(404);
 	}
 	
     public function render()
     {
-		$this->FlashSale = FlashSale::find($this->sale_id);
-		$Model_id = FlashSaleDetail::with('Model.Product')->where('sale_id',$this->sale_id)->get()->pluck('Model.Product.id');
-		$Products = Product::whereIn('id',$Model_id)->get();
+		$Details = FlashSaleDetail::where('sale_id',$this->sale_id)->pluck('product_id');
+		$Products = Product::whereIn('id',$Details)->get();
         return view('livewire.flash-sale-component',['Products' => $Products])
 					->layout('layouts.template3');
     }

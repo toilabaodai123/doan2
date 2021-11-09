@@ -3,7 +3,7 @@
 <div>
 @if($FlashSale != null)
 <div style="width:100px;height:100px;position:fixed;background-color:red;right:0;bottom:0;margin-bottom:150px;margin-right:150px;">	
-	sdadasdas dsadas
+	<a href="{{url('flash-sale/'.$FlashSale->id)}}"><img src="{{asset('storage/images/logo/logo.png')}}"></a>
 </div>
 @endif
 <section class="hero">
@@ -101,6 +101,7 @@
                                <h6>{{ $product->productName }}</h6>
                                 <div class="product_des">
                                     <h5>{{ number_format($product->productPrice) }} VND</h5>
+
                                     <h5>{{ $product->Category1->categoryName }}</h5>
 
                                 </div>

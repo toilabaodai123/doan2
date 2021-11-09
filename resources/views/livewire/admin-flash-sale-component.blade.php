@@ -105,9 +105,7 @@
 															<table class="table table-bordered table-hover table-striped">
 																<thead>
 																	<tr>
-																		<th>Tên sản phẩm</th>
-																		<th>Size</th>
-																		<th>Số lượng</th>
+																		<th>Tên sản phẩm</th>	
 																		<th>Đơn giá</th>
 																		<th>Tùy chọn</th>
 																	</tr>
@@ -117,18 +115,6 @@
 																		@if($v['is_deleted']==false)
 																		<tr>
 																			<td>{{$v['product_name']}}</td>
-																			<td>
-																				<select wire:model="size.{{$k}}"class="form-control">
-																					<option>Chọn</option>
-																					@forelse($v['size'] as $k1)
-																						<option>{{$k1}}</option>
-																					@empty
-																					@endforelse
-																				</select>
-																			</td>
-																			<td>
-																				<input class="form-control" wire:model="amount.{{$k}}" placeholder="Nhập số lượng">
-																			</td>
 																			<td>
 																				<input class="form-control" wire:model="price.{{$k}}" placeholder="Nhập giá">
 																			</td>

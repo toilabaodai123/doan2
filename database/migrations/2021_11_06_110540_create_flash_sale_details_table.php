@@ -16,14 +16,13 @@ class CreateFlashSaleDetailsTable extends Migration
         Schema::create('flash_sale_details', function (Blueprint $table) {
             $table->id();
 			$table->unsignedbiginteger('sale_id');
-			$table->unsignedbiginteger('product_model_id');
-			$table->integer('amount');
+			$table->unsignedbiginteger('product_id');
 			$table->integer('price');
 			$table->integer('status');
             $table->timestamps();
 			
 			$table->foreign('sale_id')->references('id')->on('flash_sales');
-			$table->foreign('product_model_id')->references('id')->on('product_models');
+			$table->foreign('product_id')->references('id')->on('products');
         });
     }
 

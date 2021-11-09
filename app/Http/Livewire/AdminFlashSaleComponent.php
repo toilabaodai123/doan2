@@ -53,15 +53,19 @@ class AdminFlashSaleComponent extends Component
 	}
 	
 	public function selectProduct($id,$name){
-		array_push($this->selectedProductArray,['is_deleted' => false ,
-												'product_id' => $id ,
-												'size' => [],
-												'amount' => null,
-												'price' => null,
-												'product_name' => $name]);
-		$Sizes = ProductModel::where('productID',$id)->get();
-		foreach($Sizes as $size)
-			array_push($this->selectedProductArray[array_key_last($this->selectedProductArray)]['size'],$size->size);		
+		$flag=false;
+		foreach($this->selectedProductArray as $k=>$v){
+			if($v['product_id'] == $id){
+				$flag=true;
+				break;
+			}
+		}
+		
+		if($flag==false)
+			array_push($this->selectedProductArray,['is_deleted' => false ,
+													'product_id' => $id ,
+													'price' => null,
+													'product_name' => $name]);	
 	}
 	public function removeProduct($key){
 		$this->selectedProductArray[$key]['is_deleted']=true;
@@ -81,17 +85,16 @@ class AdminFlashSaleComponent extends Component
 			foreach($this->selectedProductArray as $k=>$v){
 				if($v['is_deleted']==false){
 					$SaleDetail = new FlashSaleDetail();
-					$Model = ProductModel::where('productID',$v['product_id'])
-										   ->where('size',$this->size[$k])
-										   ->get()
-										   ->last();
 					$SaleDetail->sale_id = $Sale->id;
-					$SaleDetail->product_model_id = $Model->id;
-					$SaleDetail->amount = $this->amount[$k];
+					$SaleDetail->product_id = $v['product_id'];
 					$SaleDetail->price = $this->price[$k];
 					$SaleDetail->status = 1;
 					$SaleDetail->save();
 					
+					//Cập nhật trạng thái product
+					$Product = Product::find($v['product_id']);
+					$Product->status=0;
+					$Product->save();
 				}
 			}
 			session()->flash('success','Thêm flash sale thành công');
@@ -112,14 +115,9 @@ class AdminFlashSaleComponent extends Component
 			
 			foreach($this->selectedProductArray as $k=>$v){
 				if($v['is_deleted'] == false){
-					$SaleDetail = new FlashSaleDetail();
-					$Model = ProductModel::where('productID',$v['product_id'])
-										   ->where('size',$this->size[$k])
-										   ->get()
-										   ->last();					
+					$SaleDetail = new FlashSaleDetail();					
 					$SaleDetail->sale_id = $Sale->id;
-					$SaleDetail->product_model_id = $Model->id;
-					$SaleDetail->amount = $this->amount[$k];
+					$SaleDetail->product_id = $v['product_id'];
 					$SaleDetail->price = $this->price[$k];
 					$SaleDetail->status = 1;
 					$SaleDetail->save();
@@ -140,18 +138,10 @@ class AdminFlashSaleComponent extends Component
 		$Details = FlashSaleDetail::where('sale_id',$id)->get();
 		
 		foreach($Details as $k=>$v){
-			$Model2 = ProductModel::find($v->product_model_id);
 			array_push($this->selectedProductArray,['is_deleted' => false ,
-													'product_id' => $Model2->productID ,
-													'size' => [],
-													'amount' => $v->amount,
+													'product_id' => $v->product_id,
 													'price' => $v->price,
-													'product_name' => $Model2->Product->productName]);
-			$Sizes = ProductModel::where('productID',$Model2->productID)->get();
-			foreach($Sizes as $size)
-				array_push($this->selectedProductArray[array_key_last($this->selectedProductArray)]['size'],$size->size);
-			$this->size[$k] = $v->Model->size;
-			$this->amount[$k] = $v->amount;
+													'product_name' => $v->Product->productName]);
 			$this->price[$k] = $v->price;
 		}
 	}

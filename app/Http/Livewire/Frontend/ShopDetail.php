@@ -11,6 +11,7 @@ use App\Models\ProductSize;
 use App\Models\Comment2;
 use App\Models\User;
 use Cart;
+use App\Models\FlashSaleDetail;
 
 use Illuminate\Support\Facades\DB;
 
@@ -25,20 +26,30 @@ class ShopDetail extends Component
     public $sizeId = '';
     public $cart_qty = 1;
 	public $get_id;
-	public $size_flash_sale;
+	public $get_slug;
+	public $is_flashsale = false;
 
     public function mount(string $slug){
         $this->relatedPro = Product::with('Pri_image')->with('Category1')->orderBy('id', 'DESC')->get()->take(4);
-        $this->product = Product::with('Pri_image')->with('Models')->with('wishlist')->where('productSlug', $slug)->get();
+        $this->product = Product::with('getSalePrice')->with('Pri_image')->with('Models')->with('wishlist')->where('productSlug', $slug)->get();
         $proSlug = Product::where('productSlug', $slug)->first();
         $this->bl = Comment2::with('User')->where('product_id',$proSlug->id)->get();
         // dd($this->bl);
         $this->comment = Comment2::where('product_id',$proSlug->id)->where('status',1)->get();
 		$this->Sizes = ProductModel::with('Size')->where('productID',$proSlug->id)->get();
 		$this->get_id = Product::where('productSlug',$slug)->get()->last();
+		$this->get_slug = $slug;
+		
+		
+		//Kiểm tra flash sale
+		$FlashSale = FlashSaleDetail::get()->pluck('product_id');
+		$this->is_flashsale = Product::where('productSlug',$slug)->whereIn('id',$FlashSale)->get()->last();
+		if(!$this->is_flashsale)
+			abort(404);
     }
     public function render()
     {
+		//dd($this);
         return view('livewire.frontend.shop-detail')->layout('layouts.template3');
     }
 
@@ -56,7 +67,7 @@ class ShopDetail extends Component
         }else{
         Cart::instance('cart')->add(['id' =>$id, 'name' =>$this->cart->productName,
          'qty' => $this->cart_qty,  
-         'price' => $this->cart->productPrice, 
+         'price' => $this->is_flashsale==null?$this->cart->productPrice:$this->cart->getSalePrice->price, 
          'options' => ['image' => $this->cart->Pri_Image->imageName,
          'size' =>  $size->size
          ]])

@@ -9,6 +9,7 @@ use App\Models\Supplier;
 use App\Models\Image;
 use App\Models\OrderDetail;
 use App\Models\Wishlist;
+use App\Models\FlashSaleDetail;
 use App\Models\Level2ProductCategory;
 use Illuminate\Support\Facades\Auth;
 
@@ -57,6 +58,10 @@ class Product extends Model
 	
 	public function checkWishlist(){
 		return $this->hasOne(Wishlist::class,'productId','id')->where('id_user',auth()->user()->id)->where('status',1)->latest();
+	}
+	
+	public function getSalePrice(){
+		return $this->hasOne(FlashSaleDetail::class,'product_id','id');
 	}
 
 	
