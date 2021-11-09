@@ -52,10 +52,12 @@ class ShopDetail extends Component
 									->where('to_date','>=',Carbon::now())
 									->get()
 									->last();
+			//dd($FlashSale);
 			if($FlashSale && $FlashSale->status==1){
 				$FlashSaleDetails = FlashSaleDetail::where('sale_id',$FlashSale->id)->get()->pluck('product_id');
 				$Check = Product::whereNotIn('id',$FlashSaleDetails)->get()->pluck('id');
 				$this->is_flashsale = Product::where('productSlug',$slug)->whereIn('id',$FlashSaleDetails)->get()->last();
+				//dd($this->is_flashsale);
 				foreach($Check as $check){
 					if($this->get_id->id == $check){
 						$flag=true;

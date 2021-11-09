@@ -13,6 +13,10 @@ use App\Models\ProductImportBill;
 use DB;
 use App\Models\AdminSetting;
 use App\Models\ProductModel;
+use App\Models\FlashSale;
+use App\Models\FlashSaleDetail;
+use App\Models\Product;
+use Carbon\Carbon;
 
 class AdminDashboardComponent extends Component
 {
@@ -35,7 +39,8 @@ class AdminDashboardComponent extends Component
 
 	public function mount(){
 		$this->many_waiting_orders = Order::with('assignedTo')->where('status',1)->get();
-		$this->low_stock_products = ProductModel::where('stockTemp','<=',5)->get();
+		$OnlineProducts = Product::where('status',1)->get()->pluck('id');
+		$this->low_stock_products = ProductModel::where('stockTemp','<=',5)->whereIn('productID',$OnlineProducts)->get();
 		$this->admin_settings = AdminSetting::get()->first();
 	}
 

@@ -17,11 +17,11 @@ class CreateProductImportBillsTable extends Migration
             $table->id();
 			$table->unsignedBiginteger('user_id');
 			$table->foreign('user_id')->references('id')->on('users');
-			$table->datetime('bill_date');
 			$table->string('bill_code')->nullable();
 			$table->integer('VAT');
 			$table->integer('status');
 			$table->string('bill_od')->nullable();
+			$table->datetime('bill_date');
 			$table->string('transporter_name');
 			$table->unsignedbiginteger('stocker_id')->nullable();
 			$table->unsignedbiginteger('accountant_id')->nullable();

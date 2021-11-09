@@ -50,13 +50,93 @@
 																@if($bill->status == 1)
 																	<label style="color:green">Đã lưu</label>
 																@elseif($bill->status == 0)
-																	<label style="color:gray">Đã ẩn</label>
+																	<label style="color:gray">Đã hủy</label>
 																@endif
 															</td>
 															<td>
-																<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#myModal">Xem</button>
+																<button type="button" class="btn btn-info" data-toggle="modal" data-target="#viewBill{{$bill->id}}">Xem</button>
+																<div class="modal fade" wire:ignore.self id="viewBill{{$bill->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																	<div class="modal-dialog" role="document">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				Thông tin hóa đơn nhập hàng
+																			</div>
+																			<div class="modal-body">
+																			<label>Mã hóa đơn : {{$bill->bill_code}}</label><br>
+																			<label>Người tạo : {{$bill->User->name}}</label><br>
+																			<label>Thời điểm tạo : {{$bill->created_at}}</label><br>
+																			<label>Tổng tiền : {{$bill->total}}</label><br>
+																				<div class="row">
+																					<div class="col-lg-12">
+																							<div class="row">
+																								<div class="table-responsive">
+																									<table class="table table-bordered table-hover table-striped">
+																										<thead>
+																											<tr>
+																												<th>Tên sản phẩm</th>
+																												<th>Size</th>
+																												<th>Số lượng</th>
+																												<th>Đơn giá</th>
+																											</tr>
+																										</thead>
+																										<tbody>
+																											@foreach($bill->Details as $detail)
+																											<tr>
+																												<td>{{$detail->Model->Product->productName}}</td>
+																												<td>{{$detail->Model->size}}</td>
+																												<td>{{$detail->amount}}</td>
+																												<td>{{$detail->price}}</td>
+																											</tr>
+																											@endforeach
+																										</tbody>
+																									</table>
+																								</div>
+																							</div>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button" data-dismiss="modal" class="btn btn-info">Ẩn</button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
 																<button type="button" class="btn btn-warning"  wire:click="pushProducts({{$bill->id}})">Sửa</button>
-																<button type="button" class="btn btn-danger"  wire:click="deleteBill({{$bill->id}})">Ẩn</button>
+																@if($bill->status==1)
+																	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteBill{{$bill->id}}" >Hủy</button>
+																@endif
+																<div class="modal fade" wire:ignore.self id="deleteBill{{$bill->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																	<div class="modal-dialog" role="document">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				Hủy hóa đơn nhập hàng
+																			</div>
+																			<div class="modal-body">
+																				@if(session()->has('success_delete_bill_modal'))
+																					<div class="alert alert-success">
+																						{{session('success_delete_bill_modal')}}
+																					</div>
+																				@elseif(session()->has('error_delete_bill_modal'))
+																					<div class="alert alert-danger">
+																						{{session('error_delete_bill_modal')}}
+																					</div>	
+																				@endif
+																				<input class="form-control" placeholder="Nhập lý do hủy đơn nhập hàng" wire:model="admin_note">
+																				@error('admin_note')
+																					<p class="text-danger">{{$message}}</p>
+																				@enderror
+																				<input class="form-control" placeholder="Nhập mật khẩu nhân viên" wire:model="admin_password">
+																				@error('admin_password')
+																					<p class="text-danger">{{$message}}</p>
+																				@enderror
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button"  data-dismiss="modal" class="btn btn-info">Ẩn</button>
+																				<button type="button"  wire:click="deleteBill({{$bill->id}})" class="btn btn-success">Lưu</button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
 															</td>
 														</tr>
 														@empty
@@ -230,42 +310,25 @@
 																<tbody>
 																	@forelse($selectedProductArray as $k=>$v)
 																		@if($v['is_deleted'] == false)
-																			@if($v['is_update']==false)
 																				<tr>
 																					<td>{{$v['product_name']}}</td>
 																					<td>
 																						<select wire:model="size.{{$k}}"class="form-control">
 																							<option>Chọn</option>
-																							<option>A</option>
-																							<option>B</option>
-																							<option>C</option>
+																							@foreach($v['size'] as $size)
+																								<option value="{{$size}}">{{$size}}</option>
+																							@endforeach
 																						</select>
 																					</td>
 																					<td class="col-lg-1"><input  class="form-control" wire:change="a({$k})" wire:model="amount.{{$k}}"placeholder="Nhập số lượng"></td>
 																					<td class="col-lg-2"><input  class="form-control"  wire:model="price.{{$k}}"placeholder="Nhập đơn giá"></td>
 																					<td><button type="button" wire:click="removeBtn({{$k}})" class="btn btn-danger" >Xóa</button></td>
 																				</tr>
-																			@else
-																				<tr>
-																					<td>{{$v['product_name']}}</td>
-																					<td>
-																						<select wire:model="size.{{$k}}" wire:change="$a({$k})"class="form-control">
-																							<option>Chọn</option>
-																							<option value="A">A</option>
-																							<option value="B">B</option>
-																							<option value="C">C</option>
-																						</select>
-																					</td>
-																					<td class="col-lg-1"><input  class="form-control"   wire:model="amount.{{$k}}"placeholder="Nhập số lượng"></td>
-																					<td class="col-lg-2"><input  class="form-control"   wire:model="price.{{$k}}"placeholder="Nhập đơn giá"></td>
-																					<td><button type="button" wire:click="removeBtn({{$k}})" class="btn btn-danger" >Xóa</button></td>
-																				</tr>																				
-																			@endif
 																		@endif
 																	@empty
 																	@endforelse
 																</tbody>
-															</table>
+															</table>	
 															<div class="form-group">															
 															</div>
 														</div>
@@ -411,10 +474,7 @@
 													<input class="form-control" wire:model="bill_code">
 												</div>													
 												<div class="col-lg-12">
-												<div class="form-group">
-													<label>Chiết khấu</label>
-													<input class="form-control" >
-												</div>
+												
 												<div class="form-group">
 													<label>Thuế</label>
 													<input class="form-control" wire:model="vat">
@@ -439,7 +499,7 @@
 													<label style="color:green">
 														@if($bill_image)
 															@if (is_string($bill_image))
-																<img src="{{asset('storage/images/bill/'.$bill_image)}}">
+																<img src="{{asset('storage/images/bill/import/'.$bill_image)}}">
 															@else
 																<img src="{{$bill_image->temporaryUrl()}}">
 															@endif

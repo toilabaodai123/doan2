@@ -70,13 +70,20 @@ class AdminFlashSaleComponent extends Component
 						->where($this->sale_searchField,'LIKE','%'.$this->sale_searchInput.'%')
 						->orderBy($this->sale_sortField,$this->sale_sortDirection)
 						->paginate(3);
-		
+
+		$Sales2 = FlashSale::where('status',1)->get()->pluck('id');
+		//dd($Sales);
+		$Details = FlashSaleDetail::whereIn('sale_id',[$Sales2])->get()->pluck('product_id');
+		//dd($Details);
 		if($this->searchInput == null)
-			$Products = Product::orderBy($this->sortField,$this->sortDirection)
-								 ->paginate(2);
+			$Products = Product::whereNotIn('id',$Details)
+								->orderBy($this->sortField,$this->sortDirection)
+								->paginate(2);
 		else
-			$Products = Product::where('productName','LIKE','%'.$this->searchInput.'%')
+			$Products = Product::whereNotIn('id',$Details)
+								 ->where('productName','LIKE','%'.$this->searchInput.'%')
 								 ->paginate(2);
+								 
         return view('livewire.admin-flash-sale-component',['Products' => $Products,'Sales' => $Sales])
 					->layout('layouts.template');
     }
@@ -114,7 +121,20 @@ class AdminFlashSaleComponent extends Component
 	
 	public function checkValidation(){
 		$this->validate();
-		$this->is_validated = true;
+		$flag=false;
+		$Sales = FlashSale::where('status',1)->get();
+		
+		foreach($Sales as $sale){
+			if($this->from_date >= $this->to_date){
+				$flag=true;
+				break;
+			}
+		}
+		if($flag==false)
+			$this->is_validated = true;
+		else{
+			session()->flash('success','Kiểm tra lại dữ liệu ngày');
+		}
 	}
 	
 	public function submitSale(){
