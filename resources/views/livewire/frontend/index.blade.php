@@ -95,7 +95,7 @@
 								
                             </div>
                             <div class="product__item__text">
-                                <a href="{{URL::to('shop-detail/'. $product->id )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
+                                <a href="{{URL::to('shop-detail/'. $product->productSlug )}}"  id="add-cart"  class="add-cart">+ Chi tiết sản phẩm</a>
                                <h6>{{ $product->productName }}</h6>
                                 <div class="product_des">
                                     <h5>{{ number_format($product->productPrice) }} VND</h5>

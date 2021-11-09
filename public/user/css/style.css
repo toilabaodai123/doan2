@@ -1104,7 +1104,7 @@ ol {
 	font-size: 15px;
 	color: #e53637;
 	font-weight: 700;
-	z-index: 99;
+	z-index: 99 !important;
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -1123,6 +1123,7 @@ ol {
 	-webkit-transition: all, 0.3s;
 	-o-transition: all, 0.3s;
 	transition: all, 0.3s;
+	position: relative;
 }
 
 .product__item__text .rating {

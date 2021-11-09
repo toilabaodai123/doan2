@@ -85,10 +85,11 @@ class WhislistComponent extends Component
         $ProductName = Product::find($id);
 		
 		$Favorite = Wishlist::where('id_user',auth()->user()->id)->where('productID',$id)->get()->last();
+        // dd($Favorite);
 		$Favorite->status = 0;
 		$Favorite->save();
 		session()->flash('delete_favorite','Đã hủy thích sản phẩm '.$ProductName->productName);
-    }
+    } 
     public function category($id){
         $this->categoryId = $id;
     }

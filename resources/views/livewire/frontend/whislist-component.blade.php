@@ -49,7 +49,7 @@
                                     @endif
                                     <ul class="product__hover">
                                         @if( $product->status == 1)
-                                        <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
+                                        <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$product->Product->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
                                         @endif
                                     </ul>
                                 </div>
