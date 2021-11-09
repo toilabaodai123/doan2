@@ -54,7 +54,7 @@ class CategoryComponent extends Component
 
           
 
-        if($this->categoryId != null){
+        if($this->categoryId != null &&  $cate_slug){
             $categorylv1_name =  $cate_slug->categoryName;
         }else{
             $categorylv1_name =  'Tất cả';
@@ -62,45 +62,48 @@ class CategoryComponent extends Component
         }
 
         $this->categorylv2 = Level2ProductCategory::all();
-
-           
-        if($this->priceSort == 'price_asc')
-        {
-            if($this->categoryId != null){
-                $products = Product::with('Pri_Image')->where('CategoryID', $cate_slug->id)->
-                orderBy('productPrice', 'ASC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
-
-            }else{
-                $products = Product::with('Pri_Image')->orderBy('productPrice', 'ASC')
-                ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
-                ->where('productPrice','<=', $this->priceMax)->paginate(12);
+        if( $cate_slug != []){
+            if($this->priceSort == 'price_asc')
+            {
+                if($this->categoryId != null){
+                    $products = Product::with('Pri_Image')->where('CategoryID', $cate_slug->id)->
+                    orderBy('productPrice', 'ASC')->where('productName','LIKE', $search2)
+                    ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
+    
+                }else{
+                    $products = Product::with('Pri_Image')->orderBy('productPrice', 'ASC')
+                    ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
+                    ->where('productPrice','<=', $this->priceMax)->paginate(12);
+                }
             }
-        }
-        else if($this->priceSort == 'price_desc')
-        {
-            if($this->categoryId != null){
-                $products = Product::with('Pri_Image')->where('CategoryID', $cate_slug->id)->
-                orderBy('productPrice', 'DESC')->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
-
-            }else{
-                $products = Product::with('Pri_Image')->orderBy('productPrice', 'DESC')
-                ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
-                ->where('productPrice','<=', $this->priceMax)->paginate(12);
+            else if($this->priceSort == 'price_desc')
+            {
+                if($this->categoryId != null){
+                    $products = Product::with('Pri_Image')->where('CategoryID', $cate_slug->id)->
+                    orderBy('productPrice', 'DESC')->where('productName','LIKE', $search2)
+                    ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
+    
+                }else{
+                    $products = Product::with('Pri_Image')->orderBy('productPrice', 'DESC')
+                    ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
+                    ->where('productPrice','<=', $this->priceMax)->paginate(12);
+                }
             }
-        }
-        else {
-            if($this->categoryId != null  &&  $this->brandId == null){
-                $products = Product::with('Pri_Image')->where('CategoryID', $cate_slug->id)
-                ->where('productName','LIKE', $search2)
-                ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
-
-            }else{
+            else {
+                if($this->categoryId != null){
+                    $products = Product::with('Pri_Image')->where('CategoryID', $cate_slug->id)
+                    ->where('productName','LIKE', $search2)
+                    ->where('productPrice','>=', $this->priceMin)->where('productPrice','<=', $this->priceMax)->paginate(12);
+    
+                }else{
+                    $products = Product::with('Pri_Image')
+                    ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
+                    ->where('productPrice','<=', $this->priceMax)->paginate(12);
+                }
+            }
+        }else{
                 $products = Product::with('Pri_Image')
-                ->where('productName','LIKE', $search2)->where('productPrice','>=', $this->priceMin)
-                ->where('productPrice','<=', $this->priceMax)->paginate(12);
-            }
+                ->where('productName','LIKE', $search2)->where('productPrice',12321255212)->paginate(12);
         }
 
         return view('livewire.frontend.category-component',compact('products','categorylv1_name'))->layout('layouts.template3');

@@ -114,27 +114,36 @@ class SearchComponent extends Component
     }
     public function addToWishlisht($id)
     { 
-        $temp = Wishlist::where('productID',$id)
-                        ->where('id_user',auth()->user()->id)
-                        ->get();
+        if(Auth::user()){
+            $temp = Wishlist::where('productID',$id)
+                            ->where('id_user',auth()->user()->id)
+                            ->get();
 
-        if($temp->count() == 0){
-            $witem = new Wishlist();
-            $witem->productID = $id;
-            $witem->id_user = Auth::user()->id;
-            $witem->status = 1;
-            $witem->save();
-        }else{
-             DB::table('wishlists')
-            ->where('productID', $id)
-            ->where('id_user', Auth::user()->id)
-            ->update(['status' => 1]);
+            if($temp->count() == 0){
+                $witem = new Wishlist();
+                $witem->productID = $id;
+                $witem->id_user = Auth::user()->id;
+                $witem->status = 1;
+                $witem->save();
+            }else{
+                DB::table('wishlists')
+                ->where('productID', $id)
+                ->where('id_user', Auth::user()->id)
+                ->update(['status' => 1]);
+            }
+			$ProductName = Product::find($id);
+			session()->flash('add_favorite','Đã thích sản phẩm '.$ProductName->productName);
+        }
+        else {
+            return redirect('login');
         }
     }  
     public function removeWishlish($id){
-        $flight = Wishlist::find($id);
-        $flight->status = 0;
-
-        $flight->save();
-    } 
+        $ProductName = Product::find($id);
+		
+		$Favorite = Wishlist::where('id_user',auth()->user()->id)->where('productID',$id)->get()->last();
+		$Favorite->status = 0;
+		$Favorite->save();
+		session()->flash('delete_favorite','Đã hủy thích sản phẩm '.$ProductName->productName);
+    }  
 }
