@@ -30,7 +30,7 @@ class Contact extends Component
     }
     public function render()
     {
-        $this->con = mContact::first();
+        $this->con = mContact::get()->last();
         return view('livewire.frontend.contact')->layout('layouts.template3');
     }
     public function submit(){

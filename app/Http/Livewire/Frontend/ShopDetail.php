@@ -29,28 +29,33 @@ class ShopDetail extends Component
 	public $get_slug;
 	public $is_flashsale = false;
 
-    public function mount(string $slug){
-        $this->relatedPro = Product::with('Pri_image')->with('Category1')->orderBy('id', 'DESC')->get()->take(4);
-        $this->product = Product::with('getSalePrice')->with('Pri_image')->with('Models')->with('wishlist')->where('productSlug', $slug)->get();
-        $proSlug = Product::where('productSlug', $slug)->first();
+    public $slugId;
 
-        $this->bl = Comment2::with('User')->where('product_id',$proSlug->id)->get();
-        // dd($this->bl);
-        $this->comment = Comment2::where('product_id',$proSlug->id)->where('status',1)->get();
-		$this->Sizes = ProductModel::with('Size')->where('productID',$proSlug->id)->get();
-		$this->get_id = Product::where('productSlug',$slug)->get()->last();
-		$this->get_slug = $slug;
-		
-		
-		//Kiểm tra flash sale
-		$FlashSale = FlashSaleDetail::get()->pluck('product_id');
-		$this->is_flashsale = Product::where('productSlug',$slug)->whereIn('id',$FlashSale)->get()->last();
-		if(!$this->is_flashsale)
-			abort(404);
+    public function mount(string $slug){
+        $this->slugId = $slug;
     }
     public function render()
-    {
-		//dd($this);
+    {   
+        $this->relatedPro = Product::with('Pri_image')->with('Category1')->orderBy('id', 'DESC')->get()->take(4);
+        $this->product = Product::with('getSalePrice')->with('Pri_image')->with('Models')->with('wishlist')
+        ->where('productSlug', $this->slugId)->get();
+        $proSlug = Product::where('productSlug', $this->slugId)->first();
+    
+        if($proSlug != null){
+            $this->bl = Comment2::with('User')->where('product_id',$proSlug->id)->get();
+            // dd($this->bl);
+            $this->comment = Comment2::where('product_id',$proSlug->id)->where('status',1)->get();
+            $this->Sizes = ProductModel::with('Size')->where('productID',$proSlug->id)->get();
+            $this->get_id = Product::where('productSlug',$this->slugId)->get()->last();
+            $this->get_slug = $this->slugId;
+        }
+        
+        
+        //Kiểm tra flash sale
+        $FlashSale = FlashSaleDetail::get()->pluck('product_id');
+        $this->is_flashsale = Product::where('productSlug',$this->slugId)->whereIn('id',$FlashSale)->get()->last();
+        if(!$this->is_flashsale)
+        	abort(404);
         return view('livewire.frontend.shop-detail')->layout('layouts.template3');
     }
 
@@ -101,7 +106,6 @@ class ShopDetail extends Component
 			$ProductName = Product::find($id);
 			session()->flash('add_favorite','Đã thích sản phẩm '.$ProductName->productName);
             $a = Product::find($id);
-            return redirect('/shop-detail/'.$a->productSlug);
         }
         else {
             return redirect('login');

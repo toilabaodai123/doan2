@@ -21,8 +21,6 @@ class Users extends Component
     ];
     public function render()
     {
-       
-        // dd($this->name);
         return view('livewire.frontend.users')->layout('layouts.template3');
     }
     public function submit(){

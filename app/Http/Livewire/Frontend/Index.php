@@ -65,6 +65,7 @@ class Index extends Component
 
     public function addToWishlisht($id)
     { 
+        
         if(Auth::user()){
             $temp = Wishlist::where('productID',$id)
                             ->where('id_user',auth()->user()->id)

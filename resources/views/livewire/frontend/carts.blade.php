@@ -78,7 +78,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
-                                <a href="#" wire:click.prevent="back()">Continue Shopping</a>
+                                <a href="{{URL::to('shop')}}" >Continue Shopping</a>
                             </div>
                         </div>
                         

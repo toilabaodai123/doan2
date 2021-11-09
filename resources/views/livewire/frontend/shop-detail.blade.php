@@ -80,19 +80,19 @@
                                 @endif
                             </div>
                             <div class="product__details__btns__option">
-                                     @if(Auth::user() != null)
-										@if($pro->checkWishlist == null)
+                                    @if(Auth::user() != null)
+                                        @if($pro->checkWishlist == null)
                                         <a href="#"  wire:click.prevent="addToWishlisht({{$pro->id}})"  >
                                                 <i class="fa fa-heart 1"></i>add to wishlist</a>
                                         @else
-										    <a href="#" wire:click.prevent="removeWishlish({{$pro->id}})"  >
+                                            <a href="#" wire:click.prevent="removeWishlish({{$pro->id}})"  >
                                                 <i class="fa fa-heart 2 fill-heart"></i>move to wishlist</a>
                                         @endif
                                         
                                     @else
-                                     <a href="#"  wire:click.prevent="addToWishlisht({{$pro->id}})" >
+                                    <a href="#"  wire:click.prevent="addToWishlisht({{$pro->id}})" >
                                                 <i class="fa fa-heart 3"></i>add to wishlist</a>
-									@endif
+                                    @endif
                             <!-- @if($pro->wishlist != null && Auth::user()!= null)
                                 @if(Auth::user()->id == $pro->wishlist->id_user)
                                 
@@ -199,18 +199,19 @@
                                 <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
                             @endif
                                 <ul class="product__hover">
-                                @if($pro->wishlist != null && Auth::user())
-                                        @if(Auth::user()->id == $pro->wishlist->id_user)
-                                        
-                                            @if($pro->id === $pro->wishlist->productID && $pro->wishlist->status == 1)
-                                                <li><a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$pro->wishlist->id}})"  ><i class="fa fa-heart fill-heart"></i></a></li>
-                                            @else
-                                                <li><a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$pro->id}})" ><i class="fa fa-heart"></i></a></li>
-                                
-                                            @endif
+                                    @if(Auth::user() != null)
+										@if($pro->checkWishlist == null)
+                                        <a href="#" class="wishlist"  wire:click.prevent="addToWishlisht({{$pro->id}})"  >
+                                                <i class="fa fa-heart 1"></i></a>
+                                        @else
+										    <a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$pro->id}})"  >
+                                                <i class="fa fa-heart 2 fill-heart"></i></a>
                                         @endif
-
-                                @endif
+                                        
+                                    @else
+                                     <a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$pro->id}})" >
+                                                <i class="fa fa-heart 3"></i></a>
+									@endif
                                 </ul>
                             </div>
                             <div class="product__item__text">
