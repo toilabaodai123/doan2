@@ -120,7 +120,7 @@ class AdminNewOrderComponent extends Component
 			
 			$Log = new AdminLog();
 			$Log->admin_id = auth()->user()->id;
-			$Log->note = 'Đã hủy đơn hàng id:'.$Order->id.' , chặn người dùng ip :'.$Order->ip. ' đặt hàng';
+			$Log->note = 'Đã hủy đơn hàng id:'.$Order->id.' , chặn người dùng ip :'.$Order->ip. ' đặt hàng , lý do:'.$this->block_note;
 			$Log->save();
 			
 			$OrderLog = new OrderLog();
@@ -158,7 +158,6 @@ class AdminNewOrderComponent extends Component
 				$Log->save();				
 			}
 			
-			session()->flash('success','Đã chặn người dùng của đơn hàng id:'.$id);
 		}else{
 			session()->flash('success','Lỗi');
 		}

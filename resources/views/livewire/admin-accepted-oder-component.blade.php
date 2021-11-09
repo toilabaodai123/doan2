@@ -98,15 +98,14 @@
 																										<div class="modal-content">
 																											<div class="modal-header">
 																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																												<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
+																												<h4 class="modal-title" id="myModalLabel">Thông tin đơn đặt hàng</h4>
 																											</div>
 																											<div class="modal-body" >
-																												<label>Chi tiết hóa đơn</label>
 																												<div>
-																													@foreach($o->Details as $Details)
-																														<label>Tên sản phẩm :</label> {{$Details->ProductModel->Product->productName}} |<label>Size :</label> {{$Details->ProductModel->size}}|<label>Số lượng:</label> {{$Details->quantity}}<br>
-																													@endforeach
-																													<label>Note (Người dùng): </label>{{$o->userNote}}<br>
+																													<label>Họ tên: {{$o->fullName}}</label><br>
+																													<label>Số điện thoại:{{$o->phone}}</label><br>
+																													<label>Địa chỉ: {{$o->address}}</label><br>
+																													<label>Note (Người dùng): {{$o->userNote}}</label><br>
 																													<label>Trạng thái :</label>	
 																														@if($o->status == 2)
 																															<label style="color:blue">Đã duyệt</label>
@@ -124,11 +123,34 @@
 																															<label>Note (Admin): </label>{{$o->adminNote}}<br>
 																														@endif
 																														
-																												</div>
+																													</div>
+																																																										<div class="col-lg-12">
+																																		<div class="row">
+																																			<div class="table-responsive">
+																																				<table class="table table-bordered table-hover table-striped">
+																																					<thead>
+																																						<tr>
+																																							<th>Tên sản phẩm</th>
+																																							<th>Size</th>
+																																							<th>Số lượng</th>
+																																						</tr>
+																																					</thead>
+																																					<tbody>
+																																					@foreach($o->Details as $Details)
+																																						<tr>
+																																							<td><label>{{$Details->ProductModel->Product->productName}}</label></td>
+																																							<td><label>{{$Details->ProductModel->size}}</label></td>
+																																							<td><label>{{$Details->quantity}} </label> </td>
+																																						</tr>
+																																					@endforeach										
+																																					</tbody>
+																																				</table>
+																																			</div>
+																																		</div>
+																														</div>
 																											</div>
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-																												<button type="button" class="btn btn-primary" >Sửa</button>
 																											</div>
 																										</div>
 																										<!-- /.modal-content -->

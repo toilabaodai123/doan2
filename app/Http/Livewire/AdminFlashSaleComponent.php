@@ -72,9 +72,10 @@ class AdminFlashSaleComponent extends Component
 						->paginate(3);
 
 		$Sales2 = FlashSale::where('status',1)->get()->pluck('id');
-		//dd($Sales);
-		$Details = FlashSaleDetail::whereIn('sale_id',[$Sales2])->get()->pluck('product_id');
-		//dd($Details);
+		if($Sales2->count() > 0)
+			$Details = FlashSaleDetail::whereIn('sale_id',[$Sales2])->get()->pluck('product_id');
+		else
+			$Details =[];
 		if($this->searchInput == null)
 			$Products = Product::whereNotIn('id',$Details)
 								->orderBy($this->sortField,$this->sortDirection)
@@ -125,7 +126,7 @@ class AdminFlashSaleComponent extends Component
 		$Sales = FlashSale::where('status',1)->get();
 		
 		foreach($Sales as $sale){
-			if($this->from_date >= $this->to_date){
+			if(!$this->from_date <= $this->to_date && $this->from_date <= $sale->from_date && $this->to_date >= $sale->from_date && $this->to_date >= $this->to_date){
 				$flag=true;
 				break;
 			}

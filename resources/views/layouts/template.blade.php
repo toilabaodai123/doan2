@@ -192,9 +192,6 @@
 					@endif
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')					
-                    <li>
-                        <a href="{{url('admin/demo/ship')}}"><i class="fa fa-sitemap fa-fw"></i>DEMO vận chuyển</a>
-                    </li>	
 					@endif	
                     
                     <li class="active">

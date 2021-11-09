@@ -66,34 +66,38 @@
 																										<div class="modal-content">
 																											<div class="modal-header">
 																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																												<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
+																												<h4 class="modal-title" id="myModalLabel">Thông tin hóa đơn</h4>
 																											</div>
 																											<div class="modal-body" >
-																												<label>Chi tiết hóa đơn</label>
 																												<div>
-																													@foreach($o->Details as $Details)
-																														<label>Tên sản phẩm :</label> {{$Details->ProductModel->Product->productName}} |<label>Size :</label> {{$Details->ProductModel->size}}|<label>Số lượng:</label> {{$Details->quantity}}<br>
-																													@endforeach
-																													<label>Note (Người dùng): </label>{{$o->userNote}}<br>
-																													<label>Trạng thái :</label>	
-																														@if($o->status == 2)
-																															<label style="color:blue">Đã duyệt</label>
-																														@elseif($o->status == 3)
-																															<label style="color:orange">Đang chuyển hàng</label>
-																														@elseif($o->status == 4)
-																															<label style="color:green">Đã hoàn tất</label>
-																														@elseif($o->status == 5)
-																															<label style="color:red">Đã hủy đơn</label>
-																														@elseif($o->status == 0)
-																															<label style="color:grey">Đã bị từ chối</label>
-																														@elseif($o->status == 1)
-																															<label style="color:green">Đơn hàng mới</label>
-																														@endif
-																														<br>
-																														@if($o->adminNote != null)
-																															<label>Note (Admin): </label>{{$o->adminNote}}<br>
-																														@endif
-																														
+																													<label>Họ tên: {{$o->fullName}}</label><br>
+																													<label>Số điện thoại:{{$o->phone}}</label><br>
+																													<label>Địa chỉ: {{$o->address}}</label><br>
+																													<label>Note (Người dùng): {{$o->userNote}}</label><br>
+																														<div class="col-lg-12">
+																																		<div class="row">
+																																			<div class="table-responsive">
+																																				<table class="table table-bordered table-hover table-striped">
+																																					<thead>
+																																						<tr>
+																																							<th>Tên sản phẩm</th>
+																																							<th>Size</th>
+																																							<th>Số lượng</th>
+																																						</tr>
+																																					</thead>
+																																					<tbody>
+																																					@foreach($o->Details as $Details)
+																																						<tr>
+																																							<td><label>{{$Details->ProductModel->Product->productName}}</label></td>
+																																							<td><label>{{$Details->ProductModel->size}}</label></td>
+																																							<td><label>{{$Details->quantity}} </label> </td>
+																																						</tr>
+																																					@endforeach										
+																																					</tbody>
+																																				</table>
+																																			</div>
+																																		</div>
+																														</div>
 																												</div>
 																											</div>
 																											<div class="modal-footer">
