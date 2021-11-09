@@ -1,9 +1,11 @@
 @section('title', 'Trang chủ')
 
 <div>
+@if($FlashSale != null)
 <div style="width:100px;height:100px;position:fixed;background-color:red;right:0;bottom:0;margin-bottom:150px;margin-right:150px;">	
-	sdadasdas dsadas
+	<a href="{{url('flash-sale/'.$FlashSale->id)}}"><img src="{{asset('storage/images/logo/logo.png')}}"></a>
 </div>
+@endif
 <section class="hero">
         <div class="hero__slider owl-carousel">
             @forelse($slide as $slide)
@@ -91,7 +93,7 @@
 									@endif
 									<li><a href="{{url('bao-cao/san-pham/'.$product->productSlug)}}" class="wishlist"><i class="fa fa-warning"></i></a></li>
                                 </ul>
-								
+		
 								
                             </div>
                             <div class="product__item__text">
@@ -99,6 +101,7 @@
                                <h6>{{ $product->productName }}</h6>
                                 <div class="product_des">
                                     <h5>{{ number_format($product->productPrice) }} VND</h5>
+
                                     <h5>{{ $product->Category1->categoryName }}</h5>
 
                                 </div>

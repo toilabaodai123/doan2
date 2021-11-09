@@ -37,7 +37,7 @@ use App\Http\Livewire\AdminInfoComponent;
 use App\Http\Livewire\AdminUserComponent;
 use App\Http\Livewire\ReportComponent;
 use App\Http\Livewire\AdminFlashSaleComponent;
-
+use App\Http\Livewire\FlashSaleComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +81,7 @@ Route::middleware(['VisitCounter','checkMaintenance'])->group(function(){
 	Route::get('coupon', App\Http\Livewire\Pages\AdminCoupon::class);
 	Route::get('/admin-contact', App\Http\Livewire\Pages\Admincontact::class);
 	Route::get('/tin-nhan', App\Http\Livewire\Pages\AdminMessage::class);
+	Route::get('flash-sale/{id}',App\Http\Livewire\FlashSaleComponent::class);
 	// Blog
 	Route::get('post',[App\Http\Controllers\Controller::class, 'index']);
 	Route::post('addpost',[App\Http\Controllers\Controller::class, 'addpost']);

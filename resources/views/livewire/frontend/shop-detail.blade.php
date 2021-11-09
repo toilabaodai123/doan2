@@ -38,7 +38,10 @@
                     <div class="col-lg-8">
                         <div class="product__details__text">
                             <h4>{{$pro->productName}}</h4>
-                            <h3>{{ number_format($pro->productPrice) }} VND</h3>
+                            <h3 style="text-decoration-line: line-through;">{{ number_format($pro->productPrice) }} VND</h3>
+							@if($is_flashsale != null)
+								<h3 style="color:red">{{ number_format($pro->getSalePrice->price) }} VND</h3>
+							@endif							
                             <p>{{$pro->shortDesc}}</p>
                             <div class="product__details__option">
                                 <div class="product__details__option__size" wire:ignore>
@@ -154,6 +157,9 @@
                                                         @endif
                                                         </div>
                                                     </div>
+													@if(auth()->check() && auth()->user()->user_type=='Admin')
+														<button type="button" wire:click="deleteReview({{$blog1->id}})"class="btn btn-success">Xóa (Admin)</button>
+													@endif
                                                 </div>
                                             @endforeach
                                         </div>

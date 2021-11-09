@@ -15,12 +15,13 @@ use App\Models\Wishlist;
 // use App\Models\Image;
 use App\Models\Blog_detail;
 use App\Models\Order;
+use App\Models\FlashSale;
 
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Cart;
-
+use Carbon\Carbon;
 
 class Index extends Component
 {
@@ -40,6 +41,7 @@ class Index extends Component
     // ADD Wishlist
     public $wishId = 0;
     public $test;
+	public $FlashSales;
     
 
     public function render()
@@ -50,6 +52,13 @@ class Index extends Component
         $this->category = ProductCategory::with('Image')->take(8)->get(); 
         $this->slide = slide::orderBy('id','desc')->take(3)->get();
         $this->product = Product::with('Pri_Image')->with('wishlist')->where('status',1)->orderBy('id','desc')->take(8)->get();
+		
+		$this->FlashSale = FlashSale::where('status',1)
+								    ->where('from_date','<=',Carbon::now())
+									->where('to_date','>=',Carbon::now())
+									->get()
+									->last();
+
 
         return view('livewire.frontend.index')->layout('layouts.template3');
     }
