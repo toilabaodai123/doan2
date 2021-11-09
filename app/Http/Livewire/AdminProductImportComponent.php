@@ -15,7 +15,7 @@ use App\Models\AdminLog;
 use App\Models\Image;
 use App\Models\OrderDetail;
 
-
+use Illuminate\Support\Facades\Hash;
 use DB;
 use Livewire\WithPagination;
 use Livewire\Component;
@@ -40,6 +40,9 @@ class AdminProductImportComponent extends Component
 	public $searchSelect;
 	public $searchInput;
 	
+	public $admin_note;
+	public $admin_password;
+	public $bill_date;
 	public $size;
 	public $amount;
 	public $price;
@@ -57,8 +60,7 @@ class AdminProductImportComponent extends Component
 	public $add_product_category_2;
 	public $add_product_shortDesc;
 	public $add_product_longDesc;
-	
-	public $bill_date;
+
 	public $bill_id;
 	
 	public $Stockers ;
@@ -70,6 +72,7 @@ class AdminProductImportComponent extends Component
 	
 	public $bill_od;
 	public $transporter_name;
+	public $tempImgUrl=null;
 	
 	public $sortField='productName';
 	public $sortDirection='ASC';
@@ -126,14 +129,19 @@ class AdminProductImportComponent extends Component
 	}	
 	
 	public function selectProduct2($id,$name){
-		array_push($this->selectedProductArray,['is_deleted'=>false,'is_update'=>false,'size' => null,'quantity' => null,'model_id' => null ,'price' => null ,'product_id'=>$id,'product_name'=>$name]);
+		array_push($this->selectedProductArray,['is_deleted'=>false,
+												'size' => [],
+												'quantity' => null,
+												'model_id' => null,
+												'price' => null,
+												'product_id'=>$id,
+												'product_name'=>$name]);
+		$Sizes = ProductSize::all();
+		foreach($Sizes as $size){
+			array_push($this->selectedProductArray[array_key_last($this->selectedProductArray)]['size'],$size->sizeName);
+		}
 	}
-	
-	public function a($k){
-		
-	}
-	
-	
+
 	public function pushProducts($id){
 		$this->reset();
 		$this->bill_id = $id;
@@ -142,24 +150,24 @@ class AdminProductImportComponent extends Component
 			$Details = ProductImportBillDetail::where('import_bill_id',$id)->get();
 			foreach($Details as $detail){
 				array_push($this->selectedProductArray,['is_deleted' => false,
-												  'is_update' => true,
-												  'size' => $detail->Model->size,
-												  'quantity' =>$detail->amount,
-												  'price' => $detail->price,
-												  'product_id' => $detail->Model->Product->id,
-												  'product_name' => $detail->Model->Product->productName
-												]);
-				
+														  'size' => [],
+														  'quantity' =>$detail->amount,
+														  'price' => $detail->price,
+														  'product_id' => $detail->Model->Product->id,
+														  'product_name' => $detail->Model->Product->productName
+														]);
+														
+				$Sizes = ProductSize::all();
+				foreach($Sizes as $size){
+					array_push($this->selectedProductArray[array_key_last($this->selectedProductArray)]['size'],$size->sizeName);
+				}
+				$this->size[array_key_last($this->selectedProductArray)] = $detail->Model->size;
 			}
-			
 			foreach($this->selectedProductArray as $k=>$v){
-				$this->size[$k] = $v['size'];
 				$this->amount[$k] = $v['quantity'];
 				$this->price[$k] = $v['price'];
 			}
-			
 			$Bill = ProductImportBill::find($id);
-			$this->bill_date = $Bill->bill_date;
 			$this->bill_code = $Bill->bill_code;
 			$this->vat = $Bill->VAT;
 			$this->supplierID = $Bill->supplier_id;
@@ -167,27 +175,35 @@ class AdminProductImportComponent extends Component
 			$this->stocker_id = $Bill->Stocker->name;
 			$this->accountant_id = $Bill->Accountant->name;
 			$this->stocker_id_submit = $Bill->stocker_id;
+			$this->bill_date = $Bill->bill_date;
 			$this->accountant_id_submit = $Bill->accountant_id;
+			$this->bill_od = $Bill->bill_od;
 			
-			
+			$Image = Image::where('import_bill_id',$id)->get()->last();
+			if($Image){
+				$this->bill_image = $Image->imageName;
+			}
 		
 	}
 	
 	public function submit(){
 		$flag = false;
+		
+		if(count($this->selectedProductArray) == 0)
+			$flag=true;
 		if($this->amount != null && $this->size != null && $this->price != null){
 			foreach($this->amount as $k=>$v){
 				if($v == '' || $v <= 0 || $this->price[$k] =='' || $this->price[$k] <= 0 ||
 				count($this->size) < count($this->selectedProductArray) || 
-				count($this->amount) < count($this->selectedProductArray) || $this->size[$k] == 'Chọn')
+				count($this->amount) < count($this->selectedProductArray) ||
+				$this->size[$k] == 'Chọn' || $this->bill_image == null ||
+				$this->supplierID == null || $this->bill_od == null)
 					$flag=true;
 			}
-		}else{
-			$flag=true;
 		}
 		if($flag==true)
 			session()->flash('error_bill','Hãy kiểm tra thông tin nhập!');
-		else{
+		else
 			if($this->bill_id != null){	
 				$OldBill = ProductImportBill::find($this->bill_id);
 				$OldBill->status=0;
@@ -195,15 +211,16 @@ class AdminProductImportComponent extends Component
 				$Bill = new ProductImportBill();
 				$Bill->user_id = $OldBill->user_id;
 				$Bill->bill_code = $this->bill_code;
+				$Bill->bill_date = $this->bill_date;
 				$Bill->VAT = $this->vat;
 				$Bill->supplier_id = $this->supplierID;
 				$Bill->bill_od = $this->bill_od;
-				$Bill->bill_date = $this->bill_date;
 				$Bill->transporter_name = $this->transporter_name;
 				$Bill->stocker_id = $this->stocker_id_submit;
 				$Bill->accountant_id = $this->accountant_id_submit;
+				$Bill->bill_od = $this->bill_od;
 				$Bill->status=1;
-				$Bill->save();			
+				$Bill->save();
 				foreach($this->selectedProductArray as $k=>$v){
 					if($v['is_deleted'] == false){	
 						$Detail = new ProductImportBillDetail();
@@ -237,6 +254,20 @@ class AdminProductImportComponent extends Component
 				$this->bill_total += ( $this->bill_total * ( $this->vat ) / 100 );
 				$Bill->total = $this->bill_total;
 				$Bill->save();
+				
+				if($this->bill_image!= null || is_string($this->bill_image) == true){
+					$name=$this->bill_image->getClientOriginalName();
+					$name2 = date("Y-m-d-H-i-s").'-'.$name;
+					$this->bill_image->storeAs('/images/bill/import/',$name2,'public');
+							
+					$Image = new Image();
+					$Image->imageName = $name2;
+					$Image->image_type = 'Hình hóa đơn nhập hàng'; //3 = Danh mục sản phẩm
+					$Image->category_id = $Bill->id;
+					$Image->save();
+				}
+				
+				
 			}
 			else{
 				//Thêm hóa đơn
@@ -251,6 +282,7 @@ class AdminProductImportComponent extends Component
 				$Bill->transporter_name = $this->transporter_name;
 				$Bill->stocker_id = $this->stocker_id_submit;
 				$Bill->accountant_id = $this->accountant_id_submit;
+				$Bill->bill_od = $this->bill_od;
 				$Bill->save();
 
 				foreach($this->selectedProductArray as $k=>$v){
@@ -295,10 +327,10 @@ class AdminProductImportComponent extends Component
 				
 				
 				//Hình ảnh
-				if($this->bill_image != null && is_string($this->bill_image) == true){
+				if($this->bill_image != null ){
 					$name=$this->bill_image->getClientOriginalName();
 					$name2 = date("Y-m-d-H-i-s").'-'.$name;
-					$this->bill_image->storeAs('/images/bill/',$name2,'public');
+					$this->bill_image->storeAs('/images/bill/import/',$name2,'public');
 								
 					$Image = new Image();
 					$Image->imageName = $name2;
@@ -317,7 +349,7 @@ class AdminProductImportComponent extends Component
 				
 			}
 			$this->reset();
-		}
+		
 	}
 	
 	public function test(){
@@ -385,29 +417,29 @@ class AdminProductImportComponent extends Component
 	}
 	
 	public function deleteBill($id){
-		$Bill = ProductImportBill::find($id);
-		if($Bill->status == 1){
-			$Bill->status = 0;
-			$Details = ProductImportBillDetail::where('import_bill_id',$id)->get();
-			foreach($Details as $detail){
-				$Model = ProductModel::find($detail->product_model_id);
-				$Model->stock -= $detail->amount;
-				$Model->stockTemp -= $detail->amount;
-				$Model->save();
-			}
+		$this->validate([
+			'admin_note' => 'required',
+			'admin_password' =>'required'
+		],[
+			'admin_note.required' => ' Nhập lý do ',
+			'admin_password.required' => 'Nhập mật khẩu'
+		]);
+		if(!Hash::check($this->admin_password,auth()->user()->password)){
+			session()->flash('error_delete_bill_modal','Sai mật khẩu');
 		}
 		else{
-			$Bill->status = 1;
-			$Details = ProductImportBillDetail::where('import_bill_id',$id)->get();
-			foreach($Details as $detail){
-				$Model = ProductModel::find($detail->product_model_id);
-				$Model->stock += $detail->amount;
-				$Model->stockTemp += $detail->amount;
-				$Model->save();
-			}
+			$Bill = ProductImportBill::find($id);
+				$Bill->status = 0;
+				$Details = ProductImportBillDetail::where('import_bill_id',$id)->get();
+				foreach($Details as $detail){
+					$Model = ProductModel::find($detail->product_model_id);
+					$Model->stock -= $detail->amount;
+					$Model->stockTemp -= $detail->amount;
+					$Model->save();
+				}
+			$Bill->save();
+			session()->flash('success_delete_bill_modal','Thành công');
 		}
-		$Bill->save();
-		session()->flash('success','Thành công');
 		$this->reset();
 	}
 	

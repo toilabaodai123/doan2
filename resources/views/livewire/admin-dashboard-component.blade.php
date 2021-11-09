@@ -1,5 +1,4 @@
 <div>
-<button type="button" class="btn btn-success" wire:click="test">Xem</button>
 @if($admin_settings != null && $admin_settings->is_maintenance == true)
 	<div class="alert alert-danger">
 		Website đang trong trạng thái bảo trì
@@ -186,7 +185,7 @@
 													</td>
 												</tr>
 											@empty
-												aaa
+												
 											@endforelse
 										</tbody>
 									</table>
@@ -237,7 +236,7 @@
 																													@forelse($many_waiting_orders as $order)
 																													<tr>
 																														<td>{{$order->orderCode}}</td>
-																														<td>{{$order->assignedTo->name}} || {{$order->assignedTo->phone}}</td>
+																														<td>{{$order->assignedTo==null?'Trống':$order->assignedTo->name}}</td>
 																														<td>{{$order->created_at}}</td>
 																													</tr>
 																													@empty
