@@ -12,6 +12,8 @@ use App\Models\Comment2;
 use App\Models\User;
 use Cart;
 use App\Models\FlashSaleDetail;
+use App\Models\FlashSale;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +35,7 @@ class ShopDetail extends Component
         $this->relatedPro = Product::with('Pri_image')->with('Category1')->orderBy('id', 'DESC')->get()->take(4);
         $this->product = Product::with('getSalePrice')->with('Pri_image')->with('Models')->with('wishlist')->where('productSlug', $slug)->get();
         $proSlug = Product::where('productSlug', $slug)->first();
-
+		//dd($proSlug);
         $this->bl = Comment2::with('User')->where('product_id',$proSlug->id)->get();
         // dd($this->bl);
         $this->comment = Comment2::where('product_id',$proSlug->id)->where('status',1)->get();
@@ -42,11 +44,33 @@ class ShopDetail extends Component
 		$this->get_slug = $slug;
 		
 		
+		
 		//Kiểm tra flash sale
-		$FlashSale = FlashSaleDetail::get()->pluck('product_id');
-		$this->is_flashsale = Product::where('productSlug',$slug)->whereIn('id',$FlashSale)->get()->last();
-		if(!$this->is_flashsale)
-			abort(404);
+		if($this->get_id->status == 0){
+			$flag=false;
+			$FlashSale = FlashSale::where('from_Date','<=',Carbon::now())
+									->where('to_date','>=',Carbon::now())
+									->get()
+									->last();
+			if($FlashSale && $FlashSale->status==1){
+				$FlashSaleDetails = FlashSaleDetail::where('sale_id',$FlashSale->id)->get()->pluck('product_id');
+				$Check = Product::whereNotIn('id',$FlashSaleDetails)->get()->pluck('id');
+				$this->is_flashsale = Product::where('productSlug',$slug)->whereIn('id',$FlashSaleDetails)->get()->last();
+				foreach($Check as $check){
+					if($this->get_id->id == $check){
+						$flag=true;
+						break;
+					}
+				}
+				if($flag==true)
+					abort(404);					
+			}else{
+				abort(404);
+			}
+		
+		
+		}
+
     }
     public function render()
     {

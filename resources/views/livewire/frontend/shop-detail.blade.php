@@ -38,9 +38,12 @@
                     <div class="col-lg-8">
                         <div class="product__details__text">
                             <h4>{{$pro->productName}}</h4>
-                            <h3 style="text-decoration-line: line-through;">{{ number_format($pro->productPrice) }} VND</h3>
+                            
 							@if($is_flashsale != null)
+								<h3 style="text-decoration-line: line-through;">{{ number_format($pro->productPrice) }} VND</h3>
 								<h3 style="color:red">{{ number_format($pro->getSalePrice->price) }} VND</h3>
+							@else
+								<h3>{{ number_format($pro->productPrice) }} VND</h3>
 							@endif							
                             <p>{{$pro->shortDesc}}</p>
                             <div class="product__details__option">
@@ -178,6 +181,7 @@
     <!-- Shop Details Section End -->
 
     <!-- Related Section Begin -->
+	@if(!$is_flashsale)
     <section class="related spad">
         <div class="container">
             <div class="row">
@@ -229,4 +233,5 @@
             </div>
         </div>
     </section>
+	@endif
 </div>

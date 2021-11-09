@@ -1,14 +1,41 @@
 <div>
+<div class="row">
+	<div class="col-lg-5" style="margin-bottom:30px">
+		<input class="form-control" wire:model="sale_searchInput" placeholder="Nhập thông tin flash sale cần tìm">
+	</div>
+	<div class="col-lg-2" style="margin-bottom:30px">
+		<select wire:model="sale_searchField" class="form-control">
+			<option value="title">Theo tiêu đề</option>
+			<option value="name">Theo người tạo</option>
+		</select>
+	</div>	
+</div>
 <div class="col-lg-12">
                                             <div class="table-responsive">
 											{{$Sales->links()}}
                                                 <table class="table table-bordered table-hover table-striped">
                                                     <thead>
                                                     <tr>
-                                                        <th>Tiêu đề</th>
-                                                        <th>Người tạo</th>
-														<th>Trạng thái</th>
-														<th>Trạng thái hoạt động</th>
+                                                        <th>
+															Tiêu đề
+															<i class="fa fa-arrow-up" wire:click="sale_sortBy('title','ASC')" style="cursor:pointer;{{$sale_sortField=='title' && $sale_sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sale_sortBy('title','DESC')" style="cursor:pointer;{{$sale_sortField=='title' && $sale_sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
+                                                        <th>
+															Người tạo
+															<i class="fa fa-arrow-up" wire:click="sale_sortBy('name','ASC')" style="cursor:pointer;{{$sale_sortField=='name' && $sale_sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sale_sortBy('name','DESC')" style="cursor:pointer;{{$sale_sortField=='name' && $sale_sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
+														<th>
+															Trạng thái
+															<i class="fa fa-arrow-up" wire:click="sale_sortBy('status','ASC')" style="cursor:pointer;{{$sale_sortField=='status' && $sale_sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sale_sortBy('status','DESC')" style="cursor:pointer;{{$sale_sortField=='status' && $sale_sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
+														<th>
+															Trạng thái hoạt động
+															<i class="fa fa-arrow-up" wire:click="sale_sortBy('to_date','ASC')" style="cursor:pointer;{{$sale_sortField=='to_date' && $sale_sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sale_sortBy('to_date','DESC')" style="cursor:pointer;{{$sale_sortField=='to_date' && $sale_sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
                                                         <th>Tùy chọn</th>
                                                     </tr>
                                                     </thead>
@@ -16,12 +43,18 @@
 														@forelse($Sales as $sale)
 														<tr>
 															<td>{{$sale->title}}</td>
-															<td>{{$sale->User->name}}</td>
+															<td>{{$sale->name}}</td>
 															<td>
-																1
+																@if($sale->status==1)
+																<label style="color:green">Đã lưu</label>
+																@elseif($sale->status==0)
+																<label style="color:gray">Đã ẩn</label>
+																@endif
 															</td>
 															<td>
-																Đang diễn ra
+																@if($sale->to_date >= Carbon\Carbon::now() && $sale->status == 1)
+																	<label style="color:red">Đang diễn ra</label>
+																@endif
 															</td>
 															<td>
 																<button type="button" wire:click="selectSale({{$sale->id}})" wire:loading.attr="disabled" class="btn btn-default">Chọn</button>
@@ -75,7 +108,7 @@
 																	<td>{{$product->productName}}</td>
 																	<td>{{$product->Category1->categoryName}}</td>
 																	<td>
-																		<button wire:loading.attr="disabled" wire:click="selectProduct({{$product->id}},'{{$product->productName}}')" class="btn btn-success">Chọn</button>
+																		<button wire:loading.attr="disabled" wire:click="selectProduct({{$product->id}},'{{$product->productName}}',{{$product->productPrice==null?0:$product->productPrice}})" class="btn btn-success">Chọn</button>
 																	</td>
 																<tr>
 																@empty
@@ -91,9 +124,11 @@
 
 									
 									<div class="col-lg-8">
-									@if(session()->has('success'))
-										<h4>{{session('success')}}</h4>
-									@endif
+										@if(session()->has('success'))
+										<div class="alert alert-success">
+											{{session('success')}}
+										</div>
+										@endif
 										<div class="panel panel-default">
 											<div class="panel-heading">
 												Danh sách sản phẩm đã chọn 
@@ -106,6 +141,7 @@
 																<thead>
 																	<tr>
 																		<th>Tên sản phẩm</th>	
+																		<th>Giá cũ</th>
 																		<th>Đơn giá</th>
 																		<th>Tùy chọn</th>
 																	</tr>
@@ -114,7 +150,9 @@
 																	@forelse($selectedProductArray as $k=>$v)
 																		@if($v['is_deleted']==false)
 																		<tr>
+																			
 																			<td>{{$v['product_name']}}</td>
+																			<td>{{$v['old_price']}}</td>
 																			<td>
 																				<input class="form-control" wire:model="price.{{$k}}" placeholder="Nhập giá">
 																			</td>
@@ -148,34 +186,70 @@
 													<div class="col-lg-12">
 														<label>ID Flash sale</label>
 														<input wire:model.defer="sale_id" disabled="" class="form-control">
+														
 													</div>																							
 												<div class="col-lg-12">
 													<label>Tiêu đề flash sale</label>
 													<input wire:model.defer="title" class="form-control">
+													@error('title')
+														<p class="text-danger">{{$message}}</p>
+													@enderror
 												</div>																								
 												<div class="col-lg-12">
 												<div class="form-group" wire:ignore="">
 													<label>Thời gian bắt đầu</label>
 													<div>
-														<input class="form-control" id="from_date" name="from_date">
+														<input class="form-control" id="from_date" name="from_date">													
 													</div>
 												</div>	
+												@error('from_date')
+													<p class="text-danger">{{$message}}</p>
+												@enderror
 												<div class="form-group" wire:ignore="">
 													<label>Thời gian kết thúc</label>
 													<div>
 														<input class="form-control" id="to_date" name="to_date">
 													</div>
-												</div>																																		
-												<div class="form-group">
-													<label>Hình flash sale</label>
-													<input id="file-upload" style="display:none" type="file" wire:model="sale_image">
-													<label for="file-upload" class="custom-file-upload" style="border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;">
-														Chọn hình ảnh
-													</label>
-													<label wire:loading="" wire:target="sale_image">Đang tải...</label>
-												</div>											
+												</div>	
+												@error('to_date')
+													<p class="text-danger">{{$message}}</p>
+												@enderror																							
 												<div class="form-group" style="margin-top:20px">
-													<button wire:loading.attr="disabled" wire:click="submitSale" class="btn btn-default">Lưu</button>
+													<button wire:loading.attr="disabled" wire:click="checkValidation" class="btn btn-default" data-toggle="modal" data-target="{{$is_validated==true?'#submitFlashSale':''}} ">Lưu</button>
+															<div wire:ignore.self class="modal fade" id="submitFlashSale" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																									<div class="modal-dialog" role="document">
+																										<div class="modal-content">
+																									
+																											<div class="modal-header">
+																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																												<h4 class="modal-title" wire:model.lazy="decline_note" id="myModalLabel">Xác nhận Flash Sale</h4>
+																											</div>
+																											<div class="modal-body" >
+																												@if(session()->has('error_add_flashsale_modal'))
+																												<div class="alert alert-danger">
+																													{{session('error_add_flashsale_modal')}}
+																												</div>
+																												@elseif(session()->has('success'))
+																												<div class="alert alert-success">
+																													{{session('success')}}
+																												</div>
+																												@endif																												
+																												<input class="form-control" placeholder="Hãy nhập mật khẩu nhân viên" wire:model.defer="add_flashsale_note">
+																												@error('add_flashsale_note')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror																											
+																											</div>
+																											<div class="modal-footer">
+																												<button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+																												<button type="button"  wire:click="submitSale" class="btn btn-primary" >Lưu</button>
+																											</div>
+																										</div>
+																										<!-- /.modal-content -->
+																									</div>
+																									<!-- /.modal-dialog -->
+															</div>													
+													
+													
 													<button type="button" wire:click="btnReset" wire:loading.attr="disabled" class="btn btn-default">Reset</button>
 													<button type="button" wire:click="test" wire:loading.attr="disabled" class="btn btn-default">Test</button>
 												</div>												

@@ -41,6 +41,7 @@ class AdminUserComponent extends Component
 	
     public function render()
     {
+		dd(true);
 		if($this->searchInput == null)
 			$Users = User::where('user_type','LIKE','Người dùng')
 						  ->orderBy($this->sortField,$this->sortDirection)

@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\ProductModel;
 use App\Models\FlashSale;
 use App\Models\FlashSaleDetail;
+use DB;
+use Illuminate\Support\Facades\Hash;
 
 class AdminFlashSaleComponent extends Component
 {
@@ -22,20 +24,52 @@ class AdminFlashSaleComponent extends Component
 	public $title;
 	public $from_date;
 	public $to_date;
-	
+	public $add_flashsale_note;
 	
 	public $sortField = 'productName';
 	public $sortDirection = 'ASC';
 	public $searchInput;
+	public $sale_searchField = 'title';
+	public $sale_searchInput;
 	
 	public $is_update =false;
+	public $is_validated = false;
+	public $sale_sortField='title';
+	public $sale_sortDirection='ASC';
 	
 	public $selectedProductArray=[];
 	
+	protected $rules=[
+		'from_date' => 'required',
+		'to_date' => 'required',
+		'title' => 'required'
+	];
+	
+	protected $messages=[
+		'from_date.required' => 'Hãy chọn ngày bắt đầu',
+		'to_date.required' => 'Hãy chọn ngày kết thúc',
+		'title.required' => 'Hãy nhập tiêu đề flash sale'
+	];
 	
     public function render()
     {
-		$Sales = FlashSale::paginate(2);
+		if($this->sale_searchInput == null)
+			$Sales = DB::table('flash_sales')
+						->join('users','flash_sales.admin_id','users.id')
+						->join('flash_sale_details','flash_sales.id','flash_sale_details.sale_id')
+						->select('flash_sales.id','users.name','flash_sales.status','flash_sales.title','flash_sales.from_date','flash_sales.to_date')
+						->groupBy('flash_sales.id')
+						->orderBy($this->sale_sortField,$this->sale_sortDirection)
+						->paginate(3);
+		else
+			$Sales = DB::table('flash_sales')
+						->join('users','flash_sales.admin_id','users.id')
+						->join('flash_sale_details','flash_sales.id','flash_sale_details.sale_id')
+						->select('flash_sales.id','users.name','flash_sales.status','flash_sales.title','flash_sales.from_date','flash_sales.to_date')
+						->groupBy('flash_sales.id')
+						->where($this->sale_searchField,'LIKE','%'.$this->sale_searchInput.'%')
+						->orderBy($this->sale_sortField,$this->sale_sortDirection)
+						->paginate(3);
 		
 		if($this->searchInput == null)
 			$Products = Product::orderBy($this->sortField,$this->sortDirection)
@@ -47,15 +81,20 @@ class AdminFlashSaleComponent extends Component
 					->layout('layouts.template');
     }
 	
+	public function sale_sortBy($field,$direction){
+		$this->sale_sortField = $field;
+		$this->sale_sortDirection = $direction;
+	}
+	
 	public function sortBy($field,$direction){
 		$this->sortField = $field;
 		$this->sortDirection = $direction;
 	}
 	
-	public function selectProduct($id,$name){
+	public function selectProduct($id,$name,$old_price){
 		$flag=false;
 		foreach($this->selectedProductArray as $k=>$v){
-			if($v['product_id'] == $id){
+			if($v['product_id'] == $id && $v['is_deleted'] == false){
 				$flag=true;
 				break;
 			}
@@ -64,6 +103,7 @@ class AdminFlashSaleComponent extends Component
 		if($flag==false)
 			array_push($this->selectedProductArray,['is_deleted' => false ,
 													'product_id' => $id ,
+													'old_price' => $old_price,
 													'price' => null,
 													'product_name' => $name]);	
 	}
@@ -71,59 +111,79 @@ class AdminFlashSaleComponent extends Component
 		$this->selectedProductArray[$key]['is_deleted']=true;
 	}
 	
+	
+	public function checkValidation(){
+		$this->validate();
+		$this->is_validated = true;
+	}
+	
 	public function submitSale(){
-		if($this->sale_id == null){
-			$Sale = new FlashSale();
-			$Sale->title = $this->title;
-			$Sale->admin_id = auth()->user()->id;
-			$Sale->from_date = $this->from_date;
-			$Sale->to_date = $this->to_date;
-			$Sale->status=1;
-			$Sale->save();
-			
-			
-			foreach($this->selectedProductArray as $k=>$v){
-				if($v['is_deleted']==false){
-					$SaleDetail = new FlashSaleDetail();
-					$SaleDetail->sale_id = $Sale->id;
-					$SaleDetail->product_id = $v['product_id'];
-					$SaleDetail->price = $this->price[$k];
-					$SaleDetail->status = 1;
-					$SaleDetail->save();
-					
-					//Cập nhật trạng thái product
-					$Product = Product::find($v['product_id']);
-					$Product->status=0;
-					$Product->save();
+		$this->validate([
+			'add_flashsale_note' => 'required'
+		],[
+			'add_flashsale_note.required' => 'Hãy nhập mật khẩu nhân viên'
+		]);
+		
+		if(Hash::check($this->add_flashsale_note,auth()->user()->password)){
+			if($this->sale_id == null){
+				$Sale = new FlashSale();
+				$Sale->title = $this->title;
+				$Sale->admin_id = auth()->user()->id;
+				$Sale->from_date = $this->from_date;
+				$Sale->to_date = $this->to_date;
+				$Sale->status=1;
+				$Sale->save();
+				
+				
+				foreach($this->selectedProductArray as $k=>$v){
+					if($v['is_deleted']==false){
+						$SaleDetail = new FlashSaleDetail();
+						$SaleDetail->sale_id = $Sale->id;
+						$SaleDetail->product_id = $v['product_id'];
+						$SaleDetail->price = $this->price[$k];
+						$SaleDetail->status = 1;
+						$SaleDetail->save();
+						
+						//Cập nhật trạng thái product
+						$Product = Product::find($v['product_id']);
+						$Product->status=0;
+						$Product->save();
+					}
 				}
+				session()->flash('success','Thêm flash sale thành công');
+				
+			}else{
+				$Sale = new FlashSale();
+				$Sale->title = $this->title;
+				$Sale->admin_id = auth()->user()->id;
+				$Sale->from_date = $this->from_date;
+				$Sale->to_date = $this->to_date;
+				$Sale->status = 1;
+				$Sale->save();
+				
+				$OldSale = FlashSale::find($this->sale_id);
+				$OldSale->status = 0;
+				$OldSale->save();
+				
+				
+				foreach($this->selectedProductArray as $k=>$v){
+					if($v['is_deleted'] == false){
+						$SaleDetail = new FlashSaleDetail();					
+						$SaleDetail->sale_id = $Sale->id;
+						$SaleDetail->product_id = $v['product_id'];
+						$SaleDetail->price = $this->price[$k];
+						$SaleDetail->status = 1;
+						$SaleDetail->save();
+						
+						$Product = Product::find($v['product_id']);
+						$Product->status=0;
+						$Product->save();
+					}
+				}
+				session()->flash('success','Sửa flash sale thành công');
 			}
-			session()->flash('success','Thêm flash sale thành công');
-			
 		}else{
-			$Sale = new FlashSale();
-			$Sale->title = $this->title;
-			$Sale->admin_id = auth()->user()->id;
-			$Sale->from_date = $this->from_date;
-			$Sale->to_date = $this->to_date;
-			$Sale->status = 1;
-			$Sale->save();
-			
-			$OldSale = FlashSale::find($this->sale_id);
-			$OldSale->status = 0;
-			$OldSale->save();
-			
-			
-			foreach($this->selectedProductArray as $k=>$v){
-				if($v['is_deleted'] == false){
-					$SaleDetail = new FlashSaleDetail();					
-					$SaleDetail->sale_id = $Sale->id;
-					$SaleDetail->product_id = $v['product_id'];
-					$SaleDetail->price = $this->price[$k];
-					$SaleDetail->status = 1;
-					$SaleDetail->save();
-				}
-			}
-			session()->flash('success','Sửa flash sale thành công');
+			session()->flash('error_add_flashsale_modal','Sai mật khẩu');
 		}
 		
 		$this->reset();
@@ -140,6 +200,7 @@ class AdminFlashSaleComponent extends Component
 		foreach($Details as $k=>$v){
 			array_push($this->selectedProductArray,['is_deleted' => false ,
 													'product_id' => $v->product_id,
+													'old_price' => $v->Product->productPrice==null?0:$v->Product->productPrice,
 													'price' => $v->price,
 													'product_name' => $v->Product->productName]);
 			$this->price[$k] = $v->price;
@@ -155,4 +216,5 @@ class AdminFlashSaleComponent extends Component
 	public function btnReset(){
 		$this->reset();
 	}
+	
 }

@@ -10,6 +10,7 @@ use App\Models\Image;
 use App\Models\OrderDetail;
 use App\Models\Wishlist;
 use App\Models\FlashSaleDetail;
+use App\Models\FlashSale;
 use App\Models\Level2ProductCategory;
 use Illuminate\Support\Facades\Auth;
 
