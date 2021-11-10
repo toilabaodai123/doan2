@@ -62,7 +62,7 @@ class Product extends Model
 	}
 	
 	public function getSalePrice(){
-		return $this->hasOne(FlashSaleDetail::class,'product_id','id');
+		return $this->hasOne(FlashSaleDetail::class,'product_id','id')->where('status',1);
 	}
 
 	

@@ -41,7 +41,7 @@ class Index extends Component
     // ADD Wishlist
     public $wishId = 0;
     public $test;
-	public $FlashSales;
+	public $FlashSale;
     
 
     public function render()
@@ -89,6 +89,7 @@ class Index extends Component
         else {
             return redirect('login');
         }
+		$this->reset();
     }  
     public function removeWishlish($id){
 		/*

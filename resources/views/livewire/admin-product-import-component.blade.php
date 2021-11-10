@@ -17,6 +17,9 @@
                                                 <table class="table table-bordered table-hover table-striped">
                                                     <thead>
                                                     <tr>
+														<th>
+															ID
+														</th>
                                                         <th>
 															Mã hóa đơn
 															<i class="fa fa-arrow-up" wire:click="sortByBill('bill_code','ASC')" style="cursor:pointer;{{$bill_sortField=='bill_code' && $bill_sortDirection == 'ASC'?'color:green;':'' }}"></i>
@@ -43,6 +46,7 @@
                                                     <tbody>
 														@forelse($Bills as $bill)
 														<tr>
+															<td>{{$bill->id}}</td>
 															<td>{{$bill->bill_code}}</td>
 															<td>{{$bill->User->name}}</td>
 															<td>{{$bill->bill_date}}</td>
@@ -593,7 +597,6 @@
 														</div>
 													</div>
 													<button type="button" wire:click="resetBtn" wire:loading.attr="disabled" class="btn btn-default">Reset</button>
-													<button type="button" wire:click="test" wire:loading.attr="disabled" class="btn btn-default">Reset</button>
 												</div>												
 											</div>
 										</div>

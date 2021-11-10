@@ -95,14 +95,14 @@ class AdminProductComponent extends Component
 								->with('Category2')
 								->where('productName','LIKE','%'.$this->searchInput.'%')
 								->orderBy($this->sortField,$this->sortDirection)
-								->paginate(2);				
+								->paginate(5);				
 		}
 		else{
 			$Products2 = Product::with('Category1')
 								->with('Supplier')
 								->with('Category2')
 								->orderBy($this->sortField,$this->sortDirection)
-								->paginate(2);	
+								->paginate(5);	
 		}							
 		//dd($Products2);
 		/*
@@ -198,6 +198,7 @@ class AdminProductComponent extends Component
 			$Product->CategoryID = $this->CategoryID;
 			$Product->CategoryID2 = $this->CategoryID2;
 			$Product->shortDesc = $this->shortDesc;
+			$Product->productPrice = $this->productPrice;
 			$Product->longDesc = $this->longDesc;
 			$slug = SlugService::createSlug(Product::class, 'productSlug', $Product->productName);
 			$Product->productSlug = $slug.'-SP'.$Product->id;
@@ -259,8 +260,6 @@ class AdminProductComponent extends Component
 	
 	
 	public function btnReset(){
-		//$this->productImage2 ="A";
-		dd($this);
 		$this->reset();
 	}
 	
@@ -287,7 +286,7 @@ class AdminProductComponent extends Component
 		if($editProduct->status == 0)
 			$this->status = true;
 		else
-			$this->status = null;
+			$this->status = false;
 			
 		$this->CategoryID2 = $editProduct->CategoryID2;
 		$this->shortDesc = $editProduct->shortDesc;

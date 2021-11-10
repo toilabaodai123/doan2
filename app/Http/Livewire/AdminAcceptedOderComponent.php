@@ -98,8 +98,7 @@ class AdminAcceptedOderComponent extends Component
 		$Shipunit->shipUnit_name = $this->add_shipunit_name;
 		$Shipunit->shipUnit_address = $this->add_shipunit_address;
 		$Shipunit->shipUnit_email = $this->add_shipunit_email;
-		//$Shipunit->shipunit_phone = $this->add_shipunit_phone;
-		$Shipunit->shipUnit_price=0;
+		$Shipunit->shipunit_phone = $this->add_shipunit_phone;
 		$Shipunit->save();
 		
 		$Log = new AdminLog();

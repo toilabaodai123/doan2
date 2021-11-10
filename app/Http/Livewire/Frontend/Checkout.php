@@ -87,12 +87,13 @@ class Checkout extends Component
 									->get();
 									//dd($CheckOrders);
 				//dd($CheckOrders->created_at >= Carbon::now()->subMinutes(6) );
-				if($CheckOrders && $CheckOrders->count() >= 5){
+				if($CheckOrders && $CheckOrders->count() >= 150){
 					session()->flash('user_blocked','Bạn đã đặt quá nhiều đơn hàng, vui lòng thử lại sau');
 					
 				}
 			else{
-			//dd($Order22 = Order::get()->last());
+			$LastOrder = Order::get()->last();
+			//dd($LastOrder);
 			if(Order::get()->last() == null)
 				$Assigned_id = null;
 			else
@@ -167,27 +168,35 @@ class Checkout extends Component
 			
 			
 			
-			$LastOrder = Order::get()->last();
+			//dd($Order->id);
 			if($LastOrder == null){
-				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
+				//dd(1);
+				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$LastOrder->assigned_to)->get()->first();
 				if($Admin == null)
-					$LastOrder->assigned_to = null;
-				else
-					$LastOrder->assigned_to = $Admin->id;
+					$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','<=',$LastOrder->assigned_to)->get()->first();
+					if($Admin2==null)
+						$Order->assigned_to = null;
+					else
+						$Order->assigned_to = $Admin->id;
 			}
-			else{				
+			else{
+				//dd(2);
 				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$LastOrder->assigned_to==null?0:$LastOrder->assigned_to)->get()->first();
+				//dd($Admin);
 				if($Admin == null){
 					$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
+					//dd($Admin2);
 					if($Admin2 == null)
-						$LastOrder->assigned_to = null;
+						$Order->assigned_to = null;
 					else
-						$LastOrder->assigned_to = $Admin2->id;
+						$Order->assigned_to = $Admin2->id;
 				}
 				else
-					$LastOrder->assigned_to = $Admin->id;
+					$Order->assigned_to = $Admin->id;
+				
+				$Order->save();
 			}
-			$LastOrder->save();
+			
 			
 	
 	

@@ -207,6 +207,7 @@ class AdminProductImportComponent extends Component
 			if($Image){
 				$this->bill_image = $Image->imageName;
 			}
+			//dd($Image);
 		
 	}
 	
@@ -267,11 +268,17 @@ class AdminProductImportComponent extends Component
 						$Detail->amount = $this->amount[$k];
 						$Detail->price = $this->price[$k];
 						$Detail->save();
-						$this->bill_total += ($this->amount[$k] * $this->price[$k]);
-						
+
 						$Model->stock += $this->amount[$k];
 						$Model->stockTemp += $this->amount[$k];
 						$Model->save();
+						
+						$Product = Product::find($v['product_id']);
+						$Product->status=1;
+						if($Product->productPrice == null)
+							$Product->productPrice == $this->price[$k];
+						
+						$this->bill_total += ($this->amount[$k] * $this->price[$k]);
 					}
 				}
 				$OldDetails = ProductImportBillDetail::where('import_bill_id',$this->bill_id)->get();
@@ -285,7 +292,7 @@ class AdminProductImportComponent extends Component
 				$Bill->total = $this->bill_total;
 				$Bill->save();
 				
-				if($this->bill_image!= null || is_string($this->bill_image) == true){
+				if($this->bill_image!= null && is_string($this->bill_image) == false){
 					$name=$this->bill_image->getClientOriginalName();
 					$name2 = date("Y-m-d-H-i-s").'-'.$name;
 					$this->bill_image->storeAs('/images/bill/import/',$name2,'public');
@@ -293,18 +300,19 @@ class AdminProductImportComponent extends Component
 					$Image = new Image();
 					$Image->imageName = $name2;
 					$Image->image_type = 'Hình hóa đơn nhập hàng'; //3 = Danh mục sản phẩm
-					$Image->category_id = $Bill->id;
+					$Image->import_bill_id = $Bill->id;
 					$Image->save();
 				}
 				
 				
 				$AdminLog = new AdminLog();
-				$AdminLog->note = 'Đã sửa đơn nhập hàng:'.$id;
+				$AdminLog->note = 'Đã sửa đơn nhập hàng:'.$Bill->id;
 				$AdminLog->admin_id = auth()->user()->id;
 				$AdminLog->save();
 				
 				
-				session()->flash('modal_success_bill','Sửa thành công');
+				session()->flash('modal_success_add_bill','Sửa thành công');
+				$this->reset();
 			}
 			else{
 				$this->validate([
@@ -391,8 +399,9 @@ class AdminProductImportComponent extends Component
 				
 				
 				session()->flash('modal_success_bill','Tạo thành công');
-				$this->reset();
-			}
+				
+				}
+			$this->reset();
 			}
 	}
 	

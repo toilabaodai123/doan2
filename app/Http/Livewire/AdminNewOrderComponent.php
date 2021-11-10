@@ -68,7 +68,9 @@ class AdminNewOrderComponent extends Component
 		$Log = new AdminLog();
 		$Log->admin_id = auth()->user()->id;
 		$Log->note = 'Đã duyệt đơn hàng id :'.$id;
-		$Log->save();		
+		$Log->save();
+
+		session()->flash('success','Đã chấp nhận đơn hàng id:'.$id);
 	}	
 	
 	public function declineOrder($id){

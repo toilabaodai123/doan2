@@ -40,7 +40,7 @@ class AdminProductCategoryLv2Component extends Component
 		$this->Categorieslv1 = ProductCategory::all();
 		$this->Categories = Level2ProductCategory::with('categorylv1')->get();
 		
-		$Categories2 = Level2ProductCategory::with('categorylv1')->paginate(1);
+		$Categories2 = Level2ProductCategory::with('categorylv1')->paginate(5);
 		
         return view('livewire.admin-product-category-lv2-component',['Categories2' => $Categories2])
 					->layout('layouts.template');

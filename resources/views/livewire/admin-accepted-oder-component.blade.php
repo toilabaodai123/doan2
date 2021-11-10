@@ -170,7 +170,7 @@
 																			</div>
 																			<div class="modal-body" >
 																				<select class="form-control" wire:model.defer="shipunit_id">
-																					<option>Chọn {{$o->id}}</option>
+																					<option>Chọn</option>
 																					@forelse($ShipUnits as $Unit)
 																						<option value="{{$Unit->id}}">{{$Unit->shipUnit_name}}</option>
 																					@empty
@@ -338,9 +338,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<button type="button" class="btn btn-info" wire:click="addNewShipUnit">Lưu</button>
+					<button type="button" class="btn btn-success" wire:click="addNewShipUnit">Lưu</button>
 					<button type="button" class="btn btn-info">Reset</button>
-					<button type="button" class="btn btn-info">Hủy</button>
+					<button type="button" class="btn btn-danger">Hủy</button>
 				</div>
 			</div>			
 		</div>

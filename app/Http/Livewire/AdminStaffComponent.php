@@ -14,7 +14,8 @@ class AdminStaffComponent extends Component
 	use WithFileUploads;
 	use WithPagination;
 	public $Users =[];
-	
+	public $user_password;
+	public $confirm_user_password;
 	public $userID;
 	public $email;
 	public $password;
@@ -177,6 +178,32 @@ class AdminStaffComponent extends Component
 		
 	}
 	
+	public function changePassword(){
+		$this->validate([
+			'user_password' => 'required',
+			'confirm_user_password' => 'required'
+		],[
+			'user_password.required' => 'Hãy nhập mật khẩu mới',
+			'confirm_user_password.required' => 'Hãy nhập lại mật khẩu mới' 
+		]);
+		if($this->user_password != $this->confirm_user_password)
+			session()->flash('modal_wrong_password','Hai mật khẩu không giống nhau');
+		else{
+			$User = User::find($this->userID);
+			$User->password = Hash::make($this->password);
+			$User->save();
+			
+			session()->flash('modal_change_password_success','Cập nhật mật khẩu thành công');
+			$this->reset();
+		}
+		
+		$AdminLog = new AdminLog();
+		$AdminLog->admin_id = auth()->user()->id;
+		$AdminLog->note ='Đã sửa tài khoản id:'.$this->userID;
+		$AdminLog->save();		
+		
+	}
+	
 	public function edit($id){
 		$User = User::find($id);
 		$this->userID = $id;
@@ -196,7 +223,7 @@ class AdminStaffComponent extends Component
 	}
 	
 	public function resetBtn(){
-		dd($this);//$this->reset();
+		$this->reset();
 	}
 	
 	public function blockStaff($id){

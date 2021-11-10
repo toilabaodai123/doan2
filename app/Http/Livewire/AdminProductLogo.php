@@ -81,7 +81,7 @@ class AdminProductLogo extends Component
 				$this->check_watermark->imageName = $name4.'.jpeg';
 				$this->check_watermark->save();
 				
-				session()->flash('succes','Cập nhật watermark thành công');
+				session()->flash('success','Cập nhật watermark thành công');
 			}
 		}
 	}

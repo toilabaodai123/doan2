@@ -12,6 +12,8 @@ use App\Models\Comment2;
 use App\Models\User;
 use Cart;
 use App\Models\FlashSaleDetail;
+use App\Models\FlashSale;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
 
@@ -56,11 +58,12 @@ class ShopDetail extends Component
             $flag=false;
             $FlashSale = FlashSale::where('from_Date','<=',Carbon::now())
                                     ->where('to_date','>=',Carbon::now())
+									->where('status',1)
                                     ->get()
                                     ->last();
             //dd($FlashSale);
             if($FlashSale && $FlashSale->status==1){
-                $FlashSaleDetails = FlashSaleDetail::where('sale_id',$FlashSale->id)->get()->pluck('product_id');
+                $FlashSaleDetails = FlashSaleDetail::where('status',1)->where('sale_id',$FlashSale->id)->get()->pluck('product_id');
                 $Check = Product::whereNotIn('id',$FlashSaleDetails)->get()->pluck('id');
                 $this->is_flashsale = Product::where('productSlug',$this->slugId)->whereIn('id',$FlashSaleDetails)->get()->last();
                 //dd($this->is_flashsale);

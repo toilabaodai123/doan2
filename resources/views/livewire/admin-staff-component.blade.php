@@ -296,7 +296,8 @@
 									<label wire:loading wire:target="user_image">Đang tải...</label>
 								</div>
 								<div class="col-lg-9" style="margin-top:20px">
-									<button type="button" wire:click="submit" wire:loading.attr="disabled" class="btn btn-default">Lưu</button>
+									<button type="button" wire:click="submit" wire:loading.attr="disabled" class="btn btn-success">Lưu</button>
+									<button type="button" {{$userID==null?'disabled':''}} class="btn btn-warning" data-toggle="modal" data-target="#changePassword">Đổi mật khẩu</button>
 									<button type="button" wire:click="resetBtn" wire:loading.attr="disabled" class="btn btn-default">Reset</button>
 								</div>
 							</form>
@@ -306,6 +307,53 @@
 			</div>
 		</div>
 	</div>
+
+
+
+
+
+
+<div wire:ignore.self class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+												<div class="modal-dialog" role="document">
+													<div class="modal-content">
+														<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+														<h4 class="modal-title" id="myModalLabel">Đổi mật khẩu người dùng</h4>
+														</div>
+													<div class="modal-body">
+														@if(session()->has('modal_change_password_success'))
+														<div class="alert alert-success">
+															{{session('modal_change_password_success')}}
+														</div>
+														@elseif(session()->has('modal_wrong_password'))
+														<div class="alert alert-danger">
+															{{session('modal_wrong_password')}}
+														</div>
+														@endif
+													
+														<input class="form-control" type="password" placeholder="Nhập mật khẩu người dùng mới" wire:model="user_password">
+														@error('user_password')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
+														<input class="form-control" type="password" placeholder="Nhập lại mật khẩu người dùng mới" wire:model="confirm_user_password">
+														@error('confirm_user_password')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+														<button type="button" class="btn btn-success" wire:click="changePassword">Lưu</button>
+													</div>
+													</div>
+												</div>
+</div>					
+					
+
+
+
+
+
+
 </div>
 
 @push('scripts')

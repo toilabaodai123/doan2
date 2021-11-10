@@ -123,19 +123,7 @@ class AdminFlashSaleComponent extends Component
 	public function checkValidation(){
 		$this->validate();
 		$flag=false;
-		$Sales = FlashSale::where('status',1)->get();
-		
-		foreach($Sales as $sale){
-			if(!$this->from_date <= $this->to_date && $this->from_date <= $sale->from_date && $this->to_date >= $sale->from_date && $this->to_date >= $this->to_date){
-				$flag=true;
-				break;
-			}
-		}
-		if($flag==false)
-			$this->is_validated = true;
-		else{
-			session()->flash('success','Kiểm tra lại dữ liệu ngày');
-		}
+		$this->is_validated = true;
 	}
 	
 	public function submitSale(){
@@ -185,6 +173,12 @@ class AdminFlashSaleComponent extends Component
 				$OldSale = FlashSale::find($this->sale_id);
 				$OldSale->status = 0;
 				$OldSale->save();
+				
+				$OldDetails = FlashSaleDetail::where('sale_id',$OldSale->id)->get();
+				foreach($OldDetails as $detail){
+					$detail->status=0;
+					$detail->save();
+				}
 				
 				
 				foreach($this->selectedProductArray as $k=>$v){
