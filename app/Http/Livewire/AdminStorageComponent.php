@@ -82,7 +82,7 @@ class AdminStorageComponent extends Component
 
 				$AdminLog = new AdminLog();
 				$AdminLog->admin_id = auth()->user()->id;
-				$AdminLog->note = 'Đã sửa kho của model sản phẩm id:'.$model->id;
+				$AdminLog->note = 'Đã sửa kho của model sản phẩm id:'.$Model->id;
 				$AdminLog->save();
 				
 				$this->model_id=null;
@@ -136,6 +136,11 @@ class AdminStorageComponent extends Component
 			session()->flash('submit_block_model_success_modal','Ẩn thành công');
 			$this->block_note=null;
 			$this->user_password=null;
+			
+			$AdminLog = new AdminLog();
+			$AdminLog->admin_id = auth()->user()->id;
+			$AdminLog->note = 'Đã ẩn kho của model sản phẩm id:'.$id;
+			$AdminLog->save();			
 	}else{
 		session()->flash('submit_block_model_error_modal','Sai mật khẩu!');
 		}		

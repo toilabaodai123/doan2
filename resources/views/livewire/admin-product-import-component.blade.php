@@ -166,6 +166,9 @@
 															@empty
 															@endforelse
 															</select>	
+														@error('supplierID')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
 														</div>
 													</div>
 												</div>
@@ -174,8 +177,8 @@
 														<input wire:model="searchInput" class="form-control" placeholder="Nhập tên sản phẩm cần tìm" >
 													</div>
 													<div class="col-lg-2">
-																	<button type="button" class="btn btn-success "  data-toggle="modal" data-target="#myModal">Sản phẩm mới</button>
-																	<div class="modal fade" wire:ignore.self id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																	<button type="button" class="btn btn-success "  data-toggle="modal" data-target="#newProduct">Sản phẩm mới</button>
+																	<div class="modal fade" wire:ignore.self id="newProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																											<div class="modal-dialog" role="document">
 																												<div class="modal-content">
 																													<div class="modal-header">
@@ -183,14 +186,17 @@
 																														<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
 																													</div>
 																													<div class="modal-body">
-																														@if(session()->has('successModal'))
+																														@if(session()->has('modal_add_product_success'))
 																														<div class="alert alert-success">
-																															{{session('successModal')}}
+																															{{session('modal_add_product_success')}}
 																														</div>
 																														@endif																												
 																														
 																															<div class="col-lg-12">
 																																<input class="form-control" wire:model.defer="add_product_name" placeholder="Nhập tên sản phẩm">
+																																@error('add_product_name')
+																																	<p class="text-danger">{{$message}}</p>
+																																@enderror
 																															</div>
 																															<div class="col-lg-12">
 																																<select class="form-control" wire:model.defer="add_product_supplier_id">
@@ -199,6 +205,9 @@
 																																	<option value="{{$s->id}}">{{$s->supplierName}}</option>
 																																	@endforeach
 																																</select>
+																																@error('add_product_supplier_id')
+																																	<p class="text-danger">{{$message}}</p>
+																																@enderror
 																															</div>
 																															<div class="col-lg-6">
 																																<select class="form-control" wire:change="onchangeCategory" wire:model="add_product_category_1">
@@ -207,6 +216,9 @@
 																																		<option value="{{$c->id}}">{{$c->categoryName}}</option>
 																																	@endforeach
 																																</select>
+																																@error('add_product_category_1')
+																																	<p class="text-danger">{{$message}}</p>
+																																@enderror
 																															</div>
 																															<div class="col-lg-6">
 																																<select class="form-control" wire:model.defer="add_product_category_2">
@@ -215,27 +227,39 @@
 																																		<option value="{{$c->id}}">{{$c->category_name}}</option>
 																																	@endforeach
 																																</select>
+																																@error('add_product_category_2')
+																																	<p class="text-danger">{{$message}}</p>
+																																@enderror
 																															</div>																														
-																															<div class="col-lg-12" wire:model.defer="add_product_shortDesc">
-																																<input class="form-control" placeholder="Nhập mô tả ngắn">
+																															<div class="col-lg-12" >
+																																<input class="form-control" placeholder="Nhập mô tả ngắn" wire:model.defer="add_product_shortDesc">
+																																@error('add_product_shortDesc')
+																																	<p class="text-danger">{{$message}}</p>
+																																@enderror
 																															</div>
-																															<div class="col-lg-12" wire:model.defer="add_product_longDesc">
-																																<input class="form-control" placeholder="Nhập mô tả dài">
+																															<div class="col-lg-12" >
+																																<input class="form-control" placeholder="Nhập mô tả dài" wire:model.defer="add_product_longDesc">
+																																@error('add_product_longDesc')
+																																	<p class="text-danger">{{$message}}</p>
+																																@enderror
 																															</div>
 																															<div class="col-lg-12">
-																																<input id="file-upload2" style="display:none" type="file" wire:model="productImage">
+																																<input id="file-upload2" style="display:none" type="file" wire:model="add_product_image">
 																																<label for="file-upload2" class="custom-file-upload" style="border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;">
 																																	Chọn hình ảnh
 																																</label>
+																																<label wire:loading wire:target="add_product_image">Đang tải...</label>
+																																@if($add_product_image)
+																																	<img src="{{$add_product_image->temporaryUrl()}}">
+																																@endif
+																																@error('add_product_image')
+																																	<p class="text-danger">{{$message}}</p>
+																																@enderror
 																															</div>
-																															<div class="col-lg-12">
-																																<button wire:click="submitProduct" type="button" class="btn btn-primary" >Thêm</button>
-																															</div>
-																														
 																													</div>
 																													<div class="modal-footer" style="margin-top:20px">
 																														<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-																														
+																														<button wire:click="submitProduct" type="button" class="btn btn-success" >Lưu</button>
 																													</div>
 																												</div>
 																												<!-- /.modal-content -->
@@ -246,6 +270,7 @@
 												</div>
 											</div>
 										</div>
+										
 										<div class="panel-body">
 											<div class="row">
 												<div class="form-group">
@@ -269,7 +294,7 @@
 																		<td>{{$p->productName}}</td>
 																		<td>{{$p->Category1->categoryName}}</td>
 																		<td>
-																			<button type="button" wire:click="selectProduct2({{$p->id}},'{{$p->productName}}')" class="btn btn-success">Chọn2</button>
+																			<button type="button" wire:click="selectProduct2({{$p->id}},'{{$p->productName}}')" class="btn btn-success">Chọn</button>
 																		</td>
 																	</tr>
 																@empty
@@ -284,9 +309,23 @@
 											</div>
 										</div>
 									</div>
-								</div>
-
-																			
+								
+							<div class="row">
+							 			@if(session()->has('error_bill'))
+										<div class="alert alert-danger">
+											{{session('error_bill')}}
+										</div>
+										@elseif(session()->has('success_add_import_bill'))
+										<div class="alert alert-success">
+											{{session('success_add_import_bill')}}
+										</div>	
+										@elseif(session()->has('success_edit_import_bill'))
+										<div class="alert alert-success">
+											{{session('success_edit_import_bill')}}
+										</div>	
+										@endif
+							</div>
+																	
 									<div class="col-lg-8">
 										<div class="panel panel-default">
 											<div class="panel-heading">
@@ -338,13 +377,7 @@
 										</div>
 									</div>	
 
-									<div class="col-lg-4" >
-										<form role="form" wire:submit.prevent="submit">
-										@if(session()->has('success'))
-										<div class="alert alert-success">
-											{{session('success')}}
-										</div>
-										@endif									
+									<div class="col-lg-4" >									
 										<div class="panel panel-default">
 											<div class="panel-heading">
 												Thông tin hóa đơn
@@ -359,6 +392,9 @@
 													<div class="col-lg-10">
 														<label>Thủ kho duyệt</label>
 														<input wire:model.defer="stocker_id" disabled class="form-control" >
+														@error('stocker_id')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
 													</div>
 													<div class="col-lg-2">
 														<button type="button" class="btn btn-default" style="margin-top:23px;" data-toggle="modal" data-target="#myModalStocker">Chọn</button>
@@ -414,6 +450,9 @@
 													<div class="col-lg-10">
 														<label>Kế toán kiểm duyệt</label>
 														<input wire:model.defer="accountant_id" disabled class="form-control" >
+														@error('accountant_id')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
 													</div>
 													<div class="col-lg-2">
 														<button type="button" class="btn btn-default" style="margin-top:23px;" data-toggle="modal" data-target="#myModalAccountant">Chọn</button>
@@ -468,26 +507,42 @@
 												<div class="col-lg-12">
 													<label>Tên người vận chuyển</label>
 													<input wire:model.defer="transporter_name" class="form-control" >
+														@error('transporter_name')
+															<p class="text-danger">{{$message}}</p>
+														@enderror
 												</div>												
 												<div class="col-lg-12">
 													<label>Mã hóa đơn</label>
-													<input class="form-control" wire:model="bill_code">
+													<input class="form-control" wire:model.defer="bill_code">
+													@error('bill_code')
+														<p class="text-danger">{{$message}}</p>
+													@enderror
 												</div>													
 												<div class="col-lg-12">
 												
 												<div class="form-group">
 													<label>Thuế</label>
-													<input class="form-control" wire:model="vat">
+													<input class="form-control" wire:model.defer="vat">
+													@error('vat')
+														<p class="text-danger">{{$message}}</p>
+													@enderror
 												</div>
-												<div class="form-group"  wire:ignore>
+												<div class="form-group"  >
 													<label>Ngày tạo</label>
-													<div>
+													<div wire:ignore>
 														<input class="form-control" id="bill_date" name="bill_date">
 													</div>
-												</div>										
+													@error('bill_date')
+														<p class="text-danger">{{$message}}</p>
+													@enderror
+												</div>
+																								
 												<div class="form-group">
 													<label>Số chứng từ gốc kèm theo</label>
 													<input class="form-control" wire:model.defer="bill_od" >
+													@error('bill_od')
+														<p class="text-danger">{{$message}}</p>
+													@enderror	
 												</div>												
 												<div class="form-group">
 													<label>Biên lai</label>
@@ -507,7 +562,36 @@
 													</label>
 												</div>											
 												<div class="form-group" style="margin-top:20px">
-													<button type="submit" wire:loading.attr="disabled" class="btn btn-default">Lưu</button>
+													<button type="button"  wire:click="validateBill" wire:loading.attr="disabled" class="btn btn-{{$is_validated==true?'success':'default'}}" data-toggle="modal" data-target="{{$is_validated==true?'#addBill':''}}">{{$is_validated==true?'Lưu':'Kiểm tra'}}</button>
+													<div wire:ignore.self class="modal fade" id="addBill" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+														<div class="modal-dialog" role="document">
+															<div class="modal-content">
+																<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																<h4 class="modal-title" id="myModalLabel">Xác nhận lập hóa đơn</h4>
+																</div>
+															<div class="modal-body">
+																				@if(session()->has('modal_success_add_bill'))
+																					<div class="alert alert-success">
+																						{{session('modal_success_add_bill')}}
+																					</div>
+																				@elseif(session()->has('modal_wrong_password'))
+																					<div class="alert alert-danger">
+																						{{session('modal_wrong_password')}}
+																					</div>	
+																				@endif															
+																<input class="form-control" placeholder="Nhập mật khẩu nhân viên" wire:model.defer="admin_password_add">
+																@error('admin_password_add')
+																	<p class="text-danger">{{$message}}</p>
+																@enderror
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																<button type="button" class="btn btn-primary" wire:click="submitImportBill">Lưu</button>
+															</div>
+															</div>
+														</div>
+													</div>
 													<button type="button" wire:click="resetBtn" wire:loading.attr="disabled" class="btn btn-default">Reset</button>
 													<button type="button" wire:click="test" wire:loading.attr="disabled" class="btn btn-default">Reset</button>
 												</div>												
@@ -515,9 +599,8 @@
 										</div>
 									</div>									
 								
-									</form>
 						</div>
-					</div>
+					
 </div>
 
 @push('scripts')

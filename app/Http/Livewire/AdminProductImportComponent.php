@@ -42,6 +42,7 @@ class AdminProductImportComponent extends Component
 	
 	public $admin_note;
 	public $admin_password;
+	public $admin_password_add;
 	public $bill_date;
 	public $size;
 	public $amount;
@@ -53,6 +54,7 @@ class AdminProductImportComponent extends Component
 	public $bill_image;
 	
 	public $productImage;
+	public $is_validated=false;
 	
 	public $add_product_name;
 	public $add_product_supplier_id;
@@ -63,6 +65,7 @@ class AdminProductImportComponent extends Component
 
 	public $bill_id;
 	
+	
 	public $Stockers ;
 	public $Accountants;
 	public $stocker_id;
@@ -72,6 +75,7 @@ class AdminProductImportComponent extends Component
 	
 	public $bill_od;
 	public $transporter_name;
+	public $add_product_image;
 	public $tempImgUrl=null;
 	
 	public $sortField='productName';
@@ -86,9 +90,29 @@ class AdminProductImportComponent extends Component
 	public $bill_searchInput;
 	public $bill_searchField='bill_code';
 	
+	protected $rules=[
+		'stocker_id' => 'required',
+		'accountant_id' => 'required',
+		'transporter_name' => 'required',
+		'bill_code' => 'required',
+		'vat' => 'required',
+		'bill_date' => 'required',
+		'bill_od' => 'required',
+		'supplierID' => 'required'
+	];
+	protected $messages = [
+		'stocker_id.required' => 'Hãy chọn thủ kho',
+		'accountant_id.required' => 'Hãy chọn kế toán',
+		'transporter_name.required' => 'Hãy nhập tên người vận chuyển',
+		'bill_code.required' => 'Hãy nhập mã hóa đơn',
+		'vat.required' => 'Hãy nhập thuế',
+		'bill_date.required' => 'Hãy chọn ngày lập hóa đơn',
+		'bill_od.required' => 'Hãy nhập chứng từ gốc',
+		'supplierID.required' =>'Hãy chọn một nhà cung cấp'
+	];
+	
     public function render()
     {
-		
 		$this->Sizes = ProductSize::all();
 		$this->Categories1 = ProductCategory::all();
 		$this->Stockers = User::where('user_type','LIKE','%Nhân viên thủ kho%')->get();
@@ -186,25 +210,31 @@ class AdminProductImportComponent extends Component
 		
 	}
 	
-	public function submit(){
+	public function validateBill(){
 		$flag = false;
-		
+		$this->validate();
 		if(count($this->selectedProductArray) == 0)
 			$flag=true;
-		if($this->amount != null && $this->size != null && $this->price != null){
-			foreach($this->amount as $k=>$v){
-				if($v == '' || $v <= 0 || $this->price[$k] =='' || $this->price[$k] <= 0 ||
-				count($this->size) < count($this->selectedProductArray) || 
-				count($this->amount) < count($this->selectedProductArray) ||
-				$this->size[$k] == 'Chọn' || $this->bill_image == null ||
-				$this->supplierID == null || $this->bill_od == null)
-					$flag=true;
+		else{
+			foreach($this->selectedProductArray as $k=>$v){
+				if($v['is_deleted']==false){
+					if($this->size == null || $this->size[$k] == null || $this->amount == null ||
+					$this->amount[$k] == null || $this->price == null || $this->price[$k] == null||
+					$this->size[$k] == 'Chọn'){
+						$flag=true;
+						break;
+					}
+				}
 			}
 		}
 		if($flag==true)
-			session()->flash('error_bill','Hãy kiểm tra thông tin nhập!');
+			session()->flash('error_bill','Hãy kiểm tra thông tin nhập hàng!');
 		else
-			if($this->bill_id != null){	
+			$this->is_validated = true;
+	}
+	
+	public function submitImportBill(){
+			if($this->bill_id != null){
 				$OldBill = ProductImportBill::find($this->bill_id);
 				$OldBill->status=0;
 				$OldBill->save();
@@ -268,8 +298,23 @@ class AdminProductImportComponent extends Component
 				}
 				
 				
+				$AdminLog = new AdminLog();
+				$AdminLog->note = 'Đã sửa đơn nhập hàng:'.$id;
+				$AdminLog->admin_id = auth()->user()->id;
+				$AdminLog->save();
+				
+				
+				session()->flash('modal_success_bill','Sửa thành công');
 			}
 			else{
+				$this->validate([
+					'admin_password_add' =>'required'
+				],[
+					'admin_password_add.required' => 'Hãy nhập mật khẩu nhân viên'
+				]);
+				if(!Hash::check($this->admin_password_add,auth()->user()->password))
+					session()->flash('modal_wrong_password','Sai mật khẩu');
+				else{
 				//Thêm hóa đơn
 				$Bill = new ProductImportBill();
 				$Bill->user_id = auth()->user()->id;
@@ -345,11 +390,10 @@ class AdminProductImportComponent extends Component
 				$Log->save();	
 				
 				
-				session()->flash('success','Thành công');
-				
+				session()->flash('modal_success_bill','Tạo thành công');
+				$this->reset();
 			}
-			$this->reset();
-		
+			}
 	}
 	
 	public function test(){
@@ -366,37 +410,48 @@ class AdminProductImportComponent extends Component
 
 	public function submitProduct(){
 		//dd($this);
-		$Product = new Product();
+		$this->validate([
+			'add_product_name' => 'required',
+			'add_product_category_1' => 'required',
+			'add_product_category_2' => 'required',
+			'add_product_shortDesc' => 'required',
+			'add_product_longDesc' => 'required',
+			'add_product_supplier_id' => 'required',
+			'add_product_image' =>'required|image'
+		],[
+			'add_product_name.required' => 'Hãy nhập tên sản phẩm',
+			'add_product_category_1.required' => 'Hãy chọn danh mục sản phẩm cấp 1',
+			'add_product_category_2.required' => 'Hãy chọn danh mục sản phẩm cấp 2',
+			'add_product_shortDesc.required' => 'Hãy nhập mô tả ngắn',
+			'add_product_longDesc.required' => 'Hãy nhập mô tả dài',
+			'add_product_supplier_id.required' =>'Hãy chọn nhà cung cấp',
+			'add_product_image.required' => 'Hãy chọn hình ảnh sản phẩm',
+			'add_product_image.image' => 'Sai kiểu file'	
+		]);
+		$Product = new Product(); 
 		$Product->productName = $this->add_product_name;
 		$Product->CategoryID = $this->add_product_category_1;
 		$Product->CategoryID2 = $this->add_product_category_2;
 		$Product->supplierID = $this->add_product_supplier_id;
-		$Product->productPrice = 0;
 		$Product->shortDesc = $this->add_product_shortDesc;
 		$Product->longDesc = $this->add_product_longDesc;
-		$Product->status = 2 ;
-		if($Product->save()){
-			$Sizes = ProductSize::all();
-			foreach($Sizes as $s){
-				$Model = new ProductModel();
-				$Model->productID = $Product->id;
-				$Model->sizeID = $s->id;
-				$Model->stock = 0 ;
-				$Model->stockTemp = 0;
-				$Model->productModelStatus = 0 ;
-				$Model->save();
-			}
-
-			session()->flash('successModal','Thành công');
-			$this->add_product_name = null;
-			$this->add_product_category_1 = null;
-			$this->add_product_category_2 = null;
-			$this->add_product_supplier_id = null;
-			$this->add_product_shortDesc = null;
-			$this->add_product_longDesc = null;
-		}
-		else
-			session()->flash('success','Lỗi');
+		$Product->status = 0 ;
+		$Product->save();
+		
+		
+		$this->add_product_name = null;
+		$this->add_product_category_1 = null;
+		$this->add_product_category_2 = null;
+		$this->add_product_supplier_id = null;
+		$this->add_product_shortDesc = null;
+		$this->add_product_longDesc = null;
+		$this->add_product_image = null;
+		session()->flash('modal_add_product_success','Thêm sản phẩm thành công');
+		
+		$AdminLog = new AdminLog();
+		$AdminLog->note = 'Đã thêm sản phẩm id:'.$Product->id;
+		$AdminLog->admin_id = auth()->user()->id;
+		$AdminLog->save();		
 	}
 
 	public function onchangeCategory(){
@@ -440,6 +495,12 @@ class AdminProductImportComponent extends Component
 			$Bill->save();
 			session()->flash('success_delete_bill_modal','Thành công');
 		}
+		
+		$AdminLog = new AdminLog();
+		$AdminLog->note = 'Đã hủy đơn nhập hàng id:'.$id.' , lý do : '.$admin_note;
+		$AdminLog->admin_id = auth()->user()->id;
+		$AdminLog->save();
+		
 		$this->reset();
 	}
 	

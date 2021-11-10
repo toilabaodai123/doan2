@@ -73,7 +73,6 @@
 								@endif
 							  </td>
 							  <td>
-								<button type="button" class="btn btn-info" wire:loading.attr="disabled">Xem</button>
 								<button type="button" wire:loading.attr="disabled" wire:click="editModel({{$model->id}})" class="btn btn-warning">Sửa</button>
 								@if($model->productModelStatus == 1)
 									<button type="button" class="btn btn-danger" data-toggle="modal"  wire:loading.attr="disabled" data-target="#myModalDelete{{$model->id}}" >Ẩn</button>
@@ -96,7 +95,7 @@
 												</div>
 											@endif								
 											<input class="form-control" placeholder="Nhập lý do ẩn" wire:model.defer="block_note">
-											@error('edit_note')
+											@error('block_note')
 												<p class="text-danger">{{$message}}</p>
 											@enderror	
 											<input type="password" class="form-control" placeholder="Hãy nhập mật khẩu nhân viên" wire:model.defer="user_password">
@@ -176,8 +175,8 @@
 						</div>
 					</div>
 					<div class="col-lg-12">
-						<button type="button" {{$model_id==null?'disabled':''}} wire:loading.attr="disabled" class="btn btn-success" data-toggle="modal"  data-target="#myModalSubmit" >Lưu</button>
-						<div wire:ignore.self class="modal fade" id="myModalSubmit tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+						<button type="button" {{$model_id==null?'disabled':''}} wire:loading.attr="disabled" class="btn btn-success" data-toggle="modal"  data-target="#editStorage" >Lưu</button>
+						<div wire:ignore.self class="modal fade" id="editStorage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
