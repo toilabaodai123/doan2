@@ -4,6 +4,11 @@
 		Website đang trong trạng thái bảo trì
 	</div>
 @endif
+@if($admin_settings != null && $admin_settings->is_outofservice == true)
+	<div class="alert alert-danger">
+		Website đang ngừng nhận đặt hàng
+	</div>
+@endif
 @if($low_stock_products != null && count($low_stock_products) > 0)
 	<div class="alert alert-danger">
 		Có sản phẩm tồn kho thấp <button type="button" class="btn btn-success" data-toggle="modal" data-target="#viewLowStockProducts">Xem</button>

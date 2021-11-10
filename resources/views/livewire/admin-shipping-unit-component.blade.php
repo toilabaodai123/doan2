@@ -9,8 +9,7 @@
 									<th>ID</th>
 									<th>Tên </th>
 									<th>Địa chỉ</th>
-									<th>Email</th>									
-									<th>Giá</th>
+									<th>Email</th>
 									<th>Trạng thái</th>
 									<th>Tùy chọn</th>
 								</tr>
@@ -21,51 +20,30 @@
 										<td>{{$s->id}}</td>
 										<td>{{$s->shipUnit_name}}</td>
 										<td>{{$s->shipUnit_address}}</td>
-										<td>{{$s->shipUnit_email}}</td>										
-										<td>{{$s->shipUnit_price}}</td>
+										<td>{{$s->shipUnit_email}}</td>
 										<td>
 											@if($s->shipUnit_status == 1)
-												<label style="color:green">Trực tuyến</label>
+												<label style="color:green">Đang hoạt động</label>
 											@else
-												<label style="color:gray">Đã xóa</label>
+												<label style="color:gray">Đã ẩn</label>
 											@endif
 										</td>
 										<td>
-											<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal{{$s->id}}">Xem</button>
-											<div class="modal fade" id="myModal{{$s->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-												<div class="modal-dialog" role="document">
-													<div class="modal-content">
-														<div class="modal-header">
-														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-														<h4 class="modal-title" id="myModalLabel">Thông tin nhà cung cấp</h4>
-														</div>
-													<div class="modal-body">
-														<label>Tên nhà cung cấp : </label><br>
-														<label>Số điện thoại : </label><br>
-														<label>Email : </label><br>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-														<button type="button" class="btn btn-primary" >Sửa</button>
-													</div>
-													</div>
-												</div>
-											</div>
-											<button wire:click="editSupplier({{$s->id}})"type="button" class="btn btn-info">Sửa</button>
-											<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDelete{{$s->id}}">Xóa</button>
+											<button wire:click="editShipUnit({{$s->id}})"type="button" class="btn btn-info">Sửa</button>
+											<button type="button" class="btn btn-danger" style="display:{{$s->shipUnit_status == 0?'none':''}}" data-toggle="modal" data-target="#myModalDelete{{$s->id}}">Ẩn</button>
 											<div class="modal fade" id="myModalDelete{{$s->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 												<div class="modal-dialog" role="document">
 													<div class="modal-content">
 														<div class="modal-header">
 														<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-														<h4 class="modal-title" id="myModalLabel">Tùy chọn</h4>
+														<h4 class="modal-title" id="myModalLabel">Ẩn nhà vận chuyển</h4>
 														</div>
 													<div class="modal-body">
-														<label>Bạn có muốn xóa nhà cung cấp  không ? </label>
+														<label>Bạn có muốn ẩn nhà vận chuyển {{$s->shipUnit_name}} không ? </label>
 													</div>
 													<div class="modal-footer">
-														<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-														<button wire:click="deleteSupplier({{$s->id}})"type="button" class="btn btn-primary" >Xóa</button>
+														<button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+														<button wire:click="deleteShipUnit({{$s->id}})"type="button" class="btn btn-primary" >Lưu</button>
 													</div>
 													</div>
 												</div>
@@ -85,15 +63,15 @@
 		<div class="col-lg-12">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					Bảng nhập thông tin nhà cung cấp 
+					Bảng nhập thông tin nhà vận chuyển
 				</div>
 				<div class="panel-body">
 					<div class="row">
 						<div class="form-group">
 							<form role="form" wire:submit.prevent="submit">
-								@if(session()->has('success'))
+								@if(session()->has('add_supplier_success'))
 								<div class="alert alert-success">
-									{{session('success')}}
+									{{session('add_supplier_success')}}
                                 </div>
 								@endif								
 								<div class="col-lg-9">
@@ -103,33 +81,42 @@
 								<div class="col-lg-9">
 									<label>Tên</label>
 									<input class="form-control" wire:model="Name" placeholder="Nhập tên đơn vị vận chuyển">
-								@error('shipperUnit_name')
+								@error('Name')
 									<p class="text-danger">{{$message}}</p>
 								@enderror									
 								</div>
 								<div class="col-lg-9">
 									<label>Địa chỉ</label>
 									<input class="form-control" wire:model="Address" placeholder="Nhập địa chỉ đơn vị vận chuyển">
-								@error('shipperUnit_address')
+								@error('Address')
 									<p class="text-danger">{{$message}}</p>
 								@enderror									
 								</div>
 								<div class="col-lg-9">
 									<label>Email</label>
 									<input class="form-control" wire:model="Email" placeholder="Nhập email đơn vị vận chuyển">
-								@error('shipperUnit_email')
+								@error('Email')
 									<p class="text-danger">{{$message}}</p>
 								@enderror									
-								</div>									
+								</div>
 								<div class="col-lg-9">
-									<label>Giá</label>
-									<input class="form-control" wire:model="Price" placeholder="Nhập giá đơn vị vận chuyển">
-								@error('shipperUnit_price')
+									<label>Số điện thoại</label>
+									<input class="form-control" wire:model="Phone" placeholder="Nhập số điện thoại đơn vị vận chuyển">
+								@error('Phone')
 									<p class="text-danger">{{$message}}</p>
 								@enderror									
-								</div>									
+								</div>	
 								<div class="col-lg-9">
-									<button type="submit" wire:loading.attr="disabled" class="btn btn-default">Lưu</button>
+														<div class="checkbox">
+															<label>
+																<input type="checkbox" {{$ShipperID==null?'disabled':''}} wire:model="status">Ẩn
+															</label>
+															
+														</div>	
+													</div>								
+								<div class="col-lg-9">
+									<button type="button" wire:click="submitSupplier" wire:loading.attr="disabled" class="btn btn-success">Lưu</button>
+									<button type="button" wire:click="btnReset" wire:loading.attr="disabled" class="btn btn-info">Reset</button>
 								</div>
 							</form>
 						</div>

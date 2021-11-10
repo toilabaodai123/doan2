@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
-use App\Models\Salary;
 use App\Models\AdminLog;
 use Illuminate\Support\Facades\Hash;
 use Livewire\WithPagination;
@@ -43,19 +42,30 @@ class AdminStaffComponent extends Component
 	
 
 	protected $rules = [
-		'email' => 'required',
+		'email' => 'required|unique:users',
 		'name' => 'required',
-		'phone' => 'required',
-		'cmnd' => 'required',
-		'salary' => 'required',
+		'phone' => 'required|numeric',
+		'cmnd' => 'required|numeric',
+		'salary' => 'required|numeric',
+		'user_type' => 'required',
+		'password' => 'required',
+		'birth_date' => 'required'
 	];
 	
-	protected $message=[
+	protected $messages=[
 		'email.required' => 'Hãy nhập email',
+		'email.unique' => 'Email bị trùng',
 		'name.required' =>'Hãy nhập họ tên',
 		'phone.required' => 'Hãy nhập số điện thoại',
-		'cmnd' => 'Hãy nhập cmnd',
-		'salary' => 'Hãy nhập lương'
+		'cmnd.required' => 'Hãy nhập cmnd',
+		'salary.required' => 'Hãy nhập lương',
+		'user_type.required' => 'Hãy chọn loại nhân viên',
+		'password.required' => 'Hãy nhập password',
+		'birth_date.required' => 'Hãy nhập ngày sinh',
+		'phone.numeric' =>'Số điện thoại chỉ được nhập số',
+		'cmnd.numeric' => 'CMND chỉ được nhập số',
+		'salary.numeric' =>'Lương chỉ được nhập số'
+		
 	];
 	
 	
@@ -87,8 +97,9 @@ class AdminStaffComponent extends Component
 	
 	
 	public function submit(){
-		$this->validate();
+		
 		if($this->userID == null){
+			$this->validate();
 			$User = new User();
 			$User->email = $this->email;
 			$User->password = Hash::make($this->password);
@@ -96,10 +107,6 @@ class AdminStaffComponent extends Component
 			$User->name = $this->name;
 			$User->cmnd = $this->cmnd;
 			$User->birth_date = $this->birth_date;
-			if($this->status == true)
-				$User->status=0;
-			else
-				$User->status=1;
 			$User->phone = $this->phone;
 			
 			if($this->user_image!= null){
@@ -108,16 +115,35 @@ class AdminStaffComponent extends Component
 				$this->user_image->storeAs('/images/user/',$name2,'public');	
 				$User->profile_photo_path = $name2;
 			}	
-			$User->save();	
+			$User->salary = $this->salary;
+			$User->save();
 			
-			$Salary = new Salary();
-			$Salary->user_id = $User->id;
-			$Salary->money = $this->salary;
-			$Salary->save();
+			$AdminLog = new AdminLog();
+			$AdminLog->note = 'Đã tạo tài khoản nhân viên id:'.$User->id;
+			$AdminLog->admin_id = auth()->user()->id;
+			$AdminLog->save();
 			
-	
+			
 			session()->flash('success','Tạo thành công!');
 		}else{
+			$this->validate([
+				'phone' => 'required|numeric',
+				'cmnd' => 'required|numeric',
+				'salary' => 'required|numeric',
+				'user_type' => 'required',
+				'birth_date' => 'required'				
+			],[
+				'name.required' =>'Hãy nhập họ tên',
+				'phone.required' => 'Hãy nhập số điện thoại',
+				'cmnd.required' => 'Hãy nhập cmnd',
+				'salary.required' => 'Hãy nhập lương',
+				'user_type.required' => 'Hãy chọn loại nhân viên',
+				'birth_date.required' => 'Hãy nhập ngày sinh',
+				'phone.numeric' =>'Số điện thoại chỉ được nhập số',
+				'cmnd.numeric' => 'CMND chỉ được nhập số',
+				'salary.numeric' =>'Lương chỉ được nhập số'		
+			]);
+			
 			$User = User::find($this->userID);
 			$User->email = $this->email;
 			$User->user_type = $this->user_type;
@@ -125,29 +151,26 @@ class AdminStaffComponent extends Component
 			$User->birth_date = $this->birth_date;
 			$User->cmnd = $this->cmnd;
 			$User->phone = $this->phone;
+			$User->salary = $this->salary;
 			if($this->status == true)
 				$User->status=0;
 			else
 				$User->status=1;
-			if($this->user_image!= null && $this->user_image!=$this->tempImage){
+			if($this->user_image!= null && is_string($this->user_image) == false ){
 				$name=$this->user_image->getClientOriginalName();
 				$name2 = date("Y-m-d-H-i-s").'-'.$name;
 				$this->user_image->storeAs('/images/user/',$name2,'public');	
 				$User->profile_photo_path = $name2;
 			}
-			
-			$Salary = Salary::where('user_id',$this->userID)->get()->last();
-			if($Salary == null){
-				$NewSalary = new Salary();
-				$NewSalary->user_id = $this->userID;
-				$NewSalary->money = $this->salary;
-				$NewSalary->save();
-			}else{
-				$Salary->money = $this->salary;
-				$Salary->save();
-			}
-			
+
 			$User->save();
+
+			$AdminLog = new AdminLog();
+			$AdminLog->note = 'Đã sửa tài khoản nhân viên id:'.$this->userID;
+			$AdminLog->admin_id = auth()->user()->id;
+			$AdminLog->save();
+			
+			
 			session()->flash('success','Sửa thành công');
 		}
 		$this->reset();
@@ -156,9 +179,9 @@ class AdminStaffComponent extends Component
 	
 	public function edit($id){
 		$User = User::find($id);
-		$Salary = Salary::where('user_id',$id)->get()->last();
 		$this->userID = $id;
 		$this->user_type = $User->user_type;
+		$this->password = 'ADASDOASPKDPAOKDASKDAOPK';
 		$this->email = $User->email;
 		$this->name = $User->name;
 		$this->birth_date = $User->birth_date;
@@ -168,13 +191,8 @@ class AdminStaffComponent extends Component
 				$this->status=true;
 			else
 				$this->status=false;
-		if($Salary != null)
-			$this->salary = $Salary->money;
-		else
-			$this->salary = 0;
-		
+		$this->salary = $User->salary;
 		$this->user_image = $User->profile_photo_path;
-		$this->tempImage = $User->profile_photo_path;
 	}
 	
 	public function resetBtn(){
@@ -189,7 +207,7 @@ class AdminStaffComponent extends Component
 				'check_status' => 'accepted'
 			],[
 				'block_note.required' => 'Hãy nhập lý do khóa',
-				'check_status.accepted' => 'Hãy đánh dấu ô'
+				'check_status.accepted' => 'Hãy xác nhận'
 			]);
 			$User->status=0;
 			$User->save();

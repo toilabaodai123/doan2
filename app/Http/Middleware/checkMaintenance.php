@@ -18,7 +18,7 @@ class checkMaintenance
     public function handle(Request $request, Closure $next)
     {
 		$Setting = AdminSetting::get()->last();
-		if($Setting == null || $Setting->is_maintenance == 0)
+		if($Setting == null || $Setting->is_maintenance == 0 || auth()->check() && auth()->user()->user_type != "Người dùng")
 			return $next($request);
 		else 
 			return redirect()->to('bao-tri');			

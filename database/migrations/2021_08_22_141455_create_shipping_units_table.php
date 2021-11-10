@@ -18,8 +18,8 @@ class CreateShippingUnitsTable extends Migration
 			$table->string('shipUnit_name');
 			$table->string('shipUnit_address');
 			$table->string('shipUnit_email');
+			$table->integer('shipUnit_phone');
 			$table->integer('shipUnit_status')->default(1);
-			$table->integer('shipUnit_price');
             $table->timestamps();
         });
     }

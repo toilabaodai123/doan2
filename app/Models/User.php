@@ -66,7 +66,7 @@ class User extends Authenticatable
     ];
 	
 	public function admin_activities() {
-		return $this->hasMany(AdminLog::class,'admin_id','id')->take(10);
+		return $this->hasMany(AdminLog::class,'admin_id','id')->take(10)->orderBy('created_at','DESC');
 	}
 	
 }

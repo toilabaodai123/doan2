@@ -65,7 +65,7 @@
 										<td>{{$u->phone}}</td>
 										<td>
 											@if($u->status == 1)
-												<label style="color:green">Tốt</label>
+												<label style="color:green">Đang hoạt động</label>
 											@else
 												<label style="color:grey">Đã bị khóa</label>
 											@endif
@@ -207,20 +207,20 @@
 											<option value="Nhân viên kế toán">Nhân viên kế toán</option>
 											<option value="Nhân viên thủ kho">Nhân viên thủ kho</option>
 										</select>
-										@error('user_type_id')
+										@error('user_type')
 											<p class="text-danger">{{$message}}</p>
 										@enderror								
 									</div>								
 									<div class="col-lg-9">
 										<label>Email </label>
-										<input class="form-control" wire:model.defer="email" placeholder="Nhập email nhân viên">								
+										<input class="form-control" {{$userID==null?'':'disabled'}} wire:model.defer="email" placeholder="Nhập email nhân viên">								
 									@error('email')
 										<p class="text-danger">{{$message}}</p>
 									@enderror
 									</div>
 									<div class="col-lg-9">
 										<label>Mật khẩu</label>
-										<input class="form-control" wire:model.defer="password" placeholder="Nhập mật khẩu">								
+										<input class="form-control" wire:model.defer="password" type="password" {{$userID==null?'':'disabled'}} placeholder="Nhập mật khẩu">								
 									@error('password')
 										<p class="text-danger">{{$message}}</p>
 									@enderror
@@ -232,9 +232,9 @@
 										<p class="text-danger">{{$message}}</p>
 									@enderror
 									</div>								
-									<div class="col-lg-9"  wire:ignore>
+									<div class="col-lg-9"  >
 										<label>Ngày sinh</label>
-										<div>
+										<div wire:ignore>
 											<input class="form-control" id="birth_date" name="birth_date">
 										</div>
 									@error('birth_date')
@@ -261,14 +261,14 @@
 									<div class="col-lg-9">
 										<label>Lương</label>
 										<input class="form-control" wire:model.defer="salary" placeholder="Nhập lương nhân viên">									
-									@error('user_type_id')
+									@error('salary')
 										<p class="text-danger">{{$message}}</p>
 									@enderror
 									</div>
 									<div class="col-lg-9">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" wire:model="status">Khóa
+												<input type="checkbox" wire:model="status" {{$userID == null ?'disabled':''}}>Khóa
 											</label>	
 										</div>	
 									</div>									

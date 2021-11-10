@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
 			$table->date('birth_date')->nullable();
 			$table->string('address')->nullable();
 			$table->integer('status')->default(1);
+			$table->integer('salary')->nullable();
             $table->timestamps();
         });
     }

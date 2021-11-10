@@ -24,6 +24,8 @@ class AdminUserComponent extends Component
 	public $sortDirection = 'ASC';
 	public $searchField = 'email';
 	public $searchInput;
+	public $user_password;
+	public $confirm_user_password;
 	
 	protected $rules=[
 		'email' => 'required|unique:users|email',
@@ -35,8 +37,13 @@ class AdminUserComponent extends Component
 	protected $messages=[
 		'email.required' => 'Chưa nhập email',
 		'email.unique' => 'Email đã trùng',
+		'email.email' => 'Phải nhập đúng kiểu email',
 		'phone.required' => 'Chưa nhập số điện thoại',
-		'name.required' =>'Chưa nhập họ tên'
+		'phone.numeric' => 'Số điện thoại chỉ được nhập số',
+		'phone.regex' => 'Phải nhập đúng kiểu số điện thoại',
+		'name.required' =>'Chưa nhập họ tên',
+		'password.required' => 'Chưa nhập mật khẩu',
+		
 	];
 	
     public function render()
@@ -73,7 +80,7 @@ class AdminUserComponent extends Component
 			
 			$AdminLog = new AdminLog();
 			$AdminLog->admin_id = auth()->user()->id;
-			$AdminLog->note ='Đã tạo tài khoản id:'.$this->user_id;
+			$AdminLog->note ='Đã tạo tài khoản id:'.$User->id;
 			$AdminLog->save();
 			
 			session()->flash('success','Tạo tài khoản thành công');
@@ -107,7 +114,7 @@ class AdminUserComponent extends Component
 	
 	
 	public function btnReset(){
-		dd($this);
+		$this->reset();
 	}
 	
 	public function deleteUser($id){
@@ -122,5 +129,31 @@ class AdminUserComponent extends Component
 		$AdminLog->admin_id = auth()->user()->id;
 		$AdminLog->note ='Đã khóa tài khoản id:'.$id;
 		$AdminLog->save();		
+	}
+	
+	public function changePassword(){
+		$this->validate([
+			'user_password' => 'required',
+			'confirm_user_password' => 'required'
+		],[
+			'user_password.required' => 'Hãy nhập mật khẩu mới',
+			'confirm_user_password.required' => 'Hãy nhập lại mật khẩu mới' 
+		]);
+		if($this->user_password != $this->confirm_user_password)
+			session()->flash('modal_wrong_password','Hai mật khẩu không giống nhau');
+		else{
+			$User = User::find($this->user_id);
+			$User->password = Hash::make($this->password);
+			$User->save();
+			
+			session()->flash('modal_change_password_success','Cập nhật mật khẩu thành công');
+			$this->reset();
+		}
+		
+		$AdminLog = new AdminLog();
+		$AdminLog->admin_id = auth()->user()->id;
+		$AdminLog->note ='Đã sửa tài khoản id:'.$this->user_id;
+		$AdminLog->save();		
+		
 	}
 }

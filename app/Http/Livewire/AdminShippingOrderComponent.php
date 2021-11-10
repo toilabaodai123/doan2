@@ -9,6 +9,7 @@ use App\Models\ShipOrder;
 use App\Models\OrderDetail;
 use App\Models\ProductModel;
 use App\Models\OrderLog;
+use App\Models\AdminLog;
 
 class AdminShippingOrderComponent extends Component
 {
@@ -72,5 +73,11 @@ class AdminShippingOrderComponent extends Component
 		$OrderLog->save();		
 		
 		session()->flash('success','Tạo đơn vận chuyển thành công!');
+	}
+	
+	public function deleteShipUnit($id){
+		$Unit = ShippingUnit::find($id);
+		$Unit->status = 0;
+		$Unit->save();
 	}
 }
