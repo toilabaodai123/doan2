@@ -73,8 +73,8 @@ Route::middleware(['VisitCounter','checkMaintenance'])->group(function(){
 	Route::get('about',App\Http\Livewire\Frontend\About::class);
 	Route::get('wishlist',App\Http\Livewire\Frontend\WhislistComponent::class);
 	Route::get('tim-kiem',App\Http\Livewire\Frontend\SearchComponent::class);
-	Route::get('users',App\Http\Livewire\Frontend\Users::class);
-	Route::get('don-hang',App\Http\Livewire\Frontend\Purchase::class);
+	Route::get('users',App\Http\Livewire\Frontend\Users::class)->middleware('auth');
+	Route::get('don-hang',App\Http\Livewire\Frontend\Purchase::class)->middleware('auth');
 	Route::get('slider', App\Http\Livewire\Pages\Slider::class);
 	Route::get('sale', App\Http\Livewire\Pages\Sale::class);
 	Route::get('instagram', App\Http\Livewire\Pages\Instagrams::class);

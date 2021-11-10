@@ -214,7 +214,7 @@
     <!-- Footer Section End -->
 
     <!-- Search Begin -->
-    <!-- <livewire:pages.search />  -->
+    
     <!-- Search End -->
     <!-- Js Plugins -->
 	

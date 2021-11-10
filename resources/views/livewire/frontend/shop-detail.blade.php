@@ -192,7 +192,7 @@
             <div class="row">
                 @forelse($relatedPro as $pro )
                 <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <a href="{{URL::to('shop-detail/'.$pro->id)}}">
+                    <a href="{{URL::to('shop-detail/'.$pro->productSlug)}}">
                         <div class="product__item">
                         @if($pro->Pri_Image != null)
                             <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}">
@@ -219,7 +219,7 @@
                                 </ul>
                             </div>
                             <div class="product__item__text">
-                                <a href="{{URL::to('shop-detail/'.$pro->id)}}" class="add-cart">+ Chi tiết sản phẩm</a>
+                                <a href="{{URL::to('shop-detail/'.$pro->productSlug)}}" class="add-cart">+ Chi tiết sản phẩm</a>
                                 <h6>{{$pro->productName}}</h6>
                                 <div class="product_des">
                                         <h5>{{ number_format($pro->productPrice) }} VND</h5>

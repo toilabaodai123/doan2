@@ -111,6 +111,8 @@
             </div>
         </div>
     </section>
+
+
     <section class="blog spa">
         <div class="container">
             <h2 class="text-center" >BLOG</h2>
@@ -124,7 +126,7 @@
                         <div class="blog__item__text">
                             <span><img src="{{asset('img/icon/calendar.png')}}" style="width: unset" alt=""> {{$blog->created_at}}</span>
                             <h5>{{$blog->head_title}}</h5>
-                            <a href="#">Read More</a>
+                            <a href="{{URL::to('blog-detail/'.$blog->id)}}">Read More</a>
                         </div>
                     </div>
                 </div>
@@ -138,3 +140,5 @@
     <!-- Blog Details Section End -->
 
 </div>
+
+

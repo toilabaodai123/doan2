@@ -85,6 +85,7 @@ class Index extends Component
             }
 			$ProductName = Product::find($id);
 			session()->flash('add_favorite','Đã thích sản phẩm '.$ProductName->productName);
+          
         }
         else {
             return redirect('login');
@@ -105,6 +106,8 @@ class Index extends Component
 		$Favorite->status = 0;
 		$Favorite->save();
 		session()->flash('delete_favorite','Đã hủy thích sản phẩm '.$ProductName->productName);
+  
+
     } 
 	
 	public function report($id){

@@ -39,7 +39,7 @@ class ShopDetail extends Component
     public function render()
     {   
       
-        $this->relatedPro = Product::with('Pri_image')->with('Category1')->orderBy('id', 'DESC')->get()->take(4);
+        $this->relatedPro = Product::with('Pri_image')->with('Category1')->where('status',1)->orderBy('id', 'DESC')->get()->take(4);
         $this->product = Product::with('getSalePrice')->with('Pri_image')->with('Models')->with('wishlist')
         ->where('productSlug', $this->slugId)->get();
         $proSlug = Product::where('productSlug', $this->slugId)->first();

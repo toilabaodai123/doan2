@@ -20,6 +20,6 @@ class CheckOrderComponent extends Component
 		else
 			$this->Logs = [];
         return view('livewire.check-order-component')
-					->layout('layouts.template2');
+					->layout('layouts.template3');
     }
 }
