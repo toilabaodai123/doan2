@@ -105,11 +105,11 @@
                                     <h5>{{ $product->Category1->categoryName }}</h5>
 
                                 </div>
-								@if(session()->has('add_favorite'))
+								<!-- @if(session()->has('add_favorite'))
 									{{session('add_favorite')}}
 								@elseif(session()->has('delete_favorite'))
 									{{session('delete_favorite')}}
-								@endif	
+								@endif	 -->
                             </div>
                         </div>
                     </a>
@@ -120,7 +120,7 @@
             </div>
         </div>
     </section>
-    <section class="categories spad">
+    <!-- <section class="categories spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -142,6 +142,7 @@
                         <span>Deal Of The Week</span>
                         <h2>Multi-pocket Chest Bag Black</h2>
                         <div class="categories__deal__countdown__timer" id="countdown">
+                            if(cao :now .)
                             <div class="cd-item">
                                 <span>3</span>
                                 <p>Days</p>
@@ -164,7 +165,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
         <!-- Instagram Section Begin -->
         <section class="instagram spad">
         <div class="container">

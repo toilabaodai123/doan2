@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Startmin - Bootstrap Admin Theme</title>
+    <title>Admin</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{{asset('admin/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -34,6 +34,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+<style>
+.top-left{
+	width:50px;
+	height:50px;
+	position:absolute;
+	z-index:1;
+	left:0;margin-left:32px;
+}
+.no_logo{
+	display:none;
+}
+</style>
+
 </head>
 <body>
 
@@ -41,16 +55,6 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Startmin</a>
-        </div>
-
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
 
         <!-- Top Navigation: Left Menu -->
         <ul class="nav navbar-nav navbar-left navbar-top-links">
@@ -59,39 +63,17 @@
 
         <!-- Top Navigation: Right Menu -->
         <ul class="nav navbar-right navbar-top-links">
-            <li class="dropdown navbar-inverse">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i> <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu dropdown-alerts">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-comment fa-fw"></i> New Comment
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>See All Alerts</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </li>
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> {{auth()->user()->name}} <b class="caret"></b>
+                    <i class="fa fa-user fa-fw"></i> {{auth()->user()->name}} ( {{auth()->user()->user_type}} )<b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                    <li><a href="#"><i class="fa fa-user fa-fw"></i> Thông tin</a>
                     </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Đăng xuất</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a href="{{route('logout')}}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
             </li>
@@ -101,9 +83,6 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
-                    <li>
-                        <a href="{{url('/admin/dashboard')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Thông tin tài khoản</a>
-                    </li>				
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')				
                     <li>
@@ -132,11 +111,22 @@
                         </ul>
                     </li>
 					@endif
+					<li class="active">
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý hình ảnh<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+                            <li>
+                                <a href="{{url('/admin/image/product-logo')}}">Đóng dấu hình sản phẩm</a>
+                            </li>
+                        </ul>
+                    </li>
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')					
                     <li>
                         <a href="{{url('admin/suppliers')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhà cung cấp</a>
                     </li>
+                    <li>
+                        <a href="{{url('admin/storage')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý kho</a>
+                    </li>					
 					@endif
 					@if(auth()->user()->user_type == 'Nhân viên nhập hàng' || 
 						auth()->user()->user_type == 'Admin' || 
@@ -146,17 +136,11 @@
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
 							@if(auth()->user()->user_type == 'Nhân viên nhập hàng' ||  auth()->user()->user_type == 'Admin')
                             <li>
-                                <a href="{{url('/admin/product-import/list')}}">Danh sách hóa đơn nhập hàng</a>
-                            </li>
-                            <li>
                                 <a href="{{url('/admin/product-import/new')}}">Tạo hóa đơn nhập hàng</a>
                             </li>							
 							@endif
 
 							@if(auth()->user()->user_type == 'Quản lý' || auth()->user()->user_type == 'Admin')
-                            <li>
-                                <a href="{{url('admin/product-import/manager')}}">Kiểm duyệt hóa đơn nhập hàng</a>
-                            </li>
 							@endif
   							
                         </ul>
@@ -181,7 +165,7 @@
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý tài khoản<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
                             <li>
-                                <a href="{{url('/admin/shippers')}}">Quản lý người dùng</a>
+                                <a href="{{url('/admin/users/user')}}">Quản lý người dùng</a>
                             </li>
                             <li>
                                 <a href="{{url('/admin/users/staff')}}">Quản lý nhân viên</a>
@@ -198,10 +182,7 @@
                             </li>
                             <li>
                                 <a href="{{url('/admin/shippers/create-bill')}}">Tạo hóa đơn vận chuyển</a>
-                            </li>
-                            <li>
-                                <a href="{{url('/admin/shippers/bill-list')}}">Danh sách hóa đơn vận chuyển</a>
-                            </li>								
+                            </li>							
                         </ul>
                     </li>		
                   					
@@ -211,9 +192,6 @@
 					@endif
 					@if(auth()->user()->user_type == 'Quản lý' || 
 						auth()->user()->user_type == 'Admin')					
-                    <li>
-                        <a href="{{url('admin/demo/ship')}}"><i class="fa fa-sitemap fa-fw"></i>DEMO vận chuyển</a>
-                    </li>	
 					@endif	
                     
                     <li class="active">
@@ -221,10 +199,10 @@
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
                             <li>
                                 <a href="{{url('/slider')}}">Slider</a>
-                            </li>	
+                            </li>
                             <li>
                                 <a href="{{url('/post')}}">Đăng bài viết</a>
-                            </li>
+                            </li>	
                             <li>
                                 <a href="{{url('/instagram')}}">Instagram</a>
                             </li>	
@@ -236,7 +214,15 @@
                             </li>							
                         </ul>
                     </li>	
-					
+					<li>
+                        <a href="{{url('/admin/info')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Thông tin tài khoản</a>
+                    </li>
+					<li>
+                        <a href="{{url('/admin/setting')}}"><i class="fa fa-dashboard fa-fw"></i>Tùy chỉnh hệ thống website</a>
+                    </li>
+                    <li>
+                        <a href="{{url('admin/flash-sale')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý flash sale</a>
+                    </li>					
                 </ul>
             </div>
         </div>

@@ -17,7 +17,7 @@ class checkOrderCode
     public function handle(Request $request, Closure $next)
     {
 		if(session('OrderCode') == null)
-			return redirect('trang-chu');
+			return redirect('index');
 		
 		return $next($request);
     }

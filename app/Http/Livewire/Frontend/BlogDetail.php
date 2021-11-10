@@ -63,7 +63,8 @@ class BlogDetail extends Component
         // $data->comments()->associate($post);
 
         $data->save();
-        return redirect('/blog-detail/'.$this->id2);
+        $this->comment = null;
+        // return redirect('/blog-detail/'.$this->id2);
         
     }
     public function submitNoneUser($id){
