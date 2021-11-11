@@ -108,7 +108,50 @@
 																									</div>
 																									<!-- /.modal-dialog -->
 															</div>	
-															<button type="button" wire:click="acceptOrder({{$o->id}})" class="btn btn-success">Duyệt</button>	
+															<button type="button" wire:click="acceptOrder({{$o->id}})" style="display:{{$is_forceaccept==false?'':'none'}}" class="btn btn-success">Duyệt</button>
+															<button type="button" style="display:{{$is_forceaccept==false?'none':''}}" data-toggle="modal" data-target="#forceAccept{{$o->id}}" class="btn btn-warning">Duyệt (thiếu kho)</button>
+															<div wire:ignore.self class="modal fade" id="forceAccept{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																									<div class="modal-dialog" role="document">
+																										<div class="modal-content">
+																											<div class="modal-header">
+																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																												<h4 class="modal-title" id="myModalLabel">Duyệt dù thiếu kho</h4>
+																											</div>
+																											<div class="modal-body" >
+																												@if(session()->has('modal_forceaccept_success'))
+																												<div class="alert alert-success">
+																													{{session('modal_forceaccept_success')}}
+																												</div>
+																												@elseif(session()->has('modal_forceaccept_wrongpassword'))
+																												<div class="alert alert-danger">
+																													{{session('modal_forceaccept_wrongpassword')}}
+																												</div>
+																												@endif
+																												
+																												
+																												<input class="form-control" placeholder="Hãy nhập lý do duyệt" wire:model.defer="forceaccept_note">
+																												@error('forceaccept_note')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror
+																												<div class="checkbox">
+																													<label>
+																														<input type="checkbox" wire:model.defer="forceaccept_status">Tôi đồng ý
+																													</label>																														</label>
+																												</div>
+																												@error('forceaccept_status')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror																												
+																											</div>
+																											<div class="modal-footer">
+																												<button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+																												<button type="button" wire:click="forceAccept({{$o->id}})" class="btn btn-primary" >Lưu</button>
+																											</div>
+																										</div>
+																										<!-- /.modal-content -->
+																									</div>
+																									<!-- /.modal-dialog -->
+															</div>					
+															
 															<button type="button" data-toggle="modal" data-target="#declineOrder{{$o->id}}" class="btn btn-warning">Từ chối</button>	
 															<div wire:ignore.self class="modal fade" id="declineOrder{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">

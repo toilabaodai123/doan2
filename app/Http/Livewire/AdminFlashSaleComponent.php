@@ -123,7 +123,15 @@ class AdminFlashSaleComponent extends Component
 	public function checkValidation(){
 		$this->validate();
 		$flag=false;
-		$this->is_validated = true;
+		$LastFlashSale = FlashSale::where('status',1)->get()->last();
+		if($LastFlashSale){
+			if(($this->from_date < $LastFlashSale->from_date && $this->to_date < $LastFlashSale->from_date) || ($this->from_date > $LastFlashSale->to_date && $this->to_date > $LastFlashSale->to_date))
+				$flag=true;
+		}
+		if($flag==true)
+			$this->is_validated = true;
+		else
+			dd(2);
 	}
 	
 	public function submitSale(){

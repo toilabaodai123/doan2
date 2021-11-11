@@ -6,7 +6,9 @@ use Livewire\Component;
 use App\Models\Order;
 use App\Models\OrderLog;
 use App\Models\AdminLog;
+use App\Models\OrderDetail;
 use App\Models\UserActionBlock;
+use App\Models\ProductModel;
 use Livewire\WithPagination;
 
 class AdminNewOrderComponent extends Component
@@ -21,9 +23,12 @@ class AdminNewOrderComponent extends Component
 	
 	public $sortField='id';
 	public $sortDirection='ASC';
+	public $forceaccept_note;
+	public $forceaccept_status;
 	
 	public $decline_status=false;
 	public $block_status=false;
+	public $is_forceaccept = false;
 
 	
 	public function sortBy($field,$direction){
@@ -49,28 +54,67 @@ class AdminNewOrderComponent extends Component
     }
 	
 
+	public function forceAccept($id){
+		$this->validate([
+			'forceaccept_note' => 'required',
+			'forceaccept_status' => 'accepted'
+		],[
+			'forceaccept_note.required' => 'Hãy nhập lý do',
+			'forceaccept_status.accepted' => 'Bạn chưa đồng ý'
+		]);
+		
+			$Order = Order::find($id);
+			$Order->admin_id = auth()->user()->id;
+			if($Order->assigned_to == null)
+				$Order->assigned_to = auth()->user()->id;
+			$Order->status = 2;
+			$Order->save();
+			
+			$OrderLog = new OrderLog();
+			$OrderLog->message = 'Đơn hàng được duyệt';
+			$OrderLog->order_id = $Order->id;
+			$OrderLog->save();
+			
+			$Log = new AdminLog();
+			$Log->admin_id = auth()->user()->id;
+			$Log->note = 'Đã duyệt đơn hàng id :'.$id.' dù thiếu kho , lý do :'.$this->forceaccept_note;
+			$Log->save();
+
+			session()->flash('success','Đã chấp nhận đơn hàng id:'.$id);
+	}
 	
 	
 	public function acceptOrder($id){
 		//dd($id);
 		$Order = Order::find($id);
-		$Order->admin_id = auth()->user()->id;
-		if($Order->assigned_to == null)
-			$Order->assigned_to = auth()->user()->id;
-		$Order->status = 2;
-		$Order->save();
-		
-		$OrderLog = new OrderLog();
-		$OrderLog->message = 'Đơn hàng được duyệt';
-		$OrderLog->order_id = $Order->id;
-		$OrderLog->save();
-		
-		$Log = new AdminLog();
-		$Log->admin_id = auth()->user()->id;
-		$Log->note = 'Đã duyệt đơn hàng id :'.$id;
-		$Log->save();
+		$Details = OrderDetail::where('order_id',$id)->get();
+		foreach($Details as $detail){
+			$Stock = ProductModel::find($detail->productModel_id);
+			if($detail->amount > $Stock->stockTemp || 1==1){
+				$this->is_forceaccept = true;
+				break;
+			}
+		}
+		if($this->is_forceaccept == false){
+			$Order->admin_id = auth()->user()->id;
+			if($Order->assigned_to == null)
+				$Order->assigned_to = auth()->user()->id;
+			$Order->status = 2;
+			$Order->save();
+			
+			$OrderLog = new OrderLog();
+			$OrderLog->message = 'Đơn hàng được duyệt';
+			$OrderLog->order_id = $Order->id;
+			$OrderLog->save();
+			
+			$Log = new AdminLog();
+			$Log->admin_id = auth()->user()->id;
+			$Log->note = 'Đã duyệt đơn hàng id :'.$id;
+			$Log->save();
 
-		session()->flash('success','Đã chấp nhận đơn hàng id:'.$id);
+			session()->flash('success','Đã chấp nhận đơn hàng id:'.$id);
+			$this->reset();
+		}
 	}	
 	
 	public function declineOrder($id){

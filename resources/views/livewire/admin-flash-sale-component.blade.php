@@ -52,7 +52,7 @@
 																@endif
 															</td>
 															<td>
-																@if($sale->to_date >= Carbon\Carbon::now() && $sale->status == 1)
+																@if($sale->from_date <= Carbon\Carbon::now() && $sale->to_date >= Carbon\Carbon::now() && $sale->status == 1)
 																	<label style="color:red">Đang diễn ra</label>
 																@endif
 															</td>

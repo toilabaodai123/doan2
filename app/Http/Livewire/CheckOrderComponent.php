@@ -17,8 +17,10 @@ class CheckOrderComponent extends Component
 		$this->Order = Order::where('orderCode',$this->input)->get()->last();
 		if($this->input != null && $this->Order!= null)
 			$this->Logs = OrderLog::where('order_id',$this->Order->id)->get();
-		else
+		else{
 			$this->Logs = [];
+			$this->Order = null;
+		}
         return view('livewire.check-order-component')
 					->layout('layouts.template3');
     }
