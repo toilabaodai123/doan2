@@ -83,8 +83,8 @@
                                     <p>Sort by Price:</p>
                                     <select wire:model="priceSort">
                                         <option value="default">Default sorting</option>
-                                        <option value="price_asc">Low To High</option>
-                                        <option value="price_desc">High To Low</option>
+                                        <option value="price_asc">Từ thấp đến cao</option>
+                                        <option value="price_desc">Từ cao xuống thấp</option>
 
                                     </select>
                                 </div>

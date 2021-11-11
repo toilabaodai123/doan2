@@ -48,7 +48,7 @@
                             <p>{{$pro->shortDesc}}</p>
                             <div class="product__details__option">
                                 <div class="product__details__option__size" wire:ignore>
-                                    <span>Size:</span>
+                                    <span>KÍCH CỠ:</span>
                                     @forelse($Sizes as $size)
                                     <label for="{{$size->size}}"
                                          wire:click="size('{{$size->size}}')">{{$size->size}}
@@ -68,7 +68,7 @@
                                         <input type="number" value="{{$cart_qty}}" min="1" wire:model="cart_qty">
                                     </div>
                                 </div>
-                                <a href="#" wire:click.prevent="addCart({{ $pro->id }})" class="primary-btn">add to cart</a>
+                                <a href="#" wire:click.prevent="addCart({{ $pro->id }})" class="primary-btn">Thêm giỏ hàng</a>
                                 <a href="{{url('/bao-cao/san-pham/'.$get_id->id)}}" class="primary-btn">Báo lỗi</a>
                                 @if(session()->has('message_size'))
                                     <p style=" margin: 20px; color: red">
@@ -86,15 +86,15 @@
                                     @if(Auth::user() != null)
                                         @if($pro->checkWishlist == null)
                                         <a href="#"  wire:click.prevent="addToWishlisht({{$pro->id}})"  >
-                                                <i class="fa fa-heart 1"></i>add to wishlist</a>
+                                                <i class="fa fa-heart 1"></i>Thêm yêu thích</a>
                                         @else
                                             <a href="#" wire:click.prevent="removeWishlish({{$pro->id}})"  >
-                                                <i class="fa fa-heart 2 fill-heart"></i>move to wishlist</a>
+                                                <i class="fa fa-heart 2 fill-heart"></i>Xóa yêu thích</a>
                                         @endif
                                         
                                     @else
                                     <a href="#"  wire:click.prevent="addToWishlisht({{$pro->id}})" >
-                                                <i class="fa fa-heart 3"></i>add to wishlist</a>
+                                                <i class="fa fa-heart 3"></i>Thêm yêu thích</a>
                                     @endif
                             <!-- @if($pro->wishlist != null && Auth::user()!= null)
                                 @if(Auth::user()->id == $pro->wishlist->id_user)

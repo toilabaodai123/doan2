@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Shopping Cart</h4>
+                        <h4>Trang giỏ hàng</h4>
                         <div class="breadcrumb__links">
                             <a href="{{URL::to('/index')}}">Trang chủ</a>
                             <a href="{{URL::to('/shop')}}">sản phẩm</a>
@@ -30,9 +30,9 @@
                             <thead>
                                 <tr>
                                     <th>Tên</th>  
-                                    <th>Size</th>
-                                    <th>Qty</th>
-                                    <th>Total</th>
+                                    <th>Kích cỡ</th>
+                                    <th>Số Lượng</th>
+                                    <th>Tổng tiền</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -75,14 +75,14 @@
                             @endif
                         </table>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
                                 <a href="{{URL::to('shop')}}" >Continue Shopping</a>
                             </div>
                         </div>
                         
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="">
@@ -98,7 +98,7 @@
                         @endif
                     </div>
                     <div class="cart__total">
-                        <h6>Cart total</h6>
+                        <h6>Tổng tiền giỏ hàng</h6>
                         <ul>
                             @if(Session::has('coupon'))
                                 <li>Subtotal <span> $ {{ number_format( Cart::subtotal() ) }}</span></li>
@@ -107,11 +107,11 @@
                                 <li>Total  {{Cart::total()}}<span>${{$totallAfterDiscount}}</span></li>
                            
                             @else
-                                <li>Subtotal <span> {{ number_format( Cart::subtotal() ) }} VND</span></li>
-                                <li>Total <span>{{ number_format( Cart::total() )}} VND</span></li>
+                                <!-- <li>Subtotal <span> {{ number_format( Cart::subtotal() ) }} VND</span></li> -->
+                                <li>Tổng tiền <span>{{ number_format( Cart::total() )}} VND</span></li>
                             @endif
                         </ul>
-                        <a href="{{URL::to('checkout')}}" class="primary-btn">Proceed to checkout</a>
+                        <a href="{{URL::to('checkout')}}" class="primary-btn">Thanh toán</a>
                     </div>
                 </div>
         </div>

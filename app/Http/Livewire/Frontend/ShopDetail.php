@@ -101,7 +101,7 @@ class ShopDetail extends Component
          'size' =>  $size->size
          ]])
          ->associate('App\Models\Product');
-         session()->flash('message_add', 'Đã thêm san phẩm thành công');
+         session()->flash('message_add', 'Đã thêm sản phẩm thành công');
 
         }
         $this->emitTo('pages.cart-count-component', 'refreshComponent');

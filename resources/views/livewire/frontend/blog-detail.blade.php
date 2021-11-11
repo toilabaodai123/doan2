@@ -64,7 +64,7 @@
                             @endforelse
 
                             @if($com->count() >= 2)
-                            <a href="#" class="load_more" wire:click.prevent="test()">Load more
+                            <a href="#" class="load_more" wire:click.prevent="test()">Xem Thêm
                                <i class="fa fa-angle-double-down" aria-hidden="true"></i>
                             @endif
                             </a>
@@ -77,7 +77,7 @@
                                 <div class="row">
                              
                                     <div class="col-lg-12 text-center">
-                                        <textarea placeholder="Comment" wire:model="comment"></textarea>
+                                        <textarea placeholder="Bình luận" wire:model="comment"></textarea>
                                         @error('comment')<p style="color: red">{{ $message }}</p> @enderror
 
                                         <button type="submit" class="site-btn">Post Comment</button>
@@ -98,7 +98,7 @@
 
                                     </div>
                                     <div class="col-lg-12 text-center">
-                                        <textarea placeholder="Comment" name="comment" wire:model="comment"></textarea>
+                                        <textarea placeholder="Bình luận" name="comment" wire:model="comment"></textarea>
                                         @error('comment')<p style="color: red">{{ $message }}</p> @enderror
 
                                         <button type="submit" class="site-btn">Post Comment</button>
@@ -126,7 +126,7 @@
                         <div class="blog__item__text">
                             <span><img src="{{asset('img/icon/calendar.png')}}" style="width: unset" alt=""> {{$blog->created_at}}</span>
                             <h5>{{$blog->head_title}}</h5>
-                            <a href="{{URL::to('blog-detail/'.$blog->id)}}">Read More</a>
+                            <a href="{{URL::to('blog-detail/'.$blog->id)}}">xem thêm</a>
                         </div>
                     </div>
                 </div>

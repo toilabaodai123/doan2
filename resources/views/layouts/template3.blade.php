@@ -60,7 +60,7 @@
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__text">
-            <p>Free shipping, 30-day return or refund guarantee.</p>
+            <p>Giao hàng miễn phí, Hoàn trả trong 30 ngày đảm bảo hoàn lại tiền. </p>
         </div>
     </div>
     <!-- Offcanvas Menu End -->
@@ -72,7 +72,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-7">
                         <div class="header__top__left">
-                            <p>Free shipping, 30-day return or refund guarantee.</p>
+                            <p>Giao hàng miễn phí, Hoàn trả trong 30 ngày đảm bảo hoàn lại tiền.</p>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-5">
@@ -114,19 +114,19 @@
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li class="active"><a href="{{URL::to('index')}}">Home</a></li>
-                            <li><a href="{{URL::to('/shop')}}">Shop</a></li>
-                            <li><a href="#">Pages</a>
+                            <!-- <li class="active"><a href="{{URL::to('index')}}">Trang chủ</a></li> -->
+                            <li><a href="{{URL::to('/shop')}}">Sản phẩm</a></li>
+                            <li><a href="#">Các trang</a>
                                 <ul class="dropdown">
-                                    <li><a href="{{URL::to('/about')}}">About Us</a></li>
-                                    <li><a href="{{URL::to('/contact')}}">Contacts</a></li>
-                                    <li><a href="{{URL::to('/shop')}}">Shop</a></li>
-                                    <li><a href="{{URL::to('/cart')}}">Shopping Cart</a></li>
-                                    <li><a href="{{URL::to('/checkout')}}">Check Out</a></li>
-                                    <li><a href="{{URL::to('/blog')}}">Blog </a></li>
+                                    <li><a href="{{URL::to('/about')}}">Giới thiệu</a></li>
+                                    <li><a href="{{URL::to('/contact')}}">Liên hệ</a></li>
+                                    <li><a href="{{URL::to('/shop')}}">Sản phẩm</a></li>
+                                    <li><a href="{{URL::to('/cart')}}">Giỏ hàng</a></li>
+                                    <li><a href="{{URL::to('/checkout')}}">Thanh toán</a></li>
+                                    <li><a href="{{URL::to('/blog')}}">Bài viết</a></li>
                                 </ul>
                             </li>
-                            <li><a href="{{URL::to('/blog')}}">Blog </a>
+                            <li><a href="{{URL::to('/blog')}}">Bài viết </a>
                                 <ul class="dropdown">
                                     <li><a href="{{URL::to('/blog/caregory/'. 1)}}">Tin tức</a></li>
                                     <li><a href="{{URL::to('/blog/caregory/'. 2)}}">Sự kiện</a></li>

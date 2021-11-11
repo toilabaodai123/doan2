@@ -42,8 +42,6 @@
                                 <div class="col-lg-12">
                                     <ul class="filter__controls">
                                         <li class="active" data-filter="*">Tất cả</li>
-                                        <li data-filter=".new-arrivals">Đang giao</li>
-                                        <li data-filter=".hot-sales">Đã giao</li> 
                                     </ul>
                                 </div>
                             </div>

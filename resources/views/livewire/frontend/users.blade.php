@@ -55,7 +55,7 @@
                                     letter-spacing: 4px;
                                     margin-bottom: 20px;"
                             
-                            >Edit</a>
+                            >Sửa</a>
                             @if(session()->has('message'))
                                 <div class="alert alert-success">
                                     {{session('message')}}

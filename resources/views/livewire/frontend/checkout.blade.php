@@ -33,7 +33,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="checkout__input">
-                                        <p>Fist Name<span>*</span></p>
+                                        <p>Tên<span>*</span></p>
                                         <input type="text" name="name" wire:model="Name">
                                         @error('Name')<p style="color: red">{{ $message }}</p> @enderror
                                     </div>
@@ -42,7 +42,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p>Phone<span>*</span></p>
+                                        <p>Số điện thoại<span>*</span></p>
                                         <input type="text" name="phone" wire:model="Phone">
                                         @error('Phone')<p style="color: red">{{ $message }}</p> @enderror
                                     </div>
@@ -56,12 +56,12 @@
                                 </div>
                             </div>
                             <div class="checkout__input">
-                                <p>Address<span>*</span></p>
+                                <p>Địa chỉ<span>*</span></p>
                                 <input type="text" placeholder="Street Address" name="address" wire:model="Address" class="checkout__input__add">
                                 @error('Address')<p style="color: red">{{ $message }}</p> @enderror
                             </div>
                             <div class="checkout__input">
-                                <p>Note</p>
+                                <p>Ghi chú</p>
                                 <textarea type="text" placeholder="Ghi chú" wire:model="Note"></textarea>
                                 @error('Note')<p style="color: red">{{ $message }}</p> @enderror
                             </div>
@@ -99,7 +99,7 @@
                                 </ul>
                                
                                 
-                                <button type="submit" class="site-btn">PLACE ORDER</button>
+                                <button type="submit" class="site-btn">THANH TOÁN</button>
                             </div>
                         </div>
                     </div>

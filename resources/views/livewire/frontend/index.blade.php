@@ -216,7 +216,7 @@
                         <div class="blog__item__text">
                             <span><img src="img/icon/calendar.png" style="width: unset" alt=""> 16 February 2020</span>
                             <h5>{{$blog->head_title}}</h5>
-                            <a href="{{URL::to('blog-detail/'.$blog->id)}}">Read More</a>
+                            <a href="{{URL::to('blog-detail/'.$blog->id)}}">Xem thêm</a>
                         </div>
                     </div>
                 </div>
