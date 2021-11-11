@@ -57,7 +57,7 @@
                             </div>
                             <div class="checkout__input">
                                 <p>Địa chỉ<span>*</span></p>
-                                <input type="text" placeholder="Street Address" name="address" wire:model="Address" class="checkout__input__add">
+                                <input type="text" placeholder="Địa chỉ" name="address" wire:model="Address" class="checkout__input__add">
                                 @error('Address')<p style="color: red">{{ $message }}</p> @enderror
                             </div>
                             <div class="checkout__input">
