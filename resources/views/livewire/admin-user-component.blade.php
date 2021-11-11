@@ -67,9 +67,42 @@
 																	@endif
 																</td>
 																<td>
-																	<button type="button" class="btn btn-info">Xem</button>
-																	<button type="button" wire:click="editUser({{$user->id}})" class="btn btn-warning">Sửa</button>
-																	<button type="button" class="btn btn-danger" wire:click="deleteUser({{$user->id}})">Khóa</button>
+																	<button type="button"  wire:click="editUser({{$user->id}})" class="btn btn-warning">Sửa</button>
+
+																	@if($user->status==1)
+																		<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser{{$user->id}}">Khóa</button>
+																	@endif
+																	<div wire:ignore.self class="modal fade" id="deleteUser{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																										<div class="modal-dialog" role="document">
+																											<div class="modal-content">
+																												<div class="modal-header">
+																													<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																													<h4 class="modal-title" id="myModalLabel">Khóa tài khoản người dùng</h4>
+																												</div>
+																												<div class="modal-body" >
+																													<label>Bạn chắc chắn muốn khóa tài khoản id:{{$user->id}} ?</label>
+																													<input class="form-control" placeholder="Hãy nhập lý do từ khóa" wire:model="delete_input">
+																													@error('delete_input')
+																														<p class="text-danger">{{$message}}</p>
+																													@enderror
+																													<div class="checkbox">
+																														<label>
+																															<input type="checkbox" wire:model.defer="delete_status">Tôi đồng ý
+																															@error('delete_status')
+																																<p class="text-danger">{{$message}}</p>
+																															@enderror
+																														</label>
+																													</div>
+																												</div>
+																												<div class="modal-footer">
+																													<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																													<button type="button" class="btn btn-primary" wire:click="deleteUser({{$user->id}})">Lưu</button>
+																												</div>
+																											</div>
+																											<!-- /.modal-content -->
+																										</div>
+																										<!-- /.modal-dialog -->
+																</div>	
 																</td>
 															</tr>
 														@empty
@@ -138,10 +171,14 @@
 												<input type="checkbox" {{$user_id == null ? 'disabled': ''}} wire:model="status">Ẩn
 											</label>
 										</div>	
-									</div>									
-									<button type="button" wire:click="submitUser" class="btn btn-success">Lưu</button>
+									</div>
+									@if($this->user_id==null)
+										<button type="button" wire:click="submitUser" class="btn btn-success">Lưu</button>
+									@else
+										<button type="button" data-toggle="modal" data-target="#editUser" class="btn btn-success">Lưu</button>
+									@endif
 									<button type="button" {{$user_id==null?'disabled':''}} class="btn btn-warning" data-toggle="modal" data-target="#changePassword">Đổi mật khẩu</button>
-									<button type="button" wire:click="btnReset" class="btn btn-default">Reset</button>
+									<button type="button"  wire:click="btnReset" class="btn btn-default">Reset</button>
                                 </div>
                                 <!-- /.panel-body -->
                             </div>
@@ -184,7 +221,40 @@
 													</div>
 												</div>
 </div>					
-					
+
+
+																	<div wire:ignore.self class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																										<div class="modal-dialog" role="document">
+																											<div class="modal-content">
+																												<div class="modal-header">
+																													<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																													<h4 class="modal-title" id="myModalLabel">Sửa tài khoản người dùng</h4>
+																												</div>
+																												<div class="modal-body" >
+
+																													<label>Bạn chắc chắn muốn sửa tài khoản id:{{$user->id}} ?</label>
+																													<input class="form-control" placeholder="Hãy nhập lý do sửa" wire:model="edit_input">
+																													@error('edit_input')
+																														<p class="text-danger">{{$message}}</p>
+																													@enderror
+																													<div class="checkbox">
+																														<label>
+																															<input type="checkbox" wire:model.defer="edit_status">Tôi đồng ý
+																															@error('edit_status')
+																																<p class="text-danger">{{$message}}</p>
+																															@enderror
+																														</label>
+																													</div>
+																												</div>
+																												<div class="modal-footer">
+																													<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																													<button type="button" wire:click="editUser2"class="btn btn-primary" >Lưu</button>
+																												</div>
+																											</div>
+																											<!-- /.modal-content -->
+																										</div>
+																										<!-- /.modal-dialog -->
+																	</div>					
 					
 					
 					

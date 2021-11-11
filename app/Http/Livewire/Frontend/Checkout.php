@@ -69,7 +69,7 @@ class Checkout extends Component
         // dd(Cart::instance('cart')->count());
         if(Cart::instance('cart')->count() != 0){
 			
-			$AdminSetting = AdminSetting::get()->last();
+			$AdminSetting = AdminSetting::get()->last();//Kiểm tra trạng thái hệ thống
 			if($AdminSetting->is_outofservice == true)
 				session()->flash('user_blocked','Hệ thống đang tạm thời ngưng nhận đơn đặt hàng , bạn vui lòng thử lại sau');
 			else{
@@ -85,9 +85,7 @@ class Checkout extends Component
 									->where('status',1)
 									->where('created_at','>=',Carbon::now()->subMinutes(60))
 									->get();
-									//dd($CheckOrders);
-				//dd($CheckOrders->created_at >= Carbon::now()->subMinutes(6) );
-				if($CheckOrders && $CheckOrders->count() >= 150){
+				if($CheckOrders && $CheckOrders->count() >= 0){
 					session()->flash('user_blocked','Bạn đã đặt quá nhiều đơn hàng, vui lòng thử lại sau');
 					
 				}
@@ -168,7 +166,8 @@ class Checkout extends Component
 			
 			
 			
-			//dd($Order->id);
+			//Phân công
+			$LastOrder = Order::get()->last();
 			if($LastOrder == null){
 				//dd(1);
 				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$LastOrder->assigned_to)->get()->first();
@@ -180,12 +179,12 @@ class Checkout extends Component
 						$Order->assigned_to = $Admin->id;
 			}
 			else{
-				//dd(2);
-				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$LastOrder->assigned_to==null?0:$LastOrder->assigned_to)->get()->first();
-				//dd($Admin);
+				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')
+							 ->where('status',1)
+							 ->where('id','>',$LastOrder->assigned_to==null?0:$LastOrder->assigned_to)
+							 ->get()->first();
 				if($Admin == null){
 					$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
-					//dd($Admin2);
 					if($Admin2 == null)
 						$Order->assigned_to = null;
 					else

@@ -54,7 +54,7 @@
 					<div class="form-group">
 						<button type="button" wire:click="isUpdate" class="btn btn-{{$is_update==false?'info':'success'}}">{{$is_update==false?'Cập nhật thông tin':'Lưu'}}</button>
 						<button type="button" class="btn btn-warning">Đổi mật khẩu</button>	
-						<button type="button" wire:click="staffGoesOffline" class="btn btn-danger">Nghỉ phép</button>	
+						<button type="button"  data-toggle="modal" data-target="#offline" class="btn btn-danger">Nghỉ phép</button>	
 					</div>					
 				</div>
 					<div class="col-lg-3">
@@ -78,6 +78,47 @@
             </div>
         </div>
     </div>
+	
+	
+	
+	
+																	<div wire:ignore.self class="modal fade" id="offline" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																										<div class="modal-dialog" role="document">
+																											<div class="modal-content">
+																												<div class="modal-header">
+																													<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																													<h4 class="modal-title" id="myModalLabel">Nghỉ phép</h4>
+																												</div>
+																												<div class="modal-body">
+																													@if(session()->has('modal_offline_success'))
+																													<div class="alert alert-success">
+																														{{session('modal_offline_success')}}
+																													</div>
+																													@elseif(session()->has('modal_offline_wrong_password'))
+																													<div class="alert alert-danger">
+																														{{session('modal_offline_wrong_password')}}
+																													</div>
+																													@endif
+																													<input class="form-control" placeholder="Hãy nhập lý do nghỉ phép" wire:model="offline_input">
+																													@error('offline_input')
+																														<p class="text-danger">{{$message}}</p>
+																													@enderror
+																													<input class="form-control" placeholder="Hãy nhập mật khẩu" wire:model="offline_password">
+																													@error('offline_password')
+																														<p class="text-danger">{{$message}}</p>
+																													@enderror
+																												</div>
+																												<div class="modal-footer">
+																													<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																													<button type="button" wire:click="staffGoesOffline" class="btn btn-primary" >Lưu</button>
+																												</div>
+																											</div>
+																											<!-- /.modal-content -->
+																										</div>
+																										<!-- /.modal-dialog -->
+																	</div>		
+	
+	
 </div>
 
 @push('scripts')

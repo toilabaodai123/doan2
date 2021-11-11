@@ -34,6 +34,8 @@ class AdminAcceptedOderComponent extends Component
 	public $decline_status=false;
 	public $delivery_status=false;
 	public $decline_input;
+	public $abort_input;
+	public $abort_status;
 	
 	public $block_status=false;
 	public $block_note;
@@ -203,8 +205,7 @@ class AdminAcceptedOderComponent extends Component
 	}
 	
 	public function declineOrder($id){
-		$Order = Order::find($id);
-		if($Order->status == 2){
+		
 			$this->validate([
 				'decline_status' => 'accepted',
 				'decline_input' => 'required'
@@ -214,6 +215,7 @@ class AdminAcceptedOderComponent extends Component
 			]);
 			
 			//Cập nhật trạng thái
+			$Order = Order::find($id);
 			$Order->status = 0;
 			$Order->save();
 			
@@ -230,21 +232,43 @@ class AdminAcceptedOderComponent extends Component
 			$AdminLog->save();
 			
 			session()->flash('success','Từ chối đơn hàng id:'.$id.' thành công');
-			
-		}else{
-			session()->flash('success','Lỗi');
-		}
 		
 		$this->reset();
 	}
 	
-	public function updateOrderStatus($status){
-		$this->tempStatus = $status;
+	public function abortOrder($id){
+			$this->validate([
+				'abort_status' => 'accepted',
+				'abort_input' => 'required'
+			],[
+				'abort_status.accepted' => 'Hãy check vào đây',
+				'abort_input.required' => 'Hãy nhập lý do từ chối'
+			]);
+			
+			//Cập nhật trạng thái
+			$Order = Order::find($id);
+			$Order->status = 5;
+			$Order->adminNote = $this->abort_input;
+			$Order->save();
+			
+			//Cập nhật order log
+			$OrderLog = new OrderLog();
+			$OrderLog->message= 'Đơn hàng đã bị hủy';
+			$OrderLog->order_id = $id;
+			$OrderLog->save();
+			
+			//Cập nhật admin log
+			$AdminLog = new AdminLog();
+			$AdminLog->admin_id = auth()->user()->id;
+			$AdminLog->note = 'Đã khóa đơn hàng id:'.$id.'lý do : '.$this->abort_input;
+			$AdminLog->save();
+			
+			session()->flash('success','Hủy đơn hàng id:'.$id.' thành công');
+		
+		$this->reset();
 	}
-	
 	public function blockOrder($id){
 		$Order = Order::find($id);
-		if($Order->status == $this->tempStatus){
 			$this->validate([
 				'block_note' => 'required',
 				'block_status' => 'accepted'
@@ -284,9 +308,7 @@ class AdminAcceptedOderComponent extends Component
 			$Block->save();
 			
 			session()->flash('success','Đã chặn người dùng của đơn hàng id:'.$id);
-		}else{
-			session()->flash('success','Lỗi');
-		}
+
 		
 		$this->reset();
 	}

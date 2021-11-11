@@ -72,7 +72,6 @@
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-														<button type="button" class="btn btn-primary" >Sửa</button>
 													</div>
 													</div>
 												</div>

@@ -48,7 +48,7 @@ class AdminDashboardComponent extends Component
     {
 		$this->CompletedOrders = Order::where('status',4)->sum('orderTotal');
 		$this->ShipFree = DeliveryBill::all()->sum('price');
-		$this->Imports = ProductImportBill::all()->sum('importBillTotal');
+		$this->Imports = ProductImportBill::all()->sum('total');
 		$this->Profit = $this->CompletedOrders - $this->Imports - $this->ShipFree;
 
 		$from_date = strval($this->from_date);

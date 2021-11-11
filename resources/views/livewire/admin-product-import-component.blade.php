@@ -129,7 +129,7 @@
 																				@error('admin_note')
 																					<p class="text-danger">{{$message}}</p>
 																				@enderror
-																				<input class="form-control" placeholder="Nhập mật khẩu nhân viên" wire:model="admin_password">
+																				<input class="form-control" type="password" placeholder="Nhập mật khẩu nhân viên" wire:model="admin_password">
 																				@error('admin_password')
 																					<p class="text-danger">{{$message}}</p>
 																				@enderror
@@ -584,7 +584,7 @@
 																						{{session('modal_wrong_password')}}
 																					</div>	
 																				@endif															
-																<input class="form-control" placeholder="Nhập mật khẩu nhân viên" wire:model.defer="admin_password_add">
+																<input class="form-control" type="password" placeholder="Nhập mật khẩu nhân viên" wire:model.defer="admin_password_add">
 																@error('admin_password_add')
 																	<p class="text-danger">{{$message}}</p>
 																@enderror

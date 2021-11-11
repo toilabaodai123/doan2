@@ -19,6 +19,10 @@ class AdminUserComponent extends Component
 	public $name;
 	public $address;
 	public $status;
+	public $delete_input;
+	public $delete_status;
+	public $edit_input;
+	public $edit_status;
 	
 	public $sortField = 'id';
 	public $sortDirection = 'ASC';
@@ -103,6 +107,10 @@ class AdminUserComponent extends Component
 		$this->reset();
 	}
 	
+	
+
+	
+	
 	public function editUser($id){
 		$this->user_id = $id;
 		$User = User::find($id);
@@ -112,23 +120,49 @@ class AdminUserComponent extends Component
 		$this->phone = $User->phone;
 	}
 	
+	public function editUser2(){
+			$User = User::find($this->user_id);
+			$User->name = $this->name;
+			$User->phone = $this->phone;
+			$User->address = $this->address;
+			$User->status = $this->status==true?0:1;
+			$User->save();
+			
+			$AdminLog = new AdminLog();
+			$AdminLog->admin_id = auth()->user()->id;
+			$AdminLog->note ='Đã sửa tài khoản id:'.$this->user_id;
+			$AdminLog->save();
+			
+			
+			session()->flash('success','Sửa tài khoản id:'.$this->user_id.' thành công');
+		$this->reset();
+	}
+	
 	
 	public function btnReset(){
 		$this->reset();
 	}
 	
 	public function deleteUser($id){
+			$this->validate([
+				'delete_status' => 'accepted',
+				'delete_input' => 'required'
+			],[
+				'delete_status.accepted' => 'Hãy check vào đây',
+				'delete_input.required' => 'Hãy nhập lý do khóa'
+			]);		
 		$User = User::find($id);
-		$User->status == 1?$User->status=0:$User->status=1;
+		$User->status =0;
 		$User->save();
 		
 		session()->flash('success_delete_user_modal','Đã khóa tài khoản id:'.$id);
-		$this->reset();
+	
 		
 		$AdminLog = new AdminLog();
 		$AdminLog->admin_id = auth()->user()->id;
-		$AdminLog->note ='Đã khóa tài khoản id:'.$id;
-		$AdminLog->save();		
+		$AdminLog->note ='Đã khóa tài khoản id:'.$id.' lý do: '.$this->delete_input;
+		$AdminLog->save();
+		$this->reset();		
 	}
 	
 	public function changePassword(){

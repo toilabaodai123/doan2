@@ -166,7 +166,7 @@
 																		<div class="modal-content">
 																			<div class="modal-header">
 																				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																				<h4 class="modal-title" id="myModalLabel">Thông tin sản phẩm</h4>
+																				<h4 class="modal-title" id="myModalLabel">Hoàn tất giao hàng</h4>
 																			</div>
 																			<div class="modal-body" >
 																				<select class="form-control" wire:model.defer="shipunit_id">
@@ -226,7 +226,7 @@
 																										</div>
 																										<!-- /.modal-dialog -->
 																</div>																
-																<button type="button" class="btn btn-danger" wire:click="updateOrderStatus({{$o->status}})" data-toggle="modal" data-target="#blockOrder{{$o->id}}">Chặn</button>
+																<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#blockOrder{{$o->id}}">Chặn</button>
 																<div wire:ignore.self class="modal fade" id="blockOrder{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
@@ -286,7 +286,37 @@
 																	<!-- /.modal-dialog -->
 																	</div>	
 																</div>
-																<button type="button" wire:click="blockOrder({{$o->id}})" class="btn btn-danger">Hủy đơn</button>
+																<button type="button" data-toggle="modal" data-target="#abortOrder{{$o->id}}" class="btn btn-danger">Hủy đơn</button>
+																<div wire:ignore.self class="modal fade" id="abortOrder{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																									<div class="modal-dialog" role="document">
+																										<div class="modal-content">
+																											<div class="modal-header">
+																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																												<h4 class="modal-title" wire:model.lazy="block_note" id="myModalLabel">Hủy đơn hàng id : {{$o->id}}</h4>
+																											</div>
+																											<div class="modal-body" >
+																												<input class="form-control" placeholder="Hãy nhập lý do hủy đơn" wire:model.defer="abort_input">
+																												@error('block_note')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror
+																												<div class="checkbox">
+																													<label>
+																														<input type="checkbox" wire:model.defer="abort_status">Tôi đồng ý
+																													</label>																														</label>
+																												</div>
+																												@error('block_status')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror	
+																											</div>
+																											<div class="modal-footer">
+																												<button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+																												<button type="button" wire:click="abortOrder({{$o->id}})" class="btn btn-primary" >Lưu</button>
+																											</div>
+																										</div>
+																										<!-- /.modal-content -->
+																									</div>
+																									<!-- /.modal-dialog -->
+																		</div>
 															@endif
 															
 														</td>

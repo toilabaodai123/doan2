@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Order;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Hash;
+use App\Models\ADminLog;
 
 class AdminInfoComponent extends Component
 {
@@ -20,6 +22,8 @@ class AdminInfoComponent extends Component
 	public $phone;
 	public $cmnd;
 	public $birth_date;
+	public $offline_input;
+	public $offline_password;
 	
 	protected $rules=[
 		'name' => 'required',
@@ -42,39 +46,56 @@ class AdminInfoComponent extends Component
     }
 	
 	public function staffGoesOffline(){
-		if(auth()->user()->status == 1){
-			auth()->user()->status = 2;
-			auth()->user()->save();
-			if(auth()->user()->user_type == 'Nhân viên bán hàng'){
-				$Orders = Order::where('assigned_to',auth()->user()->id)->get();
-				$prev_id = null;
-				if($Orders->count() != 0){
-					foreach($Orders as $order){
-						if($prev_id == null)
-							$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$order->assigned_to)->get()->first();
-						else{
-							$OrderID = Order::find($prev_id);
-							$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$OrderID->assigned_to)->get()->first();
+		$this->validate([
+			'offline_input' => 'required',
+			'offline_password' => 'required'
+		],[
+			'offline_input.required' => 'Hãy nhập lý do',
+			'offline_password.required' => 'Hãy nhập mật khẩu'
+		]);
+		if(Hash::check($this->offline_password,auth()->user()->password)){
+				if(auth()->user()->user_type == 'Nhân viên bán hàng'){
+					$Orders = Order::where('assigned_to',auth()->user()->id)->get();
+					$prev_id = null;
+					if($Orders->count() != 0){
+						foreach($Orders as $order){
+							if($prev_id == null)
+								$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$order->assigned_to)->get()->first();
+							else{
+								$OrderID = Order::find($prev_id);
+								$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$OrderID->assigned_to)->get()->first();
+							}
+							if($Admin == null){
+								$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
+							if($Admin2 == null)
+								$order->assigned_to = null;
+							else
+								$order->assigned_to = $Admin2->id;
+							}
+							else{
+								$order->assigned_to = $Admin->id;
+							}
+							$order->save();
+							$prev_id = $order->id;
 						}
-						if($Admin == null){
-							$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
-						if($Admin2 == null)
-							$order->assigned_to = null;
-						else
-							$order->assigned_to = $Admin2->id;
-						}
-						else{
-							$order->assigned_to = $Admin->id;
-						}
-						$order->save();
-						$prev_id = $order->id;
 					}
 				}
-			}
+			auth()->user()->status = 2;
+			auth()->user()->save();
+			
+			session()->flash('modal_offline_success','Cập nhật thành công!');
+			$AdminLog = new AdminLog();
+			$AdminLog->admin_id = auth()->user()->id;
+			$AdminLog->note = 'Đã nghỉ phép , lý do :'.$this->offline_input;
+			$AdminLog->save();
+			
+			
+			$this->reset();
+		}else{
+			session()->flash('modal_offline_wrong_password','Sai mật khẩu!');
 		}
-		else
-			auth()->user()->status = 1;
-		auth()->user()->save();
+		
+
 	}
 	
 	public function isUpdate(){

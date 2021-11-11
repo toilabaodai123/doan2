@@ -43,7 +43,7 @@
                                             <i class="fa fa-shopping-cart fa-5x"></i>
                                         </div>
                                         <div class="col-xs-9 text-right">
-                                            <div class="huge">{{$Profit}}</div>
+                                            <div class="huge">{{number_format($Profit)}} VND</div>
                                             <div>Lợi nhuận</div>
                                         </div>
                                     </div>
@@ -268,7 +268,9 @@
 																					<h4 class="modal-title" id="myModalLabel">Thông tin lợi nhuận</h4>
 																				</div>
 																				<div class="modal-body" >
-																					
+																					<label>Tổng doanh thu : {{number_format($CompletedOrders)}} VND</label><br>
+																					<label>Tổng tiền nhập hàng : {{number_format($Imports)}} VND</label><br>
+																					<label>Tổng chi phí giao hàng : {{number_format($ShipFree)}} VND</label><br>
 																				<div class="modal-footer">
 																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
 																				</div>

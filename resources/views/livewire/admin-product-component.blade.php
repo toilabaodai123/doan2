@@ -86,11 +86,30 @@
 																												@endif
 																												<br>
 																												<label>Tồn kho:</label><br>
-																												@forelse($p->Models as $Model)
-																												<label>-Size:</label>{{$Model->size}} || <label>Tồn kho: </label>{{$Model->stockTemp}}||<label>Tồn kho (thực): </label>{{$Model->stock}}<br>
-																												@empty
-																													Chưa nhập hàng
-																												@endforelse
+<div class="col-lg-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Size</th>
+                                                        <th>Tồn kho</th>
+														<th>Tồn kho thực</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+														@forelse($p->Models as $model)
+															<tr>
+																<td>{{$model->size}}</td>
+																<td>{{$model->stockTemp}}</td>
+																<td>{{$model->stock}}</td>
+															</tr>
+														@empty
+														@endforelse
+													</tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.table-responsive -->
+    </div>
 																											</div>
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
@@ -108,10 +127,10 @@
 																										<div class="modal-content">
 																											<div class="modal-header">
 																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																												<h4 class="modal-title" id="myModalLabel">Tùy chọn</h4>
+																												<h4 class="modal-title" id="myModalLabel">Ẩn sản phẩm</h4>
 																											</div>
 																											<div class="modal-body">
-																												<label>Bạn có muốn xóa sản phẩm {{$p->productName}} không ?</label>
+																												<label>Bạn có muốn ẩn sản phẩm {{$p->productName}} không ?</label>
 																											</div>
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
