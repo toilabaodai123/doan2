@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                                 <a href="#" wire:click.prevent="addCart({{ $pro->id }})" class="primary-btn">Thêm giỏ hàng</a>
-                                <a href="{{url('/bao-cao/san-pham/'.$get_id->id)}}" class="primary-btn">Báo lỗi</a>
+                                <a href="{{url('/bao-cao/san-pham/'.$get_id->id)}}" class="primary-btn">Báo lỗi hiển thị</a>
                                 @if(session()->has('message_size'))
                                     <p style=" margin: 20px; color: red">
                                     {{session('message_size')}}

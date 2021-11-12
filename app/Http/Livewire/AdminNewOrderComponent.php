@@ -90,7 +90,7 @@ class AdminNewOrderComponent extends Component
 		$Details = OrderDetail::where('order_id',$id)->get();
 		foreach($Details as $detail){
 			$Stock = ProductModel::find($detail->productModel_id);
-			if($detail->amount > $Stock->stockTemp || 1==1){
+			if($detail->amount > $Stock->stockTemp){
 				$this->is_forceaccept = true;
 				break;
 			}

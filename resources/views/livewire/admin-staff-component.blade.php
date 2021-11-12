@@ -125,7 +125,7 @@
 												</div>
 											</div>
 											<button wire:click="edit({{$u->id}})"type="button" class="btn btn-info">Sửa</button>
-											@if($u->status==1)
+											@if($u->status==1 && $u->id != auth()->user()->id)
 												<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalDelete{{$u->id}}">Khóa</button>
 											@endif
 											<div wire:ignore.self class="modal fade" id="myModalDelete{{$u->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -268,7 +268,7 @@
 									<div class="col-lg-9">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" wire:model="status" {{$userID == null ?'disabled':''}}>Khóa
+												<input type="checkbox" wire:model="status" {{$userID == null ?'disabled':''}} {{$this->userID == auth()->user()->id ?'disabled':''}}>Khóa
 											</label>	
 										</div>	
 									</div>									

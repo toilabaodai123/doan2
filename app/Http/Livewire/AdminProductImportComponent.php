@@ -399,9 +399,9 @@ class AdminProductImportComponent extends Component
 				
 				
 				session()->flash('modal_success_bill','Tạo thành công');
-				
+				$this->reset();
 				}
-			$this->reset();
+			
 			}
 	}
 	

@@ -85,7 +85,7 @@ class Checkout extends Component
 									->where('status',1)
 									->where('created_at','>=',Carbon::now()->subMinutes(60))
 									->get();
-				if($CheckOrders && $CheckOrders->count() >= 0){
+				if($CheckOrders && $CheckOrders->count() >= 5){
 					session()->flash('user_blocked','Bạn đã đặt quá nhiều đơn hàng, vui lòng thử lại sau');
 					
 				}
@@ -177,6 +177,7 @@ class Checkout extends Component
 						$Order->assigned_to = null;
 					else
 						$Order->assigned_to = $Admin->id;
+				$Order->save();	
 			}
 			else{
 				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')

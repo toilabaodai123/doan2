@@ -16,6 +16,7 @@ use App\Models\Wishlist;
 use App\Models\Blog_detail;
 use App\Models\Order;
 use App\Models\FlashSale;
+use App\Models\User;
 
 
 use Illuminate\Support\Facades\Auth;
