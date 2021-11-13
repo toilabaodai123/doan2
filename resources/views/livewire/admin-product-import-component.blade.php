@@ -27,8 +27,7 @@
 														</th>
                                                         <th>
 															Người tạo
-															<i class="fa fa-arrow-up" wire:click="sortByBill('name','ASC')" style="cursor:pointer;{{$bill_sortField=='name' && $bill_sortDirection == 'ASC'?'color:green;':'' }}"></i>
-															<i class="fa fa-arrow-down" wire:click="sortByBill('name','DESC')" style="cursor:pointer;{{$bill_sortField=='name' && $bill_sortDirection == 'DESC'?'color:red;':'' }}"></i>
+															
 														</th>
 														<th>
 															Ngày tạo
@@ -371,7 +370,7 @@
 																						<input class="form-control"  type="number" wire:change="onChangeSalePrice({{$k}})" wire:model="sale_price.{{$k}}"placeholder="Giá bán">
 																						
 																						</div>
-																						<input type="checkbox" wire:change="onChangeNewPrice({{$k}})" wire:model="new_price.{{$k}}">Giá mới
+																						<input type="checkbox" {{$is_price_null != null && $is_price_null[$k]==true?'disabled':''}} wire:change="onChangeNewPrice({{$k}})" wire:model="new_price.{{$k}}">Giá mới
 																					</td>
 																					<td><button type="button" wire:click="removeBtn({{$k}})" class="btn btn-danger" >Xóa</button></td>
 																				</tr>

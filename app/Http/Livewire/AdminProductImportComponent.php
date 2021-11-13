@@ -76,6 +76,7 @@ class AdminProductImportComponent extends Component
 	public $stocker_id_submit;
 	public $accountant_id_submit;
 	public $sale_price;
+	public $is_price_null;
 	
 	public $bill_od;
 	public $transporter_name;
@@ -165,25 +166,24 @@ class AdminProductImportComponent extends Component
 												'sale_price' => null,
 												'product_id'=>$id,
 												'product_name'=>$name]);
+												
+		
+		//kiểm tra giá mới , giá có sẵn
+		foreach($this->selectedProductArray as $k=>$v){
+			$Product = Product::find($v['product_id']);
+			if($Product->productPrice == null){
+				$this->is_price_null[$k] = true;
+				$this->sale_price[$k] = null;
+			}
+			else{
+				$this->is_price_null[$k] = false;
+				$this->sale_price[$k] = $Product->productPrice;
+			}
+		}
 		$Sizes = ProductSize::all();
 		foreach($Sizes as $size){
 			array_push($this->selectedProductArray[array_key_last($this->selectedProductArray)]['size'],$size->sizeName);
 		}
-		
-		
-		
-		//lấy giá có sẵn 
-		$last_key = array_key_last($this->selectedProductArray);
-		$this->sale_price[$last_key] = null;//khởi tạo sale_price vì sale_price[$k] chưa có => k tìm thấy ở $k
-		foreach($this->selectedProductArray as $k=>$v){
-			if($v['product_id'] == $this->selectedProductArray[$last_key]['product_id'] &&
-			$this->sale_price!=null){
-				if($this->sale_price[$k] != null)
-					$this->sale_price[$last_key] = $this->sale_price[$k];
-				break;
-			}
-		}
-		
 	}
 
 	public function pushProducts($id){
