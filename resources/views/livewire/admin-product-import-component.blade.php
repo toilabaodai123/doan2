@@ -347,6 +347,7 @@
 																		<th>Size</th>
 																		<th>Số lượng</th>
 																		<th>Đơn giá</th>
+																		<th>Giá bán</th>
 																		<th>Tùy chọn</th>
 																	</tr>
 																</thead>
@@ -363,8 +364,9 @@
 																							@endforeach
 																						</select>
 																					</td>
-																					<td class="col-lg-1"><input  class="form-control" wire:change="a({$k})" wire:model="amount.{{$k}}"placeholder="Nhập số lượng"></td>
-																					<td class="col-lg-2"><input  class="form-control"  wire:model="price.{{$k}}"placeholder="Nhập đơn giá"></td>
+																					<td><input  class="form-control"  type="number" wire:model="amount.{{$k}}"placeholder="Nhập số lượng"></td>
+																					<td><input  class="form-control"  type="number" wire:model="price.{{$k}}"placeholder="Nhập số lượng"></td>
+																					<td><input  class="form-control"  type="number" wire:change="onChangeSalePrice({{$k}})" wire:model="sale_price.{{$k}}"placeholder="Giá bán"></td>
 																					<td><button type="button" wire:click="removeBtn({{$k}})" class="btn btn-danger" >Xóa</button></td>
 																				</tr>
 																		@endif

@@ -40,6 +40,8 @@ class AdminProductImportComponent extends Component
 	public $searchSelect;
 	public $searchInput;
 	
+	public $profit;
+	
 	public $admin_note;
 	public $admin_password;
 	public $admin_password_add;
@@ -72,6 +74,7 @@ class AdminProductImportComponent extends Component
 	public $accountant_id;
 	public $stocker_id_submit;
 	public $accountant_id_submit;
+	public $sale_price;
 	
 	public $bill_od;
 	public $transporter_name;
@@ -158,6 +161,7 @@ class AdminProductImportComponent extends Component
 												'quantity' => null,
 												'model_id' => null,
 												'price' => null,
+												'sale_price' => null,
 												'product_id'=>$id,
 												'product_name'=>$name]);
 		$Sizes = ProductSize::all();
@@ -276,7 +280,7 @@ class AdminProductImportComponent extends Component
 						$Product = Product::find($v['product_id']);
 						$Product->status=1;
 						if($Product->productPrice == null)
-							$Product->productPrice == $this->price[$k];
+							$Product->productPrice == $this->sale_price[$k];
 						
 						$this->bill_total += ($this->amount[$k] * $this->price[$k]);
 					}
@@ -359,7 +363,7 @@ class AdminProductImportComponent extends Component
 						
 						$Product = Product::find($v['product_id']);
 						if($Product->productPrice == null || $Product->productPrice == 0)
-							$Product->productPrice = $this->price[$k]*10;
+							$Product->productPrice = $this->sale_price[$k];
 						$Product->status = 1;
 						$Product->save();
 						
@@ -410,11 +414,20 @@ class AdminProductImportComponent extends Component
 	}
 	
 	public function resetBtn(){
-		$this->reset();
+		dd($this);
+		//$this->reset();
 	}
 	
 	public function removeBtn($k){
 		$this->selectedProductArray[$k]['is_deleted']=true;
+	}
+	
+	public function onChangeSalePrice($key){
+		foreach($this->selectedProductArray as $k=>$v){
+			if($v['is_deleted']==false && $v['product_id'] == $this->selectedProductArray[$key]['product_id']){
+				$this->sale_price[$k] = $this->sale_price[$key];
+			}
+		}
 	}
 
 	public function submitProduct(){
