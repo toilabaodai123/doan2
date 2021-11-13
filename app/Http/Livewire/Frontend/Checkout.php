@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderLog;
 use App\Models\User;
+use App\Models\CreditInfo;
 use App\Models\AdminSetting;
 use App\Mail\MailService;	
 use App\Models\UserActionBlock;
@@ -18,6 +19,7 @@ use Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use App\Models\PaymentMethod;
 
 class Checkout extends Component
 {
@@ -39,6 +41,10 @@ class Checkout extends Component
     public $pass_acount;
 	
 	public $payment_method;
+	public $Credits;
+	public $credit_id;
+	public $credit_owner_name;
+	public $credit_owner_number;
 
     public $rules = [
         'Name' => 'required',
@@ -52,19 +58,32 @@ class Checkout extends Component
     
     public function render()
     {
-        
+        $payment_methods = PaymentMethod::where('status',1)->get();
+		$this->Credits = CreditInfo::where('status',1)->get();
 		if(Cart::instance('cart'))
         {
             $this->carts =Cart::instance('cart')->content() ;
         }else  if(Cart::instance('cart')->count() != 0){
             return redirect('/cart');
         }
-        return view('livewire.frontend.checkout')->layout('layouts.template3');
+        return view('livewire.frontend.checkout',['payment_methods' => $payment_methods])->layout('layouts.template3');
     }
 	
 	public function test(){
 		dd($this);
 	}
+	
+	public function onChangeBank(){
+		if($this->credit_id != null && $this->credit_id != 'null'){
+			$Credit = CreditInfo::find($this->credit_id);
+			$this->credit_owner_name = $Credit->owner_name;
+			$this->credit_owner_number = $Credit->number;
+		}else{
+			$this->credit_owner_name = null;
+			$this->credit_owner_number = null;
+		}
+	}
+	
 	
 	
     public function submit()

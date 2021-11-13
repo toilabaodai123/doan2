@@ -109,6 +109,17 @@
                         </ul>
                     </li>
 					@endif
+					<li class="active">
+                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý thanh toán<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+                            <li>
+                                <a href="{{url('/admin/payment/methods')}}">Hình thức thanh toán</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/admin/payment/credit-info')}}">Tài khoản nhận thanh toán</a>
+                            </li>							
+                        </ul>
+                    </li>
 					@if(auth()->user()->user_type == 'Admin' || auth()->user()->user_type == 'Nhân viên kế toán')
 					<li class="active">
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý hình ảnh<span class="fa arrow"></span></a>

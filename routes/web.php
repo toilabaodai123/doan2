@@ -38,6 +38,8 @@ use App\Http\Livewire\AdminUserComponent;
 use App\Http\Livewire\ReportComponent;
 use App\Http\Livewire\AdminFlashSaleComponent;
 use App\Http\Livewire\FlashSaleComponent;
+use App\Http\Livewire\AdminCreditInfoComponent;
+use App\Http\Livewire\AdminPaymentMethodComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,6 +127,8 @@ Route::middleware(['VisitCounter','checkMaintenance'])->group(function(){
 		Route::get('admin/info',AdminInfoComponent::class)->name('admin.info');
 		Route::get('admin/users/user',AdminUserComponent::class);
 		Route::get('admin/flash-sale',AdminFlashSaleComponent::class);
+		Route::get('admin/payment/methods',AdminPaymentMethodComponent::class);
+		Route::get('admin/payment/credit-info',AdminCreditInfoComponent::class);
 	});
 
 Route::get('bao-tri',UserMaintenanceComponent::class);

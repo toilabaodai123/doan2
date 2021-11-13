@@ -95,25 +95,37 @@
                                     @endforelse
                                 </ul>
                                 <ul class="checkout__total__all">
-									<li>Phí ship : <span>{{number_format($payment_method!='banking'?15000:0)}} VND</span></li>
-                                    <li>Tổng cộng <span>{{number_format(Cart::total()+($payment_method!='banking'?15000:0) )}} VND</span></li>
+									<li>Phí ship : <span style="text-decoration:{{$payment_method!=2?'':'line-through;color:grey'}}">{{number_format(15000)}} VND</span></li>
+                                    <li>Tổng cộng <span>{{number_format(Cart::total()+($payment_method!=2?15000:0) )}} VND</span></li>
                                 </ul>
 									<h4 style="margin-bottom:20px">Phương thức thanh toán</h4>
 										<select class="form-control" wire:model="payment_method">
-											<option value=null>Chọn phương thức thanh toán</option>
-											<option>COD</option>
-											<option value="banking">Chuyển khoản ( miễn phí ship )</option>
+											<option value='null'>Chọn phương thức thanh toán</option>
+											@forelse($payment_methods as $method)
+											<option value="{{$method->id}}">{{$method->method_name}}</option>
+											@empty
+											@endforelse
+											
 										</select>
-									<div style="margin-top:20px" {{$payment_method!='banking'?'hidden':''}}>
-										<select class="form-control">
-											<option>asd</option>
+									<div style="margin-top:20px" {{$payment_method!=2?'hidden':''}}>
+										<select class="form-control" wire:model="credit_id" wire:change="onChangeBank">
+											<option value='null'>Chọn một ngân hàng</option>
+											@forelse($Credits as $credit)
+												<option value="{{$credit->id}}">{{$credit->bank_name}}</value>
+											@empty
+											@endforelse
 										</select>
-										Tên chủ tài khoản<input class="form-control" readonly>
-										Số tài khoản <input class="form-control" readonly>
+										Tên chủ tài khoản<input class="form-control" wire:model="credit_owner_name" readonly>
+										Số tài khoản <input class="form-control" wire:model="credit_owner_number" readonly>
+										Nội dung chuyển khoản ( hướng dẫn )
+										<textarea  class="form-control" style="height:300px" readonly>
+											Họ tên:
+											Số điện thoại:
+											Email (nếu có):
+											Địa chỉ:
+										</textarea>
 									</div>
 									
-                               
-								<button wire:click="test" class="site-btn">test<button>
                                 <button type="submit" class="site-btn">THANH TOÁN</button>
                             </div>
                         </div>
