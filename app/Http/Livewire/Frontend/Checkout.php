@@ -37,6 +37,8 @@ class Checkout extends Component
 
     public $create_acount;
     public $pass_acount;
+	
+	public $payment_method;
 
     public $rules = [
         'Name' => 'required',
@@ -59,6 +61,12 @@ class Checkout extends Component
         }
         return view('livewire.frontend.checkout')->layout('layouts.template3');
     }
+	
+	public function test(){
+		dd($this);
+	}
+	
+	
     public function submit()
     {
 		$CheckUserBlock = UserActionBlock::where('ip',request()->ip())->where('action','LIKE','Đặt hàng')->get()->last();

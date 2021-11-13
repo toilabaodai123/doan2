@@ -21,6 +21,7 @@ class CreateOrdersTable extends Migration
 			$table->string('fullName');
 			$table->integer('phone');
 			$table->string('address');
+			$table->integer('payment_method');
 			$table->string('email')->nullable();
 			$table->string('userNote')->nullable();
 			$table->string('adminNote')->nullable();

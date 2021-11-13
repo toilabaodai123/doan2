@@ -95,10 +95,25 @@
                                     @endforelse
                                 </ul>
                                 <ul class="checkout__total__all">
-                                    <li>Tổng cộng <span>{{number_format(Cart::total())}} VND</span></li>
+									<li>Phí ship : <span>{{number_format($payment_method!='banking'?15000:0)}} VND</span></li>
+                                    <li>Tổng cộng <span>{{number_format(Cart::total()+($payment_method!='banking'?15000:0) )}} VND</span></li>
                                 </ul>
+									<h4 style="margin-bottom:20px">Phương thức thanh toán</h4>
+										<select class="form-control" wire:model="payment_method">
+											<option value=null>Chọn phương thức thanh toán</option>
+											<option>COD</option>
+											<option value="banking">Chuyển khoản ( miễn phí ship )</option>
+										</select>
+									<div style="margin-top:20px" {{$payment_method!='banking'?'hidden':''}}>
+										<select class="form-control">
+											<option>asd</option>
+										</select>
+										Tên chủ tài khoản<input class="form-control" readonly>
+										Số tài khoản <input class="form-control" readonly>
+									</div>
+									
                                
-                                
+								<button wire:click="test" class="site-btn">test<button>
                                 <button type="submit" class="site-btn">THANH TOÁN</button>
                             </div>
                         </div>
