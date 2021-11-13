@@ -41,6 +41,7 @@ class AdminProductImportComponent extends Component
 	public $searchInput;
 	
 	public $profit;
+	public $new_price;
 	
 	public $admin_note;
 	public $admin_password;
@@ -168,6 +169,21 @@ class AdminProductImportComponent extends Component
 		foreach($Sizes as $size){
 			array_push($this->selectedProductArray[array_key_last($this->selectedProductArray)]['size'],$size->sizeName);
 		}
+		
+		
+		
+		//lấy giá có sẵn 
+		$last_key = array_key_last($this->selectedProductArray);
+		$this->sale_price[$last_key] = null;//khởi tạo sale_price vì sale_price[$k] chưa có => k tìm thấy ở $k
+		foreach($this->selectedProductArray as $k=>$v){
+			if($v['product_id'] == $this->selectedProductArray[$last_key]['product_id'] &&
+			$this->sale_price!=null){
+				if($this->sale_price[$k] != null)
+					$this->sale_price[$last_key] = $this->sale_price[$k];
+				break;
+			}
+		}
+		
 	}
 
 	public function pushProducts($id){
@@ -181,6 +197,7 @@ class AdminProductImportComponent extends Component
 														  'size' => [],
 														  'quantity' =>$detail->amount,
 														  'price' => $detail->price,
+														  'sale_price' =>$detail->Model->Product->productPrice,
 														  'product_id' => $detail->Model->Product->id,
 														  'product_name' => $detail->Model->Product->productName
 														]);
@@ -194,6 +211,7 @@ class AdminProductImportComponent extends Component
 			foreach($this->selectedProductArray as $k=>$v){
 				$this->amount[$k] = $v['quantity'];
 				$this->price[$k] = $v['price'];
+				$this->sale_price[$k] = $v['sale_price'];
 			}
 			$Bill = ProductImportBill::find($id);
 			$this->bill_code = $Bill->bill_code;
@@ -223,8 +241,13 @@ class AdminProductImportComponent extends Component
 		else{
 			foreach($this->selectedProductArray as $k=>$v){
 				if($v['is_deleted']==false){
-					if($this->size == null || $this->size[$k] == null || $this->amount == null ||
+					if(count($this->size) < count($this->selectedProductArray) || $this->size == null || 
+					count($this->amount) < count($this->selectedProductArray) ||
+					count($this->price) < count($this->selectedProductArray) ||
+					count($this->sale_price) < count($this->selectedProductArray) ||
+					$this->size[$k] == null || $this->amount == null ||
 					$this->amount[$k] == null || $this->price == null || $this->price[$k] == null||
+					$this->sale_price[$k] == null ||
 					$this->size[$k] == 'Chọn'){
 						$flag=true;
 						break;
@@ -279,9 +302,10 @@ class AdminProductImportComponent extends Component
 						
 						$Product = Product::find($v['product_id']);
 						$Product->status=1;
-						if($Product->productPrice == null)
-							$Product->productPrice == $this->sale_price[$k];
-						
+						if($Product->productPrice == null || $Product->productPrice == 0 || $this->new_price[$k] == true){
+							$Product->productPrice = $this->sale_price[$k];
+							$Product->save();
+						}
 						$this->bill_total += ($this->amount[$k] * $this->price[$k]);
 					}
 				}
@@ -305,6 +329,12 @@ class AdminProductImportComponent extends Component
 					$Image->imageName = $name2;
 					$Image->image_type = 'Hình hóa đơn nhập hàng'; //3 = Danh mục sản phẩm
 					$Image->import_bill_id = $Bill->id;
+					$Image->save();
+				}else{
+					$Image = new Image();
+					$Image->imageName = $this->bill_image;
+					$Image->import_bill_id = $Bill->id;
+					$Image->image_type = 'Hình hóa đơn nhập hàng';
 					$Image->save();
 				}
 				
@@ -362,7 +392,7 @@ class AdminProductImportComponent extends Component
 						}
 						
 						$Product = Product::find($v['product_id']);
-						if($Product->productPrice == null || $Product->productPrice == 0)
+						if($Product->productPrice == null || $Product->productPrice == 0 || $this->new_price == true)
 							$Product->productPrice = $this->sale_price[$k];
 						$Product->status = 1;
 						$Product->save();
@@ -428,6 +458,14 @@ class AdminProductImportComponent extends Component
 				$this->sale_price[$k] = $this->sale_price[$key];
 			}
 		}
+	}
+	
+	public function onChangeNewPrice($key){
+		foreach($this->selectedProductArray as $k=>$v){
+			if($v['is_deleted']==false && $v['product_id'] == $this->selectedProductArray[$key]['product_id']){
+				$this->new_price[$k] = $this->new_price[$key];
+			}
+		}		
 	}
 
 	public function submitProduct(){

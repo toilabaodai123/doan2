@@ -366,7 +366,13 @@
 																					</td>
 																					<td><input  class="form-control"  type="number" wire:model="amount.{{$k}}"placeholder="Nhập số lượng"></td>
 																					<td><input  class="form-control"  type="number" wire:model="price.{{$k}}"placeholder="Nhập số lượng"></td>
-																					<td><input  class="form-control"  type="number" wire:change="onChangeSalePrice({{$k}})" wire:model="sale_price.{{$k}}"placeholder="Giá bán"></td>
+																					<td>
+																						<div class="col-lg-9">
+																						<input class="form-control"  type="number" wire:change="onChangeSalePrice({{$k}})" wire:model="sale_price.{{$k}}"placeholder="Giá bán">
+																						
+																						</div>
+																						<input type="checkbox" wire:change="onChangeNewPrice({{$k}})" wire:model="new_price.{{$k}}">Giá mới
+																					</td>
 																					<td><button type="button" wire:click="removeBtn({{$k}})" class="btn btn-danger" >Xóa</button></td>
 																				</tr>
 																		@endif
