@@ -96,7 +96,7 @@
 												<div class="col-lg-8">
 													<div class="form-group">
 														<label>ID Credit</label>
-														<input class="form-control" disabled="" wire:model="credit_id">
+														<input class="form-control" disabled wire:model="credit_id">
 													</div>											
 													<div class="form-group">
 														<label>Tên ngân hàng</label>
@@ -119,17 +119,24 @@
 													@error('number')
 														<p class="text-danger">{{$message}}</p>
 													@enderror											
-														<div class="checkbox">
-															<label>
-																<input type="checkbox" wire:model="status">Tắt
-															</label>
-														</div>	
+													<div class="form-group">
+														<label>Trạng thái</label>
+														<select wire:model="status" class="form-control">
+															<option>Chọn trạng thái</option>
+															<option value="1">Bật</option>
+															<option value="2">Tắt</option>
+															<option value="0">Xóa</option>
+														</select>
+													@error('status')
+														<p class="text-danger">{{$message}}</p>
+													@enderror
+													</div>	
 												</div>
 												
 												<div class="col-lg-12">
 													<button class="btn btn-success" data-toggle="modal" data-target="#submitCredit">Lưu</button>
-													<button class="btn btn-danger" style="display:{{$credit_id == null?'none':''}}" data-toggle="modal" data-target="#deleteCredit" >Xóa</button>
 													<button class="btn btn-warning" wire:click="offNewCredit">Hủy {{$credit_id == null?'thêm':'sửa'}}</button>
+													<button class="btn btn-success" wire:click="test">Test</button>
 												</div>
                                         </div>
 									
@@ -170,7 +177,7 @@
 																																										<td>{{$credit->number}}</td>
 																																										<td>
 																																											@if($credit->status == 0)
-																																												<label style="color:grey">Đang ẩn</label>
+																																												<label style="color:grey">Đã xóa</label>
 																																											@elseif($credit->status==1)
 																																												<label style="color:green">Đang bật</label>
 																																											@elseif($credit->status == 2)
@@ -204,14 +211,14 @@
 																										<div class="modal-content">
 																											<div class="modal-header">
 																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																												<h4 class="modal-title" wire:model.lazy="decline_note" id="myModalLabel">Xóa tài khoản thanh toán</h4>
+																												<h4 class="modal-title" wire:model.lazy="decline_note" id="myModalLabel">{{$is_deleted==false?'Xóa':'Khôi phục'}} tài khoản thanh toán</h4>
 																											</div>
 																											<div class="modal-body">	
 																												<input class="form-control" type="password" placeholder="Nhập mật khẩu" wire:model="password_deleteCredit">
 																											</div>
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-																												<button type="button" wire:click="deleteCredit" data-dismiss="modal" class="btn btn-primary" >Xóa</button>
+																												<button type="button" wire:click="deleteCredit" data-dismiss="modal" class="btn btn-primary" >{{$is_deleted==false?'Xóa':'Khôi phục'}}</button>
 																											</div>
 																										</div>
 																										<!-- /.modal-content -->

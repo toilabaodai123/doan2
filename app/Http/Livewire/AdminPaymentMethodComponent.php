@@ -12,6 +12,7 @@ class AdminPaymentMethodComponent extends Component
 {
 	public $Methods;
 	public $is_creditinfo = false;
+	public $is_deleted = false;
 	public $credit_id;
 	public $bank_name;
 	public $owner_name;
@@ -27,14 +28,17 @@ class AdminPaymentMethodComponent extends Component
 	protected $rules=[
 		'bank_name' => 'required',
 		'owner_name' => 'required',	
-		'number' => 'required|numeric'
+		'number' => 'required|numeric',
+		'status' => 'required|numeric'
 	];
 	
 	protected $messages = [
 		'bank_name.required' => 'Hãy nhập tên ngân hàng',
 		'owner_name.required' => 'Hãy nhập tên chủ tài khoản',
 		'number.required' => 'Hãy nhập số tài khoản',
-		'number.numeric' => 'Hãy nhập số tài khoản'
+		'number.numeric' => 'Hãy nhập số tài khoản',
+		'status.required' => 'Hãy chọn trạng thái',
+		'status.numeric' => 'Hãy chọn trạng thái'
 	];
 	
     public function render()
@@ -45,10 +49,13 @@ class AdminPaymentMethodComponent extends Component
 					->layout('layouts.template');
     }
 	
+	public function test(){
+		dd($this);
+	}
+	
 	public function addNewCreditInfo(){
 		$this->reset();
 		$this->is_creditinfo = true;
-		$this->status=true;
 	}
 	
 	public function offNewCredit(){
@@ -60,7 +67,8 @@ class AdminPaymentMethodComponent extends Component
 		$Credit = CreditInfo::find($id);
 		$this->bank_name = $Credit->bank_name;
 		$this->owner_name = $Credit->owner_name;
-		$this->number = $Credit->number; 
+		$this->number = $Credit->number;
+		$this->status = $Credit->status;
 	}
 	
 	public function changeCreditStatus($id){
@@ -115,7 +123,7 @@ class AdminPaymentMethodComponent extends Component
 				$Credit->bank_name = $this->bank_name;
 				$Credit->owner_name = $this->owner_name;
 				$Credit->number = $this->number;
-				$Credit->status = $this->status==true?0:1;
+				$Credit->status = $this->status;
 				$Credit->save();
 				
 				session()->flash('modal_addcredit_success','Thêm tài khoản thanh toán thành công');
@@ -144,7 +152,7 @@ class AdminPaymentMethodComponent extends Component
 				$Credit->bank_name = $this->bank_name;
 				$Credit->owner_name = $this->owner_name;
 				$Credit->number = $this->number;
-				$Credit->status = $this->status==true?0:1;
+				$Credit->status = $this->status;
 				$Credit->save();
 				
 				session()->flash('modal_editcredit_success','Sửa tài khoản thanh toán thành công');
