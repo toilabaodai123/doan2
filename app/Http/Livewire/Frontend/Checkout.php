@@ -117,6 +117,21 @@ class Checkout extends Component
 					
 				}
 			else{
+			$this->validate([
+				'payment_method' => 'required|numeric'
+			],[
+				'payment_method.required' => ' Hãy chọn hình thức thanh toán',
+				'payment_method.numeric' => 'Hãy chọn hình thức thanh toán'
+			]);	
+			if($this->payment_method == 2){
+				$this->validate([
+					'credit_id' => 'required|numeric'
+				],[
+					'credit_id.required' => 'Hãy chọn một ngân hàng',
+					'credit_id.numeric' => 'Hãy chọn một ngân hàng'
+				]);
+			}
+				
 			$LastOrder = Order::get()->last();
 			//dd($LastOrder);
 			if(Order::get()->last() == null)
@@ -126,6 +141,9 @@ class Checkout extends Component
             $validatedData = $this->validate();
 
             $Order = new Order();
+			$Order->payment_method = $this->payment_method == 2 ? 2 : 1;
+			
+			
             if(Auth::User()){
                 $Order->user_id = Auth::User()->id;
             }
@@ -156,6 +174,7 @@ class Checkout extends Component
             $Order->orderTotal = 0;
 			$Order->status =1;
             $Order->save();
+			
 
 
             // ////////////////////////////////////////////////////////////////
@@ -181,7 +200,7 @@ class Checkout extends Component
                 };
             };
             
-            $Order->orderTotal = $total;
+            $Order->orderTotal = $total + ($this->payment_method == 2 ? 0 : 15000);
             $Order->save();
             
             // ////////////////////////////////////////////////////////////////

@@ -100,13 +100,16 @@
                                 </ul>
 									<h4 style="margin-bottom:20px">Phương thức thanh toán</h4>
 										<select class="form-control" wire:model="payment_method">
-											<option value='null'>Chọn phương thức thanh toán</option>
+											<option value="abc">Chọn phương thức thanh toán</option>
 											@forelse($payment_methods as $method)
 											<option value="{{$method->id}}">{{$method->method_name}}</option>
 											@empty
 											@endforelse
 											
 										</select>
+										@error('payment_method')
+										<p class="text-danger">{{$message}}</p>
+										@enderror
 									<div style="margin-top:20px" {{$payment_method!=2?'hidden':''}}>
 										<select class="form-control" wire:model="credit_id" wire:change="onChangeBank">
 											<option value='null'>Chọn một ngân hàng</option>
@@ -115,6 +118,9 @@
 											@empty
 											@endforelse
 										</select>
+										@error('credit_id')
+											<p class="text-danger">{{$message}}</p>
+										@enderror
 										Tên chủ tài khoản<input class="form-control" wire:model="credit_owner_name" readonly>
 										Số tài khoản <input class="form-control" wire:model="credit_owner_number" readonly>
 										Nội dung chuyển khoản ( hướng dẫn )
@@ -125,7 +131,7 @@
 											Địa chỉ:
 										</textarea>
 									</div>
-									
+								<button wire:click="test" class="site-btn">test TOÁN</button>
                                 <button type="submit" class="site-btn">THANH TOÁN</button>
                             </div>
                         </div>

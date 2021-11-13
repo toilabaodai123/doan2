@@ -37,7 +37,42 @@
 																	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#viewCreditInfos">Xem danh sách tài khoản</button>
 																								
 																	@endif
-																	<button type="button" class="btn btn-danger">Tắt</button>
+																	@if($method->status == 1)
+																		<button type="button" data-toggle="modal" data-target="#changeCreditStatus" class="btn btn-danger">Tắt</button>
+																	@else
+																		<button type="button" data-toggle="modal" data-target="#changeCreditStatus" class="btn btn-success">Bật</button>
+																	@endif
+																		<div wire:ignore.self class="modal fade" id="changeCreditStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																									<div class="modal-dialog" role="document" >
+																										<div class="modal-content">
+																											<div class="modal-header">
+																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																												<h4 class="modal-title" wire:model.lazy="decline_note" id="myModalLabel">Hình thức thanh toán</h4>
+																											</div>
+																											<div class="modal-body">	
+																												@if(session()->has('modal_creditstatus_success'))
+																												<div class="alert alert-success">
+																													{{session('modal_creditstatus_success')}}
+																												</div>
+																												@elseif(session()->has('modal_creditstatus_password'))
+																												<div class="alert alert-danger">
+																													{{session('modal_creditstatus_password')}}
+																												</div>
+																												@endif
+																												<input class="form-control" type="password" placeholder="Nhập mật khẩu" wire:model="password_CreditStatus">
+																												@error('password_CreditStatus')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror
+																											</div>
+																											<div class="modal-footer">
+																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																												<button type="button" wire:click="changeCreditStatus({{$method->id}})" class="btn btn-primary" >Lưu</button>
+																											</div>
+																										</div>
+																										<!-- /.modal-content -->
+																									</div>
+																									<!-- /.modal-dialog -->
+																		</div>								
 																</td>
 															</tr>
 														@empty
