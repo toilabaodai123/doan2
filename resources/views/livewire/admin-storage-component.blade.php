@@ -13,6 +13,9 @@
 			  <thead>
 				<tr>
 				  <th>
+					Hình ảnh
+				  </th>
+				  <th>
 					Tên sản phẩm
 					<i class="fa fa-arrow-up" wire:click="sortBy('productName','ASC')" style="cursor:pointer;{{$sortField=='productName' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
 					<i class="fa fa-arrow-down" wire:click="sortBy('productName','DESC')" style="cursor:pointer;{{$sortField=='productName' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
@@ -51,6 +54,9 @@
 			  <tbody>
 						@forelse($ProductModels as $model)
 							<tr>
+							  <td>
+								<img style="width:100px;height:100px"src="{{asset('storage/images/product/'.$model->Product->Pri_Image->imageName)}}">
+							  </td>
 							  <td>{{$model->Product->productName}}</td>
 							  <td>{{$model->size}}</td>
 							  <td>{{$model->stockTemp}}</td>
@@ -140,7 +146,7 @@
                 <div class="row">
 					<div class="col-lg-12">
 						<div class="col-lg-5">
-							<label>Tên sản phẩm</label>
+							<label>ID Model</label>
 							<input disabled class="form-control" wire:model="model_id">
 						</div>
 					</div>

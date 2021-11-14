@@ -282,8 +282,10 @@
 															<thead>
 																<tr>
 																	<th>
+																		Hình ảnh
+																	</th>
+																	<th>
 																		Tên sản phẩm
-																
 																	</th>
 																	<th>
 																		Loại sản phẩm
@@ -294,6 +296,9 @@
 															<tbody>
 																@forelse($Products as $p)
 																	<tr>
+																		<td>
+																			<img src="{{asset('storage/images/product/'.$p->Pri_Image->imageName)}}" style="width:100px;height:100px">
+																		</td>
 																		<td>{{$p->productName}}</td>
 																		<td>{{$p->Category1->categoryName}}</td>
 																		<td>

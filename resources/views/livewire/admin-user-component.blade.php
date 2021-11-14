@@ -177,7 +177,7 @@
 									@else
 										<button type="button" data-toggle="modal" data-target="#editUser" class="btn btn-success">Lưu</button>
 									@endif
-									<button type="button" {{$user_id==null?'disabled':''}} class="btn btn-warning" data-toggle="modal" data-target="#changePassword">Đổi mật khẩu</button>
+									<button type="button" style="display:{{$user_id==null?'none':''}}" class="btn btn-warning" data-toggle="modal" data-target="#changePassword">Đổi mật khẩu</button>
 									<button type="button"  wire:click="btnReset" class="btn btn-default">Reset</button>
                                 </div>
                                 <!-- /.panel-body -->
@@ -232,7 +232,7 @@
 																												</div>
 																												<div class="modal-body" >
 
-																													<label>Bạn chắc chắn muốn sửa tài khoản id:{{$user->id}} ?</label>
+																													<label>Bạn chắc chắn muốn sửa tài khoản id:{{$user_id}} ?</label>
 																													<input class="form-control" placeholder="Hãy nhập lý do sửa" wire:model="edit_input">
 																													@error('edit_input')
 																														<p class="text-danger">{{$message}}</p>

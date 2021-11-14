@@ -130,6 +130,7 @@
 																																				<table class="table table-bordered table-hover table-striped">
 																																					<thead>
 																																						<tr>
+																																							<th>Hình ảnh</th>
 																																							<th>Tên sản phẩm</th>
 																																							<th>Size</th>
 																																							<th>Số lượng</th>
@@ -138,6 +139,9 @@
 																																					<tbody>
 																																					@foreach($o->Details as $Details)
 																																						<tr>
+																																							<td>
+																																								<img src="{{asset('storage/images/product/'.$Details->ProductModel->Product->Pri_Image->imageName)}}" style="width:100px;height:100px">
+																																							</td>
 																																							<td><label>{{$Details->ProductModel->Product->productName}}</label></td>
 																																							<td><label>{{$Details->ProductModel->size}}</label></td>
 																																							<td><label>{{$Details->quantity}} </label> </td>

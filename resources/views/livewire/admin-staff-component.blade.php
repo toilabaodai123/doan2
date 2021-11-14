@@ -297,7 +297,7 @@
 								</div>
 								<div class="col-lg-9" style="margin-top:20px">
 									<button type="button" wire:click="submit" wire:loading.attr="disabled" class="btn btn-success">Lưu</button>
-									<button type="button" {{$userID==null?'disabled':''}} class="btn btn-warning" data-toggle="modal" data-target="#changePassword">Đổi mật khẩu</button>
+									<button type="button" style="display:{{$userID==null?'none':''}}" class="btn btn-warning" data-toggle="modal" data-target="#changePassword">Đổi mật khẩu</button>
 									<button type="button" wire:click="resetBtn" wire:loading.attr="disabled" class="btn btn-default">Reset</button>
 								</div>
 							</form>

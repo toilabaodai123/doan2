@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\PaymentMethod;
+use App\Models\ProductSize;
 
 class PaymentMethodSeed extends Seeder
 {
@@ -21,5 +22,7 @@ class PaymentMethodSeed extends Seeder
 			$Method->status = 0;
 			$Method->save();
 		}
+		
+
     }
 }

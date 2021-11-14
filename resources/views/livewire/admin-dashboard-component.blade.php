@@ -4,6 +4,11 @@
 		Website đang trong trạng thái bảo trì
 	</div>
 @endif
+@if($payment_methods != null && $payment_methods->count() == 0)
+	<div class="alert alert-danger">
+		Không có hình thức thanh toán nào đang được bật
+	</div>
+@endif
 @if($admin_settings != null && $admin_settings->is_outofservice == true)
 	<div class="alert alert-danger">
 		Website đang ngừng nhận đặt hàng

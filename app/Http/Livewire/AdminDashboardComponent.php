@@ -16,6 +16,7 @@ use App\Models\ProductModel;
 use App\Models\FlashSale;
 use App\Models\FlashSaleDetail;
 use App\Models\Product;
+use App\Models\PaymentMethod;
 use Carbon\Carbon;
 
 class AdminDashboardComponent extends Component
@@ -42,6 +43,7 @@ class AdminDashboardComponent extends Component
 		$OnlineProducts = Product::where('status',1)->get()->pluck('id');
 		$this->low_stock_products = ProductModel::where('stockTemp','<=',5)->whereIn('productID',$OnlineProducts)->get();
 		$this->admin_settings = AdminSetting::get()->first();
+		$this->payment_methods = PaymentMethod::where('status',1)->get();
 	}
 
     public function render()

@@ -121,6 +121,12 @@ class AdminProductComponent extends Component
 		
 		$this->validate();
 		if($this->productID == null){
+			$this->validate([
+				'productImage2' => 'required|image',
+			],[
+				'productImage2.required' => 'Chưa chọn hình',
+				'productImage2.image' => 'Sai loại file hình ảnh'
+			]);
 			$Product = new Product();
 			$Product->productName = $this->productName;
 			$Product->supplierID = $this->supplierID;

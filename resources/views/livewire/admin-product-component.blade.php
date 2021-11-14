@@ -40,6 +40,9 @@
 															<i class="fa fa-arrow-up" wire:click="sortBy('status','ASC')" style="cursor:pointer;{{$sortField=='status' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
 															<i class="fa fa-arrow-down" wire:click="sortBy('status','DESC')" style="cursor:pointer;{{$sortField=='status' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>														
 														</th>
+														<th>
+															Hình ảnh
+														</th>
 														<th>Tùy chọn</th>
                                                     </tr>
                                                     </thead>
@@ -58,6 +61,9 @@
 															@else
 																<label style="color:gray">Ẩn</label>
 															@endif
+														</td>
+														<td>
+															<img style="height:100px;width:100px"src="{{asset('storage/images/product/'.$p->Pri_Image->imageName)}}">
 														</td>
 														<td>
 															<button type="button" class="btn btn-success"  data-toggle="modal" data-target="#myModal{{$p->id}}">Xem</button>
@@ -142,6 +148,7 @@
 																									<!-- /.modal-dialog -->
 															</div>															
 														</td>
+
                                                     </tr>
 													@endforeach
                                                     </tbody>
