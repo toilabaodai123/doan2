@@ -38,11 +38,11 @@
 																								
 																	@endif
 																	@if($method->status == 1)
-																		<button type="button" data-toggle="modal" data-target="#changeCreditStatus" class="btn btn-danger">Tắt</button>
+																		<button type="button" data-toggle="modal" data-target="#changeCreditStatus{{$method->id}}" class="btn btn-danger">Tắt</button>
 																	@else
-																		<button type="button" data-toggle="modal" data-target="#changeCreditStatus" class="btn btn-success">Bật</button>
+																		<button type="button" data-toggle="modal" data-target="#changeCreditStatus{{$method->id}}" class="btn btn-success">Bật</button>
 																	@endif
-																		<div wire:ignore.self class="modal fade" id="changeCreditStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																		<div wire:ignore.self class="modal fade" id="changeCreditStatus{{$method->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document" >
 																										<div class="modal-content">
 																											<div class="modal-header">

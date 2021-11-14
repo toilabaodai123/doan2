@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {	
-
         $Settings = new AdminSetting();
 		$Settings->is_maintenance = 0;
 		$Settings->is_outofservice = 0;

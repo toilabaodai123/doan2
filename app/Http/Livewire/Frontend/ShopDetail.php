@@ -82,6 +82,10 @@ class ShopDetail extends Component
         }
         return view('livewire.frontend.shop-detail')->layout('layouts.template3');
     }
+	public function report($id){
+		return redirect()->to('/bao-cao/danh-gia/'.$id);
+	}
+	
 
     public function size($name){
         $this->sizeId = $name;

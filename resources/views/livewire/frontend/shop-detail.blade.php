@@ -157,7 +157,7 @@
                                                         <div class="comment_text">
                                                         <span>{{$blog1->created_at->diffForHumans()}}</span>
 														
-														<button type="button" wire:click="deleteReview({{$blog1->id}})"class="btn btn-danger">Báo cáo</button>
+														<button type="button" wire:click="report({{$blog1->id}})"class="btn btn-danger">Báo cáo</button>
 														
                                                         @if(auth()->check() && auth()->user()->user_type=='Admin')
                                                             <button type="button" wire:click="deleteReview({{$blog1->id}})"class="btn btn-success">Xóa (Admin)</button>
