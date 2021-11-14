@@ -87,15 +87,12 @@
                                 <h4 class="order__title">Đơn hàng của bạn</h4>
                                 <div class="checkout__order__products">Sản phẩm <span>Tổng cộng</span></div>
                                 <ul class="checkout__total__products">
-                               
-
-                                        @forelse($carts as $cart)
-                                        <li>*
-                                            {{$cart->name}} <span>{{number_format($cart->subtotal)  }} VND</span>
-                                        </li>
-                                        @empty
-                                        Chưa có sản phẩm
-                                        @endforelse
+                                    @forelse($carts as $cart)
+                                    <li>*
+                                         {{$cart->name}} <span>{{number_format($cart->subtotal)  }} VND</span></li>
+                                    @empty
+                                    Chưa có sản phẩm
+                                    @endforelse
                                 </ul>
                                 <ul class="checkout__total__all">
 									<li>Phí ship : <span style="text-decoration:{{$payment_method!=2?'':'line-through;color:grey'}}">{{number_format(15000)}} VND</span></li>
