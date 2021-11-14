@@ -14,6 +14,7 @@ use Cart;
 use App\Models\FlashSaleDetail;
 use App\Models\FlashSale;
 use Carbon\Carbon;
+use App\Models\Visit;
 
 use Illuminate\Support\Facades\DB;
 
@@ -35,7 +36,6 @@ class ShopDetail extends Component
 
     public function mount(string $slug){
         $this->slugId = $slug;
-		
     }
     public function render()
     {   
@@ -62,12 +62,10 @@ class ShopDetail extends Component
 									->where('status',1)
                                     ->get()
                                     ->last();
-            //dd($FlashSale);
             if($FlashSale && $FlashSale->status==1){
                 $FlashSaleDetails = FlashSaleDetail::where('status',1)->where('sale_id',$FlashSale->id)->get()->pluck('product_id');
                 $Check = Product::whereNotIn('id',$FlashSaleDetails)->get()->pluck('id');
                 $this->is_flashsale = Product::where('productSlug',$this->slugId)->whereIn('id',$FlashSaleDetails)->get()->last();
-                //dd($this->is_flashsale);
                 foreach($Check as $check){
                     if($this->get_id->id == $check){
                         $flag=true;
@@ -80,6 +78,19 @@ class ShopDetail extends Component
                 abort(404);
             }
         }
+		
+		
+		//Đếm view
+		$checkVisit = Visit::where('ip',request()->ip())->where('product_id',$this->get_id->id)->get()->last();
+		if($checkVisit == null || Carbon::parse($checkVisit->created_at)->addDay(1) < Carbon::now() ){
+			$View = new Visit();
+			$View->product_id = $this->get_id->id;
+			if(auth()->check())
+				$View->user_id = auth()->user()->id;
+			$View->ip = request()->ip();
+			$View->save();
+		}
+		
         return view('livewire.frontend.shop-detail')->layout('layouts.template3');
     }
 	public function report($id){

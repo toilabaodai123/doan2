@@ -13,6 +13,7 @@ use App\Models\FlashSaleDetail;
 use App\Models\FlashSale;
 use App\Models\Level2ProductCategory;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Visit;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -64,7 +65,9 @@ class Product extends Model
 	public function getSalePrice(){
 		return $this->hasOne(FlashSaleDetail::class,'product_id','id')->where('status',1);
 	}
-
+	public function Views() {
+		return $this->hasMany(Visit::class,'product_id','id');
+	}
 	
 	// public function sluggable(){
 	// 	return ['productSlug' => ['source' => 'productName'] ];

@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\Visit;
+use Carbon\Carbon;
 
 class VisitCounter
 {
@@ -17,13 +18,15 @@ class VisitCounter
      */
     public function handle(Request $request, Closure $next)
     {
-		$Check = Visit::where('ip',$request->ip())->where('view_type',1)->get()->last();
-		if($Check == null || date_format($Check->created_at,'D M Y') != date_format(now(),'D M Y')){
+		$Check = Visit::where('ip',$request->ip())
+						->whereNull('product_id')
+						->get()
+						->last();
+		if($Check == null || Carbon::parse($Check->created_at)->addDay(1) < Carbon::now()){
 			$Visit = new Visit();
 			$Visit->ip = $request->ip();
 			if(auth()->check())
 				$Visit->user_id = auth()->user()->id;
-			$Visit->view_type = 1;
 			$Visit->save();
 		}
 		

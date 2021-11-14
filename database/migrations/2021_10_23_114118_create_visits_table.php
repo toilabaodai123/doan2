@@ -18,7 +18,6 @@ class CreateVisitsTable extends Migration
 			$table->string('ip');
 			$table->unsignedbiginteger('product_id')->nullable();
 			$table->unsignedbiginteger('user_id')->nullable();
-			$table->integer('view_type');
             $table->timestamps();
 			
 			$table->foreign('product_id')->references('id')->on('products');

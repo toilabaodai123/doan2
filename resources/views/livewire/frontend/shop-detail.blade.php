@@ -116,6 +116,7 @@
                             <div class="product__details__last__option">
                                 <ul>
                                     <li><span>Thể loại:</span> {{ $pro->Category1->categoryName }}</li>
+									<li><span>Lượt xem:</span> {{ $pro->Views->count() }}</li>
                                 </ul>
                             </div>
                         </div>

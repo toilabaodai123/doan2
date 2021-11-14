@@ -72,7 +72,7 @@ class AdminDashboardComponent extends Component
 								->orderBy('total_quantity','DESC')
 								->take($this->row_TopProducts)
 								->get();
-			$this->Visits = Visit::orderBy('created_at','DESC')->get();
+			$this->Visits = Visit::whereNull('product_id')->orderBy('created_at','DESC')->get();
 			$this->NewOrdersCounter = Order::whereNotIn('status',[0,1,5])
 											->orderBy('created_at','DESC')
 											->get();
