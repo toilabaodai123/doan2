@@ -93,7 +93,7 @@
 														</td>
 														<td>
 															<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#myModal{{$o->id}}">Xem</button>
-															<div class="modal fade" id="myModal{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+															<div wire:ignore.self class="modal fade" id="myModal{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
@@ -101,7 +101,22 @@
 																												<h4 class="modal-title" id="myModalLabel">Thông tin đơn đặt hàng</h4>
 																											</div>
 																											<div class="modal-body" >
+																											@if(session()->has('modal_restore_success'))
+																												<div class="alert alert-success">
+																													{{session('modal_restore_success')}}
+																												</div>
+																											@endif	
 																												<div>
+																													<div class="panel panel-default">
+																														<div class="panel-heading">
+																															Lịch sử đặt hàng của người dùng
+																														</div>
+																														<div class="panel-body">
+																															<label>Số lượng đơn hàng đã bị từ chối của người đặt: {{$o->countDeclinedOrders->count()}}</label><br>
+																															<label>Số lượng đơn hàng đã giao thành công của người đặt: {{$o->countCompletedOrders->count()}}</label><br>
+																															<label>Số lượng đơn hàng đã bị hủy của người đặt: {{$o->countCanceledOrders->count()}}</label><br>
+																														</div>
+																													</div>
 																													<label>Họ tên: {{$o->fullName}}</label><br>
 																													<label>Số điện thoại:{{$o->phone}}</label><br>
 																													<label>Địa chỉ: {{$o->address}}</label><br>
@@ -122,7 +137,6 @@
 																														@if($o->adminNote != null)
 																															<label>Note (Admin): </label>{{$o->adminNote}}<br>
 																														@endif
-																														
 																													</div>
 																																																										<div class="col-lg-12">
 																																		<div class="row">
@@ -152,8 +166,25 @@
 																																			</div>
 																																		</div>
 																														</div>
+																											<div style="display:{{$is_restoring==false?'none':''}}">
+																												<input class="form-control" placeholder="Nhập lý do khôi phục đơn hàng" wire:model="restore_note">
+																												@error('restore_note')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror
+																												<input type="checkbox" wire:model="restore_status">Tôi đồng ý
+																												@error('restore_status')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror
+																											</div>
 																											</div>
 																											<div class="modal-footer">
+																												@if( $o->status==0 )
+																													@if($is_restoring == false)
+																														<button type="button" class="btn btn-warning" wire:click="restoreOrder()">Khôi phục đơn hàng</button>
+																													@else
+																														<button type="button" class="btn btn-success" wire:click="submitRestoredOrder({{$o->id}})">Lưu khôi phục</button>
+																													@endif
+																												@endif
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
 																											</div>
 																										</div>

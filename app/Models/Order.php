@@ -9,6 +9,7 @@ use App\Models\OrderDetail;
 use App\Models\Order;
 use App\Models\ProductModel;
 use App\Models\Comment2;
+use App\Models\OrderLog;
 
 class Order extends Model
 {
@@ -40,4 +41,14 @@ class Order extends Model
 			'id'
 		);
 	}
+
+	public function countDeclinedOrders(){
+		return $this->hasMany(Order::class,'ip','ip')->where('status',0);
+	}
+	public function countCompletedOrders(){
+		return $this->hasMany(Order::class,'ip','ip')->where('status',4);
+	}
+	public function countCanceledOrders(){
+		return $this->hasMany(Order::class,'ip','ip')->where('status',5);
+	}	
 }

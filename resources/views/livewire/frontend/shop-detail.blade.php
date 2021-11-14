@@ -147,26 +147,27 @@
                                     <div class="product__details__tab__content" style="padding-top: unset">
                                         <div class="product__details__tab__content__item">
                                         <div class="comment" style="border-top: unset">
+											
                                                 @forelse ($bl as $blog1)
                                                     <div class="blog__show__comment">
                                                         <div class="top">
                                                             <img src="{{asset('img/icon_user.jpg')}}" alt="" >
                                                             <div class="user_info" style="    align-items: flex-start;">
-                                                                    <h5>Ngoc thinh</h5>
+                                                                    <h5>{{$blog1->User->name}} đã đánh giá {{$blog1->rating}} sao</h5><br>
                                                                     <p>{{$blog1->text}}</p>
                                                             </div>
                                                         </div>
                                                         <div class="comment_text">
-                                                        <span>{{$blog1->created_at}}</span>
+                                                        <span>{{$blog1->created_at->diffForHumans()}}</span>
+														
+														<button type="button" wire:click="report({{$blog1->id}})"class="btn btn-danger">Báo cáo</button>
+														
                                                         @if(auth()->check() && auth()->user()->user_type=='Admin')
-                                                            <button class="primary-btn" type="button" wire:click="deleteReview({{$blog1->id}})"class="btn btn-success">Xóa (Admin)</button>
+                                                            <button type="button" wire:click="deleteReview({{$blog1->id}})"class="btn btn-success">Xóa (Admin)</button>
                                                         @endif
                                                         </div>
                                                     </div>
-													@if(auth()->check() && auth()->user()->user_type=='Admin')
-														<button type="button" wire:click="deleteReview({{$blog1->id}})"class="btn btn-success">Xóa (Admin)</button>
-													@endif
-                                                </div>
+                                                
                                             @endforeach
                                         </div>
                                     </div>
