@@ -10,6 +10,7 @@ use App\Models\OrderDetail;
 use App\Models\UserActionBlock;
 use App\Models\ProductModel;
 use Livewire\WithPagination;
+use Carbon\Carbon;
 
 class AdminNewOrderComponent extends Component
 {
@@ -38,6 +39,7 @@ class AdminNewOrderComponent extends Component
 	}
 	
 	public function mount(){
+		
 			$Orders = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
 											 ->where('status',1)
 											 ->orWhereNull('assigned_to',null)
@@ -51,6 +53,7 @@ class AdminNewOrderComponent extends Component
 	
     public function render()
     {	
+		Carbon::setLocale('vi');
 		if($this->show_all_status == false)
 			$Orders2 = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
 											 ->where('status',1)

@@ -35,16 +35,17 @@ class ShopDetail extends Component
 
     public function mount(string $slug){
         $this->slugId = $slug;
+		
     }
     public function render()
     {   
-      
+		Carbon::setLocale('vi');
         $this->relatedPro = Product::with('Pri_image')->with('Category1')->where('status',1)->orderBy('id', 'DESC')->get()->take(4);
         $this->product = Product::with('getSalePrice')->with('Pri_image')->with('Models')->with('wishlist')
         ->where('productSlug', $this->slugId)->get();
         $proSlug = Product::where('productSlug', $this->slugId)->first();
         //dd($proSlug);
-        $this->bl = Comment2::with('User')->where('product_id',$proSlug->id)->get();
+        $this->bl = Comment2::with('User')->where('product_id',$proSlug->id)->where('status',1)->get();
         // dd($this->bl);
         $this->comment = Comment2::where('product_id',$proSlug->id)->where('status',1)->get();
         $this->Sizes = ProductModel::with('Size')->where('productID',$proSlug->id)->get();
@@ -155,6 +156,8 @@ class ShopDetail extends Component
 		$Review = Comment2::find($id);
 		$Review->status = 0;
 		$Review->save();
+		
+		session()->flash('delete_review','Xóa đánh giá thành công');
 	}
 
 }

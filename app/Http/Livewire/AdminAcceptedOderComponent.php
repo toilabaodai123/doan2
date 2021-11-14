@@ -11,6 +11,7 @@ use App\Models\AdminLog;
 use App\Models\ProductModel;
 use App\Models\DeliveryBill;
 use App\Models\UserActionBlock;
+use Carbon\Carbon;
 
 use Livewire\WithPagination;
 
@@ -49,6 +50,10 @@ class AdminAcceptedOderComponent extends Component
 	public $sortDirection='ASC';
 	
 	public $tempStatus;
+	
+	public function mount(){
+		Carbon::setLocale('vi');
+	}
 	
     public function render()
 	{

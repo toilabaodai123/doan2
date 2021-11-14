@@ -13,6 +13,6 @@ class Comment2 extends Model
 	
 	
 	public function User(){
-		return $this->belongsTo(Comment2::class,'user_id','id');
+		return $this->belongsTo(User::class,'user_id','id');
 	}
 }

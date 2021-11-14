@@ -58,7 +58,7 @@
 														<td>{{$o->fullName}}</td>
 														<td>{{$o->email}}</td>
 														<td>{{$o->address}}</td>
-														<td>{{$o->created_at}}</td>
+														<td>{{$o->created_at->diffForHumans()}}</td>
 														<td>
 															<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#viewOrder{{$o->id}}">Xem</button>
 															<div class="modal fade" id="viewOrder{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
