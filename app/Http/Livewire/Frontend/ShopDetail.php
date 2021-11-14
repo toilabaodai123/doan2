@@ -88,6 +88,9 @@ class ShopDetail extends Component
 
     public function addCart($id)
     {
+        session()->forget('cart1');
+        // dd( Cart::instance('cart')->content());
+
         $this->cart = Product::with('Pri_Image')->where('id', $id)->first();
         $size = ProductModel::with('Size')->where('size', $this->sizeId)->first();
         // dd($size);
@@ -102,7 +105,29 @@ class ShopDetail extends Component
          ]])
          ->associate('App\Models\Product');
          session()->flash('message_add', 'Đã thêm sản phẩm thành công');
+        //  dd( Cart::instance('cart')->content());
 
+        }
+        $this->emitTo('pages.cart-count-component', 'refreshComponent');
+    }
+    public function addCheck($id)
+    {
+        $this->cart = Product::with('Pri_Image')->where('id', $id)->first();
+        $size = ProductModel::with('Size')->where('size', $this->sizeId)->first();
+        if($size == null){
+            session()->flash('message_size', 'chưa chọn size vui lòng chọn lại');
+        }else{
+        Cart::instance('cart')->add(['id' =>$id, 'name' =>$this->cart->productName,
+         'qty' => $this->cart_qty,  
+         'price' => $this->is_flashsale==null?$this->cart->productPrice:$this->cart->getSalePrice->price, 
+         'options' => ['image' => $this->cart->Pri_Image->imageName,
+         'size' =>  $size->size
+         ]])
+         ->associate('App\Models\Product');
+         session()->flash('message_add', 'Đã thêm sản phẩm thành công');
+
+        //  dd( Cart::instance('cart1')->content());
+         return redirect('/cart');
         }
         $this->emitTo('pages.cart-count-component', 'refreshComponent');
     }
