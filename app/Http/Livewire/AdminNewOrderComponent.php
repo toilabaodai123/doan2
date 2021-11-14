@@ -28,12 +28,25 @@ class AdminNewOrderComponent extends Component
 	
 	public $decline_status=false;
 	public $block_status=false;
-	public $is_forceaccept = false;
+	public $is_forceaccept;
+	public $test= [];
 
 	
 	public function sortBy($field,$direction){
 		$this->sortField = $field;
 		$this->sortDirection = $direction;
+	}
+	
+	public function mount(){
+			$Orders = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
+											 ->where('status',1)
+											 ->orWhereNull('assigned_to',null)
+											 ->where('status',1)
+											 ->paginate(5);	
+											 
+			foreach($Orders as $k=>$v){
+				$this->is_forceaccept[$v['id']] = false;
+			}
 	}
 	
     public function render()
@@ -48,7 +61,7 @@ class AdminNewOrderComponent extends Component
 											 ->where('status',1)
 											 ->orWhereNull('assigned_to',null)
 											 ->where('status',1)
-											 ->paginate(5);			
+											 ->paginate(5);							 
         return view('livewire.admin-new-order-component',['Orders2' => $Orders2])
 					->layout('layouts.template');
     }
@@ -90,8 +103,8 @@ class AdminNewOrderComponent extends Component
 		$Details = OrderDetail::where('order_id',$id)->get();
 		foreach($Details as $detail){
 			$Stock = ProductModel::find($detail->productModel_id);
-			if($detail->amount > $Stock->stockTemp){
-				$this->is_forceaccept = true;
+			if($detail->quantity > $Stock->stockTemp){
+				$this->is_forceaccept[$id] = true;
 				break;
 			}
 		}

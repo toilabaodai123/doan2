@@ -70,6 +70,16 @@
 																											</div>
 																											<div class="modal-body" >
 																												<div>
+																													<div class="panel panel-default">
+																														<div class="panel-heading">
+																															Lịch sử đặt hàng của người dùng
+																														</div>
+																														<div class="panel-body">
+																															<label>Số lượng đơn hàng đã bị từ chối của người đặt: {{$o->countDeclinedOrders->count()}}</label><br>
+																															<label>Số lượng đơn hàng đã giao thành công của người đặt: {{$o->countCompletedOrders->count()}}</label><br>
+																															<label>Số lượng đơn hàng đã bị hủy của người đặt: {{$o->countCanceledOrders->count()}}</label><br>
+																														</div>
+																													</div>
 																													<label>Họ tên: {{$o->fullName}}</label><br>
 																													<label>Số điện thoại:{{$o->phone}}</label><br>
 																													<label>Địa chỉ: {{$o->address}}</label><br>
@@ -111,15 +121,18 @@
 																										<!-- /.modal-content -->
 																									</div>
 																									<!-- /.modal-dialog -->
-															</div>	
-															<button type="button" wire:click="acceptOrder({{$o->id}})" style="display:{{$is_forceaccept==false?'':'none'}}" class="btn btn-success">Duyệt</button>
-															<button type="button" style="display:{{$is_forceaccept==false?'none':''}}" data-toggle="modal" data-target="#forceAccept{{$o->id}}" class="btn btn-warning">Duyệt (thiếu kho)</button>
+															</div>
+															@if($is_forceaccept && $is_forceaccept[$o->id] == true)
+																<button type="button" wire:model="is_forceaccept.{{$o->id}}" data-toggle="modal" data-target="#forceAccept{{$o->id}}" class="btn btn-warning">Duyệt (thiếu kho)</button>
+															@else
+																<button type="button" wire:click="acceptOrder({{$o->id}})" class="btn btn-success">Duyệt</button>
+															@endif
 															<div wire:ignore.self class="modal fade" id="forceAccept{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
 																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																												<h4 class="modal-title" id="myModalLabel">Duyệt dù thiếu kho</h4>
+																												<h4 class="modal-title" id="myModalLabel">Duyệt dù thiếu kho đơn hàng id {{$o->id}}</h4>
 																											</div>
 																											<div class="modal-body" >
 																												@if(session()->has('modal_forceaccept_success'))

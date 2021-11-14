@@ -36,6 +36,9 @@ class AdminAcceptedOderComponent extends Component
 	public $decline_input;
 	public $abort_input;
 	public $abort_status;
+	public $is_restoring = false;
+	public $restore_note;
+	public $restore_status;
 	
 	public $block_status=false;
 	public $block_note;
@@ -81,6 +84,37 @@ class AdminAcceptedOderComponent extends Component
 	
 	public function setFlagShipunit(){
 		$this->flag_shipunit = true;
+	}
+	
+	public function restoreOrder(){
+		$this->is_restoring = true;
+	}
+	public function submitRestoredOrder($id){
+		$this->validate([
+			'restore_note' => 'required',
+			'restore_status' => 'accepted'
+		],[
+			'restore_note.required' => ' Hãy nhập lý do',
+			'restore_status.accepted' => 'Hãy chọn đồng ý'
+		]);
+		
+		$Order = Order::find($id);
+		$Order->status=2;
+		$Order->adminNote = $Order->adminNote.' | '.$this->restore_note;
+		$Order->save();
+		
+		$OrderLog = new OrderLog();
+		$OrderLog->order_id = $id;
+		$OrderLog->message = 'Đã được khôi phục';
+		$OrderLog->save();
+		
+		$AdminLog = new AdminLog();
+		$AdminLog->admin_id = auth()->user()->id;
+		$AdminLog->note = 'Đã khôi phục đơn hàng id:'.$id.' lý do: '.$this->restore_note;
+		$AdminLog->save();
+		
+		session()->flash('modal_restore_success','Khôi phục thành công');
+		$this->reset();
 	}
 	
 	public function addNewShipUnit(){
@@ -217,6 +251,7 @@ class AdminAcceptedOderComponent extends Component
 			//Cập nhật trạng thái
 			$Order = Order::find($id);
 			$Order->status = 0;
+			$Order->adminNote = $Order->adminNote.' | '.$this->decline_input;
 			$Order->save();
 			
 			//Cập nhật order log
