@@ -3693,6 +3693,9 @@ a.load_more {
 .User .info .info-account p {
 	display: block;
 }
+.gom {
+    margin-top: 10px;
+}
 /* end shop */
 
 /*--------------------------------- end custom  -----------------------------*/
@@ -3823,6 +3826,13 @@ a.load_more {
 /* Wide Mobile = 480px */
 
 @media only screen and (max-width: 767px) {
+	.gom a {
+		width: 100%;
+		margin: 10px 0;
+	}
+	.gom {
+		 margin-top: 0;
+	}
 	.shopping__cart__table table tbody tr td.product__cart__size button {
 		border: 1px solid #ccc;
 		padding: 1px 3px;

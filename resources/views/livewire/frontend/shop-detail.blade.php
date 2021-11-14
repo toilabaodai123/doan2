@@ -58,7 +58,6 @@
                                   Không có size san phẩm
                                   @endforelse
 
-
                                   
                                 </div>
                             </div>
@@ -69,7 +68,11 @@
                                     </div>
                                 </div>
                                 <a href="#" wire:click.prevent="addCart({{ $pro->id }})" class="primary-btn">Thêm giỏ hàng</a>
-                                <a href="{{url('/bao-cao/san-pham/'.$get_id->id)}}" class="primary-btn">Báo lỗi hiển thị</a>
+                                <div class="gom">
+                                    <a href="#" wire:click.prevent="addCheck({{ $pro->id }})" class="primary-btn">Mua ngay</a>
+                                    <a href="{{url('/bao-cao/san-pham/'.$get_id->id)}}" class="primary-btn">Báo lỗi hiển thị</a>
+
+                                </div>
                                 @if(session()->has('message_size'))
                                     <p style=" margin: 20px; color: red">
                                     {{session('message_size')}}

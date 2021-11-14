@@ -25,6 +25,7 @@ class Checkout extends Component
 {
 
 	public $carts=array();
+	public $cart1=array();
 
     public $Size;
 	
@@ -60,6 +61,7 @@ class Checkout extends Component
     {
         $payment_methods = PaymentMethod::where('status',1)->get();
 		$this->Credits = CreditInfo::where('status',1)->get();
+	
 		if(Cart::instance('cart'))
         {
             $this->carts =Cart::instance('cart')->content() ;
