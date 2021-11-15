@@ -118,6 +118,7 @@
             <h2 class="text-center" >BLOG</h2>
             <div class="row">
                 @forelse($all_blog as $blog)
+                @if($blog->id != $id2)
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="blog__item">
                         <div class="blog__item__pic set-bg"
@@ -130,7 +131,9 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 @empty
+                Khôn có bài viết mới.
                 @endforelse
             </div>
         </div>
