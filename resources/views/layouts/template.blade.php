@@ -173,7 +173,7 @@
                                 <a href="{{url('/admin-contact')}}">Contact</a>
                             </li>	
                             <li>
-                                <a href="{{url('/tin-nhan')}}">Tin nhắn khách hàng </a>
+                                <a href="{{url('/admin-about')}}">About </a>
                             </li>							
                         </ul>
                     </li>	

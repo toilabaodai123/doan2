@@ -17,7 +17,7 @@ class Admincontact extends Component
     
 
     public function mount(){
-        $data = mContact::find(1);
+        $data = mContact::get()->last();
         if($data){
             $this->iframe = $data->iframe;
             $this->sub_title = $data->sub_title;

@@ -84,6 +84,7 @@ Route::middleware(['checkMaintenance'])->group(function(){
 		Route::get('instagram', App\Http\Livewire\Pages\Instagrams::class);
 		Route::get('coupon', App\Http\Livewire\Pages\AdminCoupon::class);
 		Route::get('/admin-contact', App\Http\Livewire\Pages\Admincontact::class);
+		Route::get('/admin-about', App\Http\Livewire\Pages\AdminAbout::class);
 		Route::get('/tin-nhan', App\Http\Livewire\Pages\AdminMessage::class);
 		Route::get('flash-sale/{id}',App\Http\Livewire\FlashSaleComponent::class);
 		// Blog

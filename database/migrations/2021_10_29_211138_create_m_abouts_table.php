@@ -15,6 +15,9 @@ class CreateMAboutsTable extends Migration
     {
         Schema::create('m_abouts', function (Blueprint $table) {
             $table->id();
+            $table->text('about');
+            $table->text('caunoi');
+            $table->String('hinh');
             $table->timestamps();
         });
     }
