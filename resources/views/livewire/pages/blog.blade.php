@@ -82,72 +82,68 @@
         <!-- Sidebar -->
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
-                <ul class="nav" id="side-menu">
-					@if(auth()->user()->user_type == 'Quản lý' || 
-						auth()->user()->user_type == 'Admin')				
+                <ul class="nav" id="side-menu">	
+					@if(auth()->user()->user_type == 'Admin')
                     <li>
                         <a href="{{url('/admin/dashboard')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
 					@endif
-					@if(auth()->user()->user_type == 'Quản lý' || 
-						auth()->user()->user_type == 'Admin')					
-					<li class="active">
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
-                            <li>
-                                <a href="{{url('/admin/products')}}">Sản phẩm</a>
-                            </li>
-                            <li>
-                                <a href="#">Loại sản phẩm <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level collapse">
-                                    <li>
-                                        <a href="{{url('admin/product-category/lv1')}}">Loại sản phẩm cấp 1</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{url('admin/product-category/lv2')}}">Loại sản phẩm cấp 2</a>
-                                    </li>									
-                                </ul>
-                            </li>
+							<li class="active">
+								<a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý nhập liệu<span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+							<li class="active">
+								<a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
+								<ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+									<li>
+										<a href="{{url('/admin/products')}}">Sản phẩm</a>
+									</li>
+									<li>
+										<a href="#">Loại sản phẩm <span class="fa arrow"></span></a>
+										<ul class="nav nav-third-level collapse">
+											<li>
+												<a href="{{url('admin/product-category/lv1')}}">Loại sản phẩm cấp 1</a>
+											</li>
+											<li>
+												<a href="{{url('admin/product-category/lv2')}}">Loại sản phẩm cấp 2</a>
+											</li>									
+										</ul>
+									</li>
+								</ul>
+							</li>						
+							<li>
+								<a href="{{url('admin/storage')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý kho</a>
+							</li>		
+							<li>
+								<a href="{{url('/admin/product-import/new')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhập hàng</a>
+							</li>
+							<li>
+								<a href="{{url('/admin/image/product-logo')}}"><i class="fa fa-sitemap fa-fw"></i>Đóng dấu hình ảnh</a>
+							</li>
+							<li>
+								<a href="{{url('admin/suppliers')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhà cung cấp</a>
+							</li>
+							<li>
+								<a href="{{url('admin/suppliers')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhà vận chuyển</a>
+							</li>
+							<li>
+								<a href="{{url('admin/flash-sale')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý flash sale</a>
+							</li>							
+							<li class="active">
+								<a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý tài khoản<span class="fa arrow"></span></a>
+								<ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
+									<li>
+										<a href="{{url('/admin/users/user')}}">Quản lý người dùng</a>
+									</li>
+									<li>
+										<a href="{{url('/admin/users/staff')}}">Quản lý nhân viên</a>
+									</li>							
+								</ul>
+							</li>							
                         </ul>
-                    </li>
-					@endif
-					<li class="active">
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý hình ảnh<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
-                            <li>
-                                <a href="{{url('/admin/image/product-logo')}}">Đóng dấu hình sản phẩm</a>
-                            </li>
-                        </ul>
-                    </li>
-					@if(auth()->user()->user_type == 'Quản lý' || 
-						auth()->user()->user_type == 'Admin')					
-                    <li>
-                        <a href="{{url('admin/suppliers')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhà cung cấp</a>
-                    </li>
-                    <li>
-                        <a href="{{url('admin/storage')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý kho</a>
                     </li>					
-					@endif
-					@if(auth()->user()->user_type == 'Nhân viên nhập hàng' || 
-						auth()->user()->user_type == 'Admin' || 
-						auth()->user()->user_type == 'Quản lý' ) 
-					<li class="active">
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý nhập hàng<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
-							@if(auth()->user()->user_type == 'Nhân viên nhập hàng' ||  auth()->user()->user_type == 'Admin')
-                            <li>
-                                <a href="{{url('/admin/product-import/new')}}">Tạo hóa đơn nhập hàng</a>
-                            </li>							
-							@endif
-
-							@if(auth()->user()->user_type == 'Quản lý' || auth()->user()->user_type == 'Admin')
-							@endif
-  							
-                        </ul>
-                    </li>						
-					@endif 
-					@if(auth()->user()->user_type == 'Quản lý' || 
-						auth()->user()->user_type == 'Admin')					
+                    <li>
+                        <a href="{{url('/admin/payment/methods')}}"><i class="fa fa-sitemap fa-fw"></i>Hình thức thanh toán</a>
+                    </li>					
 					<li class="active">
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý hóa đơn<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
@@ -159,41 +155,8 @@
                             </li>
                             </li>							
                         </ul>
-                    </li>
-					@endif
-					<li class="active">
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý tài khoản<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
-                            <li>
-                                <a href="{{url('/admin/users/user')}}">Quản lý người dùng</a>
-                            </li>
-                            <li>
-                                <a href="{{url('/admin/users/staff')}}">Quản lý nhân viên</a>
-                            </li>							
-                        </ul>
-                    </li>					
-					@if(auth()->user()->user_type == 'Quản lý' || 
-						auth()->user()->user_type == 'Admin')					
-					<li class="active">
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý vận chuyển<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
-                            <li>
-                                <a href="{{url('/admin/shippers')}}">Nhà vận chuyển</a>
-                            </li>
-                            <li>
-                                <a href="{{url('/admin/shippers/create-bill')}}">Tạo hóa đơn vận chuyển</a>
-                            </li>							
-                        </ul>
-                    </li>		
-                  					
-					@endif
-					@if(auth()->user()->user_type == 'Quản lý' || 
-						auth()->user()->user_type == 'Admin')					
-					@endif
-					@if(auth()->user()->user_type == 'Quản lý' || 
-						auth()->user()->user_type == 'Admin')					
-					@endif	
-                    
+                    </li>	
+					@if(auth()->user()->user_type == 'Admin' || auth()->user()->user_type == 'Nhân viên kế toán' )
                     <li class="active">
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Pages<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
@@ -214,15 +177,16 @@
                             </li>							
                         </ul>
                     </li>	
+					@endif
 					<li>
                         <a href="{{url('/admin/info')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Thông tin tài khoản</a>
                     </li>
+					@if(auth()->user()->user_type == 'Admin' || auth()->user()->user_type == 'Nhân viên kế toán' )
 					<li>
                         <a href="{{url('/admin/setting')}}"><i class="fa fa-dashboard fa-fw"></i>Tùy chỉnh hệ thống website</a>
                     </li>
-                    <li>
-                        <a href="{{url('admin/flash-sale')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý flash sale</a>
-                    </li>					
+					@endif
+
                 </ul>
             </div>
         </div>

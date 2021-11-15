@@ -6,6 +6,9 @@
         <a href="{{url('cart')}}"><img src="{{asset('img/icon/cart.png')}}" alt="">
             <span>{{Cart::instance('cart')->count()}}</span>
         </a>
+        @if(Cart::instance('cart')->count() > 0)
         <div class="price">{{number_format(Cart::total())}} VND</div>
+        @else
+        @endif
     </div>
 </div>

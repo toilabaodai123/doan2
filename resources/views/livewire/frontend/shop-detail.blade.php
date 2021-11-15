@@ -190,49 +190,51 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="related-title">Sản phẩm liên quan</h3>
+                    <h3 class="related-title">Sản phẩm mới nhất</h3>
                 </div>
             </div>
             <div class="row">
                 @forelse($relatedPro as $pro )
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <a href="{{URL::to('shop-detail/'.$pro->productSlug)}}">
-                        <div class="product__item">
-                        @if($pro->Pri_Image != null)
-                            <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}">
-                           @endif
+                ` @if($pro->productSlug != $slugId)
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+                        <a href="{{URL::to('shop-detail/'.$pro->productSlug)}}">
+                            <div class="product__item">
                             @if($pro->Pri_Image != null)
-                                <img src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
-                            @else
-                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
+                                <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}">
                             @endif
-                                <ul class="product__hover">
-                                    @if(Auth::user() != null)
-										@if($pro->checkWishlist == null)
-                                        <a href="#" class="wishlist"  wire:click.prevent="addToWishlisht({{$pro->id}})"  >
-                                                <i class="fa fa-heart 1"></i></a>
+                                @if($pro->Pri_Image != null)
+                                    <img src="{{asset('storage/images/product/'. $pro->pri_Image->imageName)}}" alt="">
+                                @else
+                                    <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/asd')}}">
+                                @endif
+                                    <ul class="product__hover">
+                                        @if(Auth::user() != null)
+                                            @if($pro->checkWishlist == null)
+                                            <a href="#" class="wishlist"  wire:click.prevent="addToWishlisht({{$pro->id}})"  >
+                                                    <i class="fa fa-heart 1"></i></a>
+                                            @else
+                                                <a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$pro->id}})"  >
+                                                    <i class="fa fa-heart 2 fill-heart"></i></a>
+                                            @endif
+                                            
                                         @else
-										    <a href="#" class="wishlist" wire:click.prevent="removeWishlish({{$pro->id}})"  >
-                                                <i class="fa fa-heart 2 fill-heart"></i></a>
+                                        <a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$pro->id}})" >
+                                                    <i class="fa fa-heart 3"></i></a>
                                         @endif
-                                        
-                                    @else
-                                     <a href="#" class="wishlist" wire:click.prevent="addToWishlisht({{$pro->id}})" >
-                                                <i class="fa fa-heart 3"></i></a>
-									@endif
-                                </ul>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <a href="{{URL::to('shop-detail/'.$pro->productSlug)}}" class="add-cart">+ Chi tiết sản phẩm</a>
+                                    <h6>{{$pro->productName}}</h6>
+                                    <div class="product_des">
+                                            <h5>{{ number_format($pro->productPrice) }} VND</h5>
+                                            <h5>{{ $pro->Category1->categoryName }}</h5>
+                                        </div>
+                                </div>
                             </div>
-                            <div class="product__item__text">
-                                <a href="{{URL::to('shop-detail/'.$pro->productSlug)}}" class="add-cart">+ Chi tiết sản phẩm</a>
-                                <h6>{{$pro->productName}}</h6>
-                                <div class="product_des">
-                                        <h5>{{ number_format($pro->productPrice) }} VND</h5>
-                                        <h5>{{ $pro->Category1->categoryName }}</h5>
-                                    </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                    @endif`
                 @empty
                 @endforelse
             </div>

@@ -53,6 +53,7 @@
                                             <tr style="display: flex; align-items: center;justify-content: space-between;">
                                                 <td class="product__cart__item">
                                                     <div class="product__cart__item__text">
+														<img src="img" alt="">
                                                         <h6>{{$Order->orderCode}}</h6>
                                                         <h5>
 															@if($Order->status == 1)
