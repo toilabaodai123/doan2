@@ -159,6 +159,7 @@
 									<table class="table table-bordered table-hover table-striped">
 										<thead>
 											<tr>
+												<th>Hình sản phẩm</th>
 												<th>Tên sản phẩm</th>
 												<th>Size</th>
 												<th>Số lượng bán được</th>
@@ -168,6 +169,7 @@
 										<tbody>
 											@forelse($TopProducts as $product)
 												<tr>
+													<td><img src="{{asset('storage/images/product/'.$product->imageName)}}" style="width:100px;height:100px"></td>
 													<td>{{$product->productName}}</td>
 													<td>{{$product->size}}</td>
 													<td>{{$product->total_quantity}}</td>
@@ -215,7 +217,31 @@
 																					<h4 class="modal-title" id="myModalLabel">Thông tin các đánh giá</h4>
 																				</div>
 																				<div class="modal-body" >
-																					
+																				<div class="col-lg-12">
+																									<div class="row">
+																										<div class="table-responsive">
+																											<table class="table table-bordered table-hover table-striped">
+																												<thead>
+																													<tr>
+																														<th>Nội dung</th>
+																														<th>Đánh giá</th>
+																														<th>Thời gian</th>
+																													</tr>
+																												</thead>
+																												<tbody>	
+																													@forelse($Reviews as $review)
+																													<tr>
+																														<td>{{$review->text}}</td>
+																														<td>{{$review->rating}} sao</td>
+																														<td>{{$review->created_at->diffForHumans()}}</td>
+																													</tr>
+																													@empty
+																													@endforelse
+																												</tbody>
+																											</table>
+																										</div>
+																									</div>
+																			</div>
 																				<div class="modal-footer">
 																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
 																				</div>
@@ -312,7 +338,7 @@
 																													@forelse($Visits as $visit)
 																														<tr>
 																															<td>{{$visit->ip}}</td>
-																															<td>{{$visit->created_at}}</td>
+																															<td>{{$visit->created_at->diffForHumans()}}</td>
 																														</tr>
 																													@empty
 																													@endforelse
@@ -362,7 +388,7 @@
 																														<tr>
 																															<td>{{$order->fullName}}</td>
 																															<td>{{$order->orderTotal}}</td>
-																															<td>{{$order->created_at}}</td>
+																															<td>{{$order->created_at->diffForHumans()}}</td>
 																															<td>
 																																@if($order->status == 2)
 																																	<label style="color:blue">Đã duyệt</label>
