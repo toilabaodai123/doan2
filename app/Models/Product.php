@@ -45,7 +45,7 @@ class Product extends Model
 	}	
 	
 	public function Pri_Image(){
-		return $this->hasOne(Image::class,'productID','id');
+		return $this->hasOne(Image::class,'productID','id')->latest();
 	}
 	public function PrimaryImage(){
 		return $this->hasOne(Image::class,'productID','id');

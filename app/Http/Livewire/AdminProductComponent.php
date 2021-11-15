@@ -61,23 +61,16 @@ class AdminProductComponent extends Component
 		'CategoryID2' => 'required',
 		'shortDesc' => 'required',
 		'longDesc' => 'required'
-
 	];
 	
 	protected $messages = [
 		'productName.required' => 'Hãy nhập tên sản phẩm !',
 		'productName.min' => 'Tên sản phẩm quá ngắn',
-
 		'supplierID.required' => 'Hãy chọn nhà cung cấp !',
-		
 		'CategoryID.required' => 'Hãy chọn loại sản phẩm cấp 1!',
-		
 		'CategoryID2.required' => 'Hãy chọn loại sản phẩm cấp 2!',
-		
 		'shortDesc.required' => 'Hãy nhập mô tả ngắn !',
-		
 		'longDesc.required' => 'Hãy nhập mô tả dài!'
-
 	];
 	
 	public $sortField='id';
