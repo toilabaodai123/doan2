@@ -143,6 +143,9 @@
                     </li>					
                     <li>
                         <a href="{{url('/admin/payment/methods')}}"><i class="fa fa-sitemap fa-fw"></i>Hình thức thanh toán</a>
+                    </li>
+                    <li>
+                        <a href="{{url('/admin/reports')}}"><i class="fa fa-sitemap fa-fw"></i>Báo cáo của người dùng</a>
                     </li>					
 					<li class="active">
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý hóa đơn<span class="fa arrow"></span></a>

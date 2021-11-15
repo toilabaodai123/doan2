@@ -18,12 +18,14 @@ class CreateReportsTable extends Migration
 			$table->string('ip');
 			$table->unsignedbiginteger('product_id')->nullable();
 			$table->unsignedbiginteger('review_id')->nullable();
+			$table->unsignedbiginteger('assigned_to')->nullable();
 			$table->string('text');
 			$table->integer('status');
             $table->timestamps();
 			
 			$table->foreign('product_id')->references('id')->on('products');
 			$table->foreign('review_id')->references('id')->on('comment2s');
+			$table->foreign('assigned_to')->references('id')->on('users');
         });
     }
 

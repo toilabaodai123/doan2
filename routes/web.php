@@ -40,6 +40,7 @@ use App\Http\Livewire\AdminFlashSaleComponent;
 use App\Http\Livewire\FlashSaleComponent;
 use App\Http\Livewire\AdminCreditInfoComponent;
 use App\Http\Livewire\AdminPaymentMethodComponent;
+use App\Http\Livewire\AdminReportComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -132,6 +133,7 @@ Route::middleware(['checkMaintenance'])->group(function(){
 		Route::get('admin/flash-sale',AdminFlashSaleComponent::class);
 		Route::get('admin/payment/methods',AdminPaymentMethodComponent::class);
 		Route::get('admin/payment/credit-info',AdminCreditInfoComponent::class);
+		Route::get('admin/reports',AdminReportComponent::class);
 	});
 
 Route::get('bao-tri',UserMaintenanceComponent::class);
