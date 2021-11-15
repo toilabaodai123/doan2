@@ -14,6 +14,7 @@ use Cart;
 use App\Models\FlashSaleDetail;
 use App\Models\FlashSale;
 use Carbon\Carbon;
+use App\Models\Report;
 use App\Models\Visit;
 
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,8 @@ class ShopDetail extends Component
     public $size;
     public $sizeId = '';
     public $cart_qty = 1;
+	public $productreport_note;
+	public $reviewreport_note;
 	public $get_id;
 	public $get_slug;
 	public $is_flashsale = false;
@@ -101,6 +104,69 @@ class ShopDetail extends Component
     public function size($name){
         $this->sizeId = $name;
     }
+	
+	public function submitProductReport(){
+		$flag=true;
+		$CheckReport = Report::where('ip',request()->ip())
+							 ->where('created_at','>=',Carbon::now()->subDays(1))
+							 ->where('status',1)
+							 ->get();
+		if($CheckReport->count() >= 20){//Kiểm tra spam báo cáo
+			$flag = false;
+			session()->flash('warning_report_product','Bạn đã báo cáo quá nhiều lần gần đây');	
+		}
+
+		if($flag == true){
+			$this->validate([
+				'productreport_note' => 'required|max:50',
+			],[
+				'productreport_note.required' => ' Hãy nhập nội dung báo cáo ',
+				'productreport_note.max' => ' Nội dung báo cáo quá dài (quá 50 ký tự)'
+			]);
+			
+			$Report = new Report();
+			$Report->ip = request()->ip();
+			$Report->product_id = $this->get_id->id;
+			$Report->text = $this->productreport_note;
+			$Report->status = 1;
+			$Report->save();
+			session()->flash('success_report_product','Báo cáo thành công');
+		}
+		$this->productreport_note = null;
+		
+	}
+	
+	public function submitReviewReport($id){
+		$flag=true;
+		$CheckReport = Report::where('ip',request()->ip())
+							 ->where('created_at','>=',Carbon::now()->subDays(1))
+							 ->where('status',1)
+							 ->get();
+		if($CheckReport->count() >= 20){//Kiểm tra spam báo cáo
+			$flag = false;
+			session()->flash('warning_review_report_product','Bạn đã báo cáo quá nhiều lần gần đây');	
+		}
+
+		if($flag == true){
+			$this->validate([
+				'reviewreport_note' => 'required|max:50',
+			],[
+				'reviewreport_note.required' => ' Hãy nhập nội dung báo cáo ',
+				'reviewreport_note.max' => ' Nội dung báo cáo quá dài (quá 50 ký tự)'
+			]);
+			
+			$Report = new Report();
+			$Report->ip = request()->ip();
+			$Report->review_id = $id;
+			$Report->text = $this->reviewreport_note;
+			$Report->status = 1;
+			$Report->save();
+			session()->flash('success_review_report_product','Báo cáo thành công');
+		}
+		$this->reviewreport_note = null;
+		
+	}	
+	
 
     public function addCart($id)
     {

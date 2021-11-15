@@ -12,6 +12,7 @@ use App\Models\OrderLog;
 use App\Models\User;
 use App\Models\Wishlist;
 use App\Models\Comment2;
+use Carbon\Carbon;
 
 use Cart;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,7 @@ class Purchase extends Component
 	
     public function render()
     {
+		Carbon::setLocale('vi');
         $this->OrderedList = Order::with('Details','Reviews.User','checkReview')->where('user_id',auth()->user()->id)->get();
         return view('livewire.frontend.purchase')->layout('layouts.template3');
     }
@@ -60,9 +62,9 @@ class Purchase extends Component
 			}
 			session()->flash('success_review','Đánh giá thành công , xin cảm ơn bạn');
 		}else{
-			session()->flash('success_review','Lỗi');
+			session()->flash('success_review','Bạn đã đánh giá sản phẩm rồi');
 		}
-		$this->reset();
+		$this->review_input=null;
 	}
 	
 	public function test(){

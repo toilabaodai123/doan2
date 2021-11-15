@@ -70,7 +70,35 @@
                                 <a href="#" wire:click.prevent="addCart({{ $pro->id }})" class="primary-btn">Thêm giỏ hàng</a>
                                 <div class="gom">
                                     <a href="#" wire:click.prevent="addCheck({{ $pro->id }})" class="primary-btn">Mua ngay</a>
-                                    <a href="{{url('/bao-cao/san-pham/'.$get_id->id)}}" class="primary-btn">Báo lỗi hiển thị</a>
+                                    <button type="button" class="primary-btn" data-toggle="modal" data-target="#reportProduct{{$pro->id}}">Báo lỗi hiển thị</button>
+									<div wire:ignore.self class="modal fade" id="reportProduct{{$pro->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																									<div class="modal-dialog" role="document">
+																										<div class="modal-content">
+																											<div class="modal-header">
+																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																												<h4 class="modal-title" id="myModalLabel">Báo cáo sản phẩm</h4>
+																											</div>
+																											<div class="modal-body">
+																											    @if(session()->has('success_report_product'))
+																													<p class="text-success">{{session('success_report_product')}}</p>
+																												@elseif(session()->has('warning_report_product'))
+																													<p class="text-danger">{{session('warning_report_product')}}</p>
+																												 @endif 
+																												<input class="form-control" placeholder="Nhập nội dung báo cáo" wire:model="productreport_note">
+																												@error('productreport_note')
+																													<p class="text-danger">{{$message}}</p>
+																												@enderror
+																											</div>
+																											
+																											<div class="modal-footer">
+																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																												<button type="button" wire:click="submitProductReport" class="btn btn-success" >Báo cáo</button>
+																											</div>
+																										</div>
+																										<!-- /.modal-content -->
+																									</div>
+																									<!-- /.modal-dialog -->
+									</div>
 
                                 </div>
                                 @if(session()->has('message_size'))
@@ -125,6 +153,13 @@
                         </div>
                     </div>
                 </div>
+				<div style="text-align:center">
+																											@if(session()->has('success_review_report_product'))
+																												<h3 class="text-success">{{session('success_review_report_product')}}</h3>
+																											@elseif(session()->has('warning_review_report_product'))
+																												<h3 class="text-danger">{{session('warning_review_report_product')}}</h3>
+																											@endif 				
+				</div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="product__details__tab">
@@ -161,8 +196,32 @@
                                                         <div class="comment_text">
                                                         <span>{{$blog1->created_at->diffForHumans()}}</span>
 														
-														<button type="button" wire:click="report({{$blog1->id}})"class="btn btn-danger">Báo cáo</button>
-														
+														<button type="button" data-toggle="modal" data-target="#reportReview{{$blog1->id}}"class="btn btn-danger">Báo cáo</button>
+															<div wire:ignore.self class="modal fade" id="reportReview{{$blog1->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																									<div class="modal-dialog" role="document">
+																										<div class="modal-content">
+																											<div class="modal-header">
+																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																												<h4 class="modal-title" id="myModalLabel">Báo cáo đánh giá</h4>
+																											</div>
+																											<div class="modal-body">
+																											@if(session()->has('success_review_report_product'))
+																												<p class="text-success">{{session('success_review_report_product')}}</p>
+																											@elseif(session()->has('warning_review_report_product'))
+																												<p class="text-danger">{{session('warning_review_report_product')}}</p>
+																											@endif 
+																												<input class="form-control" placeholder="Nhập nội dung báo cáo" wire:model.defer="reviewreport_note">
+																											</div>
+																											
+																											<div class="modal-footer">
+																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																												<button type="button" class="btn btn-success" wire:click="submitReviewReport({{$blog1->id}})" data-dismiss="modal">Báo cáo</button>
+																											</div>
+																										</div>
+																										<!-- /.modal-content -->
+																									</div>
+																									<!-- /.modal-dialog -->
+														</div>	
                                                         @if(auth()->check() && auth()->user()->user_type=='Admin')
                                                             <button type="button" wire:click="deleteReview({{$blog1->id}})"class="btn btn-success">Xóa (Admin)</button>
                                                         @endif

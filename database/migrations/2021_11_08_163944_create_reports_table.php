@@ -17,7 +17,7 @@ class CreateReportsTable extends Migration
             $table->id();
 			$table->string('ip');
 			$table->unsignedbiginteger('product_id')->nullable();
-			$table->unsignedbiginteger('review_id');
+			$table->unsignedbiginteger('review_id')->nullable();
 			$table->string('text');
 			$table->integer('status');
             $table->timestamps();
