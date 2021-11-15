@@ -48,6 +48,7 @@ class AdminDashboardComponent extends Component
 
     public function render()
     {
+		Carbon::setLocale('vi');
 		$this->CompletedOrders = Order::where('status',4)->sum('orderTotal');
 		$this->ShipFree = DeliveryBill::all()->sum('price');
 		$this->Imports = ProductImportBill::all()->sum('total');
@@ -62,7 +63,8 @@ class AdminDashboardComponent extends Component
 								->join('products','product_models.productID','products.id')
 								->join('suppliers','products.supplierID','suppliers.id')
 								->join('orders','order_details.order_id','orders.id')
-								->select('suppliers.supplierName','product_models.id',
+								->join('images','products.id','images.productID')
+								->select('images.imageName','suppliers.supplierName','product_models.id',
 									     'productModel_id',
 										 DB::raw('sum(quantity) as total_quantity'),
 										 'products.productName',
@@ -72,11 +74,14 @@ class AdminDashboardComponent extends Component
 								->orderBy('total_quantity','DESC')
 								->take($this->row_TopProducts)
 								->get();
-			$this->Visits = Visit::orderBy('created_at','DESC')->get();
+			$this->Visits = Visit::whereNull('product_id')->orderBy('created_at','DESC')->get();
 			$this->NewOrdersCounter = Order::whereNotIn('status',[0,1,5])
 											->orderBy('created_at','DESC')
 											->get();
-			$this->Reviews = Comment2::where('type',2)->orderBy('created_at','DESC')->get();
+			$this->Reviews = Comment2::where('type',2)->orderBy('created_at','DESC')
+										->orderBy('created_at','DESC')
+										->get()
+										->take(10);
 		}
 		else{
 			$this->TopProducts = DB::table('order_details')
@@ -84,7 +89,9 @@ class AdminDashboardComponent extends Component
 								->join('products','product_models.productID','products.id')
 								->join('suppliers','products.supplierID','suppliers.id')
 								->join('orders','order_details.order_id','orders.id')
-								->select('suppliers.supplierName',
+								->join('images','products.id','images.productID')
+								->select('images.imageName',
+										 'suppliers.supplierName',
 										 'product_models.id',
 										 'productModel_id',
 										 DB::raw('sum(quantity) as total_quantity'),

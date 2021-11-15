@@ -59,45 +59,48 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 */
 
 
-Route::middleware(['VisitCounter','checkMaintenance'])->group(function(){
-	// Frontend
-	Route::get('/', App\Http\Livewire\Frontend\Index::class);
-	Route::get('index', App\Http\Livewire\Frontend\Index::class)->name('index');
-	Route::get('shop', App\Http\Livewire\Frontend\Shop::class);
+Route::middleware(['checkMaintenance'])->group(function(){
 	Route::get('shop-detail/{slug}', App\Http\Livewire\Frontend\ShopDetail::class);
-	Route::get('product/category/{slug}',App\Http\Livewire\Frontend\CategoryComponent::class);
-	Route::get('blog',App\Http\Livewire\Frontend\Blog::class);
-	Route::get('blog/caregory/{id}',App\Http\Livewire\Frontend\BlogCategory::class);
-	Route::get('cart', App\Http\Livewire\Frontend\carts::class);
-	Route::get('blog-detail/{id}',App\Http\Livewire\Frontend\BlogDetail::class);
-	Route::get('checkout',App\Http\Livewire\Frontend\Checkout::class);
-	Route::get('contact',App\Http\Livewire\Frontend\Contact::class);
-	Route::get('about',App\Http\Livewire\Frontend\About::class);
-	Route::get('wishlist',App\Http\Livewire\Frontend\WhislistComponent::class);
-	Route::get('tim-kiem',App\Http\Livewire\Frontend\SearchComponent::class);
-	Route::get('users',App\Http\Livewire\Frontend\Users::class)->middleware('auth');
-	Route::get('don-hang',App\Http\Livewire\Frontend\Purchase::class)->middleware('auth');
-	Route::get('slider', App\Http\Livewire\Pages\Slider::class);
-	Route::get('sale', App\Http\Livewire\Pages\Sale::class);
-	Route::get('instagram', App\Http\Livewire\Pages\Instagrams::class);
-	Route::get('coupon', App\Http\Livewire\Pages\AdminCoupon::class);
-	Route::get('/admin-contact', App\Http\Livewire\Pages\Admincontact::class);
-	Route::get('/tin-nhan', App\Http\Livewire\Pages\AdminMessage::class);
-	Route::get('flash-sale/{id}',App\Http\Livewire\FlashSaleComponent::class);
-	// Blog
-	Route::get('post',[App\Http\Controllers\Controller::class, 'index']);
-	Route::post('addpost',[App\Http\Controllers\Controller::class, 'addpost']);
-	Route::get('edit-blog/{id}',[App\Http\Controllers\Controller::class, 'show_edit_blog']);
-	Route::post('update-blog/{id}',[App\Http\Controllers\Controller::class, 'update_post']);
-	// end Frontend
-	Route::get('trang-chu',IndexComponent::class);
-	Route::get('san-pham/{id}',ProductDetailComponent::class);
-	Route::get('gio-hang',CartComponent::class);
-	Route::get('thanh-toan',CheckoutComponent::class);
-	Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');	
-	Route::get('tra-cuu-don-hang',CheckOrderComponent::class);
-	Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('auth');
-	Route::get('bao-cao/{type}/{id}',ReportComponent::class);
+	// Frontend
+	Route::middleware(['VisitCounter'])->group(function(){
+		Route::get('/', App\Http\Livewire\Frontend\Index::class);
+		Route::get('index', App\Http\Livewire\Frontend\Index::class)->name('index');
+		Route::get('shop', App\Http\Livewire\Frontend\Shop::class);
+		
+		Route::get('product/category/{slug}',App\Http\Livewire\Frontend\CategoryComponent::class);
+		Route::get('blog',App\Http\Livewire\Frontend\Blog::class);
+		Route::get('blog/caregory/{id}',App\Http\Livewire\Frontend\BlogCategory::class);
+		Route::get('cart', App\Http\Livewire\Frontend\carts::class);
+		Route::get('blog-detail/{id}',App\Http\Livewire\Frontend\BlogDetail::class);
+		Route::get('checkout',App\Http\Livewire\Frontend\Checkout::class);
+		Route::get('contact',App\Http\Livewire\Frontend\Contact::class);
+		Route::get('about',App\Http\Livewire\Frontend\About::class);
+		Route::get('wishlist',App\Http\Livewire\Frontend\WhislistComponent::class);
+		Route::get('tim-kiem',App\Http\Livewire\Frontend\SearchComponent::class);
+		Route::get('users',App\Http\Livewire\Frontend\Users::class)->middleware('auth');
+		Route::get('don-hang',App\Http\Livewire\Frontend\Purchase::class)->middleware('auth');
+		Route::get('slider', App\Http\Livewire\Pages\Slider::class);
+		Route::get('sale', App\Http\Livewire\Pages\Sale::class);
+		Route::get('instagram', App\Http\Livewire\Pages\Instagrams::class);
+		Route::get('coupon', App\Http\Livewire\Pages\AdminCoupon::class);
+		Route::get('/admin-contact', App\Http\Livewire\Pages\Admincontact::class);
+		Route::get('/tin-nhan', App\Http\Livewire\Pages\AdminMessage::class);
+		Route::get('flash-sale/{id}',App\Http\Livewire\FlashSaleComponent::class);
+		// Blog
+		Route::get('post',[App\Http\Controllers\Controller::class, 'index']);
+		Route::post('addpost',[App\Http\Controllers\Controller::class, 'addpost']);
+		Route::get('edit-blog/{id}',[App\Http\Controllers\Controller::class, 'show_edit_blog']);
+		Route::post('update-blog/{id}',[App\Http\Controllers\Controller::class, 'update_post']);
+		// end Frontend
+		Route::get('trang-chu',IndexComponent::class);
+		Route::get('san-pham/{id}',ProductDetailComponent::class);
+		Route::get('gio-hang',CartComponent::class);
+		Route::get('thanh-toan',CheckoutComponent::class);
+		Route::get('hoan-tat',OrderCompleteComponent::class)->middleware('checkOrderCode');	
+		Route::get('tra-cuu-don-hang',CheckOrderComponent::class);
+		Route::get('thong-tin-nguoi-dung',UserInfoComponent::class)->middleware('auth');
+		Route::get('bao-cao/{type}/{id}',ReportComponent::class);
+	});
 });
 	Route::middleware(['auth','CheckType_Admin'])->group(function(){
 		Route::get('/admin/dashboard', AdminDashboardComponent::class)->name('admin.dashboard');

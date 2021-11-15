@@ -58,11 +58,6 @@ class ReportComponent extends Component
 				$Report->save();
 				session()->flash('success_report','Báo cáo thành công');
 			}
-		
-		
-		
 		$this->reset();
-		
-		
 	}
 }
