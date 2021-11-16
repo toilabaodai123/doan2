@@ -131,7 +131,6 @@
 											Địa chỉ:
 										</textarea>
 									</div>
-								<button wire:click="test" class="site-btn">test TOÁN</button>
                                 <button type="submit" class="site-btn">THANH TOÁN</button>
                             </div>
                         </div>

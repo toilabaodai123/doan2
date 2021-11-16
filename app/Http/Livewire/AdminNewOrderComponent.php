@@ -120,6 +120,13 @@ class AdminNewOrderComponent extends Component
 		$Order->phone = $this->edit_phone;
 		$Order->address = $this->edit_address;
 		$Order->payment_method = $this->edit_payment_method;
+		if($Order->payment_method == 1){
+			if($this->edit_payment_method == 2)
+				$Order->orderTotal -= 15000;
+		}else{
+			if($this->edit_payment_method == 1)
+				$Order->orderTotal += 15000;
+		}
 		if($this->edit_note)
 			$Order->userNote = $this->edit_note;
 		$Order->save();
