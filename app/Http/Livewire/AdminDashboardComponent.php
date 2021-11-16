@@ -106,6 +106,7 @@ class AdminDashboardComponent extends Component
 								->get();
 			$this->Visits = Visit::whereDate('created_at','>=',$from_date)
 									->whereDate('created_at','<=',$to_date)
+									->whereNull('product_id')
 									->orderBy('created_at','DESC')
 									->get();
 			$this->NewOrdersCounter = Order::whereDate('created_at','>=',$from_date)

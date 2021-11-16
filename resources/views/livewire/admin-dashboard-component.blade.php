@@ -223,6 +223,8 @@
 																											<table class="table table-bordered table-hover table-striped">
 																												<thead>
 																													<tr>
+																														<th>Hình ảnh</th>
+																														<th>Tên sản phẩm</th>
 																														<th>Nội dung</th>
 																														<th>Đánh giá</th>
 																														<th>Thời gian</th>
@@ -231,6 +233,10 @@
 																												<tbody>	
 																													@forelse($Reviews as $review)
 																													<tr>
+																														<td>
+																															<img style="width:100px;heigth:100px;" src="{{asset('storage/images/product/'.$review->Product->Pri_Image->imageName)}}">
+																														</td>
+																														<td>{{$review->Product->productName}}</td>
 																														<td>{{$review->text}}</td>
 																														<td>{{$review->rating}} sao</td>
 																														<td>{{$review->created_at->diffForHumans()}}</td>

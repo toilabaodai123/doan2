@@ -10,6 +10,9 @@ class Comment2 extends Model
 {
     use HasFactory;
 	
+	public function Product(){
+		return $this->belongsTo(Product::class,'product_id','id');
+	}
 	
 	
 	public function User(){

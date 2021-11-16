@@ -2,7 +2,7 @@
 	<div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Thông tin danh mục sản phẩm
+                Thông tin tài khoản
             </div>
             <div class="panel-body">
 				<div class="col-lg-9">
@@ -53,22 +53,28 @@
 					</label>
 					<div class="form-group">
 						<button type="button" wire:click="isUpdate" class="btn btn-{{$is_update==false?'info':'success'}}">{{$is_update==false?'Cập nhật thông tin':'Lưu'}}</button>
-						<button type="button" class="btn btn-warning">Đổi mật khẩu</button>	
+						<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#changePassword">Đổi mật khẩu</button>	
 						<button type="button"  data-toggle="modal" data-target="#offline" class="btn btn-danger">Nghỉ phép</button>	
 					</div>					
 				</div>
 					<div class="col-lg-3">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								Hình ảnh chính sản phẩm
+								Hình ảnh đại diện
 							</div>
 							<div class="panel-body">
-								<img src="{{asset('storage/images/notfound.jpg')}}" style="width:100%;height:200px"> </img>
+								@if ($user_image == null)
+									<img src="{{asset('storage/images/notfound.jpg')}}" style="width:100%;height:200px"> 
+								@elseif(is_string($user_image) == true)
+									<img src="{{asset('storage/images/user/'.$user_image)}}" style="width:100%;height:200px"> 
+								@else
+									<img src="{{$user_image->temporaryUrl()}}" style="width:100%;height:200px">
+								@endif
 							</div>
 
 						</div>	
-						<div class="col-lg-12">
-							<input id="file-upload" disabled style="display:none" type="file" wire:model="user_image" >
+						<div class="col-lg-12" >
+							<input id="file-upload" {{$is_update==false?'disabled':''}} style="display:none" type="file" wire:model="user_image" >
 							<label for="file-upload" class="custom-file-upload" style="border: 1px solid #ccc;display: inline-block;padding: 6px 12px;cursor: pointer;{{$is_update == false?'background-color:#D3D3D3':';'}}">
 								Chọn hình ảnh
 							</label>
@@ -118,6 +124,48 @@
 																										<!-- /.modal-dialog -->
 																	</div>		
 	
+
+
+
+
+
+<div wire:ignore.self class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title" id="myModalLabel">Đổi mật khẩu</h4>
+																				</div>
+																				<div class="modal-body">
+																													@if(session()->has('modal_change_success'))
+																													<div class="alert alert-success">
+																														{{session('modal_change_success')}}
+																													</div>
+																													@elseif(session()->has('modal_change_wrong_password'))
+																													<div class="alert alert-danger">
+																														{{session('modal_change_wrong_password')}}
+																													</div>
+																													@endif
+																					<input class="form-control" wire:model="change_old_password" placeholder="Nhập mật khẩu cũ">
+																					@error('change_old_password')
+																						<p class="text-danger">{{$message}}</p>
+																					@enderror
+																					<input class="form-control" wire:model="change_new_password" placeholder="Nhập mật khẩu mới">
+																					@error('change_new_password')
+																						<p class="text-danger">{{$message}}</p>
+																					@enderror
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																					<button type="button" wire:click="changePassword" class="btn btn-success" >Lưu</button>
+																				</div>
+																			</div>
+																			<!-- /.modal-content -->
+																		</div>
+																		<!-- /.modal-dialog -->
+																		</div>	
+</div>
+
+
 	
 </div>
 

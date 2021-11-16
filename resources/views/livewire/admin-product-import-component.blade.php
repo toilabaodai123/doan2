@@ -323,9 +323,9 @@
 										<div class="alert alert-danger">
 											{{session('error_bill')}}
 										</div>
-										@elseif(session()->has('success_add_import_bill'))
+										@elseif(session()->has('modal_success_bill'))
 										<div class="alert alert-success">
-											{{session('success_add_import_bill')}}
+											{{session('modal_success_bill')}}
 										</div>	
 										@elseif(session()->has('success_edit_import_bill'))
 										<div class="alert alert-success">

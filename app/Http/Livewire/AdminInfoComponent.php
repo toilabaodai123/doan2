@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Order;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Hash;
-use App\Models\ADminLog;
+use App\Models\AdminLog;
 
 class AdminInfoComponent extends Component
 {
@@ -25,6 +25,9 @@ class AdminInfoComponent extends Component
 	public $offline_input;
 	public $offline_password;
 	
+	public $change_old_password;
+	public $change_new_password;
+	
 	protected $rules=[
 		'name' => 'required',
 		'phone' => 'required',
@@ -38,9 +41,13 @@ class AdminInfoComponent extends Component
 		
 	];
 	
+	public function mount(){
+		$this->user_image = auth()->user()->profile_photo_path;
+	}
 	
     public function render()
     {
+		
         return view('livewire.admin-info-component')
 					->layout('layouts.template');
     }
@@ -113,7 +120,44 @@ class AdminInfoComponent extends Component
 			if($this->birth_date != null)
 				auth()->user()->birth_date = $this->birth_date;
 			auth()->user()->save();
+			
+			
+			if($this->user_image!= null && is_string($this->user_image) == false){
+				$name=$this->user_image->getClientOriginalName();
+				$name2 = date("Y-m-d-H-i-s").'-'.$name;
+				$this->user_image->storeAs('/images/user/',$name2,'public');	
+				auth()->user()->profile_photo_path = $name2;
+				auth()->user()->save();
+			}
+			
+			
+			session()->flash('edit_success','Cập nhật thành công');
 			$this->is_update = false;
 		}
 	}
+	
+	public function changePassword(){
+		$this->validate([
+			'change_old_password' => 'required',
+			'change_new_password' => 'required'
+		],[
+			'change_old_password.required' => 'Nhập mật khẩu cũ',
+			'change_new_password.required' => 'Nhập mật khẩu mới'
+		]);
+		
+		if(Hash::check($this->change_old_password,auth()->user()->password)){
+			auth()->user()->password = $this->change_new_password;
+			auth()->user()->save();
+			session()->flash('modal_change_success','Đổi mật khẩu thành công');
+
+			$AdminLog = new AdminLog();
+			$AdminLog->admin_id = auth()->user()->id;
+			$AdminLog->note = 'Đã đổi mật khẩu';
+			$AdminLog->save();
+			$this->reset();
+		}else{
+			session()->flash('modal_change_wrong_password','Sai mật khẩu cũ');
+		}
+	}
+
 }

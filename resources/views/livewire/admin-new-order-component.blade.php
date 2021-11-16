@@ -39,6 +39,10 @@
 														<i class="fa fa-arrow-down" wire:click="sortBy('email','DESC')" style="cursor:pointer;{{$sortField=='email' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>	
 													</th>
 													<th>
+														<i class="fa fa-arrow-up" wire:click="sortBy('phone','ASC')" style="cursor:pointer;{{$sortField=='phone' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+														<i class="fa fa-arrow-down" wire:click="sortBy('phone','DESC')" style="cursor:pointer;{{$sortField=='phone' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>														
+													</th>
+													<th>
 														Địa chỉ
 														<i class="fa fa-arrow-up" wire:click="sortBy('address','ASC')" style="cursor:pointer;{{$sortField=='address' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
 														<i class="fa fa-arrow-down" wire:click="sortBy('address','DESC')" style="cursor:pointer;{{$sortField=='address' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
@@ -47,6 +51,11 @@
 														Thời gian đặt
 														<i class="fa fa-arrow-up" wire:click="sortBy('created_at','ASC')" style="cursor:pointer;{{$sortField=='created_at' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
 														<i class="fa fa-arrow-down" wire:click="sortBy('created_at','DESC')" style="cursor:pointer;{{$sortField=='created_at' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>	
+													</th>
+													<th>
+														Thanh toán
+														<i class="fa fa-arrow-up" wire:click="sortBy('payment_method','ASC')" style="cursor:pointer;{{$sortField=='payment_method' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+														<i class="fa fa-arrow-down" wire:click="sortBy('payment_method','DESC')" style="cursor:pointer;{{$sortField=='payment_method' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>	
 													</th>
 													<th>Tùy chọn</th>
 												</tr>
@@ -57,8 +66,16 @@
 														<td>{{$o->id}}</td>
 														<td>{{$o->fullName}}</td>
 														<td>{{$o->email}}</td>
+														<td>{{$o->phone}}</td>
 														<td>{{$o->address}}</td>
 														<td>{{$o->created_at->diffForHumans()}}</td>
+														<td>
+															@if($o->payment_method == 1)
+																COD
+															@else($o->payment_method == 2)
+																Chuyển khoản
+															@endif
+														</td>
 														<td>
 															<button type="button" class="btn btn-info"  data-toggle="modal" data-target="#viewOrder{{$o->id}}">Xem</button>
 															<div class="modal fade" id="viewOrder{{$o->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -115,6 +132,7 @@
 																												</div>
 																											</div>
 																											<div class="modal-footer">
+																												<button type="button" wire:click="setEditOrder({{$o->id}})"class="btn btn-warning" >Sửa</button>
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
 																											</div>
 																										</div>
@@ -245,4 +263,105 @@
 				</div>
 			</div>
 	</div>
+<div class="row" style="display:{{$edit_id==null?'none':''}}">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Bảng nhập thông tin hóa đơn
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="form-group">
+							<form role="form" wire:submit.prevent="submit">
+																
+								<div class="col-lg-9">
+									<label>ID hóa đơn</label>
+									<input class="form-control" disabled="" wire:model="edit_id" placeholder="ID nhà hóa đơn">
+								</div>							
+								<div class="col-lg-9">
+									<label>Tên người đặt</label>
+									<input class="form-control" wire:model="edit_name" placeholder="Tên người đặt">			
+									@error('edit_name')
+										<p class="text-danger">{{$message}}</p>
+									@enderror
+								</div>
+								<div class="col-lg-9">
+									<label>Email </label>
+									<input class="form-control" wire:model="edit_email" placeholder="Email">	
+									@error('edit_email')
+										<p class="text-danger">{{$message}}</p>
+									@enderror									
+								</div>
+								<div class="col-lg-9">
+									<label>Số điện thoại</label>
+									<input class="form-control" wire:model="edit_phone" placeholder="Số điện thoại">
+									@error('edit_phone')
+										<p class="text-danger">{{$message}}</p>
+									@enderror									
+								</div>
+								<div class="col-lg-9">
+									<label>Địa chỉ</label>
+									<input class="form-control" wire:model="edit_address" placeholder="Địa chỉ">
+									@error('edit_address')
+										<p class="text-danger">{{$message}}</p>
+									@enderror									
+								</div>
+								<div class="col-lg-9">
+									<label>Địa chỉ</label>
+									<input class="form-control" wire:model="edit_note" placeholder="Ghi chú">									
+								</div>								
+								<div class="col-lg-9">
+									<label>Hình thức thanh toán</label>
+									<select class="form-control" wire:model="edit_payment_method">
+										<option>Chọn</option>
+										@forelse($Payment_methods as $method)
+											<option value="{{$method->id}}">{{$method->method_name}}</option>
+										@empty
+										@endforelse
+									</select>
+									@error('edit_payment_method')
+										<p class="text-danger">{{$message}}</p>
+									@enderror								
+								</div>
+								<div class="col-lg-9" style="margin-top:20px">
+									<button type="button" data-toggle="modal" data-target="#confirmEdit" wire:loading.attr="disabled" class="btn btn-default">Lưu</button>
+									<button type="button" wire:click="btnReset" wire:loading.attr="disabled" class="btn btn-default">Hủy sửa</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>				
+			</div>
+		</div>
+	</div>
+	
+	
+<div wire:ignore.self class="modal fade" id="confirmEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+																		<div class="modal-dialog" role="document">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																					<h4 class="modal-title" id="myModalLabel">Sửa hóa đơn</h4>
+																				</div>
+																				<div class="modal-body">
+																					@if(session()->has('modal_edit_success'))
+																					<div class="alert alert-success">
+																						{{session('modal_edit_success')}}
+																					</div>
+																					@endif
+																					<label>Bạn chắc chắn muốn sửa hóa đơn id:{{$edit_id}} ?</label><br>
+																					<input type="checkbox" wire:model="edit_confirm">Tôi chắc chắn
+																					@error('edit_confirm')
+																						<p class="text-danger">{{$message}}</p>
+																					@enderror
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																					<button type="button" wire:click="editOrder" class="btn btn-warning" >Sửa</button>
+																				</div>
+																			</div>
+																			<!-- /.modal-content -->
+																		</div>
+																		<!-- /.modal-dialog -->
+																		</div>	
+</div>
 </div>

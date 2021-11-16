@@ -9,6 +9,7 @@ use App\Models\AdminLog;
 use App\Models\OrderDetail;
 use App\Models\UserActionBlock;
 use App\Models\ProductModel;
+use App\Models\PaymentMethod;
 use Livewire\WithPagination;
 use Carbon\Carbon;
 
@@ -27,16 +28,27 @@ class AdminNewOrderComponent extends Component
 	public $forceaccept_note;
 	public $forceaccept_status;
 	
+	public $edit_id;
+	public $edit_name;
+	public $edit_email;
+	public $edit_address;
+	public $edit_phone;
+	public $edit_payment_method;
+	public $edit_note;
+	public $edit_confirm;
+	
 	public $decline_status=false;
 	public $block_status=false;
 	public $is_forceaccept;
 	public $test= [];
+	public $Payment_methods;
 
 	
 	public function sortBy($field,$direction){
 		$this->sortField = $field;
 		$this->sortDirection = $direction;
 	}
+	
 	
 	public function mount(){
 		
@@ -64,11 +76,68 @@ class AdminNewOrderComponent extends Component
 											 ->where('status',1)
 											 ->orWhereNull('assigned_to',null)
 											 ->where('status',1)
-											 ->paginate(5);							 
+											 ->paginate(5);	
+		$this->Payment_methods = PaymentMethod::where('status',1)->get();
         return view('livewire.admin-new-order-component',['Orders2' => $Orders2])
 					->layout('layouts.template');
     }
 	
+	public function btnReset(){
+		$this->reset();
+	}
+	
+	
+	public function setEditOrder($id){
+		$Order = Order::find($id);
+		$this->edit_id = $id;
+		$this->edit_name = $Order->fullName;
+		$this->edit_email = $Order->email;
+		$this->edit_phone = $Order->phone;
+		$this->edit_address = $Order->address;
+		$this->edit_payment_method = $Order->payment_method;
+	}
+	
+	
+	public function editOrder(){
+		$this->validate([
+			'edit_name' => 'required',
+			'edit_phone' => 'required|numeric',
+			'edit_address' => 'required',
+			'edit_payment_method' =>'required|numeric',
+			'edit_confirm' => 'accepted'
+		],[
+			'edit_name.required' => 'Hãy nhập tên người dùng',
+			'edit_phone.required' => 'Hãy nhập số điện thoại',
+			'edit_phone.numeric' => 'Số điện thoại chỉ nhập số',
+			'edit_address.required' => 'Hãy nhập địa chỉ',
+			'edit_payment_method.required' => 'Hãy chọn phương thức thanh toán',
+			'edit_payment_method.numeric' => 'Hãy chọn phương thức thanh toán',
+			'edit_confirm.accepted' => 'Hãy chọn chắc chắn'
+		]);
+		$Order = Order::find($this->edit_id);
+		$Order->fullName = $this->edit_name;
+		$Order->email = $this->edit_email;
+		$Order->phone = $this->edit_phone;
+		$Order->address = $this->edit_address;
+		$Order->payment_method = $this->edit_payment_method;
+		if($this->edit_note)
+			$Order->userNote = $this->edit_note;
+		$Order->save();
+		
+		$AdminLog = new AdminLog();
+		$AdminLog->admin_id = auth()->user()->id;
+		$AdminLog->note = 'Đã sửa hóa đơn id:'.$this->edit_id;
+		$AdminLog->save();
+		
+		$OrderLog = new OrderLog();
+		$OrderLog->order_id = $this->edit_id;
+		$OrderLog->message = 'Đã được sửa thông tin';
+		$OrderLog->save();
+		
+		
+		session()->flash('modal_edit_success','Sửa thành công');
+		$this->reset();
+	}
 
 	public function forceAccept($id){
 		$this->validate([
@@ -146,6 +215,7 @@ class AdminNewOrderComponent extends Component
 			]);
 			$Order->status = 0;
 			$Order->adminNote = $this->decline_note;
+			$Order->assigned_to = auth()->user()->id;
 			$Order->save();
 				
 			$Log = new AdminLog();
