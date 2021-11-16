@@ -58,7 +58,7 @@
                                                     <li><a href="javascript:void(0)" wire:click="price(0,1000000000000)">Tất cả</a></li>
                                                     <li><a href="javascript:void(0)" wire:click="price(1, 100000)">0 VND - 100000 VND</a></li>
                                                     <li><a href="javascript:void(0)" wire:click="price(100000, 250000)">100000 VND - 250000 VND</a></li>
-                                                    <li><a href="javascript:void(0)" wire:click="price(250000, 250000)">250000 VND- 250000 VND</a></li>
+                                                    <li><a href="javascript:void(0)" wire:click="price(250000, 500000)">250000 VND- 500000 VND</a></li>
                                                     <li><a href="javascript:void(0)" wire:click="price(250000, 100000000000000)">500000+ VND</a></li>
                                                 </ul>
                                             </div>
