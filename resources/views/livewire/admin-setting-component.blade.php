@@ -2,7 +2,7 @@
 	@if($Settings != null)
 	<div class="col-lg-12">
 		<label>
-			Trạng thái website : 
+			Trạng thái bảo trì : 
 			<label>
 				@if($Settings->is_maintenance == 0)
 					<label style="color:green">Đang hoạt động</label>
@@ -17,7 +17,7 @@
 	
 	<div class="col-lg-12">
 		<label>
-			Trạng thái website : 
+			Trạng thái ngừng nhận hàng : 
 			<label>
 				@if($Settings->is_outofservice == 0)
 					<label style="color:green">Đang nhận đặt hàng</label>

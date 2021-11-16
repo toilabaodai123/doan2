@@ -139,7 +139,7 @@
 									</div>
 									<div class="form-group">
 										<label>Mật khẩu</label>
-										<input class="form-control" wire:model="password" {{$user_id != null?'disabled':''}} placeholder="Mật khẩu người dùng">
+										<input class="form-control" type="password" wire:model="password" {{$user_id != null?'disabled':''}} placeholder="Mật khẩu người dùng">
 										@error('password')
 										<p class="text-danger">{{$message}}</p>
 										@enderror
