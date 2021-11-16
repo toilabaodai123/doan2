@@ -7,6 +7,10 @@
 		<div class="alert alert-success">
 			{{session('success_delete_review')}}
 		</div>	
+	@elseif(session()->has('success_delete_report'))
+		<div class="alert alert-success">
+			{{session('success_delete_report')}}
+		</div>		
 	@endif
 	{{$Reports->links()}}
 	<div class="col-lg-12">
@@ -51,7 +55,7 @@
 																@if($report->status == 1)
 																	<label style="color:blue">Đang chờ xử lý</label>
 																@elseif($report->status==0)
-																	<label style="color:green">Đã bị bỏ qua</label>
+																	<label style="color:grey">Đã bị bỏ qua</label>
 																@elseif($report->status==2)
 																	<label style="color:green">Đã xử lý</label>
 																@endif
@@ -172,6 +176,9 @@
 																			@endif
 																		</div>
 																		<div class="modal-footer">
+																			@if($report->status==1)
+																			<button type="button" wire:click="deleteReport({{$report->id}})"class="btn btn-danger" data-dismiss="modal">Bỏ qua</button>
+																			@endif
 																			<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
 																		</div>
 																		</div>

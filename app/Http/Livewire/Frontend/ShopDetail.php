@@ -41,7 +41,7 @@ class ShopDetail extends Component
         $this->slugId = $slug;
     }
     public function render()
-    {   
+    {   	
 		Carbon::setLocale('vi');
         $this->relatedPro = Product::with('Pri_image')->with('Category1')->where('status',1)->orderBy('id', 'DESC')->get()->take(4);
         $this->product = Product::with('getSalePrice')->with('Pri_image')->with('Models')->with('wishlist')
@@ -120,15 +120,68 @@ class ShopDetail extends Component
 				'productreport_note.max' => ' Nội dung báo cáo quá dài (quá 50 ký tự)'
 			]);
 			
+			
 			$Report = new Report();
 			$Report->ip = request()->ip();
 			$Report->product_id = $this->get_id->id;
 			$Report->text = $this->productreport_note;
 			$Report->status = 1;
+
+			//Phân công report
+			$LastProductReport = Report::whereNotNull('product_id')->get()->last();
+			$Admin = User::where('user_type','LIKE','%'.'Nhân viên bán hàng'.'%')->where('status',1)->get()->first();
+			if($LastProductReport==null){
+				if($Admin==null)
+					$Report->assigned_to = null;
+				else
+					$Report->assigned_to = $Admin->id;
+			}else{
+				$SameReportProductId = Report::where('product_id',$this->get_id->id)->get()->last();
+				if($SameReportProductId == null){
+					$Admin2 = User::where('user_type','LIKE','%'.'Nhân viên bán hàng'.'%')
+								 ->where('id','>',$LastProductReport->assigned_to)
+								 ->where('status',1)
+								 ->get()
+								 ->first();
+					if($Admin2!=null)
+						$Report->assigned_to = $Admin2->id;
+					else{
+						$Admin2 = User::where('user_type','LIKE','%'.'Nhân viên bán hàng'.'%')
+									 ->where('id','<=',$LastProductReport->assigned_to)
+									 ->where('status',1)
+									 ->get()
+									 ->first();
+						if($Admin2!=null)
+							$Report->assigned_to = $Admin2->id;
+						else
+							$Report->assigned_to = null;
+					}
+				}else{
+					if($SameReportProductId->assigned_to == null){
+						if($Admin==null)
+							$Report->assigned_to = null;
+						else
+							$Report->assigned_to = $Admin->id;						
+					}else{
+						$Admin2 = User::where('user_type','LIKE','%'.'Nhân viên bán hàng'.'%')
+										->where('id',$SameReportProductId->assigned_to)
+										->where('status',1)
+										->get()
+										->last();
+						if($Admin2 != null)
+							$Report->assigned_to = $Admin2->id;
+						else
+							$Report->assigned_to = null;
+					}
+				}
+				
+			}
 			$Report->save();
 			session()->flash('success_report_product','Báo cáo thành công');
 		}
 		$this->productreport_note = null;
+		
+		
 		
 	}
 	
@@ -156,6 +209,59 @@ class ShopDetail extends Component
 			$Report->review_id = $id;
 			$Report->text = $this->reviewreport_note;
 			$Report->status = 1;
+			
+			
+			//Phân công report
+			$LastReviewReport = Report::whereNotNull('review_id')->get()->last();
+			$Admin = User::where('user_type','LIKE','%'.'Nhân viên bán hàng'.'%')->where('status',1)->get()->first();
+			if($LastReviewReport==null){
+				if($Admin==null)
+					$Report->assigned_to = null;
+				else
+					$Report->assigned_to = $Admin->id;
+			}else{
+				$SameReportReviewId = Report::where('review_id',$id)->get()->last();
+				if($SameReportReviewId == null){
+					$Admin2 = User::where('user_type','LIKE','%'.'Nhân viên bán hàng'.'%')
+								 ->where('id','>',$LastReviewReport->assigned_to)
+								 ->where('status',1)
+								 ->get()
+								 ->first();
+					if($Admin2!=null)
+						$Report->assigned_to = $Admin2->id;
+					else{
+						$Admin2 = User::where('user_type','LIKE','%'.'Nhân viên bán hàng'.'%')
+									 ->where('id','<=',$LastReviewReport->assigned_to)
+									 ->where('status',1)
+									 ->get()
+									 ->first();
+						if($Admin2!=null)
+							$Report->assigned_to = $Admin2->id;
+						else
+							$Report->assigned_to = null;
+					}
+				}else{
+					if($SameReportReviewId->assigned_to == null){
+						if($Admin==null)
+							$Report->assigned_to = null;
+						else
+							$Report->assigned_to = $Admin->id;						
+					}else{
+						$Admin2 = User::where('user_type','LIKE','%'.'Nhân viên bán hàng'.'%')
+										->where('id',$SameReportReviewId->assigned_to)
+										->where('status',1)
+										->get()
+										->last();
+						if($Admin2 != null)
+							$Report->assigned_to = $Admin2->id;
+						else
+							$Report->assigned_to = null;
+					}
+				}
+				
+			}			
+			
+			
 			$Report->save();
 			session()->flash('success_review_report_product','Báo cáo thành công');
 		}
