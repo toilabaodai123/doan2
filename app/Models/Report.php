@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Product;
-use App\Models\Comment2s;
+use App\Models\Comment2;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +29,10 @@ class Report extends Model
 	}	
 	
 	public function Review(){
-		return $this->hasOne(Comment2s::class,'id','assigned_to');
+		return $this->hasOne(Comment2::class,'id','assigned_to');
+	}
+
+	public function Review2(){
+		return $this->hasOne(Comment2::class,'id','review_id');
 	}	
 }

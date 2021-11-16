@@ -58,7 +58,7 @@
 
         <!-- Top Navigation: Left Menu -->
         <ul class="nav navbar-nav navbar-left navbar-top-links">
-            <li><a href="{{url('trang-chu')}}"><i class="fa fa-home fa-fw"></i> Website</a></li>
+            <li><a href="{{url('index')}}"><i class="fa fa-home fa-fw"></i> Website</a></li>
         </ul>
 
         <!-- Top Navigation: Right Menu -->

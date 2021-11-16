@@ -13,10 +13,14 @@ use App\Models\AdminLog;
 use Livewire\WithFileUploads;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use App\Models\Image;
+use App\Models\Comment2;
+use Livewire\WithPagination;
 
 class AdminReportComponent extends Component
 {
 	use WithFileUploads;
+	use WithPagination;
+	
 	public $Suppliers;
 	public $Categories1;
 	public $Categories2;
@@ -33,6 +37,10 @@ class AdminReportComponent extends Component
 	public $productImage2;
 	public $edit_product_confirm;
 	public $report_id;
+	public $delete_status;
+	
+	public $sortField='id';
+	public $sortDirection='ASC';
 	
 	protected $rules = [
 		'product_name' => 'required|min:3',
@@ -62,10 +70,17 @@ class AdminReportComponent extends Component
 		$this->Suppliers = Supplier::where('status',1)->get();
 		$this->Categories1 = ProductCategory::where('status',1)->get();
 		$this->Categories2 = Level2ProductCategory::where('status',1)->get();
-		$Reports = Report::orderBy('created_at','DESC')->get();
+		
+		$Reports = Report::orderBy($this->sortField,$this->sortDirection)
+						   ->paginate(5);
         return view('livewire.admin-report-component',['Reports' => $Reports])
 					->layout('layouts.template');
     }
+	
+	public function sortBy($field,$direction){
+		$this->sortField = $field;
+		$this->sortDirection = $direction;
+	}
 	
 	public function getIdProduct($id,$report_id){
 		$Product = Product::find($id);
@@ -137,6 +152,12 @@ class AdminReportComponent extends Component
 		$Report->status = 2;
 		$Report->save();
 		
+		$SameReports = Report::where('product_id',$this->product_id)->get();
+		foreach($Reports as $report){
+			$report->status = 2;
+			$report->save();
+		}
+		
 		
 		session()->flash('product_success','Sửa thành công');
 		$this->reset();
@@ -147,6 +168,30 @@ class AdminReportComponent extends Component
 		$this->Categories2 = Level2ProductCategory::where('status',1)
 													->where('lv1PCategoryID',$this->CategoryID)
 													->get();
+	}
+	
+	public function completedReport($id){
+		$Report = Report::find($id);
+		$Report->status = 2 ;
+		$Report->save();
+		
+		$SameReports = Report::where('review_id',$Report->review_id)->get();
+		foreach($SameReports as $report){
+			$report->status = 2;
+			$report->save();
+		}
+		
+		$Review = Comment2::find($Report->review_id);
+		$Review->status = 0;
+		$Review->save();
+		
+		$AdminLog = new AdminLog();
+		$AdminLog->admin_id = auth()->user()->id;
+		$AdminLog->note = 'Đã ẩn review id:'.$Report->review_id.' qua báo cáo id:'.$id;
+		$AdminLog->save();
+		
+		session()->flash('success_delete_review','Đã ẩn review thành công');
+		$this->reset();
 	}
 	
 

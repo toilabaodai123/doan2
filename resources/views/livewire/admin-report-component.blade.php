@@ -3,16 +3,35 @@
 		<div class="alert alert-success">
 			{{session('product_success')}}
 		</div>
+	@elseif(session()->has('success_delete_review'))
+		<div class="alert alert-success">
+			{{session('success_delete_review')}}
+		</div>	
 	@endif
+	{{$Reports->links()}}
 	<div class="col-lg-12">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered table-hover table-striped">
                                                     <thead>
                                                     <tr>
-                                                        <th>ID</th>
-                                                        <th>Loại báo cáo</th>
-														<th>Thời gian</th>
-														<th>Trạng thái</th>
+                                                        <th>
+														ID
+															<i class="fa fa-arrow-up" wire:click="sortBy('id','ASC')" style="cursor:pointer;{{$sortField=='id' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('id','DESC')" style="cursor:pointer;{{$sortField=='id' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
+                                                        <th>
+															Loại báo cáo
+														</th>
+														<th>
+															Thời gian
+															<i class="fa fa-arrow-up" wire:click="sortBy('created_at','ASC')" style="cursor:pointer;{{$sortField=='created_at' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('created_at','DESC')" style="cursor:pointer;{{$sortField=='create_at' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
+														<th>
+														Trạng thái
+															<i class="fa fa-arrow-up" wire:click="sortBy('status','ASC')" style="cursor:pointer;{{$sortField=='status' && $sortDirection == 'ASC'?'color:green;':'' }}"></i>
+															<i class="fa fa-arrow-down" wire:click="sortBy('status','DESC')" style="cursor:pointer;{{$sortField=='status' && $sortDirection == 'DESC'?'color:red;':'' }}"></i>
+														</th>
                                                         <th>Tùy chọn</th>
                                                     </tr>
                                                     </thead>
@@ -59,6 +78,7 @@
 																					</div>
 																				</div>			
 																			</div>
+																			<label>IP báo cáo : </label>{{$report->ip}}<br>
 																			@if($report->product_id != null)
 																				<label>Lý do báo cáo : </label>{{$report->text}}<br>
 																				<div style="margin-top:30px;">
@@ -107,8 +127,47 @@
 																					@endif
 																				</label><br>
 																			@elseif($report->review_id != null)
+																				<label>Lý do báo cáo : </label>{{$report->text}}<br>
 																				<div>
-																					Báo cáo đánh giá
+																					<div class="col-lg-12">
+																						<div class="table-responsive">
+																							<table class="table table-bordered table-hover table-striped">
+																								<thead>
+																									<tr>
+																										<th>Tên người đánh giá</th>
+																										<th>Chất lượng</th>
+																										<th>Nội dung</th>
+																										<th>Trạng thái</th>
+																										<th style="display:{{$report->Review2->status==0?'none':''}}">Tùy chọn</th>
+																									</tr>
+																								</thead>
+																								<tbody>
+																									<tr>
+																										<td>{{$report->Review2->User->name}}</td>
+																										<td>{{$report->Review2->rating}}</td>
+																										<td>{{$report->Review2->text}}</td>
+																										<td>
+																											@if($report->Review2->status==0)
+																												<label style="color:grey">Đang ẩn</label>
+																											@elseif($report->Review2->status==1)
+																												<label style="color:green">Đang hiển thị</label>
+																											@endif
+																										</td>
+																										<td style="display:{{$report->Review2->status==0?'none':''}}">
+																											<div >
+																												<input type="checkbox"  wire:model="delete_status">Ẩn
+																											</div>
+																											<button type="button" wire:click="completedReport({{$report->id}})" style="display:{{$delete_status==true?'':'none'}}"class="btn btn-success">Tiến hành ẩn</button>
+																										</td>
+																									</tr>
+																								</tbody>
+																							</table>
+																							<div class="asa" style="text-align: center; padding: 40px;">
+																								
+																							</div>
+																						</div>
+																					<!-- /.table-responsive -->
+																					</div>
 																				</div>																			
 																			@endif
 																		</div>
