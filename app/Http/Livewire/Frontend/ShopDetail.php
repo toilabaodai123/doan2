@@ -43,7 +43,7 @@ class ShopDetail extends Component
     public function render()
     {   
 		Carbon::setLocale('vi');
-        $this->relatedPro = Product::with('Pri_image')->with('Category1')->where('status',1)->orderBy('id', 'DESC')->get()->take(4);
+        
         $this->product = Product::with('getSalePrice')->with('Pri_image')->with('Models')->with('wishlist')
         ->where('productSlug', $this->slugId)->get();
         $proSlug = Product::where('productSlug', $this->slugId)->first();
@@ -56,7 +56,8 @@ class ShopDetail extends Component
         $this->get_slug = $this->slugId;
         
         
-        
+        $this->relatedPro = Product::where('status',1)->orderBy('id', 'DESC')->where('id','!=',$this->get_id->id)
+        ->get()->take(4);
         //Kiểm tra flash sale
         if($this->get_id->status == 0){
             $flag=false;

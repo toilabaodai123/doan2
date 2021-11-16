@@ -190,7 +190,7 @@
                                                             <img src="{{asset('img/icon_user.jpg')}}" alt="" >
                                                             <div class="user_info" style="    align-items: flex-start;">
                                                                     <h5>{{$blog1->User->name}} đã đánh giá {{$blog1->rating}} sao</h5><br>
-                                                                    <p>{{$blog1->text}}</p>
+                                                                      <p>{{$blog1->text}}</p>
                                                             </div>
                                                         </div>
                                                         <div class="comment_text">
@@ -255,7 +255,7 @@
             </div>
             <div class="row">
                 @forelse($relatedPro as $pro )
-                ` @if($pro->productSlug != $slugId)
+                 @if($pro->productSlug != $slugId)
                     <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                         <a href="{{URL::to('shop-detail/'.$pro->productSlug)}}">
                             <div class="product__item">
@@ -294,7 +294,7 @@
                             </div>
                         </a>
                     </div>
-                    @endif`
+                    @endif
                 @empty
                 @endforelse
             </div>
