@@ -97,6 +97,20 @@ class AdminReportComponent extends Component
 		$this->productImage2 = $Product->Pri_Image->imageName;
 	}
 	
+	public function deleteReport($id){
+		$Report = Report::find($id);
+		$Report->status=0;
+		$Report->save();
+		
+		$AdminLog = new AdminLog();
+		$AdminLog->admin_id = auth()->user()->id;
+		$AdminLog->note ='Đã bỏ qua báo cáo id:'.$id;
+		$AdminLog->save();
+		
+		session()->flash('success_delete_report','Đã bỏ qua báo cáo thành công');
+		$this->reset();
+	}
+	
 	public function editAbort(){
 		$this->reset();
 	}
@@ -136,11 +150,17 @@ class AdminReportComponent extends Component
 				imagejpeg(imagecreatefromstring(file_get_contents($this->productImage2->path())),public_path().'/storage/images/watermark/product/'.$name4.'.jpeg');
 			}
 			
-			$PrimaryImage = new Image();
-			$PrimaryImage->imageName = $name4.'.jpeg';
-			$PrimaryImage->image_type = 'Hình ảnh chính sản phẩm'; //1 = Hình ảnh chính
-			$PrimaryImage->productID = $Product->id;
-			$PrimaryImage->save();
+			if($Product->Pri_Image()->get()->last() == null){
+				$PrimaryImage = new Image();
+				$PrimaryImage->imageName = $name4.'.jpeg';
+				$PrimaryImage->image_type = 'Hình ảnh chính sản phẩm'; //1 = Hình ảnh chính
+				$PrimaryImage->productID = $Product->id;
+				$PrimaryImage->save();
+			}else{
+				$PrimaryImage = Image::where('productID',$this->product_id)->get()->last();
+				$PrimaryImage->imageName = $name4.'.jpeg';
+				$PrimaryImage->save();
+			}
 		}
 		
 		$AdminLog = new AdminLog();
@@ -153,7 +173,7 @@ class AdminReportComponent extends Component
 		$Report->save();
 		
 		$SameReports = Report::where('product_id',$this->product_id)->get();
-		foreach($Reports as $report){
+		foreach($SameReports as $report){
 			$report->status = 2;
 			$report->save();
 		}
