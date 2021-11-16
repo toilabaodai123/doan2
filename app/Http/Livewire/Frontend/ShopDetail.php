@@ -245,12 +245,6 @@ class ShopDetail extends Component
 		$Favorite->status = 0;
 		$Favorite->save();
 		session()->flash('delete_favorite','Đã hủy thích sản phẩm '.$ProductName->productName);
-   
-
-        $flight = Wishlist::find($id);
-        $flight->status = 0;
-
-        $flight->save();
     }
 
 
