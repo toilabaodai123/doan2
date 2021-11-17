@@ -67,11 +67,7 @@
                                     <input type="text" placeholder="Name" name="name" wire:model="name">
                                 </div>
                                 @error('name')<p style="color: red">{{ $message }}</p> @enderror
-                                <div class="item">
-                                    <span> Emai :</span>
-                                    <input type="text" placeholder="Email" name="email"  wire:model="email">
-                                </div>
-                                @error('email')<p style="color: red">{{ $message }}</p> @enderror
+                               
                                 <button type="submit" >Lưu</button>
                             </form>
                         </div>
