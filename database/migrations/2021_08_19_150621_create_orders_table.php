@@ -25,7 +25,6 @@ class CreateOrdersTable extends Migration
 			$table->string('email')->nullable();
 			$table->string('userNote')->nullable();
 			$table->string('adminNote')->nullable();
-			$table->dateTime('orderDate');
 			$table->integer('orderTotal');
 			$table->integer('status');
 			$table->string('ip');

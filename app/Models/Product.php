@@ -69,6 +69,7 @@ class Product extends Model
 		return $this->hasMany(Visit::class,'product_id','id');
 	}
 	
+
 	// public function sluggable(){
 	// 	return ['productSlug' => ['source' => 'productName'] ];
 	// }

@@ -369,7 +369,7 @@
 																						</select>
 																					</td>
 																					<td><input  class="form-control"  type="number" wire:model="amount.{{$k}}"placeholder="Nhập số lượng"></td>
-																					<td><input  class="form-control"  type="number" wire:model="price.{{$k}}"placeholder="Nhập số lượng"></td>
+																					<td><input  class="form-control"  type="number"  wire:model="price.{{$k}}"placeholder="Nhập đơn giá"></td>
 																					<td>
 																						<div class="col-lg-9">
 																						<input class="form-control"  type="number" wire:change="onChangeSalePrice({{$k}})" wire:model="sale_price.{{$k}}"placeholder="Giá bán">

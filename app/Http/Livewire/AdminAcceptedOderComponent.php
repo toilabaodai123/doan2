@@ -122,6 +122,10 @@ class AdminAcceptedOderComponent extends Component
 		$this->reset();
 	}
 	
+	public function cancelAddShipUnit(){
+		$this->reset();
+	}
+	
 	public function addNewShipUnit(){
 		$this->validate([
 			'add_shipunit_name' => 'required',

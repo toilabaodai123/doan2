@@ -77,7 +77,7 @@
 														<td>{{$o->phone}}</td>
 														<td>{{$o->email}}</td>
 														<td>{{$o->address}}</td>
-														<td>{{$o->orderDate}}</td>
+														<td>{{$o->created_at}}</td>
 														<td>
 															@if($o->status == 2)
 																<label style="color:blue">Đã duyệt</label>
@@ -404,8 +404,7 @@
 				</div>
 				<div class="form-group">
 					<button type="button" class="btn btn-success" wire:click="addNewShipUnit">Lưu</button>
-					<button type="button" class="btn btn-info">Reset</button>
-					<button type="button" class="btn btn-danger">Hủy</button>
+					<button type="button" wire:click="cancelAddShipUnit"class="btn btn-danger">Hủy</button>
 				</div>
 			</div>			
 		</div>

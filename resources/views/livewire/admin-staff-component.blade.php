@@ -66,8 +66,10 @@
 										<td>
 											@if($u->status == 1)
 												<label style="color:green">Đang hoạt động</label>
-											@else
+											@elseif($u->status=0)
 												<label style="color:grey">Đã bị khóa</label>
+											@elseif($u->status==2)
+												<label style="color:orange">Đang nghỉ phép</label>
 											@endif
 										</td>
 										<td>
@@ -119,7 +121,6 @@
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-														<button type="button" class="btn btn-primary" >Sửa</button>
 													</div>
 													</div>
 												</div>

@@ -190,14 +190,16 @@
                                                             <img src="{{asset('img/icon_user.jpg')}}" alt="" >
                                                             <div class="user_info" style="    align-items: flex-start;">
                                                                     <h5>{{$blog1->User->name}} đã đánh giá {{$blog1->rating}} sao</h5><br>
-                                                                      <p>{{$blog1->text}}</p>
+                                                                      <p>{{$blog1->status==1?$blog1->text:'Bình luận đã bị ẩn'}}</p>
                                                             </div>
                                                         </div>
                                                         <div class="comment_text">
                                                         <span>{{$blog1->created_at->diffForHumans()}}</span>
 														
+														@if(!auth()->check() || auth()->user()->user_type != 'Admin')
 														<button type="button" data-toggle="modal" data-target="#reportReview{{$blog1->id}}"class="btn btn-danger">Báo cáo</button>
-															<div wire:ignore.self class="modal fade" id="reportReview{{$blog1->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+														@endif
+														<div wire:ignore.self class="modal fade" id="reportReview{{$blog1->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 																									<div class="modal-dialog" role="document">
 																										<div class="modal-content">
 																											<div class="modal-header">
@@ -216,6 +218,7 @@
 																											<div class="modal-footer">
 																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
 																												<button type="button" class="btn btn-success" wire:click="submitReviewReport({{$blog1->id}})" data-dismiss="modal">Báo cáo</button>
+																												
 																											</div>
 																										</div>
 																										<!-- /.modal-content -->

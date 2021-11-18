@@ -31,7 +31,9 @@
 														</td>
 														<td>
 															<button wire:click="editCategory({{$c->id}})" type="button" class="btn btn-info">Sửa</button>
+															@if($c->status==1)
 															<button wire:click="deleteCategory({{$c->id}})" type="button" class="btn btn-danger">Ẩn</button>
+															@endif
 														</td>
                                                     </tr>
 													@endforeach

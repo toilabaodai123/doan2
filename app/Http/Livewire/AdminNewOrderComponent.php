@@ -51,16 +51,6 @@ class AdminNewOrderComponent extends Component
 	
 	
 	public function mount(){
-		
-			$Orders = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
-											 ->where('status',1)
-											 ->orWhereNull('assigned_to',null)
-											 ->where('status',1)
-											 ->paginate(5);	
-											 
-			foreach($Orders as $k=>$v){
-				$this->is_forceaccept[$v['id']] = false;
-			}
 	}
 	
     public function render()
@@ -70,13 +60,13 @@ class AdminNewOrderComponent extends Component
 			$Orders2 = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
 											 ->where('status',1)
 											 ->where('assigned_to',auth()->user()->id)
-											 ->paginate(5);
+											 ->paginate(3);
 		else
 			$Orders2 = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
 											 ->where('status',1)
 											 ->orWhereNull('assigned_to',null)
 											 ->where('status',1)
-											 ->paginate(5);	
+											 ->paginate(3);	
 		$this->Payment_methods = PaymentMethod::where('status',1)->get();
         return view('livewire.admin-new-order-component',['Orders2' => $Orders2])
 					->layout('layouts.template');
@@ -85,6 +75,8 @@ class AdminNewOrderComponent extends Component
 	public function btnReset(){
 		$this->reset();
 	}
+	
+
 	
 	
 	public function setEditOrder($id){
@@ -119,7 +111,7 @@ class AdminNewOrderComponent extends Component
 		$Order->email = $this->edit_email;
 		$Order->phone = $this->edit_phone;
 		$Order->address = $this->edit_address;
-		$Order->payment_method = $this->edit_payment_method;
+
 		if($Order->payment_method == 1){
 			if($this->edit_payment_method == 2)
 				$Order->orderTotal -= 15000;
@@ -129,6 +121,7 @@ class AdminNewOrderComponent extends Component
 		}
 		if($this->edit_note)
 			$Order->userNote = $this->edit_note;
+		$Order->payment_method = $this->edit_payment_method;
 		$Order->save();
 		
 		$AdminLog = new AdminLog();
@@ -145,7 +138,7 @@ class AdminNewOrderComponent extends Component
 		session()->flash('modal_edit_success','Sửa thành công');
 		$this->reset();
 	}
-
+	
 	public function forceAccept($id){
 		$this->validate([
 			'forceaccept_note' => 'required',
@@ -175,9 +168,20 @@ class AdminNewOrderComponent extends Component
 			session()->flash('success','Đã chấp nhận đơn hàng id:'.$id);
 	}
 	
+	public function test(){
+		dd($this);
+	}	
 	
 	public function acceptOrder($id){
-		//dd($id);
+		$Orders3 = Order::with('Details')->orderBy($this->sortField,$this->sortDirection)
+										 ->where('status',1)
+										 ->orWhereNull('assigned_to',null)
+										 ->where('status',1)
+										 ->paginate(5);	
+											 
+		foreach($Orders3 as $k=>$v){
+			$this->is_forceaccept[$v['id']] = false;
+		}		
 		$Order = Order::find($id);
 		$Details = OrderDetail::where('order_id',$id)->get();
 		foreach($Details as $detail){
@@ -185,9 +189,9 @@ class AdminNewOrderComponent extends Component
 			if($detail->quantity > $Stock->stockTemp){
 				$this->is_forceaccept[$id] = true;
 				break;
-			}
+			}	
 		}
-		if($this->is_forceaccept == false){
+		if($this->is_forceaccept[$id] == false){
 			$Order->admin_id = auth()->user()->id;
 			if($Order->assigned_to == null)
 				$Order->assigned_to = auth()->user()->id;

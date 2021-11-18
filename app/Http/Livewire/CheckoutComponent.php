@@ -54,9 +54,6 @@ class CheckoutComponent extends Component
 				$LastOrderID = 9999;
 			$LastOrderID++;
 			$Order->orderCode = 'DH'.$LastOrderID;
-			
-			date_default_timezone_set('Asia/Ho_Chi_Minh');
-			$Order->orderDate = now();
 			$Order->orderTotal = 0;
 			$Order->save();
 			

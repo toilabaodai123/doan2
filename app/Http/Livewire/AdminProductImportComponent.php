@@ -20,6 +20,7 @@ use DB;
 use Livewire\WithPagination;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 
 class AdminProductImportComponent extends Component
@@ -212,6 +213,7 @@ class AdminProductImportComponent extends Component
 				$this->amount[$k] = $v['quantity'];
 				$this->price[$k] = $v['price'];
 				$this->sale_price[$k] = $v['sale_price'];
+				$this->new_price[$k] = false;
 			}
 			$Bill = ProductImportBill::find($id);
 			$this->bill_code = $Bill->bill_code;
@@ -444,8 +446,7 @@ class AdminProductImportComponent extends Component
 	}
 	
 	public function resetBtn(){
-		dd($this);
-		//$this->reset();
+		$this->reset();
 	}
 	
 	public function removeBtn($k){
@@ -459,6 +460,8 @@ class AdminProductImportComponent extends Component
 			}
 		}
 	}
+	
+
 	
 	public function onChangeNewPrice($key){
 		foreach($this->selectedProductArray as $k=>$v){
@@ -496,7 +499,23 @@ class AdminProductImportComponent extends Component
 		$Product->shortDesc = $this->add_product_shortDesc;
 		$Product->longDesc = $this->add_product_longDesc;
 		$Product->status = 0 ;
+
 		$Product->save();
+		$slug = SlugService::createSlug(Product::class, 'productSlug', $Product->productName);
+		$Product->productSlug = $slug.'-SP'.$Product->id;
+		$Product->save();
+		
+		if($this->add_product_image!= null){
+			$name=$this->add_product_image->getClientOriginalName();
+			$name2 = date("Y-m-d-H-i-s").'-'.$name;
+			$this->add_product_image->storeAs('/images/product/',$name2,'public');
+						
+			$Image = new Image();
+			$Image->imageName = $name2;
+			$Image->image_type = 'Hình ảnh chính sản phẩm';
+			$Image->productID = $Product->id;
+			$Image->save();
+		}
 		
 		
 		$this->add_product_name = null;

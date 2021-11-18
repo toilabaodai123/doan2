@@ -41,14 +41,14 @@ class ShopDetail extends Component
         $this->slugId = $slug;
     }
     public function render()
-    {   	
+    {   
 		Carbon::setLocale('vi');
         
         $this->product = Product::with('getSalePrice')->with('Pri_image')->with('Models')->with('wishlist')
         ->where('productSlug', $this->slugId)->get();
         $proSlug = Product::where('productSlug', $this->slugId)->first();
         //dd($proSlug);
-        $this->bl = Comment2::with('User')->where('product_id',$proSlug->id)->where('status',1)->get();
+        $this->bl = Comment2::with('User')->where('product_id',$proSlug->id)->get();
         // dd($this->bl);
         $this->comment = Comment2::where('product_id',$proSlug->id)->where('status',1)->get();
         $this->Sizes = ProductModel::with('Size')->where('productID',$proSlug->id)->get();
@@ -82,8 +82,6 @@ class ShopDetail extends Component
                 abort(404);
             }
         }
-		
-		
 		//Đếm view
 		$checkVisit = Visit::where('ip',request()->ip())->where('product_id',$this->get_id->id)->get()->last();
 		if($checkVisit == null || Carbon::parse($checkVisit->created_at)->addDay(1) < Carbon::now() ){
@@ -94,7 +92,6 @@ class ShopDetail extends Component
 			$View->ip = request()->ip();
 			$View->save();
 		}
-		
         return view('livewire.frontend.shop-detail')->layout('layouts.template3');
     }
 	
@@ -108,10 +105,21 @@ class ShopDetail extends Component
 							 ->where('created_at','>=',Carbon::now()->subDays(1))
 							 ->where('status',1)
 							 ->get();
-		if($CheckReport->count() >= 20){//Kiểm tra spam báo cáo
+		if($CheckReport->count() >= 10){//Kiểm tra spam báo cáo
 			$flag = false;
 			session()->flash('warning_report_product','Bạn đã báo cáo quá nhiều lần gần đây');	
 		}
+		$RecentReport = Report::where('ip',request()->ip())
+								->where('product_id',$this->get_id->id)	
+								->where('created_at','>=',Carbon::now()->subDays(1))
+								->where('status',1)
+								->get()
+								->last();
+		if($RecentReport){
+			$flag = false;
+			session()->flash('warning_report_product','Bạn đã báo cáo sản phẩm này gần đây!');
+		}
+		
 
 		if($flag == true){
 			$this->validate([

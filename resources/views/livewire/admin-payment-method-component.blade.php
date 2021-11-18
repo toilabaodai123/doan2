@@ -136,7 +136,6 @@
 												<div class="col-lg-12">
 													<button class="btn btn-success" data-toggle="modal" data-target="#submitCredit">Lưu</button>
 													<button class="btn btn-warning" wire:click="offNewCredit">Hủy {{$credit_id == null?'thêm':'sửa'}}</button>
-													<button class="btn btn-success" wire:click="test">Test</button>
 												</div>
                                         </div>
 									

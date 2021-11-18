@@ -83,17 +83,15 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">	
-					@if(auth()->user()->user_type == 'Admin')
                     <li>
                         <a href="{{url('/admin/dashboard')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
-					@endif
 							<li class="active">
 								<a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý nhập liệu<span class="fa arrow"></span></a>
 								<ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
 							<li class="active">
 								<a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
-								<ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+								<ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
 									<li>
 										<a href="{{url('/admin/products')}}">Sản phẩm</a>
 									</li>
@@ -123,10 +121,30 @@
 								<a href="{{url('admin/suppliers')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhà cung cấp</a>
 							</li>
 							<li>
-								<a href="{{url('admin/suppliers')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhà vận chuyển</a>
+								<a href="{{url('admin/shippers')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý nhà vận chuyển</a>
 							</li>
 							<li>
 								<a href="{{url('admin/flash-sale')}}"><i class="fa fa-sitemap fa-fw"></i>Quản lý flash sale</a>
+							</li>
+							<li class="active">
+								<a href="#"><i class="fa fa-sitemap fa-fw"></i> Pages<span class="fa arrow"></span></a>
+								<ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
+									<li>
+										<a href="{{url('/slider')}}">Slider</a>
+									</li>
+									<li>
+										<a href="{{url('/post')}}">Đăng bài viết</a>
+									</li>	
+									<li>
+										<a href="{{url('/instagram')}}">Instagram</a>
+									</li>	
+									<li>
+										<a href="{{url('/admin-contact')}}">Contact</a>
+									</li>	
+									<li>
+										<a href="{{url('/admin-about')}}">About </a>
+									</li>							
+								</ul>
 							</li>							
 							<li class="active">
 								<a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý tài khoản<span class="fa arrow"></span></a>
@@ -140,13 +158,7 @@
 								</ul>
 							</li>							
                         </ul>
-                    </li>					
-                    <li>
-                        <a href="{{url('/admin/payment/methods')}}"><i class="fa fa-sitemap fa-fw"></i>Hình thức thanh toán</a>
                     </li>
-                    <li>
-                        <a href="{{url('/admin/reports')}}"><i class="fa fa-sitemap fa-fw"></i>Báo cáo của người dùng</a>
-                    </li>					
 					<li class="active">
                         <a href="#"><i class="fa fa-sitemap fa-fw"></i> Quản lý hóa đơn<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
@@ -155,40 +167,22 @@
                             </li>
                             <li>
                                 <a href="{{url('/admin/orders/accepted')}}">Danh sách hóa đơn </a>
-                            </li>
                             </li>							
                         </ul>
-                    </li>	
-					@if(auth()->user()->user_type == 'Admin' || auth()->user()->user_type == 'Nhân viên kế toán' )
-                    <li class="active">
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Pages<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
-                            <li>
-                                <a href="{{url('/slider')}}">Slider</a>
-                            </li>
-                            <li>
-                                <a href="{{url('/post')}}">Đăng bài viết</a>
-                            </li>	
-                            <li>
-                                <a href="{{url('/instagram')}}">Instagram</a>
-                            </li>	
-                            <li>
-                                <a href="{{url('/admin-contact')}}">Contact</a>
-                            </li>	
-                            <li>
-                                <a href="{{url('/admin-about')}}">About </a>
-                            </li>							
-                        </ul>
-                    </li>	
-					@endif
+                    </li>					
+                    <li>
+                        <a href="{{url('/admin/payment/methods')}}"><i class="fa fa-sitemap fa-fw"></i>Hình thức thanh toán</a>
+                    </li>
+                    <li>
+                        <a href="{{url('/admin/reports')}}"><i class="fa fa-sitemap fa-fw"></i>Báo cáo của người dùng</a>
+                    </li>					
+
 					<li>
                         <a href="{{url('/admin/info')}}" class="active"><i class="fa fa-dashboard fa-fw"></i> Thông tin tài khoản</a>
                     </li>
-					@if(auth()->user()->user_type == 'Admin' || auth()->user()->user_type == 'Nhân viên kế toán' )
 					<li>
                         <a href="{{url('/admin/setting')}}"><i class="fa fa-dashboard fa-fw"></i>Tùy chỉnh hệ thống website</a>
                     </li>
-					@endif
 
                 </ul>
             </div>

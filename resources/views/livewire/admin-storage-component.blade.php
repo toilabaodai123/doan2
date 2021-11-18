@@ -7,6 +7,7 @@
 			</div>
 		</div>			
 	</div>
+	{{$ProductModels->links()}}
 	<div class="row">
 		<div class="table-responsive">
 			<table class="table table-bordered table-hover table-striped">

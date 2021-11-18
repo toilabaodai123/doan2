@@ -61,7 +61,7 @@
 																<td>{{$user->address}}</td>
 																<td>
 																	@if($user->status == 1)
-																		<label style="color:green">Tốt</label>
+																		<label style="color:green">Đang hoạt động</label>
 																	@else
 																		<label style="color:gray">Đã khóa</label>
 																	@endif
@@ -81,7 +81,7 @@
 																												</div>
 																												<div class="modal-body" >
 																													<label>Bạn chắc chắn muốn khóa tài khoản id:{{$user->id}} ?</label>
-																													<input class="form-control" placeholder="Hãy nhập lý do từ khóa" wire:model="delete_input">
+																													<input class="form-control" placeholder="Hãy nhập lý do khóa" wire:model="delete_input">
 																													@error('delete_input')
 																														<p class="text-danger">{{$message}}</p>
 																													@enderror

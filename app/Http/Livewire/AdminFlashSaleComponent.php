@@ -9,6 +9,7 @@ use App\Models\ProductModel;
 use App\Models\FlashSale;
 use App\Models\FlashSaleDetail;
 use DB;
+use App\Models\AdminLog;
 use Illuminate\Support\Facades\Hash;
 
 class AdminFlashSaleComponent extends Component
@@ -25,6 +26,8 @@ class AdminFlashSaleComponent extends Component
 	public $from_date;
 	public $to_date;
 	public $add_flashsale_note;
+	public $cancel_flashsale_password;
+	public $get_sale_id;
 	
 	public $sortField = 'productName';
 	public $sortDirection = 'ASC';
@@ -53,24 +56,7 @@ class AdminFlashSaleComponent extends Component
 	
     public function render()
     {
-		if($this->sale_searchInput == null)
-			$Sales = DB::table('flash_sales')
-						->join('users','flash_sales.admin_id','users.id')
-						->join('flash_sale_details','flash_sales.id','flash_sale_details.sale_id')
-						->select('flash_sales.id','users.name','flash_sales.status','flash_sales.title','flash_sales.from_date','flash_sales.to_date')
-						->groupBy('flash_sales.id')
-						->orderBy($this->sale_sortField,$this->sale_sortDirection)
-						->paginate(3);
-		else
-			$Sales = DB::table('flash_sales')
-						->join('users','flash_sales.admin_id','users.id')
-						->join('flash_sale_details','flash_sales.id','flash_sale_details.sale_id')
-						->select('flash_sales.id','users.name','flash_sales.status','flash_sales.title','flash_sales.from_date','flash_sales.to_date')
-						->groupBy('flash_sales.id')
-						->where($this->sale_searchField,'LIKE','%'.$this->sale_searchInput.'%')
-						->orderBy($this->sale_sortField,$this->sale_sortDirection)
-						->paginate(3);
-
+			$Sales = FlashSale::paginate(3);
 		$Sales2 = FlashSale::where('status',1)->get()->pluck('id');
 		if($Sales2->count() > 0)
 			$Details = FlashSaleDetail::whereIn('sale_id',[$Sales2])->get()->pluck('product_id');
@@ -114,6 +100,10 @@ class AdminFlashSaleComponent extends Component
 													'old_price' => $old_price,
 													'price' => null,
 													'product_name' => $name]);	
+		
+		foreach($this->selectedProductArray as $k=>$v){
+			$this->price[$k] = null;
+		}
 	}
 	public function removeProduct($key){
 		$this->selectedProductArray[$key]['is_deleted']=true;
@@ -122,16 +112,34 @@ class AdminFlashSaleComponent extends Component
 	
 	public function checkValidation(){
 		$this->validate();
+		$count=0;
+		$flag=false;
+		foreach($this->selectedProductArray as $k=>$v){
+			if($v['is_deleted'] == true)
+				$count++;
+			if($this->price[$k] ==null)
+				$flag=true;
+		}
+		
+		
+		if($this->selectedProductArray == null || $count >= count($this->selectedProductArray) || $flag==true)
+			session()->flash('sale_error','Kiểm tra lại thông tin');
+		else
+			$this->is_validated = true;
+		/*
 		$flag=false;
 		$LastFlashSale = FlashSale::where('status',1)->get()->last();
 		if($LastFlashSale){
 			if(($this->from_date < $LastFlashSale->from_date && $this->to_date < $LastFlashSale->from_date) || ($this->from_date > $LastFlashSale->to_date && $this->to_date > $LastFlashSale->to_date))
 				$flag=true;
+		}else{
+			$flag=true;
 		}
 		if($flag==true)
 			$this->is_validated = true;
 		else
-			dd(2);
+			session()->flash('sale_error','Kiểm tra lại thông tin');
+		*/
 	}
 	
 	public function submitSale(){
@@ -227,6 +235,32 @@ class AdminFlashSaleComponent extends Component
 													'price' => $v->price,
 													'product_name' => $v->Product->productName]);
 			$this->price[$k] = $v->price;
+		}
+	}
+	
+	public function cancelSale($id){
+		$this->validate([
+			'cancel_flashsale_password' => 'required'
+		],[
+			'cancel_flashsale_password.required' => 'Hãy nhập mật khẩu'
+		]);
+		
+		if(Hash::check($this->cancel_flashsale_password,auth()->user()->password)){
+			$Sale = FlashSale::find($id);
+			$Sale->status=0;
+			$Sale->save();
+			
+			$AdminLog = new AdminLog();
+			$AdminLog->admin_id = auth()->user()->id;
+			$AdminLog->note ='Đã sửa sale id:'.$id;
+			$AdminLog->save();
+			
+			
+			session()->flash('success_cancel_sale','Hủy sale thành công');
+			$this->reset();
+		}
+		else{
+			session()->flash('error_cancel_sale','Sai mật khẩu');
 		}
 	}
 	

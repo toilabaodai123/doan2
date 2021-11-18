@@ -30,6 +30,6 @@ class MailService extends Mailable
      */
     public function build()
     {
-        return $this->view('mail');
+        return $this->subject('Đã đặt hàng thành công , thông tin đơn đặt hàng')->view('mail');
     }
 }

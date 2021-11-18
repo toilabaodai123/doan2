@@ -7,10 +7,13 @@ use App\Models\Product;
 use App\Models\ProductModel;
 use App\Models\User;
 use App\Models\AdminLog;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\Hash;
 
 class AdminStorageComponent extends Component
 {
+	use WithPagination;
+	
 	public $sortField='productName';
 	public $sortDirection ='ASC';
 	public $searchField='productName';
@@ -46,12 +49,12 @@ class AdminStorageComponent extends Component
 		if($this->searchInput == null)
 			$ProductModels = ProductModel::with('Product')
 										 ->orderBy($this->sortField=='productName'?Product::select('productName')->whereColumn('Product_Models.productID','Products.id'):$this->sortField,$this->sortDirection)
-										 ->get();
+										 ->paginate(4);
 		else
 			$ProductModels = ProductModel::with('Product')
 										 ->where($this->sortField=='productName'?Product::select('productName')->whereColumn('Product_Models.productID','Products.id'):$this->searchField,'LIKE','%'.$this->searchInput.'%')
 										 ->orderBy($this->sortField=='productName'?Product::select('productName')->whereColumn('Product_Models.productID','Products.id'):$this->sortField,$this->sortDirection)
-										 ->get();			
+										 ->paginate(4);			
 		//dd($Products);
         return view('livewire.admin-storage-component',['ProductModels' => $ProductModels])
 					->layout('layouts.template');

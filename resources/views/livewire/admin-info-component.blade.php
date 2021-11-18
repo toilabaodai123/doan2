@@ -54,7 +54,7 @@
 					<div class="form-group">
 						<button type="button" wire:click="isUpdate" class="btn btn-{{$is_update==false?'info':'success'}}">{{$is_update==false?'Cập nhật thông tin':'Lưu'}}</button>
 						<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#changePassword">Đổi mật khẩu</button>	
-						<button type="button"  data-toggle="modal" data-target="#offline" class="btn btn-danger">Nghỉ phép</button>	
+						<button type="button"  data-toggle="modal" data-target="#offline" class="btn btn-danger">{{auth()->user()->status==1?'':'Ngừng '}}Nghỉ phép</button>	
 					</div>					
 				</div>
 					<div class="col-lg-3">
@@ -105,11 +105,11 @@
 																														{{session('modal_offline_wrong_password')}}
 																													</div>
 																													@endif
-																													<input class="form-control" placeholder="Hãy nhập lý do nghỉ phép" wire:model="offline_input">
+																													<input class="form-control" placeholder="Hãy nhập lý do " wire:model="offline_input">
 																													@error('offline_input')
 																														<p class="text-danger">{{$message}}</p>
 																													@enderror
-																													<input class="form-control" placeholder="Hãy nhập mật khẩu" wire:model="offline_password">
+																													<input class="form-control" type="password" placeholder="Hãy nhập mật khẩu" wire:model="offline_password">
 																													@error('offline_password')
 																														<p class="text-danger">{{$message}}</p>
 																													@enderror

@@ -61,6 +61,7 @@ class AdminProductLogo extends Component
 
 					}
 				}
+				session()->flash('success','Cập nhật watermark thành công');
 			}else{
 				imagejpeg(imagecreatefromstring(file_get_contents($this->logo_image->path())),public_path().'/storage/images/watermark/'.$name4.'.jpeg');
 				$Images = Image::where('image_type','LIKE','Hình ảnh chính sản phẩm')->get();

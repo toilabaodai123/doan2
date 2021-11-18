@@ -324,8 +324,9 @@
 									@enderror								
 								</div>
 								<div class="col-lg-9" style="margin-top:20px">
-									<button type="button" data-toggle="modal" data-target="#confirmEdit" wire:loading.attr="disabled" class="btn btn-default">Lưu</button>
-									<button type="button" wire:click="btnReset" wire:loading.attr="disabled" class="btn btn-default">Hủy sửa</button>
+									<button type="button" data-toggle="modal" data-target="#confirmEdit" wire:loading.attr="disabled" class="btn btn-success">Lưu</button>
+									<button type="button" wire:click="btnReset" wire:loading.attr="disabled" class="btn btn-danger">Hủy sửa</button>
+									<button type="button" wire:click="test" wire:loading.attr="disabled" class="btn btn-danger">Test</button>
 								</div>
 							</form>
 						</div>

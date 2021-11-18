@@ -20,6 +20,7 @@ class CreateUserActionBlocksTable extends Migration
 			$table->integer('duration');
 			$table->string('action');
 			$table->string('reason');
+			$table->integer('status')->default(1);
             $table->timestamps();
         });
     }

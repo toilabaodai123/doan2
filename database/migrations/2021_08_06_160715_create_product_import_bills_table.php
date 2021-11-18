@@ -23,8 +23,8 @@ class CreateProductImportBillsTable extends Migration
 			$table->string('bill_od')->nullable();
 			$table->datetime('bill_date');
 			$table->string('transporter_name');
-			$table->unsignedbiginteger('stocker_id')->nullable();
-			$table->unsignedbiginteger('accountant_id')->nullable();
+			$table->unsignedbiginteger('stocker_id');
+			$table->unsignedbiginteger('accountant_id');
 			$table->unsignedbiginteger('supplier_id');
 			$table->string('note')->nullable();
 			$table->string('note_stocker')->nullable();

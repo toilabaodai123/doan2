@@ -114,7 +114,7 @@ class Checkout extends Component
 									->where('status',1)
 									->where('created_at','>=',Carbon::now()->subMinutes(60))
 									->get();
-				if($CheckOrders && $CheckOrders->count() >= 5){
+				if($CheckOrders && $CheckOrders->count() >= 115){
 					session()->flash('user_blocked','Bạn đã đặt quá nhiều đơn hàng, vui lòng thử lại sau');
 					
 				}
@@ -172,7 +172,6 @@ class Checkout extends Component
             $LastOrderID++;
             $Order->orderCode = 'DH'.$LastOrderID;
 
-            $Order->orderDate = now();
             $Order->orderTotal = 0;
 			$Order->status =1;
             $Order->save();
@@ -215,25 +214,23 @@ class Checkout extends Component
 			
 			
 			//Phân công
-			$LastOrder = Order::get()->last();
 			if($LastOrder == null){
-				//dd(1);
-				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','>',$LastOrder->assigned_to)->get()->first();
+				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
 				if($Admin == null)
-					$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->where('id','<=',$LastOrder->assigned_to)->get()->first();
-					if($Admin2==null)
-						$Order->assigned_to = null;
-					else
-						$Order->assigned_to = $Admin->id;
+					$Order->assigned_to = null;
+				else
+					$Order->assigned_to = $Admin->id;
 				$Order->save();	
 			}
 			else{
 				$Admin = User::where('user_type','LIKE','Nhân viên bán hàng')
 							 ->where('status',1)
 							 ->where('id','>',$LastOrder->assigned_to==null?0:$LastOrder->assigned_to)
-							 ->get()->first();
+							 ->get()
+							 ->first();
 				if($Admin == null){
-					$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')->where('status',1)->get()->first();
+					$Admin2 = User::where('user_type','LIKE','Nhân viên bán hàng')
+									->where('status',1)->get()->first();
 					if($Admin2 == null)
 						$Order->assigned_to = null;
 					else
@@ -251,11 +248,11 @@ class Checkout extends Component
             
 			//Gửi thông tin đơn hàng qua mail khách hàng
 
-			// $mail = [
-			// 	'title' => 'Đặt hàng online',
-			// 	'body' => 'Bạn vừa đặt hàng , mã đơn hàng là:'.$Order->orderCode
-			// ];
-			// Mail::to($this->Email)->send(new MailService($this->mail));
+			$mail = [
+				'title' => 'Cảm ơn bạn đã đặt hàng',
+				'body' => 'Mã đơn hàng là:'.$Order->orderCode
+			];
+			Mail::to($this->Email)->send(new MailService($mail));
             
             session()->flash('OrderCode',$Order->orderCode);
             session()->forget('cart');
