@@ -79,6 +79,9 @@
                             @else
                                 <div class="product__item__pic set-bg" data-setbg="{{asset('storage/images/notfound.jpg')}}">
                             @endif
+                            @if($product->checkNew != null && $product->checkNew->count() > 0)
+                            <span class="label">New</span>
+                            @endif
                             <ul class="product__hover">
 									@if(Auth::user() != null)
 										@if($product->checkWishlist == null)
@@ -115,7 +118,7 @@
                     </a>
                 </div>
                 @empty
-                Không có san phẩm
+                Không có sản phẩm
                 @endforelse
             </div>
         </div>

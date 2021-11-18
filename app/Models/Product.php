@@ -14,7 +14,7 @@ use App\Models\FlashSale;
 use App\Models\Level2ProductCategory;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Visit;
-
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -57,7 +57,9 @@ class Product extends Model
 	public function wishlist(){
 		return $this->hasOne(Wishlist::class,'productID','id');
 	}
-	
+	public function checkNew(){
+		return $this->hasOne(Product::class,'id','id')->where('created_at','>=',Carbon::now()->subDays(7));
+	}
 	public function checkWishlist(){
 		return $this->hasOne(Wishlist::class,'productId','id')->where('id_user',auth()->user()->id)->where('status',1)->latest();
 	}

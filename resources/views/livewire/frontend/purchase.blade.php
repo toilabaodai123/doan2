@@ -79,49 +79,49 @@
 												<td>
 													<button type="button" class="btn btn-success" data-toggle="modal" data-target="#viewOrder{{$Order->id}}">Xem chi tiết</button><br>
 															<div wire:ignore.self class="modal fade" id="viewOrder{{$Order->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-																									<div class="modal-dialog" role="document">
-																										<div class="modal-content">
-																											<div class="modal-header">
-																												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																												<h4 class="modal-title" id="myModalLabel">Thông tin đơn hàng</h4>
-																											</div>
-																											<div class="modal-body">
-																												<div class="col-lg-12">
-																													<div class="shopping__cart__table">
-																														<table>
-																															<thead>
-																																<tr>
-																																	<th>Hình ảnh</th>
-																																	<th>Tên</th>  
-																																	<th>Kích cỡ</th>
-																																	<th>Số Lượng</th>
-																																	<th></th>
-																																</tr>
-																															</thead>
-																															<tbody>
-																																@foreach($Order->Details as $detail)
-																																<tr>
-																																	<td>
-																																		<img src="{{asset('storage/images/watermark/product/'.$detail->ProductModel->Product->Pri_Image->imageName)}}" style="width:100px;height:100px">
-																																	</td>
-																																	<td>{{$detail->ProductModel->Product->productName}}</td>
-																																	<td>{{$detail->ProductModel->size}}</td>
-																																	<td>{{$detail->quantity}}</td>
-																																</tr>
-																																@endforeach
-																															</tbody>
-																														</table>
-																													</div>
-																												</div>
-																											</div>
-																											
-																											<div class="modal-footer">
-																												<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
-																											</div>
-																										</div>
-																										<!-- /.modal-content -->
-																									</div>
-																									<!-- /.modal-dialog -->
+															<div class="modal-dialog" role="document">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																		<h4 class="modal-title" id="myModalLabel">Thông tin đơn hàng</h4>
+																	</div>
+																	<div class="modal-body">
+																		<div class="col-lg-12">
+																			<div class="shopping__cart__table">
+																				<table>
+																					<thead>
+																						<tr>
+																							<th>Hình ảnh</th>
+																							<th>Tên</th>  
+																							<th>Kích cỡ</th>
+																							<th>Số Lượng</th>
+																							<th></th>
+																						</tr>
+																					</thead>
+																					<tbody>
+																						@foreach($Order->Details as $detail)
+																						<tr>
+																							<td>
+																								<img src="{{asset('storage/images/watermark/product/'.$detail->ProductModel->Product->Pri_Image->imageName)}}" style="width:100px;height:100px">
+																							</td>
+																							<td><a href="{{URL::to('shop-detail/'.$detail->ProductModel->Product->productSlug )}}">{{$detail->ProductModel->Product->productName}}</a></td>
+																							<td>{{$detail->ProductModel->size}}</td>
+																							<td>{{$detail->quantity}}</td>
+																						</tr>
+																						@endforeach
+																					</tbody>
+																				</table>
+																			</div>
+																		</div>
+																	</div>
+																	
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-default" data-dismiss="modal">Ẩn</button>
+																	</div>
+																</div>
+																<!-- /.modal-content -->
+															</div>
+															<!-- /.modal-dialog -->
 															</div>														
 													@if($Order->status == 4 && $Order->checkReview == null)
 													<div class="col-lg-12">

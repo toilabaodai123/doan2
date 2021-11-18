@@ -17,7 +17,6 @@ class Users extends Component
 
     public $rules = [
         'name' => 'required',
-        'email' => 'required|email',
     ];
     public function render()
     {
@@ -29,15 +28,14 @@ class Users extends Component
 
         DB::table('users')
               ->where('id', Auth::user()->id)
-              ->update( ['email' => $this->email , 'name' => $this->name]);
-              $this->reset();
-
+              ->update( [ 'name' => $this->name]);
+              
               session()->flash('message', 'Cập nhập tài khoản thành công');
+              $this->reset();
     }
      public  function edit()
      {
-         $data = User::find(Auth::user()->id);
-         $this->name = $data->name;
-         $this->email = $data->email;
+        //  $data = User::find(Auth::user()->id);
+         $this->name = Auth::User()->name;
      }
 }
